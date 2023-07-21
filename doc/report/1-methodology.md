@@ -13,7 +13,7 @@ Inizialmente abbiamo deciso di dedicare il primo Sprint al setup del progetto e 
 andati a utilizzare successivamente.
 
 Solo dopo lo Sprint di setup abbiamo deciso come suddividere il lavoro al meglio senza sovraccaricare o privilegiare nessun membro del team e
-cercando di suddividere al meglio le tipologie di lavoro oltre ad ottenere, per ogni Sprint Review, un artefatto potenzialmente consegnabile.
+cercando di suddividere al meglio le tipologie di lavoro oltre a ottenere, per ogni Sprint Review, un artefatto potenzialmente consegnabile.
 Inoltre dopo una prima fase di allineamento della Sprint Review veniva discusso come ogni membro si sarebbe approcciato alla modellazione
 e implementazione delle successive task a lui dedicate.
 

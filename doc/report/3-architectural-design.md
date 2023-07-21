@@ -7,7 +7,7 @@ che si presta molto bene a questo paradigma.
 
 In figura viene rappresentato il comportamento tipico di questo pattern.
 
-<img src="../diagrams/mvu.png" width="100%" alt="Diagramma Model-View-Update">
+<img src="../diagrams/mvu/mvu.png" alt="Diagramma Model-View-Update">
 
 ## Model
 Il modello in questa architettura rappresenta lo stato dell'applicazione, è un'entità immutabile
