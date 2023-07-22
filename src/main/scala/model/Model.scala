@@ -1,0 +1,3 @@
+package model
+
+trait Model
