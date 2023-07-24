@@ -1,21 +1,18 @@
 package view
-import scala.swing._
-import model.Model
+import model.State
 
-case class GUI(model: Model):
-  new Frame {
+import scala.swing.*
+
+case class GUI(model: State):
+
+  new Frame:
     title = "Hello world"
 
-    contents = new FlowPanel {
+    contents = new FlowPanel:
       contents += new Label("Hello World")
-      contents += new Button("Click me") {
-        reactions += { case event.ButtonClicked(_) =>
-          println("All the colours!")
-        }
-      }
-    }
+      contents += new Button("Click me"):
+        reactions += { case event.ButtonClicked(_) => println("All the colours!") }
 
     pack()
     centerOnScreen()
     open()
-  }

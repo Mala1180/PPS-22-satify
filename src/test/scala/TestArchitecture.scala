@@ -1,6 +1,6 @@
-
 import Architecture.MVU
-import model.Model
+import Main.Model
+import model.State
 import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -11,8 +11,8 @@ class TestArchitecture extends AnyFlatSpec with Matchers:
 
   val mvu: MVU = new MVU {}
 
-  "Model" should "be a trait" in {
-    mvu.model shouldBe a [Model]
+  "Model" should "be an immutable state" in {
+    mvu.model shouldBe a [State]
   }
 
   "Update" should "be a function taking a Model and a Message, returning a new Model" in {
