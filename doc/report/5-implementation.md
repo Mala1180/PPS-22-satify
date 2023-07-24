@@ -22,3 +22,14 @@ object Main extends App with MVU
 ```
 
 ## Alberto Paganelli
+
+Inizialmente il mio compito era quello di analizzare in maniera approfondita l'algoritmo per effettuare la trasformazione di Tseitin. 
+Non avendo una sufficiente conoscenza ho dedicato del tempo alla comprensione dell'algoritmo e delle sue fasi intermedie cosi' da poter approcciarmi in maniera incrementale allo sviluppo. 
+Avevo supposto di metterci più tempo per la comprensione dell'algoritmo, ma in realtà le sue sottoparti sono relativamente semplici. In termini molto semplici la trasformazione consiste nella suddivisione della formula in sotto-clausole, una parte di introduzione di nuove variabili e una riscrittura di queste ultime in CNF.
+
+Ho quindi scelto di definire 3 trait che rappresentassero le fasi dell'algoritmo e combinarli insieme in un oggetto concreto. 
+
+Quando ho iniziato a sviluppare la prima fase dell'algortimo, ovvero la suddivisione della formula in input in sotto-clausole, è stata necessaria una prima modellazione molto semplice di come avremmo costituito l'espressione all'interno del programma per motivi di coordinamento con gli altri membri del team.
+
+Dopodichè mi sono focalizzato sull'introduzione di nuove variabili. 
+

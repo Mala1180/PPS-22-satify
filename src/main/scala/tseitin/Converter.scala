@@ -18,21 +18,61 @@ object Expression:
   def contains(exp1: Expression, exp2: Expression) : Boolean =
     subexpressions(exp1).contains(exp2)
 
-  def replace(exp1: Expression, exp2: Expression, l: Literal) : Expression =
-    exp1 match
-      case Literal(x) => literal
-      case Clause(op) == exp2 => literal
-      case Clause(op) != exp2 => subOp1(op, exp2, l)
+  def replace(exp1: Expression, exp2: Expression, l: Literal): Expression = exp1 match
+    case Clause(op) if Clause(op) == exp2 => l
+    case Clause(And(e1, e2)) =>
+      if Clause(And(e1, e2)) == exp2 then Clause(And(replace(e1, exp2, l), replace(e1, exp2, l))) else replaceOp(And(e1,e2), exp2, l)
+    case Clause(Or(e1, e2)) =>
+      if Clause(Or(e1, e2)) == exp2 then Clause(Or(replace(e1, exp2, l), replace(e1, exp2, l))) else replaceOp(Or(e1,e2), exp2, l)
+    case Clause(Not(e)) =>
+      if Clause(Not(e)) == exp2 then Clause(Not(replace(e, exp2, l))) else replaceOp(Not(e), exp2, l)
+    case _ => l
+    private def replaceOp(op: Operator, exp2: Expression, l: Literal): Expression = op match
+      case And(Clause(op), c) => if Clause(op) == exp2 then Clause(And(l, c)) else Clause(And(replace(Clause(op), exp2, l), replace(c, exp2, l)))
+      case And(c, Clause(op)) => if Clause(op) == exp2 then Clause(And(c, l)) else Clause(And(replace(c, exp2, l), replace(Clause(op), exp2, l)))
+      case Or(Clause(op), c2) => if Clause(op) == exp2 then Clause(Or(l, c2)) else Clause(Or(replace(Clause(op), exp2, l), c2))
+      case Or(c1, Clause(op)) => if Clause(op) == exp2 then Clause(Or(c1, l)) else Clause(Or(c1, replace(Clause(op), exp2, l)))
+      case Not(Clause(op)) => if Clause(op) == exp2 then Clause(Not(l)) else Clause(Not(replace(Clause(op), exp2, l)))
 
-    def subExp1(exp: Expression, list: List[Expression]): List[Expression] = exp match
-      case Clause(op) => exp :: list ::: subOp1(op, list)
-      case _ => List()
 
-    def subOp1(op: Operator, exp: Operator, l: Literal): List[Expression] = op match
-      case And(exp1, exp2) => subExp1(exp1, list) ::: subExp1(exp2, list)
-      case Or(exp1, exp2) => subExp1(exp1, list) ::: subExp1(exp2, list)
-      case Xor(exp1, exp2) => subExp1(exp1, list) ::: subExp1(exp2, list)
-      case Not(exp) => subExp1(exp, list)
+
+ /* def subexpressions(exp: Expression): List[Expression] = exp match
+    case Literal(x) => List(exp)
+    case Clause(Not(Literal(x))) => List(exp)
+    case _ => subExp(exp, List())
+
+  private def subExp(exp: Expression, list: List[Expression]): List[Expression] = exp match
+    case Clause(op) => exp :: list ::: subOp(op, list)
+    case _ => List()
+
+  private def subOp(op: Operator, list: List[Expression]): List[Expression] = op match
+    case And(exp1, exp2) => subExp(exp1, list) ::: subExp(exp2, list)
+    case Or(exp1, exp2) => subExp(exp1, list) ::: subExp(exp2, list)
+    case Xor(exp1, exp2) => subExp(exp1, list) ::: subExp(exp2, list)
+    case Not(exp) => subExp(exp, list) */
+
+
+ //FIRST TEST REPLACE
+
+/*def replace(exp1: Expression, exp2: Expression, l: Literal) : Expression =
+  exp1 match
+    case Clause(And(e1, e2)) => Clause(And(replace(e1, exp2, l), replace(e1, exp2, l)))
+    case Clause(Or(e1, e2)) => Clause(Or(replace(e1, exp2, l), replace(e1, exp2, l)))
+    case Clause(Xor(e1, e2)) => Clause(Xor(replace(e1, exp2, l), replace(e1, exp2, l)))
+    case Clause(Not(e)) => Clause(Not(replace(e, exp2, l)))
+    case _ => exp1
+    //case Clause(op) != exp2 => subOp1(op, exp2, l)
+
+    def replaceOp(op: Operator, exp2: Expression, l: Literal) : Expression = op match
+      case And(Clause(op), c) if Clause(op) == exp2 => Clause(And(l, c))
+      case And(c, Clause(op)) if Clause(op) == exp2 => Clause(And(c, l))
+      case Or(Clause(op), c) if Clause(op) == exp2 => Clause(Or(l, c))
+      case Or(c, Clause(op)) if Clause(op) == exp2 => Clause(Or(c, l))
+      case Xor(Clause(op), c) if Clause(op) == exp2 => Clause(Xor(l, c))
+      case Xor(c, Clause(op)) if Clause(op) == exp2 => Clause(Xor(c, l))
+      case Not(Clause(op)) if Clause(op) == exp2 => Clause(Not(l))
+      case _ => exp2*/
+
 
 
 trait variableGenerator:

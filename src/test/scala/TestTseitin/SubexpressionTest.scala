@@ -1,10 +1,15 @@
 package TestTseitin
 
-import org.junit.Assert.{assertEquals, assertFalse, assertNotEquals}
+import org.junit.Assert.{assertEquals, assertFalse, assertNotEquals, assertTrue}
 import org.junit.Test
+import tseitin.Expression
+import tseitin.Expression.*
+import tseitin.Operator.*
+import tseitin.CNFConverter.*
 
 class SubexpressionTest:
   var list: List[Expression] = List()
+
 
   @Test
   def testSimpleLiteral(): Unit =
