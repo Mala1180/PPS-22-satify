@@ -3,6 +3,7 @@ import update.Message
 import update.Message.*
 import view.GUI
 
+/** Object containing the necessary components for the Model-View-Update architecture. */
 object Architecture:
 
   trait ModelComponent:
@@ -24,13 +25,12 @@ object Architecture:
     type Update = (Model, Message) => Model
     val update: Update
 
-  /** Represents the Model-View-Update architecture.
-   * */
+  /** Represents the Model-View-Update architecture. */
   trait MVU extends ModelComponent with ViewComponent with UpdateComponent:
     var model: Model = State()
     override val view: View = model => GUI(model)
     override val update: Update = (model, message) =>
+      println("update triggered")
       message match
         case Input(char) => model
         case Solve(exp) => model
-    println("update triggered")

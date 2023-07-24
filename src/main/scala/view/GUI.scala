@@ -3,9 +3,15 @@ import model.State
 
 import scala.swing.*
 
-case class GUI(model: State):
+/** The GUI for the game */
+case class GUI(model: State)
 
-  new Frame:
+/** Object containing the functions related to the GUI */
+object GUI:
+  /** Renders the GUI
+    * @param gui the GUI to render
+    */
+  def render(gui: GUI): Unit = new Frame:
     title = "Hello world"
 
     contents = new FlowPanel:
