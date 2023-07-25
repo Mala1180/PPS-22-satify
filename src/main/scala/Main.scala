@@ -1,5 +1,6 @@
 import Architecture.MVU
 import model.Model
+import view.GUI.render
 
 object Main extends App with MVU:
-  view(model)
+  render(view(model))
