@@ -1,5 +1,6 @@
 package view
-import model.Model
+
+import model.State
 import view.Utils.*
 
 import java.awt.{Color, Font, Image, Toolkit}
@@ -7,7 +8,7 @@ import javax.swing.ImageIcon
 import scala.swing.*
 
 /** The GUI for the game */
-case class GUI(model: Model)
+case class GUI(model: State)
 
 /** Object containing the functions related to the GUI */
 object GUI:
