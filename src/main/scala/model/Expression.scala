@@ -13,32 +13,39 @@ object Expression:
   import Expression.*
   import Operator.*
 
+  /** Zip the subexpressions found in the given expression with a generic type A.
+   *
+   * @param exp the expression.
+   * @param f the supplier of the generic type A.
+   * @return a list of the subexpressions found in the given expression zipped with the generic type.
+   */
+  def zipWith[A](exp: Expression)(f: () => A): List[(A, Expression)] =
+    def subexp(exp: Expression, list: List[(A, Expression)])(f: () => A): List[(A, Expression)] = exp match
+      case Clause(op) => (f(), exp) :: list ::: subop(op, list)(f)
+      case _ => List()
+
+    def subop(op: Operator, list: List[(A, Expression)])(f: () => A): List[(A, Expression)] = op match
+      case And(exp1, exp2) => subexp(exp1, list)(f) ::: subexp(exp2, list)(f)
+      case Or(exp1, exp2) => subexp(exp1, list)(f) ::: subexp(exp2, list)(f)
+      case Not(exp) => subexp(exp, list)(f)
+
+    exp match
+      case Literal(x) => List((f(), exp))
+      case Clause(Not(Literal(x))) => List((f(), exp))
+      case _ => subexp(exp, List())(f)
+
   /** Zip the subexpressions found in the given expression with a Literal.
    *
    * @param exp the expression.
-   * @return a list of the subexpressions found in the given expression zipped with a Literal representing the subexpression.
+   * @return a list of the subexpressions found in the given expression zipped with the Literal.
    */
   def zipWithLiteral(exp: Expression): List[(Literal, Expression)] =
     var c = 0
-
     def freshLabel(): Literal =
       val l: Literal = Literal("X" + c)
       c = c + 1
       l
-
-    def subexp(exp: Expression, list: List[(Literal, Expression)]): List[(Literal, Expression)] = exp match
-      case Clause(op) => (freshLabel(), exp) :: list ::: subop(op, list)
-      case _ => List()
-
-    def subop(op: Operator, list: List[(Literal, Expression)]): List[(Literal, Expression)] = op match
-      case And(exp1, exp2) => subexp(exp1, list) ::: subexp(exp2, list)
-      case Or(exp1, exp2) => subexp(exp1, list) ::: subexp(exp2, list)
-      case Not(exp) => subexp(exp, list)
-
-    exp match
-      case Literal(x) => List((freshLabel(), exp))
-      case Clause(Not(Literal(x))) => List((freshLabel(), exp))
-      case _ => subexp(exp, List())
+    zipWith(exp)(freshLabel)
 
   /** Search for subexpressions in the given expression.
    *
