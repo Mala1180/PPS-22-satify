@@ -30,6 +30,7 @@ Avevo supposto di metterci più tempo per la comprensione dell'algoritmo, ma in 
 Ho quindi scelto di definire 3 trait che rappresentassero le fasi dell'algoritmo e combinarli insieme in un oggetto concreto. 
 
 Quando ho iniziato a sviluppare la prima fase dell'algortimo, ovvero la suddivisione della formula in input in sotto-clausole, è stata necessaria una prima modellazione molto semplice di come avremmo costituito l'espressione all'interno del programma per motivi di coordinamento con gli altri membri del team.
+Inoltre ho implementato anche qualche metodo di utilità per la gestione delle espressioni.
 
 Dopodichè mi sono focalizzato sull'introduzione di nuove variabili. 
 
