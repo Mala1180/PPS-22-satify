@@ -1,6 +1,6 @@
 import Architecture.MVU
 import Main.Model
-import model.State
+import model.{Variable, State}
 import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

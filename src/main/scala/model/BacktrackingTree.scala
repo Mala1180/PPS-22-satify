@@ -1,30 +1,26 @@
 package model
 
+import model.EmptyModel
+
 import scala.collection.immutable.Queue
-
-case class Bool(s: String, v: Option[Boolean] = Option.empty)
-
-type PartialModel = Set[Bool]
 
 object BacktrackingTree:
 
-  def apply(): BacktrackingTree = {
-    new BacktrackingTree(Queue.empty)
+  def apply(emptyModel: EmptyModel): BacktrackingTree = {
+    new BacktrackingTree(emptyModel, Queue.empty)
   }
 
+  // TODO
   def decision(backtrackingTree: BacktrackingTree, s: String, v: Boolean): BacktrackingTree = {
     backtrackingTree match
-      case BacktrackingTree(queue) =>
+      case BacktrackingTree(exp, queue) =>
         new BacktrackingTree(
-          queue :+ (s,
+          exp, queue :+ (s,
             queue.last match
-              case (_, pm) =>
-                pm.map {
-                  case Bool(bs, _) if bs == s => Bool(bs, Option(v))
-                  case pb@Bool(_, _) => pb
-              })
-    )
+              case (_, pm) => pm
+          )
+        )
   }
 
-case class BacktrackingTree(queue: Queue[(String, PartialModel)])
+case class BacktrackingTree(emptyModel: EmptyModel, partialModels: Queue[(String, PartialModel)])
 
