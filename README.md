@@ -1,5 +1,9 @@
 # Satify
 
+<div style="text-align: center;">
+<img src="src/main/resources/img/Satify_logo.png" style="width: 40%" alt="Satify logo"/>
+</div>
+
 Satify is a pure functional SAT solver written in Scala.
 
 It wants to be **immutable**, **declarative** and **idiomatic** 
@@ -21,9 +25,16 @@ To run correctly Satify you need at least these versions of the following depend
 - Java 17 (currently LTS)
 
 ## Usage
+To run Satify:
+```bash
+sbt run
+```
+To run tests:
+```bash
+sbt test
+```
 
-
-## About contributions
+## Contributions
 If you want to contribute to Satify, you can fork the repository and open a pull request.
 The contributions must follow some constraints: 
 - Attention to code style and quality.
