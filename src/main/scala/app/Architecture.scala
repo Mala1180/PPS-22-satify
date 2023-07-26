@@ -1,6 +1,10 @@
-import model.State
-import update.Message
+package app
+
+import model.{CNF, Expression, State}
 import update.Message.*
+import update.converters.TseitinTransformation.tseitin
+import update.converters.{CNFConverter, TseitinTransformation}
+import update.{Message, Solver}
 import view.GUI
 
 /** Object containing the necessary components for the Model-View-Update architecture. */
@@ -28,9 +32,13 @@ object Architecture:
   /** Represents the Model-View-Update architecture. */
   trait MVU extends ModelComponent with ViewComponent with UpdateComponent:
     var model: Model = State()
-    override val view: View = model => GUI(model)
+    override val view: View = model => GUI(model, update)
     override val update: Update = (model, message) =>
       println("update triggered")
       message match
         case Input(char) => model
-        case Solve(exp) => model
+        case Solve(exp) =>
+          given CNFConverter with
+            def convert(exp: Expression): CNF = tseitin(exp)
+          Solver().solve(exp)
+          State()

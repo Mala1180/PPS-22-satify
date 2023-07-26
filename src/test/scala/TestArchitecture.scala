@@ -1,5 +1,5 @@
-import Architecture.MVU
-import Main.Model
+import app.Architecture.MVU
+import app.Main.Model
 import model.State
 import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec

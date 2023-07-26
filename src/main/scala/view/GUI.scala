@@ -1,6 +1,9 @@
 package view
 
+import app.Main.Model
 import model.State
+import update.Message
+import update.Message.Solve
 import view.Utils.*
 
 import java.awt.{Color, Font, Image, Toolkit}
@@ -8,7 +11,7 @@ import javax.swing.ImageIcon
 import scala.swing.*
 
 /** The GUI for the game */
-case class GUI(model: State)
+case class GUI(model: State, update: (Model, Message) => Model)
 
 /** Object containing the functions related to the GUI */
 object GUI:
@@ -29,7 +32,7 @@ object GUI:
       val inputTextArea: TextArea = createInputTextArea()
       val problemComboBox: ComboBox[String] = createProblemComboBox(inputTextArea)
       val outputDialog: Dialog = createOutputDialog()
-      val solveButton: Button = createSolveButton(outputDialog)
+      val solveButton: Button = createSolveButton(gui, outputDialog)
 
       contents = new BoxPanel(Orientation.Vertical):
         contents += new FlowPanel():
@@ -76,12 +79,14 @@ object GUI:
     new ComboBox(List("No selection", "N-Queens", "Graph Coloring", "Nurse Scheduling")):
       selection.reactions += { case event.SelectionChanged(_) => inputTextArea.text = selection.item }
 
-  private def createSolveButton(outputDialog: Dialog): Button = new Button("Solve"):
+  private def createSolveButton(gui: GUI, outputDialog: Dialog): Button = new Button("Solve"):
     font = Font(fontFamily, Font.ITALIC, 20)
     preferredSize = new Dimension(100, 40)
     background = Color.green
     foreground = Color(200, 0, 0)
-    reactions += { case event.ButtonClicked(_) => outputDialog.open() }
+    reactions += { case event.ButtonClicked(_) =>
+//      gui.update(gui.model, Solve(gui.model.expression))
+      outputDialog.open() }
 
   private def createOutputDialog(): Dialog =
     new Dialog:
