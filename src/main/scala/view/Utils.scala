@@ -8,5 +8,5 @@ object Utils:
   val windowSize: Dimension = Toolkit.getDefaultToolkit.getScreenSize
   val logoPath = "src/main/resources/img/Satify_logo-colored.png"
   val fontFamily = "Arial"
-  val headingFont = new Font(fontFamily, Font.BOLD, 16)
+  val headingFont: Font = Font(fontFamily, Font.BOLD, 16)
 

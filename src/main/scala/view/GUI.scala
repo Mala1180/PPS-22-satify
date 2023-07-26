@@ -54,14 +54,14 @@ object GUI:
       open()
 
   private def createImage(path: String, scaledBy: Int): ImageIcon =
-    val logoIcon = new ImageIcon(path)
+    val image = ImageIcon(path)
     // resize the image maintaining the aspect ratio
     val screenDimension: Dimension = Toolkit.getDefaultToolkit.getScreenSize
     val width: Int = screenDimension.getWidth.toInt
-    val ratio: Double = logoIcon.getIconWidth.toDouble / logoIcon.getIconHeight.toDouble
+    val ratio: Double = image.getIconWidth.toDouble / image.getIconHeight.toDouble
     val newWidth: Int = width / scaledBy
     val newHeight: Int = (newWidth / ratio).toInt
-    new ImageIcon(logoIcon.getImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH))
+    ImageIcon(image.getImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH))
 
   private def createInputTextArea(): TextArea =
     new TextArea:
@@ -76,7 +76,7 @@ object GUI:
       selection.reactions += { case event.SelectionChanged(_) => inputTextArea.text = selection.item }
 
   private def createSolveButton(outputDialog: Dialog): Button = new Button("Solve"):
-    font = new Font(fontFamily, Font.ITALIC, 20)
+    font = Font(fontFamily, Font.ITALIC, 20)
     preferredSize = new Dimension(100, 40)
     background = Color.green
     foreground = Color(200, 0, 0)
