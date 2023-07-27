@@ -17,13 +17,6 @@ class DecisionTreeTest extends AnyFlatSpec with Matchers:
   
   val emptyExpression: EmptyExpression = And(Or(Symbol(varA), Symbol(varB)), Symbol(varC))
 
-  "Function convert" should "be able to convert an EmptyExpression to a PartialExpression" in {
-    assert(convert(emptyExpression, classOf[PartialVariable]) ===
-      And(
-        Or(Symbol(PartialVariable("a", Option.empty)), Symbol(PartialVariable("b", Option.empty))),
-        Symbol(PartialVariable("c", Option.empty))
-      ))
-  }
 
   "DecisionTree" should "is not defined until a decision is made" in {
     DecisionTree(emptyExpression).getClass should not equal classOf[DecisionTree]

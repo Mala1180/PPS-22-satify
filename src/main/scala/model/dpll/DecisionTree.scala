@@ -2,6 +2,7 @@ package model.dpll
 
 import model.*
 import model.Expression.*
+import ModelUtils.*
 
 import scala.collection.immutable.Queue
 
@@ -26,18 +27,8 @@ object DecisionTree:
     )
   }
 
-  private def extractModelFromExpression(partialExpression: PartialExpression): PartialModel =
-    partialExpression match
-      case Symbol(v@PartialVariable(_, _)) => Set(v)
-      case And(e1, e2) => extractModelFromExpression(e1) ++ extractModelFromExpression(e2)
-      case Or(e1, e2) => extractModelFromExpression(e1) ++ extractModelFromExpression(e2)
-      case Not(e) => extractModelFromExpression(e)
-
-  private def mapExpression(partialExpression: PartialExpression,
-                            varName: String, assignment: Boolean): PartialExpression =
-    partialExpression match
-      case Symbol(PartialVariable(name, _)) if name == varName => Symbol(PartialVariable(name, Option(assignment)))
-      case And(e1, e2) => And(mapExpression(e1, varName, assignment), mapExpression(e2, varName, assignment))
-      case Or(e1, e2) => Or(mapExpression(e1, varName, assignment), mapExpression(e2, varName, assignment))
-      case Not(e) => Not(mapExpression(e, varName, assignment))
-      case _ => partialExpression
+  private def assignVariable(varName: String, assignment: Boolean, partialModel: PartialModel): PartialModel =
+    partialModel.map {
+      case PartialVariable(name, _) if name == varName => PartialVariable(varName, Option(assignment))
+      case v => v
+    }
