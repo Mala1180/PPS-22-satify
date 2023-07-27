@@ -63,23 +63,24 @@ object Expression:
    */
   def contains(exp: Expression, subexp: Expression): Boolean = subexpressions(exp).contains(subexp)
 
-  /** Replace the subexp with the given literal in the given expression.
+  /** Replace the subexp with the given literal in the given expression., returns the expression if no match found.
     *
     * @param exp the expression.
     * @param subexp the subexpression to replace.
     * @param l the literal inserted in place of the subexpression.
     * @return the expression with the subexpression replaced.
     */
-  def replace(exp: Expression, subexp: Expression, l: Literal): Expression = exp match
+  def replace(exp: Expression, subexp: Expression, l: Literal): Expression =
+    def replaceOp(op: Operator, subexp: Expression, l: Literal): Expression = op match
+      case And(e1, e2) => Clause(And(replace(e1, subexp, l), replace(e2, subexp, l)))
+      case Or(e1, e2) => Clause(Or(replace(e1, subexp, l), replace(e2, subexp, l)))
+      case Not(e) => Clause(Not(replace(e, subexp, l)))
+    exp match
     case Clause(op) if Clause(op) == subexp => l
     case Clause(And(e1, e2)) => replaceOp(And(e1, e2), subexp, l)
     case Clause(Or(e1, e2)) => replaceOp(Or(e1, e2), subexp, l)
     case Clause(Not(e)) => replaceOp(Not(e), subexp, l)
     case _ => exp
-    private def replaceOp(op: Operator, subexp: Expression, l: Literal): Expression = op match
-      case And(e1, e2) => Clause(And(replace(e1, subexp, l), replace(e2, subexp, l)))
-      case Or(e1, e2) => Clause(Or(replace(e1, subexp, l), replace(e2, subexp, l)))
-      case Not(e) => Clause(Not(replace(e, subexp, l)))
 
   /** Print the given list of expressions.
    *
