@@ -4,8 +4,8 @@ import model.{NamedVariable, PartialVariable}
 
 trait Variable
 case class NamedVariable(name: String) extends Variable
-case class PartialVariable(name: String, v: Option[Boolean]) extends Variable
-case class AssignedVariable(name: String, v: Boolean) extends Variable
+case class PartialVariable(name: String, value: Option[Boolean]) extends Variable
+case class AssignedVariable(name: String, value: Boolean) extends Variable
 
 enum Expression[T <: Variable]:
   case Symbol(value: T)
@@ -13,8 +13,8 @@ enum Expression[T <: Variable]:
   case And(right: Expression[T], left: Expression[T])
   case Or(right: Expression[T], left: Expression[T])
 
-type EmptyModel = Expression[NamedVariable]
-type PartialModel = Expression[PartialVariable]
+type EmptyExpression = Expression[NamedVariable]
+type PartialExpression = Expression[PartialVariable]
 
 /** Object with methods to manipulate expressions */
 
@@ -95,3 +95,13 @@ object Expression:
         case And(e1, e2) => And(replace(e1, subexp, s), replace(e2, subexp, s))
         case Or(e1, e2) => Or(replace(e1, subexp, s), replace(e2, subexp, s))
         case Not(e) => Not(replace(e, subexp, s))
+
+  def convert[T <: Variable, V <: Variable](exp: Expression[T], toType: Class[V]): Expression[V] = exp match
+    case s@Symbol(NamedVariable(name)) => toType match
+      //case _: Class[NamedVariable] => s
+      case _: Class[PartialVariable] => Symbol(PartialVariable(name, Option.empty))
+    case Symbol(PartialVariable(name, _)) => toType match
+      case _: Class[NamedVariable] => Symbol(NamedVariable(name))
+    case And(e1, e2) => And(convert(e1, toType), convert(e2, toType))
+    case Or(e1, e2) => Or(convert(e1, toType), convert(e2, toType))
+    case Not(e) => Not(convert(e, toType))

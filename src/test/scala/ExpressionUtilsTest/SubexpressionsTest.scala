@@ -1,6 +1,6 @@
 package EmptyModelUtilsTest
 
-import model.EmptyModel
+import model.EmptyExpression
 import model.Expression.*
 import model.NamedVariable
 import org.scalatest.Inspectors.forAll
@@ -11,7 +11,7 @@ import org.scalatest.matchers.should.Matchers
 class SubexpressionsTest extends AnyFlatSpec with Matchers:
 
   "In ((a ∧ ¬b) ∨ c) the subexp ¬b" should "be decomposed correctly" in {
-    val exp: EmptyModel = Or(And(Symbol(NamedVariable("a")), Not(Symbol(NamedVariable("b")))), Symbol(NamedVariable("c")))
+    val exp: EmptyExpression = Or(And(Symbol(NamedVariable("a")), Not(Symbol(NamedVariable("b")))), Symbol(NamedVariable("c")))
     val list = zipWithSymbol(exp)
     list should contain only(
         (Symbol(NamedVariable("X2")), Not(Symbol(NamedVariable("b")))),
@@ -22,20 +22,20 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
   }
 
   "In a the subexp a" should "be decomposed correctly" in {
-    val exp: EmptyModel = Symbol(NamedVariable("a"))
+    val exp: EmptyExpression = Symbol(NamedVariable("a"))
     val list = zipWithSymbol(exp)
     list should contain only ((Symbol(NamedVariable("X0")), Symbol(NamedVariable("a"))))
   }
 
   "In ¬a the subexp ¬a" should "be decomposed correctly" in {
-    val exp: EmptyModel = Not(Symbol(NamedVariable("a")))
+    val exp: EmptyExpression = Not(Symbol(NamedVariable("a")))
     val list = zipWithSymbol(exp)
     println(list)
     list should contain only ((Symbol(NamedVariable("X0")), Not(Symbol(NamedVariable("a")))))
   }
 
   "In (c ∧ (a ∧ ¬b)) the subexp ¬b, (a ∧ ¬b) and (c ∧ (a ∧ ¬b))" should "be decomposed correctly" in {
-    val exp: EmptyModel = And(Symbol(NamedVariable("c")), And(Symbol(NamedVariable("a")),
+    val exp: EmptyExpression = And(Symbol(NamedVariable("c")), And(Symbol(NamedVariable("a")),
       Not(Symbol(NamedVariable("b")))))
     val list = zipWithSymbol(exp)
     println(list)
@@ -48,7 +48,7 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
   }
 
   "In (c ∧ a) the subexp (c ∧ a)" should "be decomposed correctly" in {
-    val exp: EmptyModel = And(Symbol(NamedVariable("c")), Symbol(NamedVariable("a")))
+    val exp: EmptyExpression = And(Symbol(NamedVariable("c")), Symbol(NamedVariable("a")))
     val list = zipWithSymbol(exp)
     println(list)
     list should contain only(
@@ -57,7 +57,7 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
   }
 
   "In (¬(p ∧ q) ∨ (r ∨ s)) the subexp (r ∨ s), (p ∧ q) and ¬(p ∧ q)" should "be decomposed correctly" in {
-    val exp: EmptyModel = Or(Not(And(Symbol(NamedVariable("p")), Symbol(NamedVariable("q")))),
+    val exp: EmptyExpression = Or(Not(And(Symbol(NamedVariable("p")), Symbol(NamedVariable("q")))),
       Or(Symbol(NamedVariable("r")), Symbol(NamedVariable("s"))))
     val list = zipWithSymbol(exp)
     println(list)
@@ -71,7 +71,7 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
   }
 
   "In ¬(a ∧ b) the subexp (a ∧ b) and ¬(a ∧ b)" should "be decomposed correctly" in {
-    val exp: EmptyModel = Not(And(Symbol(NamedVariable("a")), Symbol(NamedVariable("b"))))
+    val exp: EmptyExpression = Not(And(Symbol(NamedVariable("a")), Symbol(NamedVariable("b"))))
     val list = zipWithSymbol(exp)
     println(list)
     list should contain only(
@@ -81,7 +81,7 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
   }
 
   "In ((a ∨ (b ∧ c)) ∧ d) ∧ (s ∨ t) the subexp (b ∧ c), (a ∨ (b ∧ c))and ¬(a ∧ b)" should "be decomposed correctly" in {
-    val exp: EmptyModel = And(And(Or(Symbol(NamedVariable("a")), And(Symbol(NamedVariable("b")), Symbol(NamedVariable("c")))),
+    val exp: EmptyExpression = And(And(Or(Symbol(NamedVariable("a")), And(Symbol(NamedVariable("b")), Symbol(NamedVariable("c")))),
       Symbol(NamedVariable("d"))), Or(Symbol(NamedVariable("s")), Symbol(NamedVariable("t"))))
     val list = zipWithSymbol(exp)
     println(list)
