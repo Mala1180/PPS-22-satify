@@ -1,5 +1,8 @@
-import model.{DecisionTree, Decision, EmptyExpression, Expression, NamedVariable, PartialVariable, Variable}
+package DecisionTreeTest
+
 import model.Expression.*
+import model.*
+import model.dpll.{Decision, DecisionTree}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

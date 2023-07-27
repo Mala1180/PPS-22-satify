@@ -1,7 +1,8 @@
-package model
+package model.dpll
 
-import model.EmptyExpression
+import model.*
 import model.Expression.*
+
 import scala.collection.immutable.Queue
 
 type PartialModel = Set[PartialVariable]
@@ -16,7 +17,7 @@ object DecisionTree:
            (varName: String, assignment: Boolean): DecisionTree = {
     val partialExpression = convert(emptyExpression, classOf[PartialVariable])
     DecisionTree(
-      Queue(Decision(varName,
+      Queue(dpll.Decision(varName,
         extractModelFromExpression(partialExpression).map {
           case PartialVariable(name, _) if name == varName => PartialVariable(varName, Option(assignment))
           case v => v
