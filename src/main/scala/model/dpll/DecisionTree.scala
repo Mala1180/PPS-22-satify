@@ -18,11 +18,8 @@ object DecisionTree:
            (varName: String, assignment: Boolean): DecisionTree = {
     val partialExpression = convert(emptyExpression, classOf[PartialVariable])
     DecisionTree(
-      Queue(dpll.Decision(varName,
-        extractModelFromExpression(partialExpression).map {
-          case PartialVariable(name, _) if name == varName => PartialVariable(varName, Option(assignment))
-          case v => v
-        },
+      Queue(Decision(varName,
+        assignVariable(varName, assignment, extractModelFromExpression(partialExpression)),
         mapExpression(partialExpression, varName, assignment)))
     )
   }
