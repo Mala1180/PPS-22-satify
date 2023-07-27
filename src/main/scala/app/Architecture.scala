@@ -34,11 +34,9 @@ object Architecture:
     var model: Model = State()
     override val view: View = model => GUI(model, update)
     override val update: Update = (model, message) =>
-      println("update triggered")
       message match
         case Input(char) => model
         case Solve(exp) =>
-          given CNFConverter with
-            def convert(exp: Expression): CNF = tseitin(exp)
+          given CNFConverter = _ => tseitin(exp)
           Solver().solve(exp)
           State()

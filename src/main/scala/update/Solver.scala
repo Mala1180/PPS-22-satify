@@ -19,6 +19,7 @@ trait Solver:
     */
   def solve(exp: Expression)(using converter: CNFConverter): Solution
 
+/** Companion object of the [[Solver]] trait providing a factory method. */
 object Solver:
   def apply(): Solver = SolverImpl()
 
