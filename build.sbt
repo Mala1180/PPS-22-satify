@@ -10,4 +10,4 @@ lazy val root = (project in file("."))
     name := "satify",
     libraryDependencies += scalaTest,
     libraryDependencies += scalaSwing
-)
+  )

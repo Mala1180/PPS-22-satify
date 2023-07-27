@@ -1,5 +1,4 @@
-import model.{BacktrackingTree, EmptyModel, EmptyVariable, Expression, Variable}
-import model.Operation.*
+import model.{BacktrackingTree, EmptyModel, Expression, NamedVariable, Variable}
 import model.Expression.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -13,11 +12,11 @@ class BackTrackingTreeTest extends AnyFlatSpec with Matchers:
     - Once an instance of BacktrackingTree has been created, decisions could be made
   */
 
-  val varA: EmptyVariable = EmptyVariable("a")
-  val varB: EmptyVariable = EmptyVariable("b")
-  val varC: EmptyVariable = EmptyVariable("c")
+  val varA: NamedVariable = NamedVariable("a")
+  val varB: NamedVariable = NamedVariable("b")
+  val varC: NamedVariable = NamedVariable("c")
   
-  val cnfExp: EmptyModel = Clause(And(Clause(Or(Literal(varA), Literal(varB))), Literal(varC)))
+  val cnfExp: EmptyModel = And(Or(Symbol(varA), Symbol(varB)), Symbol(varC))
 
   "BacktrackingTree" should "be initially empty" in {
     BacktrackingTree(cnfExp) should equal (new BacktrackingTree(cnfExp, Queue.empty))
