@@ -17,12 +17,12 @@ class DecisionTreeTest extends AnyFlatSpec with Matchers:
   
   val emptyExpression: EmptyExpression = And(Or(Symbol(varA), Symbol(varB)), Symbol(varC))
 
-
   "DecisionTree" should "is not defined until a decision is made" in {
     DecisionTree(emptyExpression).getClass should not equal classOf[DecisionTree]
+    DecisionTree(emptyExpression)(VariableConstraint("b", true)) should be equals classOf[DecisionTree]
   }
 
-  "DecisionTree" should "append a Decision when an assignment is made" in {
+  "DecisionTree" should "append a Decision when a variable is constrained" in {
     val pA = PartialVariable("a", Option(true))
     val pB = PartialVariable("b", Option.empty)
     val pC = PartialVariable("c", Option.empty)
@@ -30,3 +30,20 @@ class DecisionTreeTest extends AnyFlatSpec with Matchers:
     DecisionTree(emptyExpression)(VariableConstraint("a", true)) should be equals
       DecisionTree(Queue(Decision("a", Set(pA, pB, pC), expectedExpression)))
   }
+
+  "DecisionTree" should "append Decision(s) when invoking decision() method" in {
+    val pA = PartialVariable("a", Option(true))
+    val firstPB = PartialVariable("b", Option.empty)
+    val secondPB = PartialVariable("b", Option(false))
+    val pC = PartialVariable("c", Option.empty)
+    val firstExpectedExp = And(Or(Symbol(pA), Symbol(firstPB)), Symbol(pC))
+    val secondExpectedExp = And(Or(Symbol(pA), Symbol(secondPB)), Symbol(pC))
+
+    val decisionTree = DecisionTree(emptyExpression)(VariableConstraint("a", true))
+    DecisionTree.decision(decisionTree, VariableConstraint("b", false)) should be equals
+      DecisionTree(Queue(
+        Decision("a", Set(pA, firstPB, pC), firstExpectedExp),
+        Decision("b", Set(pA, secondPB, pC), secondExpectedExp)
+      ))
+  }
+

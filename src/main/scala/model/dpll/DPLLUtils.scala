@@ -3,7 +3,7 @@ package model.dpll
 import model.Expression.{And, Not, Or, Symbol}
 import model.{PartialExpression, PartialVariable}
 
-object ModelUtils:
+object DPLLUtils:
 
   def extractModelFromExpression(partialExpression: PartialExpression): PartialModel =
     partialExpression match

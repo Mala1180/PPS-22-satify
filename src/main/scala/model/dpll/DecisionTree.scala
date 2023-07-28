@@ -2,7 +2,7 @@ package model.dpll
 
 import model.*
 import model.Expression.*
-import ModelUtils.*
+import DPLLUtils.*
 
 import scala.collection.immutable.Queue
 
@@ -17,13 +17,22 @@ object DecisionTree:
 
   def apply(emptyExpression: EmptyExpression)
            (varConstraint: VariableConstraint): DecisionTree = {
-    val partialExpression = convert(emptyExpression, classOf[PartialVariable])
+    val partialExpression = cast(emptyExpression, classOf[PartialVariable])
     DecisionTree(
       Queue(Decision(varConstraint.varName,
         assignVariable(varConstraint, extractModelFromExpression(partialExpression)),
         mapExpression(partialExpression, varConstraint)))
     )
   }
+
+  def decision(decisionTree: DecisionTree, varConstraint: VariableConstraint): DecisionTree =
+    decisionTree match
+      case DecisionTree(queue) => queue.last match
+        case Decision(_, partialModel, partialExpression) =>
+          DecisionTree(queue :+
+            Decision(varConstraint.varName, assignVariable(varConstraint, partialModel),
+              mapExpression(partialExpression, varConstraint)))
+
 
   private def assignVariable(varConstraint: VariableConstraint, partialModel: PartialModel): PartialModel =
     partialModel.map {

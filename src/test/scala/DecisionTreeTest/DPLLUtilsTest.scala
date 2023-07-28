@@ -1,13 +1,13 @@
 package DecisionTreeTest
 
-import model.Expression.{And, Not, Or, Symbol, convert}
+import model.Expression.{And, Not, Or, Symbol, cast}
 import model.{EmptyExpression, NamedVariable, PartialExpression, PartialVariable}
-import model.dpll.ModelUtils.*
+import model.dpll.DPLLUtils.*
 import model.dpll.{VariableConstraint, PartialModel}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class ModelUtilsTest extends AnyFlatSpec with Matchers:
+class DPLLUtilsTest extends AnyFlatSpec with Matchers:
 
   val varA: NamedVariable = NamedVariable("a")
   val varB: NamedVariable = NamedVariable("b")
@@ -17,7 +17,7 @@ class ModelUtilsTest extends AnyFlatSpec with Matchers:
 
   // From object Expression
   "Function convert" should "be able to convert an EmptyExpression to a PartialExpression" in {
-    convert(emptyExpression, classOf[PartialVariable]) should be equals
+    cast(emptyExpression, classOf[PartialVariable]) should be equals
       And(Or(Symbol(PartialVariable("a", Option.empty)), Symbol(PartialVariable("b", Option.empty))),
         Symbol(PartialVariable("c", Option.empty)))
   }
@@ -25,11 +25,11 @@ class ModelUtilsTest extends AnyFlatSpec with Matchers:
   "A PartialModel" should "be extractable from a PartialExpression" in {
     val partialModel: PartialModel = Set(PartialVariable("a", Option.empty),
       PartialVariable("c", Option.empty), PartialVariable("c", Option.empty))
-    partialModel should be equals extractModelFromExpression(convert(emptyExpression, classOf[PartialVariable]))
+    partialModel should be equals extractModelFromExpression(cast(emptyExpression, classOf[PartialVariable]))
   }
 
   "A PartialExpression" should  "be mapped to another PartialExpression setting a variable" in {
-    val partialExpression = convert(emptyExpression, classOf[PartialVariable])
+    val partialExpression = cast(emptyExpression, classOf[PartialVariable])
     mapExpression(partialExpression, VariableConstraint("b", false)) should be equals
       And(Or(Symbol(PartialVariable("a", Option.empty)), Symbol(PartialVariable("b", Option(false)))),
         Symbol(PartialVariable("c", Option.empty)))

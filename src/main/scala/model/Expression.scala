@@ -43,8 +43,8 @@ object Expression:
       case Not(exp) => subexp(exp, list)(f)
 
     exp match
-      case Symbol(x) => List((f(), exp))
-      case Not(Symbol(x)) => List((f(), exp))
+      case Symbol(_) => List((f(), exp))
+      case Not(Symbol(_)) => List((f(), exp))
       case _ => subexp(exp, List())(f)
 
   /** Zip the subexpressions found in the given expression with a Symbol.
@@ -96,12 +96,12 @@ object Expression:
         case Or(e1, e2) => Or(replace(e1, subexp, s), replace(e2, subexp, s))
         case Not(e) => Not(replace(e, subexp, s))
 
-  def convert[T <: Variable, V <: Variable](exp: Expression[T], toType: Class[V]): Expression[V] = exp match
+  def cast[T <: Variable, V <: Variable](exp: Expression[T], toType: Class[V]): Expression[V] = exp match
     case s@Symbol(NamedVariable(name)) => toType match
       //case _: Class[NamedVariable] => s
       case _: Class[PartialVariable] => Symbol(PartialVariable(name, Option.empty))
     case Symbol(PartialVariable(name, _)) => toType match
       case _: Class[NamedVariable] => Symbol(NamedVariable(name))
-    case And(e1, e2) => And(convert(e1, toType), convert(e2, toType))
-    case Or(e1, e2) => Or(convert(e1, toType), convert(e2, toType))
-    case Not(e) => Not(convert(e, toType))
+    case And(e1, e2) => And(cast(e1, toType), cast(e2, toType))
+    case Or(e1, e2) => Or(cast(e1, toType), cast(e2, toType))
+    case Not(e) => Not(cast(e, toType))
