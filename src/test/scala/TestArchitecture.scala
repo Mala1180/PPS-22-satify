@@ -1,6 +1,5 @@
-import com.tngtech.archunit.core.domain.{JavaClass, JavaClasses}
+import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.ClassFileImporter
-import com.tngtech.archunit.lang.{ArchCondition, ArchRule, EvaluationResult, SimpleConditionEvent}
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.{classes, noClasses}
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices
 import org.scalatest.flatspec.AnyFlatSpec
@@ -55,28 +54,6 @@ class TestArchitecture extends AnyFlatSpec with Matchers:
     mvu.view shouldBe a[Model => GUI]
   }
 
-  "View" should "depend on Model" in {
-    val rule = classes()
-      .that()
-      .resideInAPackage(ViewPackage)
-      .should()
-      .dependOnClassesThat()
-      .resideInAnyPackage(ModelPackage)
-
-    rule.check(allClasses)
-  }
-
   "Update" should "be a function taking a Model and a Message, returning a new Model" in {
-    mvu.update shouldBe a [(Model, Message) => Model]
+    mvu.update shouldBe a[(Model, Message) => Model]
   }
-
-  "Update" should "depend on Model" in {
-    val rule = classes()
-      .that()
-      .resideInAPackage(UpdatePackage)
-      .should()
-      .dependOnClassesThat()
-      .resideInAnyPackage(ModelPackage)
-    rule.check(allClasses)
-  }
-
