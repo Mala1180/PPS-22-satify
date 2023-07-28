@@ -32,4 +32,5 @@ l'introduzione di bug che avrebbero potuto rallentare il lavoro altrui.
 
 Ogni Sprint Planning e Sprint Review ha avuto durata variabile di (?)
 
-
+---
+[Back to Index](README.md) | [Next](2-requirements.md)

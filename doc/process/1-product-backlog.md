@@ -1,8 +1,5 @@
 # Product Backlog - Sprint 1
 
-Priority Range: 1 (highest) - 5 (minimum)
-
-Estimation is measured in hours
 <table>
     <thead> 
         <tr>
@@ -16,7 +13,7 @@ Estimation is measured in hours
     <tbody>
         <tr>
             <td>1</td>
-            <td rowspan="2">Domain Understanding</td>
+            <td rowspan="2">Domain understanding</td>
             <td>DPLL analysis and understanding</td>
             <td>Fabri</td>
             <td>10</td>
@@ -128,3 +125,6 @@ The sprint goals were achieved with no problems. We had some extra time to start
 
 We realised that some Sprint Task was not sufficiently expanded. To complete a Task often we had to do more than a
 single Pull Request/Feature. Moreover, not all the estimations were perfectly precise, but that didn't hurt so much.
+
+---
+[Back to Index](README.md) | [Next](2-product-backlog.md)

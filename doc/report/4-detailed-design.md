@@ -92,3 +92,5 @@ In other words: if $b$ doesn't appear in negative form inside the formula $F$, a
 
 ## Update
 
+---
+[Previous](3-architectural-design.md) | [Next](5-implementation.md)

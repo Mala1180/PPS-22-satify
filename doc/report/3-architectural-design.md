@@ -20,3 +20,6 @@ La View fornisce la GUI dell'applicazione basandosi sullo stato dell'applicazion
 ## Update
 L'Update è la componente responsabile di aggiornare il Model in base alle azioni innescate dall'utente 
 tramite la View. In particolare è una funzione che ha come input Model e _Message_, restituendo in output il nuovo modello.
+
+---
+[Previous](2-requirements.md) | [Next](4-detailed-design.md)
