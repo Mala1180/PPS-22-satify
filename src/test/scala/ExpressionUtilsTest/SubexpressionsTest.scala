@@ -8,7 +8,6 @@ import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-
 class SubexpressionsTest extends AnyFlatSpec with Matchers:
 
   "The exp: ((a ∧ ¬b) ∨ c)" should "be decomposed correctly in 3 subexpressions following the nesting level" in {
@@ -24,18 +23,18 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
 
   "The exp: a" should "contain only the subexpression a" in {
     val exp: Expression = Literal("a")
-    val list = zipWithLiteral(exp)
-    list should contain only (
+    val result = zipWithLiteral(exp)
+    result should contain only (
       (Literal("X0"), Literal("a"))
-      )
+    )
   }
 
   "The exp: ¬a" should "contain only the subexpression ¬a" in {
     val exp: Expression = Clause(Not(Literal("a")))
-    val list = zipWithLiteral(exp)
-    list should contain only (
+    val result = zipWithLiteral(exp)
+    result should contain only (
       (Literal("X0"), Clause(Not(Literal("a"))))
-      )
+    )
   }
 
   "The exp: (c ∧ (a ∧ ¬b))" should "be decomposed correctly" in {
@@ -51,13 +50,13 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
 
   "The exp: (c ∧ a) contains only the subexp witch is equal to the exp itself and" should "be decomposed anyway" in {
     val exp: Expression = Clause(And(Literal("c"), Literal("a")))
-    val list = zipWithLiteral(exp)
-    list should contain only(
+    val result = zipWithLiteral(exp)
+    result should contain only (
       (Literal("X0"), Clause(And(Literal("c"), Literal("a"))))
     )
   }
 
-  "The exp: (¬(p ∧ q) ∨ (r ∨ s))" should "be decomposed in 4 subexpressions following the nesting level"  in {
+  "The exp: (¬(p ∧ q) ∨ (r ∨ s))" should "be decomposed in 4 subexpressions following the nesting level" in {
     val exp: Expression = Clause(Or(Clause(Not(Clause(And(Literal("p"), Literal("q"))))), Clause(Or(Literal("r"), Literal("s")))))
     val result = zipWithLiteral(exp)
     val expected = List(
@@ -80,7 +79,9 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
   }
 
   "The exp: ((a ∨ (b ∧ c)) ∧ d) ∧ (s ∨ t)" should "be decomposed in 5 subexpressions following the nesting level" in {
-    val exp: Expression = Clause(And(Clause(And(Clause(Or(Literal("a"), Clause(And(Literal("b"), Literal("c"))))), Literal("d"))), Clause(Or(Literal("s"), Literal("t")))))
+    val exp: Expression = Clause(
+      And(Clause(And(Clause(Or(Literal("a"), Clause(And(Literal("b"), Literal("c"))))), Literal("d"))), Clause(Or(Literal("s"), Literal("t"))))
+    )
     val list = zipWithLiteral(exp)
     val expected = List(
       (Literal("X0"), Clause(And(Clause(And(Clause(Or(Literal("a"), Clause(And(Literal("b"), Literal("c"))))), Literal("d"))), Clause(Or(Literal("s"), Literal("t")))))),

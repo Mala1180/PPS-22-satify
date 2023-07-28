@@ -7,15 +7,14 @@ import model.Operator.*
 import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import tseitin.Transformation.*
+import update.converters.TseitinTransformation.*
 
-
-class TransformationTest extends AnyFlatSpec with Matchers:
+class TseitinTransformationTest extends AnyFlatSpec with Matchers:
 
   "The transformation of ¬b" should "return a list of CNF clauses relative to the ¬ operator" in {
     val exp: (Literal, Expression) = (Literal("X0"), Clause(Not(Literal("b"))))
     val result: List[(Literal, Expression)] = transform(exp)
-    val expected : List[(Literal, Expression)] = List(
+    val expected: List[(Literal, Expression)] = List(
       (Literal("X0"), Clause(Or(Clause(Not(Literal("b"))), Clause(Not(Literal("X0")))))),
       (Literal("X0"), Clause(Or(Literal("b"), Literal("X0"))))
     )

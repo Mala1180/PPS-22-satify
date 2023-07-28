@@ -8,7 +8,6 @@ import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-
 class ReplaceTest extends AnyFlatSpec with Matchers:
 
   "In ((a ∧ ¬b) ∨ c) the exp ¬c" should "not be replaced and input exp returned" in {
@@ -64,7 +63,8 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
   }
 
   "In ((¬b ∧ ¬b) ∨ ¬b) the subexp (¬b ∧ ¬b)" should "be replaced with X0" in {
-    val exp: Expression = Clause(Or(Clause(And(Clause(Not(Literal("b"))), Clause(Not(Literal("b"))))), Clause(Not(Literal("b")))))
+    val exp: Expression =
+      Clause(Or(Clause(And(Clause(Not(Literal("b"))), Clause(Not(Literal("b"))))), Clause(Not(Literal("b")))))
     val substitution: Expression = Clause(And(Clause(Not(Literal("b"))), Clause(Not(Literal("b")))))
     val expected: Expression = Clause(Or(Literal("X0"), Clause(Not(Literal("b")))))
     val result = replace(exp, substitution, Literal("X0"))
@@ -72,7 +72,8 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
   }
 
   "In ((¬b ∧ ¬b) ∨ ¬b) the subexp ¬b" should "be replaced with X0" in {
-    val exp: Expression = Clause(Or(Clause(And(Clause(Not(Literal("b"))), Clause(Not(Literal("b"))))), Clause(Not(Literal("b")))))
+    val exp: Expression =
+      Clause(Or(Clause(And(Clause(Not(Literal("b"))), Clause(Not(Literal("b"))))), Clause(Not(Literal("b")))))
     val substitution: Expression = Clause(Not(Literal("b")))
     val expected: Expression = Clause(Or(Clause(And(Literal("X0"), Literal("X0"))), Literal("X0")))
     val result = replace(exp, substitution, Literal("X0"))

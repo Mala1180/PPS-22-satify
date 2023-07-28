@@ -4,7 +4,7 @@ import model.Expression
 import model.Operator
 import Expression.*
 import model.Operator.*
-import tseitin.Transformation.*
+import update.converters.TseitinTransformation.*
 import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -13,10 +13,8 @@ import org.scalatest.matchers.should.Matchers
 class CNFTest extends AnyFlatSpec with Matchers:
 
   "In ((a ∧ ¬b) ∨ ¬(c∧d)) the CNF form" should "be correctly generated" in {
-    //TODO: implement test
+    //TODO: to implement test
     val exp = Clause(Or(
       Clause(And(Literal("a"), Clause(Not(Literal("b"))))),
       Clause(Not(Clause(And(Literal("c"), Literal("d")))))))
-
-
   }
