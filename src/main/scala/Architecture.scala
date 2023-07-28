@@ -1,4 +1,4 @@
-import model.State
+import model.{Variable, State}
 import update.Message
 import update.Message.*
 import view.GUI
