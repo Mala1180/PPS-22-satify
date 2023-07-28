@@ -30,7 +30,7 @@ class DPLLUtilsTest extends AnyFlatSpec with Matchers:
 
   "A PartialExpression" should  "be mapped to another PartialExpression setting a variable" in {
     val partialExpression = cast(emptyExpression, classOf[PartialVariable])
-    mapExpression(partialExpression, VariableConstraint("b", false)) should be equals
+    updateExpression(partialExpression, VariableConstraint("b", false)) should be equals
       And(Or(Symbol(PartialVariable("a", Option.empty)), Symbol(PartialVariable("b", Option(false)))),
         Symbol(PartialVariable("c", Option.empty)))
   }
