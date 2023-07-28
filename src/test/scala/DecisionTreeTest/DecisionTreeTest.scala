@@ -2,7 +2,7 @@ package DecisionTreeTest
 
 import model.Expression.*
 import model.*
-import model.dpll.{Decision, DecisionTree}
+import model.dpll.{Assignment, Decision, DecisionTree}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -27,6 +27,6 @@ class DecisionTreeTest extends AnyFlatSpec with Matchers:
     val pB = PartialVariable("b", Option.empty)
     val pC = PartialVariable("c", Option.empty)
     val expectedExpression = And(Or(Symbol(pA), Symbol(pB)), Symbol(pC))
-    assert(DecisionTree(emptyExpression)("a", true) ===
-      DecisionTree(Queue(Decision("a", Set(pA, pB, pC), expectedExpression))))
+    DecisionTree(emptyExpression)(Assignment("a", true)) should be equals
+      DecisionTree(Queue(Decision("a", Set(pA, pB, pC), expectedExpression)))
   }
