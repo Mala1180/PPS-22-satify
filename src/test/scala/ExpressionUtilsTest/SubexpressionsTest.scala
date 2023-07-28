@@ -1,9 +1,8 @@
-package ExpressionUtilsTest
+package EmptyModelUtilsTest
 
-import model.Expression
-import model.Operator
-import Expression.*
-import model.Operator.*
+import model.EmptyModel
+import model.Expression.*
+import model.NamedVariable
 import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -12,83 +11,87 @@ import org.scalatest.matchers.should.Matchers
 class SubexpressionsTest extends AnyFlatSpec with Matchers:
 
   "In ((a ∧ ¬b) ∨ c) the subexp ¬b" should "be decomposed correctly" in {
-    val exp: Expression = Clause(Or(Clause(And(Literal("a"), Clause(Not(Literal("b"))))), Literal("c")))
-    val list = zipWithLiteral(exp)
-      list should contain only(
-          (Literal("X2"), Clause(Not(Literal("b")))),
-          (Literal("X1"), Clause(And(Literal("a"), Clause(Not(Literal("b")))))),
-          (Literal("X0"), Clause(Or(Clause(And(Literal("a"), Clause(Not(Literal("b"))))), Literal("c"))))
-      )
+    val exp: EmptyModel = Or(And(Symbol(NamedVariable("a")), Not(Symbol(NamedVariable("b")))), Symbol(NamedVariable("c")))
+    val list = zipWithSymbol(exp)
+    list should contain only(
+        (Symbol(NamedVariable("X2")), Not(Symbol(NamedVariable("b")))),
+        (Symbol(NamedVariable("X1")), And(Symbol(NamedVariable("a")), Not(Symbol(NamedVariable("b"))))),
+        (Symbol(NamedVariable("X0")), Or(And(Symbol(NamedVariable("a")), Not(Symbol(NamedVariable("b")))),
+          Symbol(NamedVariable("c"))))
+    )
   }
 
   "In a the subexp a" should "be decomposed correctly" in {
-    val exp: Expression = Literal("a")
-    val list = zipWithLiteral(exp)
-    list should contain only (
-      (Literal("X0"), Literal("a"))
-      )
+    val exp: EmptyModel = Symbol(NamedVariable("a"))
+    val list = zipWithSymbol(exp)
+    list should contain only ((Symbol(NamedVariable("X0")), Symbol(NamedVariable("a"))))
   }
 
   "In ¬a the subexp ¬a" should "be decomposed correctly" in {
-    val exp: Expression = Clause(Not(Literal("a")))
-    val list = zipWithLiteral(exp)
+    val exp: EmptyModel = Not(Symbol(NamedVariable("a")))
+    val list = zipWithSymbol(exp)
     println(list)
-    list should contain only (
-      (Literal("X0"), Clause(Not(Literal("a"))))
-      )
+    list should contain only ((Symbol(NamedVariable("X0")), Not(Symbol(NamedVariable("a")))))
   }
 
   "In (c ∧ (a ∧ ¬b)) the subexp ¬b, (a ∧ ¬b) and (c ∧ (a ∧ ¬b))" should "be decomposed correctly" in {
-    val exp: Expression = Clause(And(Literal("c"), Clause(And(Literal("a"), Clause(Not(Literal("b")))))))
-    val list = zipWithLiteral(exp)
+    val exp: EmptyModel = And(Symbol(NamedVariable("c")), And(Symbol(NamedVariable("a")),
+      Not(Symbol(NamedVariable("b")))))
+    val list = zipWithSymbol(exp)
     println(list)
     list should contain only (
-      (Literal("X0"), Clause(And(Literal("c"), Clause(And(Literal("a"), Clause(Not(Literal("b")))))))),
-      (Literal("X1"), Clause(And(Literal("a"), Clause(Not(Literal("b")))))),
-      (Literal("X2"), Clause(Not(Literal("b"))))
+      (Symbol(NamedVariable("X0")), And(Symbol(NamedVariable("c")), And(Symbol(NamedVariable("a")),
+        Not(Symbol(NamedVariable("b")))))),
+      (Symbol(NamedVariable("X1")), And(Symbol(NamedVariable("a")), Not(Symbol(NamedVariable("b"))))),
+      (Symbol(NamedVariable("X2")), Not(Symbol(NamedVariable("b"))))
       )
   }
 
   "In (c ∧ a) the subexp (c ∧ a)" should "be decomposed correctly" in {
-    val exp: Expression = Clause(And(Literal("c"), Literal("a")))
-    val list = zipWithLiteral(exp)
+    val exp: EmptyModel = And(Symbol(NamedVariable("c")), Symbol(NamedVariable("a")))
+    val list = zipWithSymbol(exp)
     println(list)
     list should contain only(
-      (Literal("X0"), Clause(And(Literal("c"), Literal("a"))))
+      (Symbol(NamedVariable("X0")), And(Symbol(NamedVariable("c")), Symbol(NamedVariable("a"))))
     )
   }
 
   "In (¬(p ∧ q) ∨ (r ∨ s)) the subexp (r ∨ s), (p ∧ q) and ¬(p ∧ q)" should "be decomposed correctly" in {
-    val exp: Expression = Clause(Or(Clause(Not(Clause(And(Literal("p"), Literal("q"))))), Clause(Or(Literal("r"), Literal("s")))))
-    val list = zipWithLiteral(exp)
+    val exp: EmptyModel = Or(Not(And(Symbol(NamedVariable("p")), Symbol(NamedVariable("q")))),
+      Or(Symbol(NamedVariable("r")), Symbol(NamedVariable("s"))))
+    val list = zipWithSymbol(exp)
     println(list)
     list should contain only (
-      (Literal("X0"), Clause(Or(Clause(Not(Clause(And(Literal("p"), Literal("q"))))), Clause(Or(Literal("r"), Literal("s")))))),
-      (Literal("X1"), Clause(Not(Clause(And(Literal("p"), Literal("q")))))),
-      (Literal("X2"), Clause(And(Literal("p"), Literal("q")))),
-      (Literal("X3"), Clause(Or(Literal("r"), Literal("s"))))
+      (Symbol(NamedVariable("X0")), Or(Not(And(Symbol(NamedVariable("p")), Symbol(NamedVariable("q")))),
+        Or(Symbol(NamedVariable("r")), Symbol(NamedVariable("s"))))),
+      (Symbol(NamedVariable("X1")), Not(And(Symbol(NamedVariable("p")), Symbol(NamedVariable("q"))))),
+      (Symbol(NamedVariable("X2")), And(Symbol(NamedVariable("p")), Symbol(NamedVariable("q")))),
+      (Symbol(NamedVariable("X3")), Or(Symbol(NamedVariable("r")), Symbol(NamedVariable("s"))))
       )
   }
 
   "In ¬(a ∧ b) the subexp (a ∧ b) and ¬(a ∧ b)" should "be decomposed correctly" in {
-    val exp: Expression = Clause(Not(Clause(And(Literal("a"), Literal("b")))))
-    val list = zipWithLiteral(exp)
+    val exp: EmptyModel = Not(And(Symbol(NamedVariable("a")), Symbol(NamedVariable("b"))))
+    val list = zipWithSymbol(exp)
     println(list)
     list should contain only(
-      (Literal("X0"), Clause(Not(Clause(And(Literal("a"), Literal("b")))))),
-      (Literal("X1"), Clause(And(Literal("a"), Literal("b"))))
+      (Symbol(NamedVariable("X0")), Not(And(Symbol(NamedVariable("a")), Symbol(NamedVariable("b"))))),
+      (Symbol(NamedVariable("X1")), And(Symbol(NamedVariable("a")), Symbol(NamedVariable("b"))))
     )
   }
 
   "In ((a ∨ (b ∧ c)) ∧ d) ∧ (s ∨ t) the subexp (b ∧ c), (a ∨ (b ∧ c))and ¬(a ∧ b)" should "be decomposed correctly" in {
-    val exp: Expression = Clause(And(Clause(And(Clause(Or(Literal("a"), Clause(And(Literal("b"), Literal("c"))))), Literal("d"))), Clause(Or(Literal("s"), Literal("t")))))
-    val list = zipWithLiteral(exp)
+    val exp: EmptyModel = And(And(Or(Symbol(NamedVariable("a")), And(Symbol(NamedVariable("b")), Symbol(NamedVariable("c")))),
+      Symbol(NamedVariable("d"))), Or(Symbol(NamedVariable("s")), Symbol(NamedVariable("t"))))
+    val list = zipWithSymbol(exp)
     println(list)
     list should contain only(
-      (Literal("X0"), Clause(And(Clause(And(Clause(Or(Literal("a"), Clause(And(Literal("b"), Literal("c"))))), Literal("d"))), Clause(Or(Literal("s"), Literal("t")))))),
-      (Literal("X1"), Clause(And(Clause(Or(Literal("a"), Clause(And(Literal("b"), Literal("c"))))), Literal("d")))),
-      (Literal("X2"), Clause(Or(Literal("a"), Clause(And(Literal("b"), Literal("c")))))),
-      (Literal("X3"), Clause(And(Literal("b"), Literal("c")))),
-      (Literal("X4"), Clause(Or(Literal("s"), Literal("t"))))
+      (Symbol(NamedVariable("X0")), And(And(Or(Symbol(NamedVariable("a")), And(Symbol(NamedVariable("b")),
+        Symbol(NamedVariable("c")))), Symbol(NamedVariable("d"))), Or(Symbol(NamedVariable("s")), Symbol(NamedVariable("t"))))),
+      (Symbol(NamedVariable("X1")), And(Or(Symbol(NamedVariable("a")), And(Symbol(NamedVariable("b")), Symbol(NamedVariable("c")))),
+          Symbol(NamedVariable("d")))),
+      (Symbol(NamedVariable("X2")), Or(Symbol(NamedVariable("a")), And(Symbol(NamedVariable("b")), Symbol(NamedVariable("c"))))),
+      (Symbol(NamedVariable("X3")), And(Symbol(NamedVariable("b")), Symbol(NamedVariable("c")))),
+      (Symbol(NamedVariable("X4")), Or(Symbol(NamedVariable("s")), Symbol(NamedVariable("t"))))
     )
   }

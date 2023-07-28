@@ -1,7 +1,6 @@
 import app.Architecture.MVU
 import app.Main.Model
 import model.State
-import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import update.Message

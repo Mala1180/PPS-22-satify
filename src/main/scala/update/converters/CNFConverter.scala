@@ -1,6 +1,6 @@
 package update.converters
 
-import model.{CNF, Expression}
+import model.{CNF, Expression, Variable}
 
 /** Functional interface for converting an expression into a CNF. */
 trait CNFConverter:
@@ -9,4 +9,4 @@ trait CNFConverter:
     * @param exp the expression to convert.
     * @return the CNF expression.
     */
-  def convert(exp: Expression): CNF
+  def convert[T <: Variable](exp: Expression[T]): CNF

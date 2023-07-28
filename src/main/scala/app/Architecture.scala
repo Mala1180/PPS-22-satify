@@ -1,11 +1,11 @@
 package app
 
-import model.{CNF, Expression, State}
-import update.Message.*
-import update.converters.TseitinTransformation.tseitin
-import update.converters.{CNFConverter, TseitinTransformation}
+import model.{CNF, Expression, State, Variable}
 import update.{Message, Solver}
+import update.Message.{Input, Solve}
+import update.converters.CNFConverter
 import view.GUI
+import update.converters.TseitinTransformation.tseitin
 
 /** Object containing the necessary components for the Model-View-Update architecture. */
 object Architecture:
@@ -37,6 +37,8 @@ object Architecture:
       message match
         case Input(char) => model
         case Solve(exp) =>
-          given CNFConverter = _ => tseitin(exp)
+          given CNFConverter with
+            def convert[T <: Variable](exp: Expression[T]): CNF = tseitin(exp)
+
           Solver().solve(exp)
           State()

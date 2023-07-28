@@ -1,6 +1,6 @@
 package update.converters
 
-import model.{CNF, Expression}
+import model.{CNF, Expression, Variable}
 
 /** Object containing the Tseitin transformation algorithm. */
 object TseitinTransformation:
@@ -9,4 +9,4 @@ object TseitinTransformation:
     * @param exp the expression to transform.
     * @return the CNF expression.
     */
-  def tseitin(exp: Expression): CNF = ???
+  def tseitin[T <: Variable](exp: Expression[T]): CNF = ???

@@ -1,7 +1,6 @@
 package update
 
-import model.Expression.Literal
-import model.{CNF, Expression, Solution}
+import model.{CNF, Expression, Solution, Variable}
 import update.converters.CNFConverter
 
 /** Entity providing the necessary methods to solve the SAT problem. */
@@ -17,7 +16,7 @@ trait Solver:
     * @param exp the input expression
     * @return the solution
     */
-  def solve(exp: Expression)(using converter: CNFConverter): Solution
+  def solve[T <: Variable](exp: Expression[T])(using converter: CNFConverter): Solution
 
 /** Companion object of the [[Solver]] trait providing a factory method. */
 object Solver:
@@ -26,4 +25,4 @@ object Solver:
   /** Private implementation of the Solver trait. */
   private case class SolverImpl() extends Solver:
     def dpll(cnf: CNF): Solution = ???
-    def solve(exp: Expression)(using converter: CNFConverter): Solution = dpll(converter.convert(exp))
+    def solve[T <: Variable](exp: Expression[T])(using converter: CNFConverter): Solution = dpll(converter.convert(exp))
