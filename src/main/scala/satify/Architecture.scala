@@ -1,7 +1,9 @@
-import model.{Variable, State}
-import update.Message
-import update.Message.*
-import view.GUI
+package satify
+
+import satify.model.State
+import satify.update.Message
+import satify.update.Message.{Input, Solve}
+import satify.view.GUI
 
 /** Object containing the necessary components for the Model-View-Update architecture. */
 object Architecture:

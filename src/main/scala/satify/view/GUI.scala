@@ -1,7 +1,7 @@
-package view
+package satify.view
 
-import model.State
-import view.Utils.*
+import satify.model.State
+import satify.view.Utils.*
 
 import java.awt.{Color, Font, Image, Toolkit}
 import javax.swing.ImageIcon

@@ -1,8 +1,8 @@
 package EmptyModelUtilsTest
 
-import model.EmptyModel
-import model.Expression.*
-import model.NamedVariable
+import satify.model.EmptyModel
+import satify.model.Expression.*
+import satify.model.NamedVariable
 import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

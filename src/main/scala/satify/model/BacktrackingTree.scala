@@ -1,6 +1,6 @@
-package model
+package satify.model
 
-import model.EmptyModel
+import satify.model.EmptyModel
 
 import scala.collection.immutable.Queue
 

@@ -1,6 +1,6 @@
-package model
+package satify.model
 
-import model.{NamedVariable, PartialVariable}
+import satify.model.{NamedVariable, PartialVariable}
 
 trait Variable
 case class NamedVariable(name: String) extends Variable

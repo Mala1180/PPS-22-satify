@@ -1,4 +1,4 @@
-package model
+package satify.model
 
 /** The immutable entity representing the application state (Model). */
 trait State:
@@ -11,7 +11,7 @@ trait State:
   /** An entity representing the problem to solve */
   type Problem
 
-/** Factory for [[model.State]] instances. */
+/** Factory for [[satify.model.State]] instances. */
 object State:
   /** Creates a new application state.
     *

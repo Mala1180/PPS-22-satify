@@ -1,4 +1,4 @@
-package view
+package satify.view
 
 import java.awt.{Font, Toolkit}
 import scala.swing.Dimension

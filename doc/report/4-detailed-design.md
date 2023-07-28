@@ -17,26 +17,26 @@ Il Model viene concretizzato utilizzando un _trait_ **State** contenete tre tipi
 
 #### Preliminaries
 
-##### Definition of partial model
-We will call elements of $Vars \rightarrow \mathcal{B}$ as partial model, e.g. not all variables are assigned at a given point of the algorithm.
+##### Definition of partial root.model
+We will call elements of $Vars \rightarrow \mathcal{B}$ as partial root.model, e.g. not all variables are assigned at a given point of the algorithm.
 
 ##### State of the literal
 
-Under partial model $m$,
+Under partial root.model $m$,
 - a literal $l$ is true if $m(l) = 1$;
 - $l$ is false if $m(l) = 0$;
 - otherwise $l$ is unassigned.
 
 ##### State of the clause
 
-Under a partial model $m$,
+Under a partial root.model $m$,
 - a clause (literals put in $\lor$) is true if there is $l \in C$ such that $l$ is true;
 - $C$ is false if for each $l \in C$, $l$ is false;
 - otherwise $C$ is unassigned.
 
 ##### State of a formula
 
-Under a partial model $m$,
+Under a partial root.model $m$,
 - CNF $F$ is true if for each $C \in F$, $C$ is true;
 - CNF $F$ is false if there is $C \in F$, such that $C$ is false. 
 - otherwise $F$ is unassigned
@@ -49,7 +49,7 @@ $C$ is a unit clause under $m$ if a literal $l \in C$ in unassigned and the rest
 
 #### DPLL
 
-- maintains a partial model, initially $\emptyset$
+- maintains a partial root.model, initially $\emptyset$
 - assigns unassignmed variables 0 or 1 randomly one after another
 - sometimes forced to choose assignments due to unit literals
 

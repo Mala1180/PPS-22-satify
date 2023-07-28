@@ -1,5 +1,5 @@
-import model.{BacktrackingTree, EmptyModel, Expression, NamedVariable, Variable}
-import model.Expression.*
+import satify.model.{BacktrackingTree, EmptyModel, Expression, NamedVariable, Variable}
+import satify.model.Expression.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
