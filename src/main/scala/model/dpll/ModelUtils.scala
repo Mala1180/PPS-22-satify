@@ -12,11 +12,11 @@ object ModelUtils:
       case Or(e1, e2) => extractModelFromExpression(e1) ++ extractModelFromExpression(e2)
       case Not(e) => extractModelFromExpression(e)
 
-  def mapExpression(partialExpression: PartialExpression, assignment: Assignment): PartialExpression =
+  def mapExpression(partialExpression: PartialExpression, varConstraint: VariableConstraint): PartialExpression =
     partialExpression match
-      case Symbol(PartialVariable(name, _)) if name == assignment.varName =>
-        Symbol(PartialVariable(name, Option(assignment.value)))
-      case And(e1, e2) => And(mapExpression(e1, assignment), mapExpression(e2, assignment))
-      case Or(e1, e2) => Or(mapExpression(e1, assignment), mapExpression(e2, assignment))
-      case Not(e) => Not(mapExpression(e, assignment))
+      case Symbol(PartialVariable(name, _)) if name == varConstraint.varName =>
+        Symbol(PartialVariable(name, Option(varConstraint.value)))
+      case And(e1, e2) => And(mapExpression(e1, varConstraint), mapExpression(e2, varConstraint))
+      case Or(e1, e2) => Or(mapExpression(e1, varConstraint), mapExpression(e2, varConstraint))
+      case Not(e) => Not(mapExpression(e, varConstraint))
       case _ => partialExpression

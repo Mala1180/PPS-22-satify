@@ -11,23 +11,23 @@ case class Decision(varName: String,
                     partialModel: PartialModel,
                     partialExpression: PartialExpression)
 case class DecisionTree(decisions: Queue[Decision])
-case class Assignment(varName: String, value: Boolean)
+case class VariableConstraint(varName: String, value: Boolean)
 
 object DecisionTree:
 
   def apply(emptyExpression: EmptyExpression)
-           (assignment: Assignment): DecisionTree = {
+           (varConstraint: VariableConstraint): DecisionTree = {
     val partialExpression = convert(emptyExpression, classOf[PartialVariable])
     DecisionTree(
-      Queue(Decision(assignment.varName,
-        assignVariable(assignment, extractModelFromExpression(partialExpression)),
-        mapExpression(partialExpression, assignment)))
+      Queue(Decision(varConstraint.varName,
+        assignVariable(varConstraint, extractModelFromExpression(partialExpression)),
+        mapExpression(partialExpression, varConstraint)))
     )
   }
 
-  private def assignVariable(assignment: Assignment, partialModel: PartialModel): PartialModel =
+  private def assignVariable(varConstraint: VariableConstraint, partialModel: PartialModel): PartialModel =
     partialModel.map {
-      case PartialVariable(name, _) if name == assignment.varName =>
-        PartialVariable(name, Option(assignment.value))
+      case PartialVariable(name, _) if name == varConstraint.varName =>
+        PartialVariable(name, Option(varConstraint.value))
       case v => v
     }
