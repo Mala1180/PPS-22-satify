@@ -1,7 +1,8 @@
-# Satify
+# Satify Report
 
 Satify is a program that allows to resolve Boolean Satisfability Problems (SAT).
 
+In the following, the report divided into sections is shown.
 
 ## Index:
 1. [Methodology](1-methodology.md)

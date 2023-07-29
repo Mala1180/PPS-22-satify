@@ -63,3 +63,5 @@ The Tseitin transformation follows these steps:
     The resulting CNF formula is equi-satisfiable with the original formula, meaning they have the same set of satisfying assignments. This transformation enables the use of various CNF-based algorithms and tools to analyze and reason about the original logical formula efficiently
 
 
+---
+[Previous](4-detailed-design.md) | [Next](6-retrospective.md)

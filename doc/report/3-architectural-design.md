@@ -20,3 +20,7 @@ It is a simple function which takes in input a Model and returns a graphic inter
 
 The Update is the component responsible to update the Model according the the actions triggered by the user through the View.
 More specifically, it is a function which takes in input Model and _Message_ and returns the new Model in output.
+
+---
+
+[Previous](2-requirements.md) | [Next](4-detailed-design.md)
