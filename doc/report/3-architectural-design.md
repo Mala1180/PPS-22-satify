@@ -1,22 +1,22 @@
-# Design architetturale
+# Architectural design
 
-Avendo lo scopo di realizzare un software sfruttando principalmente il paradigma funzionale, 
-si è deciso di utilizzare il pattern architetturale **MVU** (Model-View-Update) 
-che si presta molto bene a questo paradigma.
+The software to realize had to exploit the functional programming paradigm, this is the reason why
+we choosed to use the **MVU** (Model-View-Update) architectural pattern: it fits well with this paradigm.
 
-
-In figura viene rappresentato il comportamento tipico di questo pattern.
-
+In the following figure the typical behaviour of this pattern is shown.
 <img src="../diagrams/mvu/mvu.png" alt="Diagramma Model-View-Update">
 
 ## Model
-Il modello in questa architettura rappresenta lo stato dell'applicazione, è un'entità immutabile
-che viene sostituita ogni qualvolta viene innescato l'Update.
+
+In this architecture, the Model represents the state of the application, an immutable entity which
+is replaced every time a new Update is triggered.
 
 ## View
-La View fornisce la GUI dell'applicazione basandosi sullo stato dell'applicazione (Model).
-È una semplice funzione che prende in input il Model e restituisce l'interfaccia grafica senza provocare alcun side-effect.
+
+The View provides the GUI and the application, relying on the state of the application (Model). 
+It is a simple function which takes in input a Model and returns a graphic interface, without cause any side-effect.
 
 ## Update
-L'Update è la componente responsabile di aggiornare il Model in base alle azioni innescate dall'utente 
-tramite la View. In particolare è una funzione che ha come input Model e _Message_, restituendo in output il nuovo modello.
+
+The Update is the component responsible to update the Model according the the actions triggered by the user through the View.
+More specifically, it is a function which takes in input Model and _Message_ and returns the new Model in output.
