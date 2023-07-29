@@ -11,9 +11,9 @@ import scala.language.postfixOps
 
 class DecisionTreeTest extends AnyFlatSpec with Matchers:
 
-  val varA: NamedVariable = NamedVariable("a")
-  val varB: NamedVariable = NamedVariable("b")
-  val varC: NamedVariable = NamedVariable("c")
+  val varA: EmptyVariable = EmptyVariable("a")
+  val varB: EmptyVariable = EmptyVariable("b")
+  val varC: EmptyVariable = EmptyVariable("c")
   
   val emptyExpression: EmptyExpression = And(Or(Symbol(varA), Symbol(varB)), Symbol(varC))
 

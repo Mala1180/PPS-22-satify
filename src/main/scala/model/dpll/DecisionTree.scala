@@ -2,11 +2,12 @@ package model.dpll
 
 import model.*
 import model.Expression.*
-import DPLLUtils.*
+import DpllExpressionUtils.*
 
 import scala.collection.immutable.Queue
 
-type PartialModel = Set[PartialVariable]
+type Model[T <: Variable] = Set[T]
+type PartialModel = Model[PartialVariable]
 
 /**
  * Decision is a node of DecisionTree.
@@ -43,7 +44,7 @@ object DecisionTree:
    */
   def apply(emptyExpression: EmptyExpression)
            (varConstraint: VariableConstraint): DecisionTree = {
-    val partialExpression = cast(emptyExpression, classOf[PartialVariable])
+    val partialExpression = mapEmptyExpToPar(emptyExpression)
     DecisionTree(
       Queue(Decision(varConstraint.varName,
         assignVariable(varConstraint, extractModelFromExpression(partialExpression)),

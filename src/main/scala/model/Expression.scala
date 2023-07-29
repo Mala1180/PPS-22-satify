@@ -1,9 +1,12 @@
 package model
 
-import model.{NamedVariable, PartialVariable}
+import model.{EmptyVariable, PartialVariable}
 
-trait Variable
-case class NamedVariable(name: String) extends Variable
+trait Variable {
+  val name: String
+}
+
+case class EmptyVariable(name: String) extends Variable
 case class PartialVariable(name: String, value: Option[Boolean]) extends Variable
 case class AssignedVariable(name: String, value: Boolean) extends Variable
 
@@ -13,8 +16,9 @@ enum Expression[T <: Variable]:
   case And(right: Expression[T], left: Expression[T])
   case Or(right: Expression[T], left: Expression[T])
 
-type EmptyExpression = Expression[NamedVariable]
+type EmptyExpression = Expression[EmptyVariable]
 type PartialExpression = Expression[PartialVariable]
+type AssignedExpression = Expression[AssignedVariable]
 
 /** Object with methods to manipulate expressions */
 
@@ -30,13 +34,13 @@ object Expression:
    */
   def zipWith[T <: Variable, A](exp: Expression[T])(f: () => A): List[(A, Expression[T])] =
 
-    def subexp[T <: Variable](exp: Expression[T], list: List[(A, Expression[T])])
+    def subexp(exp: Expression[T], list: List[(A, Expression[T])])
                              (f: () => A): List[(A, Expression[T])] = exp match
         case Symbol(_) => List()
         case e@_ => (f(), exp) :: list ::: subop(e, list)(f)
 
-
-    def subop[T <: Variable](exp: Expression[T], list: List[(A, Expression[T])])
+    // TODO: exhaustive match
+    def subop(exp: Expression[T], list: List[(A, Expression[T])])
                             (f: () => A): List[(A, Expression[T])] = exp match
       case And(exp1, exp2) => subexp(exp1, list)(f) ::: subexp(exp2, list)(f)
       case Or(exp1, exp2) => subexp(exp1, list)(f) ::: subexp(exp2, list)(f)
@@ -52,11 +56,12 @@ object Expression:
    * @param exp the expression.
    * @return a list of the subexpressions found in the given expression zipped with the Symbol.
    */
+  // TODO: exhaustive match
   def zipWithSymbol[T <: Variable](exp: Expression[T]): List[(Symbol[T], Expression[T])] =
     var c = 0
     def freshLabel(): Symbol[T] = exp match
-      case _ : Expression[NamedVariable] =>
-        val l: Symbol[NamedVariable] = Symbol(NamedVariable("X" + c))
+      case _ : Expression[EmptyVariable] =>
+        val l: Symbol[EmptyVariable] = Symbol(EmptyVariable("X" + c))
         c = c + 1
         l
     zipWith(exp)(freshLabel)
@@ -90,18 +95,10 @@ object Expression:
     case or@Or(_, _) => replaceExp(or, subexp, s)
     case not@Not(_) => replaceExp(not, subexp, s)
     case _ => exp
-    private def replaceExp[T <: Variable](exp: Expression[T], subexp: Expression[T], s: Symbol[T]): Expression[T] =
-      exp match
-        case And(e1, e2) => And(replace(e1, subexp, s), replace(e2, subexp, s))
-        case Or(e1, e2) => Or(replace(e1, subexp, s), replace(e2, subexp, s))
-        case Not(e) => Not(replace(e, subexp, s))
 
-  def cast[T <: Variable, V <: Variable](exp: Expression[T], toType: Class[V]): Expression[V] = exp match
-    case s@Symbol(NamedVariable(name)) => toType match
-      //case _: Class[NamedVariable] => s
-      case _: Class[PartialVariable] => Symbol(PartialVariable(name, Option.empty))
-    case Symbol(PartialVariable(name, _)) => toType match
-      case _: Class[NamedVariable] => Symbol(NamedVariable(name))
-    case And(e1, e2) => And(cast(e1, toType), cast(e2, toType))
-    case Or(e1, e2) => Or(cast(e1, toType), cast(e2, toType))
-    case Not(e) => Not(cast(e, toType))
+    // TODO: exhaustive match
+    private def replaceExp[T <: Variable](exp: Expression[T], subexp: Expression[T], s: Symbol[T]): Expression[T] =
+        exp match
+          case And(e1, e2) => And(replace(e1, subexp, s), replace(e2, subexp, s))
+          case Or(e1, e2) => Or(replace(e1, subexp, s), replace(e2, subexp, s))
+          case Not(e) => Not(replace(e, subexp, s))
