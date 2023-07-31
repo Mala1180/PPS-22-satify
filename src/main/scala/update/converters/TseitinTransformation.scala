@@ -11,13 +11,13 @@ object TseitinTransformation:
     * @return the decomposed expression in subexpressions with Symbols correctly substituted.
     */
   def symbolsReplace[T <: Variable](exp: Expression[T]): List[(Symbol[T], Expression[T])] =
-    def replacer[T <: Variable](list: List[(Symbol[T], Expression[T])], subexp: Expression[T], l: Symbol[T]): List[(Symbol[T], Expression[T])] =
+    def replacer(list: List[(Symbol[T], Expression[T])], subexp: Expression[T], l: Symbol[T]): List[(Symbol[T], Expression[T])] =
       list match
         case Nil => Nil
         case (lit, e) :: t if contains(e, subexp) => (lit, replace(e, subexp, l)) :: replacer(t, subexp, l)
         case (lit, e) :: t => (lit, e) :: replacer(t, subexp, l)
 
-    def symbolSelector[T <: Variable](list: List[(Symbol[T], Expression[T])]): List[(Symbol[T], Expression[T])] = list match
+    def symbolSelector(list: List[(Symbol[T], Expression[T])]): List[(Symbol[T], Expression[T])] = list match
       case Nil => Nil
       case (l, e) :: tail => (l, e) :: symbolSelector(replacer(tail, e, l))
 
@@ -28,7 +28,7 @@ object TseitinTransformation:
     * @return a list of Symbol and expressions in CNF form for the given Symbol and expression
     */
   def transform[T <: Variable](exp: (Symbol[T], Expression[T])): List[(Symbol[T], Expression[T])] =
-    def not[T <: Variable](exp: Expression[T]): Expression[T] = exp match
+    def not(exp: Expression[T]): Expression[T] = exp match
       case Not(sym) => sym
       case sym => Not(sym)
     exp match
