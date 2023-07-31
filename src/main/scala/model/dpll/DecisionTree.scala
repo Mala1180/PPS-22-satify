@@ -48,7 +48,7 @@ object DecisionTree:
     DecisionTree(
       Queue(Decision(varConstraint.varName,
         assignVariable(varConstraint, extractModelFromExpression(partialExpression)),
-        updateExpression(partialExpression, varConstraint)))
+        updateParExp(partialExpression, varConstraint)))
     )
   }
 
@@ -64,7 +64,7 @@ object DecisionTree:
         case Decision(_, partialModel, partialExpression) =>
           DecisionTree(queue :+
             Decision(varConstraint.varName, assignVariable(varConstraint, partialModel),
-              updateExpression(partialExpression, varConstraint)))
+              updateParExp(partialExpression, varConstraint)))
 
 
   /**

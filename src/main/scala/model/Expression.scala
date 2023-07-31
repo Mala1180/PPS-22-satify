@@ -38,8 +38,7 @@ object Expression:
                              (f: () => A): List[(A, Expression[T])] = exp match
         case Symbol(_) => List()
         case e@_ => (f(), exp) :: list ::: subop(e, list)(f)
-
-    // TODO: exhaustive match
+    
     def subop(exp: Expression[T], list: List[(A, Expression[T])])
                             (f: () => A): List[(A, Expression[T])] = exp match
       case And(exp1, exp2) => subexp(exp1, list)(f) ::: subexp(exp2, list)(f)
@@ -95,10 +94,8 @@ object Expression:
     case or@Or(_, _) => replaceExp(or, subexp, s)
     case not@Not(_) => replaceExp(not, subexp, s)
     case _ => exp
-
-    // TODO: exhaustive match
     private def replaceExp[T <: Variable](exp: Expression[T], subexp: Expression[T], s: Symbol[T]): Expression[T] =
-        exp match
-          case And(e1, e2) => And(replace(e1, subexp, s), replace(e2, subexp, s))
-          case Or(e1, e2) => Or(replace(e1, subexp, s), replace(e2, subexp, s))
-          case Not(e) => Not(replace(e, subexp, s))
+      exp match
+        case And(e1, e2) => And(replace(e1, subexp, s), replace(e2, subexp, s))
+        case Or(e1, e2) => Or(replace(e1, subexp, s), replace(e2, subexp, s))
+        case Not(e) => Not(replace(e, subexp, s))
