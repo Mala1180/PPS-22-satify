@@ -20,7 +20,7 @@ type PartialModel = Expression[PartialVariable]
 
 object Expression:
 
-  import Expression.*
+  //import Expression.*
 
   /** Zip the subexpressions found in the given expression with a generic type A.
    *
@@ -30,18 +30,15 @@ object Expression:
    */
   def zipWith[T <: Variable, A](exp: Expression[T])(f: () => A): List[(A, Expression[T])] =
 
-    def subexp[T <: Variable](exp: Expression[T], list: List[(A, Expression[T])])
+    def subexp(exp: Expression[T], list: List[(A, Expression[T])])
                              (f: () => A): List[(A, Expression[T])] = exp match
         case Symbol(_) => List()
-        case e@_ => (f(), exp) :: list ::: subop(e, list)(f)
-
-
-    def subop[T <: Variable](exp: Expression[T], list: List[(A, Expression[T])])
+        case e => (f(), exp) :: list ::: subop(e, list)(f)
+    def subop(exp: Expression[T], list: List[(A, Expression[T])])
                             (f: () => A): List[(A, Expression[T])] = exp match
       case And(exp1, exp2) => subexp(exp1, list)(f) ::: subexp(exp2, list)(f)
       case Or(exp1, exp2) => subexp(exp1, list)(f) ::: subexp(exp2, list)(f)
       case Not(exp) => subexp(exp, list)(f)
-
     exp match
       case Symbol(x) => List((f(), exp))
       case Not(Symbol(x)) => List((f(), exp))
@@ -84,14 +81,15 @@ object Expression:
     * @param s the Symbol inserted in place of the subexpression.
     * @return the expression with the subexpression replaced.
     */
-  def replace[T <: Variable](exp: Expression[T], subexp: Expression[T], s: Symbol[T]): Expression[T] = exp match
+  def replace[T <: Variable](exp: Expression[T], subexp: Expression[T], s: Symbol[T]): Expression[T] =
+    def replaceExp(exp: Expression[T], subexp: Expression[T], s: Symbol[T]): Expression[T] =
+      exp match
+        case And(e1, e2) => And(replace(e1, subexp, s), replace(e2, subexp, s))
+        case Or(e1, e2) => Or(replace(e1, subexp, s), replace(e2, subexp, s))
+        case Not(e) => Not(replace(e, subexp, s))
+    exp match
     case _ if exp == subexp => s
     case and@And(_, _) => replaceExp(and, subexp, s)
     case or@Or(_, _) => replaceExp(or, subexp, s)
     case not@Not(_) => replaceExp(not, subexp, s)
     case _ => exp
-    private def replaceExp[T <: Variable](exp: Expression[T], subexp: Expression[T], s: Symbol[T]): Expression[T] =
-      exp match
-        case And(e1, e2) => And(replace(e1, subexp, s), replace(e2, subexp, s))
-        case Or(e1, e2) => Or(replace(e1, subexp, s), replace(e2, subexp, s))
-        case Not(e) => Not(replace(e, subexp, s))
