@@ -1,23 +1,25 @@
-# Design di dettaglio
+# Detailed Design
 
-## Architettura
-Come spiegato nella sezione precedente, il pattern architetturale utilizzato
-è **Model-View-Update** (MVU), è stato inoltre introdotto il **Cake Pattern**
-per una migliore modellazione delle dipendenze.
+## Architecture
 
-Sono stati progettati dei _trait_ che rappresentano le componenti del pattern MVU, 
-i quali incapsulano al loro interno gli _abstract type member_ relativi a Model, View e Update.
+As described in the previous section, the architectural pattern used is the **Model-View-Update** (MVU). Moreover, the **Cake Pattern** has been introduced to improve the modeling of the dependencies.
 
-<img src="../diagrams/mvu/mvu-detailed.png" alt="Diagramma Model-View-Update dettagliato">
+Some _trait_ has been designed to represent the components of the MVU pattern, which encapsulate within them some _abstract type member_ related to Model, View and Update. 
+
+
+<img src="../diagrams/mvu/mvu-detailed.png" alt=" Model-View-Update detailed diagram">
 
 ## Model
-Il Model viene concretizzato utilizzando un _trait_ **State** contenete tre tipi astratti: **Expression**, **Solution** e **Problem**.
+
+The Model is designed using a _trait_ **State**, which includes three abstract types tipi: **Expression**, **Solution** and **Problem**.
+
 
 ### DPLL (Davis-Putnam-Loveland-Logemann)
 
 #### Preliminaries
 
 ##### Definition of partial model
+
 We will call elements of $Vars \rightarrow \mathcal{B}$ as partial model, e.g. not all variables are assigned at a given point of the algorithm.
 
 ##### State of the literal
@@ -84,11 +86,10 @@ In other words: if $b$ doesn't appear in negative form inside the formula $F$, a
 
 **MOM**'s heuristic: choose variable based on most occurrence in clauses of minimum length.
 
----------------------------------------------------
-
-
 
 ## View
 
 ## Update
 
+---
+[Previous](3-architectural-design.md) | [Next](5-implementation.md)
