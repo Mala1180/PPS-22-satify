@@ -19,11 +19,11 @@ class DecisionTreeSearchTest extends AnyFlatSpec with Matchers:
 
   val parExp: PartialExpression = And(Symbol(varA), Symbol(varB))
 
-  "DPLL" should "accept a Decision and return a DecisionTree" in {
-    DecisionTreeSearch.search(Decision(extractModelFromExp(parExp), parExp)).getClass should be equals classOf[DecisionTree]
+  "Decision tree search" should "accept a Decision and return a DecisionTree" in {
+    search(Decision(extractModelFromExp(parExp), parExp)).getClass should be equals classOf[DecisionTree]
   }
 
-  "DPLL" should "explore all the possible assignments to the model" in {
+  "Decision tree search" should "explore all the possible assignments to the model" in {
     val emptyDec = Decision(extractModelFromExp(parExp), parExp)
     search(emptyDec) should be equals
       Branch(emptyDec,
