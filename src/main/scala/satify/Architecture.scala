@@ -7,7 +7,6 @@ import satify.update.converters.TseitinTransformation.tseitin
 import satify.update.{Message, Solver}
 import satify.view.GUI
 
-
 /** Object containing the necessary components for the Model-View-Update architecture. */
 object Architecture:
 
