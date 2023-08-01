@@ -46,15 +46,12 @@ object TseitinTransformation:
         List((l, Or(Or(e1, e2), not(l))), (l, Or(not(e1), l)), (l, Or(not(e2), l)))
       case _ => List()
 
-  /** TODO Transform the expression to the CNF form
-    * @param exp the expression to transform
-    * @return the expression in CNF form
-    */
-  def toCNF[T <: Variable](exp: Expression[T]): List[(Symbol[T], Expression[T])] =
-    // TODO: to implement
-    // expression = (a ∧ ¬ b) ∨ ¬ (c ∧ d)
-    val sub = symbolsReplace(exp)
-    println(sub)
-    var list: List[(Symbol[T], Expression[T])] = List()
-    sub.foreach(s => list = transform(s) ::: list)
-    list
+  /** Transforms the given expression into CNF following Tseitin Method.
+   *
+   * @param exp the expression to transform
+   * @return the expression in CNF form with new symbols introduced.
+   */
+  def toCNF[T <: Variable](exp: Expression[T]): Expression[T] =
+    var transformations: List[(Symbol[T], Expression[T])] = List()
+    symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
+    transformations.reduceRight((s1, s2) => (s1._1, And(s1._2, s2._2)))._2
