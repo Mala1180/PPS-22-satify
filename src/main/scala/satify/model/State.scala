@@ -5,6 +5,9 @@ trait State:
   /** A general expression of boolean logic, it is the user input */
   type Expression
 
+  /** The input expression converted to Conjunctive Normal Form (CNF) */
+  type CNF
+  
   /** An entity containing the solution of the problem (SAT or UNSAT, optional Assignment), it is the output of DPLL */
   type Solution
 
