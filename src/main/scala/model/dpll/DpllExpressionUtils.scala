@@ -13,8 +13,7 @@ object DpllExpressionUtils:
    * @tparam V Codomain Variable type
    * @return Mapped expression
    */
-  def genMapExp[T <: Variable, V <: Variable]
-  (e: Expression[T], f: T => V): Expression[V] =
+  def genMapExp[T <: Variable, V <: Variable](e: Expression[T], f: T => V): Expression[V] =
     e match
       case Symbol(variable: T) => Symbol(f(variable))
       case And(e1, e2) => And(genMapExp(e1, f), genMapExp(e2, f))
@@ -26,12 +25,12 @@ object DpllExpressionUtils:
    * @param exp where to extract a Model[V]
    * @return Correspondent model from expression given as parameter.
    */
-  def extractModelFromExpression[T <: Variable](exp: Expression[T]): Model[T] =
+  def extractModelFromExp[T <: Variable](exp: Expression[T]): Model[T] =
     exp match
-      case Symbol(variable) => Set(variable)
-      case And(e1, e2) => extractModelFromExpression(e1) ++ extractModelFromExpression(e2)
-      case Or(e1, e2) => extractModelFromExpression(e1) ++ extractModelFromExpression(e2)
-      case Not(e) => extractModelFromExpression(e)
+      case Symbol(variable) => Seq(variable)
+      case And(e1, e2) => extractModelFromExp(e1) ++ extractModelFromExp(e2)
+      case Or(e1, e2) => extractModelFromExp(e1) ++ extractModelFromExp(e2)
+      case Not(e) => extractModelFromExp(e)
 
 
   /**
@@ -40,7 +39,7 @@ object DpllExpressionUtils:
    * @param varConstr constraint to be applied
    * @return Updated PartialExpression
    */
-  def updateParExp(parExp: PartialExpression, varConstr: VariableConstraint): PartialExpression =
+  def updateParExp(parExp: PartialExpression, varConstr: VarConstr): PartialExpression =
     genMapExp(parExp, {
       case PartialVariable(varName, _) if varName == varConstr.varName =>
         PartialVariable(varName, Option(varConstr.value))
