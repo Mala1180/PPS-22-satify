@@ -1,6 +1,6 @@
-package EmptyModelUtilsTest
+package EmptyExpressionUtilsTest
 
-import model.{Expression, NamedVariable}
+import model.{Expression, EmptyVariable}
 import Expression.*
 import update.converters.TseitinTransformation.*
 import org.scalatest.Inspectors.forAll
@@ -13,6 +13,6 @@ class CNFTest extends AnyFlatSpec with Matchers:
   "In ((a ∧ ¬b) ∨ ¬(c∧d)) the CNF form" should "be correctly generated" in {
     //TODO: to implement test
     val exp = Or(
-      And(Symbol(NamedVariable("a")), Not(Symbol(NamedVariable("b")))),
-      Not(And(Symbol(NamedVariable("c")), Symbol(NamedVariable("d")))))
+      And(Symbol(EmptyVariable("a")), Not(Symbol(EmptyVariable("b")))),
+      Not(And(Symbol(EmptyVariable("c")), Symbol(EmptyVariable("d")))))
   }

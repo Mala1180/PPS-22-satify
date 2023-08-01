@@ -1,10 +1,10 @@
 package update.converters
 
-import model.{CNF, Expression, NamedVariable, Variable}
+import model.{CNF, Expression, EmptyVariable, Variable}
 
 /** Object containing the Tseitin transformation algorithm. */
 object TseitinTransformation:
-  import model.EmptyModel
+
   import model.Expression.*
 
   /** Applies the Tseitin transformation to the given expression in order to convert it into CNF.
