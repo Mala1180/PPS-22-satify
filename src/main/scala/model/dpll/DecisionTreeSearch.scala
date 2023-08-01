@@ -35,7 +35,7 @@ object DecisionTreeSearch:
                       parExp: PartialExpression, b: Boolean): DecisionTree =
     search(
       Decision(updateParModel(parVar match
-        case PartialVariable(name, _) => VarConstr(name, b), parModel), parExp)
+        case PartialVariable(name, _) => Constraint(name, b), parModel), parExp)
   )
 
   /**
@@ -52,7 +52,7 @@ object DecisionTreeSearch:
    * @param parModel partial model
    * @return Updated PartialModel
    */
-  private def updateParModel(varConstr: VarConstr, parModel: PartialModel): PartialModel =
+  private def updateParModel(varConstr: Constraint, parModel: PartialModel): PartialModel =
     parModel.map {
       case PartialVariable(name, _) if name == varConstr.varName =>
         PartialVariable(name, Option(varConstr.value))

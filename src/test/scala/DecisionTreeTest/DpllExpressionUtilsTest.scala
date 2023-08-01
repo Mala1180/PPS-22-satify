@@ -3,7 +3,7 @@ package DecisionTreeTest
 import model.Expression.{And, Not, Or, Symbol}
 import model.{AssignedVariable, EmptyExpression, EmptyVariable, PartialExpression, PartialVariable}
 import model.dpll.DpllExpressionUtils.*
-import model.dpll.{PartialModel, VarConstr}
+import model.dpll.{PartialModel, Constraint}
 import org.scalatest.Assertions.assertThrows
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -38,7 +38,7 @@ class DpllExpressionUtilsTest extends AnyFlatSpec with Matchers:
 
   "A PartialExpression" should  "be mapped to another PartialExpression setting a variable" in {
     val partialExpression = mapEmptyExpToPar(emptyExp)
-    updateParExp(partialExpression, VarConstr("b", false)) should be equals
+    updateParExp(partialExpression, Constraint("b", false)) should be equals
       And(Or(Symbol(PartialVariable("a", Option.empty)), Symbol(PartialVariable("b", Option(false)))),
         Symbol(PartialVariable("c", Option.empty)))
   }

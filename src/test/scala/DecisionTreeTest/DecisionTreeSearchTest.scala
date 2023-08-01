@@ -5,7 +5,7 @@ import model.*
 import model.dpll.DecisionTreeSearch.*
 import model.dpll.DecisionTree.*
 import model.dpll.DpllExpressionUtils.*
-import model.dpll.{Decision, DecisionTree, DecisionTreeSearch, VarConstr}
+import model.dpll.{Decision, DecisionTree, DecisionTreeSearch, Constraint}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

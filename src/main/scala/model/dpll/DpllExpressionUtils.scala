@@ -39,7 +39,7 @@ object DpllExpressionUtils:
    * @param varConstr constraint to be applied
    * @return Updated PartialExpression
    */
-  def updateParExp(parExp: PartialExpression, varConstr: VarConstr): PartialExpression =
+  def updateParExp(parExp: PartialExpression, varConstr: Constraint): PartialExpression =
     genMapExp(parExp, {
       case PartialVariable(varName, _) if varName == varConstr.varName =>
         PartialVariable(varName, Option(varConstr.value))

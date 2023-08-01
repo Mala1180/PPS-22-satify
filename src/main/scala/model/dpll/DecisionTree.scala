@@ -28,8 +28,8 @@ enum DecisionTree:
   case Branch(d: Decision, left: DecisionTree, right: DecisionTree)
 
 /**
- * VariableConstraint is defined as an assignment of a PartialVariable to a Boolean variable.
+ * A Constraint is a boolean assignment to a variable.
  * @param varName Name of the variable
  * @param value Boolean value
  */
-case class VarConstr(varName: String, value: Boolean)
+case class Constraint(varName: String, value: Boolean)
