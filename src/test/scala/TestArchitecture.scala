@@ -1,5 +1,6 @@
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.ClassFileImporter
+import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.{classes, noClasses}
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices
 import org.scalatest.flatspec.AnyFlatSpec
@@ -20,7 +21,7 @@ class TestArchitecture extends AnyFlatSpec with Matchers:
   val allClasses: JavaClasses = ClassFileImporter().importPackages(RootPackage)
 
   "Architecture" should "not have cyclic dependencies" in {
-    val noCycles = slices()
+    val noCycles: ArchRule = slices()
       .matching(RootPackage + ".(*)..")
       .should()
       .beFreeOfCycles()
@@ -29,16 +30,16 @@ class TestArchitecture extends AnyFlatSpec with Matchers:
   }
 
   "Model" should "be immutable" in {
-    val immutabilityRule = classes()
+    val immutability: ArchRule = classes()
       .that()
       .resideInAPackage(ModelPackage)
       .should()
       .haveOnlyFinalFields
-    immutabilityRule.check(allClasses)
+    immutability.check(allClasses)
   }
 
   "Model" should "not depend on View and Update" in {
-    val rule = noClasses()
+    val independence: ArchRule = noClasses()
       .that()
       .resideInAPackage(ModelPackage)
       .should()
@@ -47,7 +48,7 @@ class TestArchitecture extends AnyFlatSpec with Matchers:
       .orShould()
       .dependOnClassesThat
       .resideInAPackage(UpdatePackage)
-    rule.check(allClasses)
+    independence.check(allClasses)
   }
 
   "View" should "be a function which takes a Model and returns a GUI" in {

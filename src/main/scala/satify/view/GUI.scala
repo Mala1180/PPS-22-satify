@@ -13,7 +13,7 @@ case class GUI(model: State, update: (Model, Message) => Model)
 
 /** Companion object of the GUI */
 object GUI:
-  import satify.view.ComponentUtils.*
+  import ComponentUtils.*
 
   /** Renders the GUI
     * @param gui the GUI to render

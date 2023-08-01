@@ -41,7 +41,7 @@ object DpllExpressionUtils:
    */
   def updateParExp(parExp: PartialExpression, varConstr: Constraint): PartialExpression =
     genMapExp(parExp, {
-      case PartialVariable(varName, _) if varName == varConstr.varName =>
+      case PartialVariable(varName, _) if varName == varConstr.variable =>
         PartialVariable(varName, Option(varConstr.value))
       case pv => pv
     })
