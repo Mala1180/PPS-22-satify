@@ -1,4 +1,4 @@
-package model
+package satify.model
 
 
 /** Sum Type representing the two possible results of SAT problem. */

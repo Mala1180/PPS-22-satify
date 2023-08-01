@@ -1,12 +1,9 @@
 package EmptyExpressionUtilsTest
 
-import model.{Expression, EmptyVariable}
-import Expression.*
-import update.converters.TseitinTransformation.*
-import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-
+import satify.model.Expression.*
+import satify.model.{EmptyVariable, Expression}
 
 class CNFTest extends AnyFlatSpec with Matchers:
 

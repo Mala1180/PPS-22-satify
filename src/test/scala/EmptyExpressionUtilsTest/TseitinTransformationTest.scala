@@ -1,11 +1,10 @@
 package EmptyExpressionUtilsTest
 
-import model.{EmptyExpression, EmptyVariable}
-import model.Expression.*
-import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import update.converters.TseitinTransformation.*
+import satify.model.Expression.*
+import satify.model.{EmptyExpression, EmptyVariable}
+import satify.update.converters.TseitinTransformation.transform
 
 class TseitinTransformationTest extends AnyFlatSpec with Matchers:
 

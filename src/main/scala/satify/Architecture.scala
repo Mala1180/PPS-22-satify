@@ -1,11 +1,12 @@
-package app
+package satify
 
-import model.{CNF, Expression, State, Variable}
-import update.{Message, Solver}
-import update.Message.{Input, Solve}
-import update.converters.CNFConverter
-import view.GUI
-import update.converters.TseitinTransformation.tseitin
+import satify.model.{CNF, Expression, State, Variable}
+import satify.update.Message.{Input, Solve}
+import satify.update.converters.CNFConverter
+import satify.update.converters.TseitinTransformation.tseitin
+import satify.update.{Message, Solver}
+import satify.view.GUI
+
 
 /** Object containing the necessary components for the Model-View-Update architecture. */
 object Architecture:

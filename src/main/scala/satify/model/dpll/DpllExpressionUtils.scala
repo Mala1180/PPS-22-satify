@@ -1,7 +1,7 @@
-package model.dpll
+package satify.model.dpll
 
-import model.Expression.{And, Not, Or, Symbol, replace}
-import model.{AssignedExpression, AssignedVariable, EmptyExpression, EmptyVariable, Expression, PartialExpression, PartialVariable, Variable}
+import satify.model.Expression.{And, Not, Or, Symbol}
+import satify.model.*
 
 object DpllExpressionUtils:
 
@@ -41,7 +41,7 @@ object DpllExpressionUtils:
    */
   def updateParExp(parExp: PartialExpression, varConstr: Constraint): PartialExpression =
     genMapExp(parExp, {
-      case PartialVariable(varName, _) if varName == varConstr.varName =>
+      case PartialVariable(varName, _) if varName == varConstr.variable =>
         PartialVariable(varName, Option(varConstr.value))
       case pv => pv
     })

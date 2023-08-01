@@ -1,12 +1,9 @@
 package EmptyExpressionUtilsTest
 
-import model.EmptyExpression
-import model.Expression.*
-import model.EmptyVariable
-import model.Expression.*
-import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import satify.model.Expression.*
+import satify.model.{EmptyExpression, EmptyVariable}
 
 class SubexpressionsTest extends AnyFlatSpec with Matchers:
 

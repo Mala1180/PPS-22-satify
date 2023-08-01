@@ -1,12 +1,10 @@
-package view
+package satify.view
 
-import app.Main.Model
-import model.State
-import update.Message
-import update.Message.Solve
-import view.Constants.*
+import satify.Main.Model
+import satify.model.State
+import satify.update.Message
+import satify.view.Constants.*
 
-import java.awt.{Color, Font, Image, Toolkit}
 import javax.swing.ImageIcon
 import scala.swing.*
 

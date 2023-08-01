@@ -1,15 +1,14 @@
 package DecisionTreeTest
 
-import model.Expression.*
-import model.*
-import model.dpll.DecisionTreeSearch.*
-import model.dpll.DecisionTree.*
-import model.dpll.DpllExpressionUtils.*
-import model.dpll.{Decision, DecisionTree, DecisionTreeSearch, Constraint}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import satify.model.*
+import satify.model.Expression.*
+import satify.model.dpll.DecisionTree.*
+import satify.model.dpll.DecisionTreeSearch.*
+import satify.model.dpll.DpllExpressionUtils.*
+import satify.model.dpll.{Decision, DecisionTree, DecisionTreeSearch}
 
-import scala.collection.immutable.Queue
 import scala.language.postfixOps
 
 class DecisionTreeSearchTest extends AnyFlatSpec with Matchers:

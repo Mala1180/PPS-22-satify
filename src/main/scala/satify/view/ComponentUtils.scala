@@ -1,6 +1,6 @@
-package view
+package satify.view
 
-import view.Constants.{fontFamily, headingFont, margin, windowSize}
+import satify.view.Constants.{fontFamily, headingFont, margin, windowSize}
 
 import java.awt.{Color, Font, Image, Toolkit}
 import javax.swing.ImageIcon

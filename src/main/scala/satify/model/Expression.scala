@@ -1,10 +1,7 @@
-package model
+package satify.model
 
-import model.{EmptyVariable, PartialVariable}
-
-trait Variable {
+trait Variable:
   val name: String
-}
 
 case class EmptyVariable(name: String) extends Variable
 case class PartialVariable(name: String, value: Option[Boolean]) extends Variable

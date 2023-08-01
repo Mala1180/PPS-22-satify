@@ -1,12 +1,11 @@
 package DecisionTreeTest
 
-import model.Expression.{And, Not, Or, Symbol}
-import model.{AssignedVariable, EmptyExpression, EmptyVariable, PartialExpression, PartialVariable}
-import model.dpll.DpllExpressionUtils.*
-import model.dpll.{PartialModel, Constraint}
-import org.scalatest.Assertions.assertThrows
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import satify.model.*
+import satify.model.Expression.{And, Or, Symbol}
+import satify.model.dpll.DpllExpressionUtils.*
+import satify.model.dpll.{Constraint, PartialModel}
 
 class DpllExpressionUtilsTest extends AnyFlatSpec with Matchers:
 

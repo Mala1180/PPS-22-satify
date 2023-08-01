@@ -1,10 +1,9 @@
-package model.dpll
+package satify.model.dpll
 
-import model.{PartialExpression, PartialVariable}
-import model.dpll.DecisionTree.*
+import satify.model.dpll.DecisionTree.*
+import satify.model.{PartialExpression, PartialVariable}
 
 import scala.language.postfixOps
-import scala.util.Random
 
 object DecisionTreeSearch:
   
@@ -28,7 +27,7 @@ object DecisionTreeSearch:
    * @param parVar partial variable
    * @param parModel partial model
    * @param parExp partial expression
-   * @param b assignment
+   * @param b boolean assignment
    * @return DecisionTree from search
    */
   private def recStep(parVar: PartialVariable, parModel: PartialModel,
@@ -54,7 +53,7 @@ object DecisionTreeSearch:
    */
   private def updateParModel(varConstr: Constraint, parModel: PartialModel): PartialModel =
     parModel.map {
-      case PartialVariable(name, _) if name == varConstr.varName =>
+      case PartialVariable(name, _) if name == varConstr.variable =>
         PartialVariable(name, Option(varConstr.value))
       case v => v
     }

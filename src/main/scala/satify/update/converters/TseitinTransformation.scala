@@ -1,11 +1,11 @@
-package update.converters
+package satify.update.converters
 
-import model.{CNF, Expression, EmptyVariable, Variable}
+import satify.model.{CNF, EmptyVariable, Expression, Variable}
 
 /** Object containing the Tseitin transformation algorithm. */
 object TseitinTransformation:
 
-  import model.Expression.*
+  import satify.model.Expression.*
 
   /** Applies the Tseitin transformation to the given expression in order to convert it into CNF.
     * @param exp the expression to transform.

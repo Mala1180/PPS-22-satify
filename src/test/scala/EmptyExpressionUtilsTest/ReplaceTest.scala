@@ -1,10 +1,9 @@
 package EmptyExpressionUtilsTest
 
-import model.{EmptyExpression, EmptyVariable}
-import model.Expression.*
-import org.scalatest.Inspectors.forAll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import satify.model.Expression.*
+import satify.model.{EmptyExpression, EmptyVariable}
 
 class ReplaceTest extends AnyFlatSpec with Matchers:
 

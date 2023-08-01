@@ -1,7 +1,7 @@
-package update
+package satify.update
 
-import model.{CNF, Expression, Solution, Variable}
-import update.converters.CNFConverter
+import satify.model.{CNF, Expression, Solution, Variable}
+import satify.update.converters.CNFConverter
 
 /** Entity providing the necessary methods to solve the SAT problem. */
 trait Solver:
