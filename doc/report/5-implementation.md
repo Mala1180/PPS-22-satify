@@ -60,7 +60,7 @@ The Tseitin transformation follows these steps:
 3. Express the truth conditions of the subformulas in CNF using the auxiliary variables and standard logical connectives (AND, OR, NOT).
 4. Combine the CNF representations of the subformulas to obtain the CNF representation of the entire formula.
 
-    The resulting CNF formula is equi-satisfiable with the original formula, meaning they have the same set of satisfying assignments. This transformation enables the use of various CNF-based algorithms and tools to analyze and reason about the original logical formula efficiently
+The resulting CNF formula is equi-satisfiable with the original formula, meaning they have the same set of satisfying assignments. This transformation enables the use of various CNF-based algorithms and tools to analyze and reason about the original logical formula efficiently
 
 
 ---

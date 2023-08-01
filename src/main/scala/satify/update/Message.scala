@@ -1,8 +1,8 @@
-package update
+package satify.update
 
-import model.EmptyModel
+import satify.model.EmptyExpression
 
 /** Message is a sum type that collects all possible messages taken in input by the Update function. */
 enum Message:
   case Input(char: Char)
-  case Solve(expression: EmptyModel)
+  case Solve(expression: EmptyExpression)

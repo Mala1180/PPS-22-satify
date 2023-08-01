@@ -1,9 +1,9 @@
-package view
+package satify.view
 
 import java.awt.{Font, Toolkit}
 import scala.swing.Dimension
 
-object Utils:
+object Constants:
   val margin = 10
   val windowSize: Dimension = Toolkit.getDefaultToolkit.getScreenSize
   val logoPath = "src/main/resources/img/Satify_logo-colored.png"

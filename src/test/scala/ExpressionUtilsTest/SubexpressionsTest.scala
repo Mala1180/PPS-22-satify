@@ -1,127 +1,127 @@
-package EmptyModelUtilsTest
+package ExpressionUtilsTest
 
-import model.Expression.*
-import model.{EmptyModel, NamedVariable}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import satify.model.Expression.*
+import satify.model.{EmptyExpression, EmptyVariable}
 
 class SubexpressionsTest extends AnyFlatSpec with Matchers:
 
   "In ((a ∧ ¬b) ∨ c) the subexp ¬b" should "be decomposed correctly" in {
-    val exp: EmptyModel =
-      Or(And(Symbol(NamedVariable("a")), Not(Symbol(NamedVariable("b")))), Symbol(NamedVariable("c")))
+    val exp: EmptyExpression =
+      Or(And(Symbol(EmptyVariable("a")), Not(Symbol(EmptyVariable("b")))), Symbol(EmptyVariable("c")))
     val list = zipWithSymbol(exp)
     list should contain only (
-      (Symbol(NamedVariable("X2")), Not(Symbol(NamedVariable("b")))),
-      (Symbol(NamedVariable("X1")), And(Symbol(NamedVariable("a")), Not(Symbol(NamedVariable("b"))))),
+      (Symbol(EmptyVariable("X2")), Not(Symbol(EmptyVariable("b")))),
+      (Symbol(EmptyVariable("X1")), And(Symbol(EmptyVariable("a")), Not(Symbol(EmptyVariable("b"))))),
       (
-        Symbol(NamedVariable("X0")),
-        Or(And(Symbol(NamedVariable("a")), Not(Symbol(NamedVariable("b")))), Symbol(NamedVariable("c")))
+        Symbol(EmptyVariable("X0")),
+        Or(And(Symbol(EmptyVariable("a")), Not(Symbol(EmptyVariable("b")))), Symbol(EmptyVariable("c")))
       )
     )
   }
 
   "In a the subexp a" should "be decomposed correctly" in {
-    val exp: EmptyModel = Symbol(NamedVariable("a"))
+    val exp: EmptyExpression = Symbol(EmptyVariable("a"))
     val list = zipWithSymbol(exp)
-    list should contain only ((Symbol(NamedVariable("X0")), Symbol(NamedVariable("a"))))
+    list should contain only ((Symbol(EmptyVariable("X0")), Symbol(EmptyVariable("a"))))
   }
 
   "In ¬a the subexp ¬a" should "be decomposed correctly" in {
-    val exp: EmptyModel = Not(Symbol(NamedVariable("a")))
+    val exp: EmptyExpression = Not(Symbol(EmptyVariable("a")))
     val list = zipWithSymbol(exp)
     println(list)
-    list should contain only ((Symbol(NamedVariable("X0")), Not(Symbol(NamedVariable("a")))))
+    list should contain only ((Symbol(EmptyVariable("X0")), Not(Symbol(EmptyVariable("a")))))
   }
 
   "In (c ∧ (a ∧ ¬b)) the subexp ¬b, (a ∧ ¬b) and (c ∧ (a ∧ ¬b))" should "be decomposed correctly" in {
-    val exp: EmptyModel =
-      And(Symbol(NamedVariable("c")), And(Symbol(NamedVariable("a")), Not(Symbol(NamedVariable("b")))))
+    val exp: EmptyExpression =
+      And(Symbol(EmptyVariable("c")), And(Symbol(EmptyVariable("a")), Not(Symbol(EmptyVariable("b")))))
     val list = zipWithSymbol(exp)
     println(list)
     list should contain only (
       (
-        Symbol(NamedVariable("X0")),
-        And(Symbol(NamedVariable("c")), And(Symbol(NamedVariable("a")), Not(Symbol(NamedVariable("b")))))
+        Symbol(EmptyVariable("X0")),
+        And(Symbol(EmptyVariable("c")), And(Symbol(EmptyVariable("a")), Not(Symbol(EmptyVariable("b")))))
       ),
-      (Symbol(NamedVariable("X1")), And(Symbol(NamedVariable("a")), Not(Symbol(NamedVariable("b"))))),
-      (Symbol(NamedVariable("X2")), Not(Symbol(NamedVariable("b"))))
+      (Symbol(EmptyVariable("X1")), And(Symbol(EmptyVariable("a")), Not(Symbol(EmptyVariable("b"))))),
+      (Symbol(EmptyVariable("X2")), Not(Symbol(EmptyVariable("b"))))
     )
   }
 
   "In (c ∧ a) the subexp (c ∧ a)" should "be decomposed correctly" in {
-    val exp: EmptyModel = And(Symbol(NamedVariable("c")), Symbol(NamedVariable("a")))
+    val exp: EmptyExpression = And(Symbol(EmptyVariable("c")), Symbol(EmptyVariable("a")))
     val list = zipWithSymbol(exp)
     println(list)
     list should contain only (
-      (Symbol(NamedVariable("X0")), And(Symbol(NamedVariable("c")), Symbol(NamedVariable("a"))))
+      (Symbol(EmptyVariable("X0")), And(Symbol(EmptyVariable("c")), Symbol(EmptyVariable("a"))))
     )
   }
 
   "In (¬(p ∧ q) ∨ (r ∨ s)) the subexp (r ∨ s), (p ∧ q) and ¬(p ∧ q)" should "be decomposed correctly" in {
-    val exp: EmptyModel = Or(
-      Not(And(Symbol(NamedVariable("p")), Symbol(NamedVariable("q")))),
-      Or(Symbol(NamedVariable("r")), Symbol(NamedVariable("s")))
+    val exp: EmptyExpression = Or(
+      Not(And(Symbol(EmptyVariable("p")), Symbol(EmptyVariable("q")))),
+      Or(Symbol(EmptyVariable("r")), Symbol(EmptyVariable("s")))
     )
     val list = zipWithSymbol(exp)
     println(list)
     list should contain only (
       (
-        Symbol(NamedVariable("X0")),
+        Symbol(EmptyVariable("X0")),
         Or(
-          Not(And(Symbol(NamedVariable("p")), Symbol(NamedVariable("q")))),
-          Or(Symbol(NamedVariable("r")), Symbol(NamedVariable("s")))
+          Not(And(Symbol(EmptyVariable("p")), Symbol(EmptyVariable("q")))),
+          Or(Symbol(EmptyVariable("r")), Symbol(EmptyVariable("s")))
         )
       ),
-      (Symbol(NamedVariable("X1")), Not(And(Symbol(NamedVariable("p")), Symbol(NamedVariable("q"))))),
-      (Symbol(NamedVariable("X2")), And(Symbol(NamedVariable("p")), Symbol(NamedVariable("q")))),
-      (Symbol(NamedVariable("X3")), Or(Symbol(NamedVariable("r")), Symbol(NamedVariable("s"))))
+      (Symbol(EmptyVariable("X1")), Not(And(Symbol(EmptyVariable("p")), Symbol(EmptyVariable("q"))))),
+      (Symbol(EmptyVariable("X2")), And(Symbol(EmptyVariable("p")), Symbol(EmptyVariable("q")))),
+      (Symbol(EmptyVariable("X3")), Or(Symbol(EmptyVariable("r")), Symbol(EmptyVariable("s"))))
     )
   }
 
   "In ¬(a ∧ b) the subexp (a ∧ b) and ¬(a ∧ b)" should "be decomposed correctly" in {
-    val exp: EmptyModel = Not(And(Symbol(NamedVariable("a")), Symbol(NamedVariable("b"))))
+    val exp: EmptyExpression = Not(And(Symbol(EmptyVariable("a")), Symbol(EmptyVariable("b"))))
     val list = zipWithSymbol(exp)
     println(list)
     list should contain only (
-      (Symbol(NamedVariable("X0")), Not(And(Symbol(NamedVariable("a")), Symbol(NamedVariable("b"))))),
-      (Symbol(NamedVariable("X1")), And(Symbol(NamedVariable("a")), Symbol(NamedVariable("b"))))
+      (Symbol(EmptyVariable("X0")), Not(And(Symbol(EmptyVariable("a")), Symbol(EmptyVariable("b"))))),
+      (Symbol(EmptyVariable("X1")), And(Symbol(EmptyVariable("a")), Symbol(EmptyVariable("b"))))
     )
   }
 
   "In ((a ∨ (b ∧ c)) ∧ d) ∧ (s ∨ t) the subexp (b ∧ c), (a ∨ (b ∧ c))and ¬(a ∧ b)" should "be decomposed correctly" in {
-    val exp: EmptyModel = And(
+    val exp: EmptyExpression = And(
       And(
-        Or(Symbol(NamedVariable("a")), And(Symbol(NamedVariable("b")), Symbol(NamedVariable("c")))),
-        Symbol(NamedVariable("d"))
+        Or(Symbol(EmptyVariable("a")), And(Symbol(EmptyVariable("b")), Symbol(EmptyVariable("c")))),
+        Symbol(EmptyVariable("d"))
       ),
-      Or(Symbol(NamedVariable("s")), Symbol(NamedVariable("t")))
+      Or(Symbol(EmptyVariable("s")), Symbol(EmptyVariable("t")))
     )
     val list = zipWithSymbol(exp)
     println(list)
     list should contain only (
       (
-        Symbol(NamedVariable("X0")),
+        Symbol(EmptyVariable("X0")),
         And(
           And(
-            Or(Symbol(NamedVariable("a")), And(Symbol(NamedVariable("b")), Symbol(NamedVariable("c")))),
-            Symbol(NamedVariable("d"))
+            Or(Symbol(EmptyVariable("a")), And(Symbol(EmptyVariable("b")), Symbol(EmptyVariable("c")))),
+            Symbol(EmptyVariable("d"))
           ),
-          Or(Symbol(NamedVariable("s")), Symbol(NamedVariable("t")))
+          Or(Symbol(EmptyVariable("s")), Symbol(EmptyVariable("t")))
         )
       ),
       (
-        Symbol(NamedVariable("X1")),
+        Symbol(EmptyVariable("X1")),
         And(
-          Or(Symbol(NamedVariable("a")), And(Symbol(NamedVariable("b")), Symbol(NamedVariable("c")))),
-          Symbol(NamedVariable("d"))
+          Or(Symbol(EmptyVariable("a")), And(Symbol(EmptyVariable("b")), Symbol(EmptyVariable("c")))),
+          Symbol(EmptyVariable("d"))
         )
       ),
       (
-        Symbol(NamedVariable("X2")),
-        Or(Symbol(NamedVariable("a")), And(Symbol(NamedVariable("b")), Symbol(NamedVariable("c"))))
+        Symbol(EmptyVariable("X2")),
+        Or(Symbol(EmptyVariable("a")), And(Symbol(EmptyVariable("b")), Symbol(EmptyVariable("c"))))
       ),
-      (Symbol(NamedVariable("X3")), And(Symbol(NamedVariable("b")), Symbol(NamedVariable("c")))),
-      (Symbol(NamedVariable("X4")), Or(Symbol(NamedVariable("s")), Symbol(NamedVariable("t"))))
+      (Symbol(EmptyVariable("X3")), And(Symbol(EmptyVariable("b")), Symbol(EmptyVariable("c")))),
+      (Symbol(EmptyVariable("X4")), Or(Symbol(EmptyVariable("s")), Symbol(EmptyVariable("t"))))
     )
   }
