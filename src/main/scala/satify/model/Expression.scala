@@ -27,13 +27,11 @@ object Expression:
     * @return a list of the subexpressions found in the given expression zipped with the generic type.
     */
   def zipWith[T <: Variable, A](exp: Expression[T])(f: () => A): List[(A, Expression[T])] =
-    def subexp(exp: Expression[T], list: List[(A, Expression[T])])
-                             (f: () => A): List[(A, Expression[T])] = exp match
-        case Symbol(_) => List()
-        case e => (f(), exp) :: list ::: subop(e, list)(f)
+    def subexp(exp: Expression[T], list: List[(A, Expression[T])])(f: () => A): List[(A, Expression[T])] = exp match
+      case Symbol(_) => List()
+      case e => (f(), exp) :: list ::: subop(e, list)(f)
 
-    def subop(exp: Expression[T], list: List[(A, Expression[T])])
-                            (f: () => A): List[(A, Expression[T])] = exp match
+    def subop(exp: Expression[T], list: List[(A, Expression[T])])(f: () => A): List[(A, Expression[T])] = exp match
       case And(exp1, exp2) => subexp(exp1, list)(f) ::: subexp(exp2, list)(f)
       case Or(exp1, exp2) => subexp(exp1, list)(f) ::: subexp(exp2, list)(f)
       case Not(exp) => subexp(exp, list)(f)
@@ -49,7 +47,7 @@ object Expression:
     * @return a list of the subexpressions found in the given expression zipped with the Symbol.
     */
   def zipWithSymbol[T <: Variable](exp: Expression[T]): List[(Symbol[T], Expression[T])] =
-    //TODO TO CHECK!
+    // TODO TO CHECK!
     var c = 0
     def freshLabel(): Symbol[T] =
       exp match

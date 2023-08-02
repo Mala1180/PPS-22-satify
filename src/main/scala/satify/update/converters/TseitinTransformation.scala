@@ -13,7 +13,7 @@ object TseitinTransformation:
     */
   def tseitin[T <: Variable](exp: Expression[T]): CNF =
     val cnf = toCNF(exp)
-    //TODO to transform in CNF Model format here or in toCNF method
+    // TODO to transform in CNF Model format here or in toCNF method
     ???
 
   /** Substitute Symbols of nested subexpressions in all others expressions
@@ -21,7 +21,11 @@ object TseitinTransformation:
     * @return the decomposed expression in subexpressions with Symbols correctly substituted.
     */
   def symbolsReplace[T <: Variable](exp: Expression[T]): List[(Symbol[T], Expression[T])] =
-    def replace(list: List[(Symbol[T], Expression[T])], subexp: Expression[T], l: Symbol[T]): List[(Symbol[T], Expression[T])] =
+    def replace(
+        list: List[(Symbol[T], Expression[T])],
+        subexp: Expression[T],
+        l: Symbol[T]
+    ): List[(Symbol[T], Expression[T])] =
       list match
         case Nil => Nil
         case (lit, e) :: t if contains(e, subexp) => (lit, replaceExp(e, subexp, l)) :: replace(t, subexp, l)
@@ -50,10 +54,10 @@ object TseitinTransformation:
       case _ => List()
 
   /** Transforms the given expression into CNF following Tseitin Method.
-   *
-   * @param exp the expression to transform
-   * @return the expression in CNF form with new symbols introduced.
-   */
+    *
+    * @param exp the expression to transform
+    * @return the expression in CNF form with new symbols introduced.
+    */
   def toCNF[T <: Variable](exp: Expression[T]): Expression[T] =
     var transformations: List[(Symbol[T], Expression[T])] = List()
     symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)

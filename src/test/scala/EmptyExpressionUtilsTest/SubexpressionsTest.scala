@@ -101,16 +101,23 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
   }
 
   "In (¬(p ∧ q) ∨ (r ∨ s)) the subexp (r ∨ s), (p ∧ q) and ¬(p ∧ q)" should "be decomposed correctly" in {
-    val exp: EmptyExpression = Or(Not(And(Symbol(EmptyVariable("p")), Symbol(EmptyVariable("q")))),
-      Or(Symbol(EmptyVariable("r")), Symbol(EmptyVariable("s"))))
+    val exp: EmptyExpression = Or(
+      Not(And(Symbol(EmptyVariable("p")), Symbol(EmptyVariable("q")))),
+      Or(Symbol(EmptyVariable("r")), Symbol(EmptyVariable("s")))
+    )
     val result = zipWithSymbol(exp)
     val expected = List(
-      (Symbol(EmptyVariable("X0")), Or(Not(And(Symbol(EmptyVariable("p")), Symbol(EmptyVariable("q")))),
-        Or(Symbol(EmptyVariable("r")), Symbol(EmptyVariable("s"))))),
+      (
+        Symbol(EmptyVariable("X0")),
+        Or(
+          Not(And(Symbol(EmptyVariable("p")), Symbol(EmptyVariable("q")))),
+          Or(Symbol(EmptyVariable("r")), Symbol(EmptyVariable("s")))
+        )
+      ),
       (Symbol(EmptyVariable("X1")), Not(And(Symbol(EmptyVariable("p")), Symbol(EmptyVariable("q"))))),
       (Symbol(EmptyVariable("X2")), And(Symbol(EmptyVariable("p")), Symbol(EmptyVariable("q")))),
       (Symbol(EmptyVariable("X3")), Or(Symbol(EmptyVariable("r")), Symbol(EmptyVariable("s"))))
-      )
+    )
     result shouldBe expected
   }
 
