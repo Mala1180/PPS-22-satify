@@ -8,7 +8,7 @@ import satify.update.converters.TseitinTransformation.toCNF
 
 class CNFTest extends AnyFlatSpec with Matchers:
 
-  "((a ∧ ¬b) ∨ c) the CNF form" should "be correctly generated" in {
+  "The CNF form of ((a ∧ ¬b) ∨ c)" should "be correctly generated" in {
     /*
     EXAMPLE RESULT: ((a ∧ ¬b) ∨ c): (A OR B OR X1) AND (NOT A OR NOT X1 OR X2) AND (B OR NOT X1 OR X0)
                                    AND (X1 OR C OR X2) AND (NOT X1 OR NOT C OR X2)
@@ -43,7 +43,7 @@ class CNFTest extends AnyFlatSpec with Matchers:
     result shouldBe expected
   }
 
-  "In ¬b the CNF form" should "be correctly generated" in {
+  "The CNF form of ¬b" should "be correctly generated" in {
     val exp = Not(Symbol(EmptyVariable("b")))
     val result = toCNF(exp)
     val expected: EmptyExpression = And(

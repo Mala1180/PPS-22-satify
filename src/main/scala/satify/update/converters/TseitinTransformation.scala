@@ -1,6 +1,6 @@
 package satify.update.converters
 
-import satify.model.{CNF, EmptyVariable, Expression, Variable}
+import satify.model.{CNF, Expression, Variable}
 
 /** Object containing the Tseitin transformation algorithm. */
 object TseitinTransformation:

@@ -21,11 +21,11 @@ type AssignedExpression = Expression[AssignedVariable]
 object Expression:
 
   /** Zip the subexpressions found in the given expression with a generic type A.
-   *
-   * @param exp the expression.
-   * @param f the supplier of the generic type A.
-   * @return a list of the subexpressions found in the given expression zipped with the generic type.
-   */
+    *
+    * @param exp the expression.
+    * @param f the supplier of the generic type A.
+    * @return a list of the subexpressions found in the given expression zipped with the generic type.
+    */
   def zipWith[T <: Variable, A](exp: Expression[T])(f: () => A): List[(A, Expression[T])] =
     def subexp(exp: Expression[T], list: List[(A, Expression[T])])
                              (f: () => A): List[(A, Expression[T])] = exp match
@@ -44,10 +44,10 @@ object Expression:
       case _ => subexp(exp, List())(f)
 
   /** Zip the subexpressions found in the given expression with a Symbol.
-   *
-   * @param exp the expression.
-   * @return a list of the subexpressions found in the given expression zipped with the Symbol.
-   */
+    *
+    * @param exp the expression.
+    * @return a list of the subexpressions found in the given expression zipped with the Symbol.
+    */
   def zipWithSymbol[T <: Variable](exp: Expression[T]): List[(Symbol[T], Expression[T])] =
     //TODO TO CHECK!
     var c = 0
@@ -69,19 +69,19 @@ object Expression:
     zipWith(exp)(freshLabel)
 
   /** Search for subexpressions in the given expression.
-   *
-   * @param exp the expression.
-   * @return a list of the subexpressions found in the given expression.
-   */
+    *
+    * @param exp the expression.
+    * @return a list of the subexpressions found in the given expression.
+    */
   def subexpressions[T <: Variable](exp: Expression[T]): List[Expression[T]] =
     zipWithSymbol(exp).map(_._2)
 
   /** Search if a subexpression is contained in the given expression.
-   *
-   * @param exp the expression.
-   * @param subexp the subexpression to find.
-   * @return true if the subexpression is contained in the expression, false otherwise.
-   */
+    *
+    * @param exp the expression.
+    * @param subexp the subexpression to find.
+    * @return true if the subexpression is contained in the expression, false otherwise.
+    */
   def contains[T <: Variable](exp: Expression[T], subexp: Expression[T]): Boolean = subexpressions(exp).contains(subexp)
 
   /** Replace a subexpression of an expression with the given Symbol.
@@ -99,8 +99,8 @@ object Expression:
         case Not(e) => Not(replace(e, subexp, s))
         case Symbol(_) => exp
     exp match
-    case _ if exp == subexp => s
-    case and@And(_, _) => replaceExp(and, subexp, s)
-    case or@Or(_, _) => replaceExp(or, subexp, s)
-    case not@Not(_) => replaceExp(not, subexp, s)
-    case _ => exp
+      case _ if exp == subexp => s
+      case and @ And(_, _) => replaceExp(and, subexp, s)
+      case or @ Or(_, _) => replaceExp(or, subexp, s)
+      case not @ Not(_) => replaceExp(not, subexp, s)
+      case _ => exp
