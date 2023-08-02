@@ -3,7 +3,7 @@
 _No remaining tasks from the previous sprint._
 
 <table>
-    <thead> 
+    <thead>
         <tr>
             <th>Priority</th>
             <th>Product Backlog Item</th>
