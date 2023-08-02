@@ -1,6 +1,6 @@
 package satify.update.converters
 
-import satify.model.{CNF, EmptyVariable, Expression, Variable}
+import satify.model.{CNF, Expression, Variable}
 
 /** Object containing the Tseitin transformation algorithm. */
 object TseitinTransformation:
@@ -18,7 +18,11 @@ object TseitinTransformation:
     * @return the decomposed expression in subexpressions with Symbols correctly substituted.
     */
   def symbolsReplace[T <: Variable](exp: Expression[T]): List[(Symbol[T], Expression[T])] =
-    def replacer(list: List[(Symbol[T], Expression[T])], subexp: Expression[T], l: Symbol[T]): List[(Symbol[T], Expression[T])] =
+    def replacer(
+        list: List[(Symbol[T], Expression[T])],
+        subexp: Expression[T],
+        l: Symbol[T]
+    ): List[(Symbol[T], Expression[T])] =
       list match
         case Nil => Nil
         case (lit, e) :: t if contains(e, subexp) => (lit, replace(e, subexp, l)) :: replacer(t, subexp, l)

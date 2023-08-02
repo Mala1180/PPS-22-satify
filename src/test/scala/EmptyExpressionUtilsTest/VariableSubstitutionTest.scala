@@ -27,7 +27,8 @@ class VariableSubstitutionTest extends AnyFlatSpec with Matchers:
   }
 
   "In ((a ∧ ¬b) ∨ c) the replacement of subexpressions with variables" should "follow the nesting level" in {
-    val exp: EmptyExpression = Or(And(Symbol(EmptyVariable("a")), Not(Symbol(EmptyVariable("b")))), Symbol(EmptyVariable("c")))
+    val exp: EmptyExpression =
+      Or(And(Symbol(EmptyVariable("a")), Not(Symbol(EmptyVariable("b")))), Symbol(EmptyVariable("c")))
     val list: List[(Symbol[EmptyVariable], EmptyExpression)] = symbolsReplace(exp)
 
     val expectedList: List[(Symbol[EmptyVariable], EmptyExpression)] = List(
@@ -41,7 +42,10 @@ class VariableSubstitutionTest extends AnyFlatSpec with Matchers:
   "In ((a ∧ b) ∨ (c ∧ d) ∧ (e ∧ f)) the replacement of subexpressions with variables" should "follow the nesting level" in {
     val exp: EmptyExpression =
       And(
-        Or(And(Symbol(EmptyVariable("a")), Symbol(EmptyVariable("b"))), And(Symbol(EmptyVariable("c")), Symbol(EmptyVariable("d")))),
+        Or(
+          And(Symbol(EmptyVariable("a")), Symbol(EmptyVariable("b"))),
+          And(Symbol(EmptyVariable("c")), Symbol(EmptyVariable("d")))
+        ),
         And(Symbol(EmptyVariable("e")), Symbol(EmptyVariable("f")))
       )
 

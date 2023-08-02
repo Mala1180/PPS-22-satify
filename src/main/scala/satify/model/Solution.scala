@@ -1,6 +1,5 @@
 package satify.model
 
-
 /** Sum Type representing the two possible results of SAT problem. */
 enum Result:
   case SAT

@@ -25,24 +25,51 @@ class DecisionTreeSearchTest extends AnyFlatSpec with Matchers:
   "Decision tree search" should "explore all the possible assignments to the model" in {
     val emptyDec = Decision(extractModelFromExp(parExp), parExp)
     search(emptyDec) should be equals
-      Branch(emptyDec,
+      Branch(
+        emptyDec,
         Branch(
-          Decision(Seq(PartialVariable("a", Option(true)), varB), And(Symbol(PartialVariable("a", Option(true))), Symbol(varB))),
+          Decision(
+            Seq(PartialVariable("a", Option(true)), varB),
+            And(Symbol(PartialVariable("a", Option(true))), Symbol(varB))
+          ),
           Branch(
-            Decision(Seq(PartialVariable("a", Option(true)), PartialVariable("b", Option(true))),
-              And(Symbol(PartialVariable("a", Option(true))), Symbol(PartialVariable("b", Option(true))))), Unsat, Unsat),
+            Decision(
+              Seq(PartialVariable("a", Option(true)), PartialVariable("b", Option(true))),
+              And(Symbol(PartialVariable("a", Option(true))), Symbol(PartialVariable("b", Option(true))))
+            ),
+            Unsat,
+            Unsat
+          ),
           Branch(
-            Decision(Seq(PartialVariable("a", Option(true)), PartialVariable("b", Option(false))),
-              And(Symbol(PartialVariable("a", Option(true))), Symbol(PartialVariable("b", Option(false))))), Unsat, Unsat),
+            Decision(
+              Seq(PartialVariable("a", Option(true)), PartialVariable("b", Option(false))),
+              And(Symbol(PartialVariable("a", Option(true))), Symbol(PartialVariable("b", Option(false))))
+            ),
+            Unsat,
+            Unsat
+          )
         ),
         Branch(
-          Decision(Seq(PartialVariable("a", Option(false)), varB), And(Symbol(PartialVariable("a", Option(false))), Symbol(varB))),
+          Decision(
+            Seq(PartialVariable("a", Option(false)), varB),
+            And(Symbol(PartialVariable("a", Option(false))), Symbol(varB))
+          ),
           Branch(
-            Decision(Seq(PartialVariable("a", Option(false)), PartialVariable("b", Option(true))),
-              And(Symbol(PartialVariable("a", Option(false))), Symbol(PartialVariable("b", Option(true))))), Unsat, Unsat),
+            Decision(
+              Seq(PartialVariable("a", Option(false)), PartialVariable("b", Option(true))),
+              And(Symbol(PartialVariable("a", Option(false))), Symbol(PartialVariable("b", Option(true))))
+            ),
+            Unsat,
+            Unsat
+          ),
           Branch(
-            Decision(Seq(PartialVariable("a", Option(false)), PartialVariable("b", Option(false))),
-              And(Symbol(PartialVariable("a", Option(false))), Symbol(PartialVariable("b", Option(false))))), Unsat, Unsat),
-        ))
+            Decision(
+              Seq(PartialVariable("a", Option(false)), PartialVariable("b", Option(false))),
+              And(Symbol(PartialVariable("a", Option(false))), Symbol(PartialVariable("b", Option(false))))
+            ),
+            Unsat,
+            Unsat
+          )
+        )
+      )
   }
-
