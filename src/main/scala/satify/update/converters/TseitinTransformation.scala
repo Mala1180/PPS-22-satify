@@ -5,28 +5,31 @@ import satify.model.{CNF, EmptyVariable, Expression, Variable}
 /** Object containing the Tseitin transformation algorithm. */
 object TseitinTransformation:
 
-  import satify.model.Expression.*
+  import satify.model.Expression.{replace as replaceExp, *}
 
   /** Applies the Tseitin transformation to the given expression in order to convert it into CNF.
     * @param exp the expression to transform.
     * @return the CNF expression.
     */
-  def tseitin[T <: Variable](exp: Expression[T]): CNF = ???
+  def tseitin[T <: Variable](exp: Expression[T]): CNF =
+    val cnf = toCNF(exp)
+    //TODO to transform in CNF Model format here or in toCNF method
+    ???
 
   /** Substitute Symbols of nested subexpressions in all others expressions
     * @param exp the expression where to substitute Symbols
     * @return the decomposed expression in subexpressions with Symbols correctly substituted.
     */
   def symbolsReplace[T <: Variable](exp: Expression[T]): List[(Symbol[T], Expression[T])] =
-    def replacer(list: List[(Symbol[T], Expression[T])], subexp: Expression[T], l: Symbol[T]): List[(Symbol[T], Expression[T])] =
+    def replace(list: List[(Symbol[T], Expression[T])], subexp: Expression[T], l: Symbol[T]): List[(Symbol[T], Expression[T])] =
       list match
         case Nil => Nil
-        case (lit, e) :: t if contains(e, subexp) => (lit, replace(e, subexp, l)) :: replacer(t, subexp, l)
-        case (lit, e) :: t => (lit, e) :: replacer(t, subexp, l)
+        case (lit, e) :: t if contains(e, subexp) => (lit, replaceExp(e, subexp, l)) :: replace(t, subexp, l)
+        case (lit, e) :: t => (lit, e) :: replace(t, subexp, l)
 
     def symbolSelector(list: List[(Symbol[T], Expression[T])]): List[(Symbol[T], Expression[T])] = list match
       case Nil => Nil
-      case (l, e) :: tail => (l, e) :: symbolSelector(replacer(tail, e, l))
+      case (l, e) :: tail => (l, e) :: symbolSelector(replace(tail, e, l))
 
     symbolSelector(zipWithSymbol(exp).reverse)
 
