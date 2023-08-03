@@ -36,5 +36,10 @@ class SimpleOperatorsTest extends AnyFlatSpec:
   """ operators """ should "be left associative" in {
     val exp1 = "A" and "B" or "C" and not("D")
     val exp2 = (("A" and "B") or "C") and not("D")
-    exp1 shouldBe exp2
+    val exp3 = And(
+      Or(And(Symbol(EmptyVariable("A")), Symbol(EmptyVariable("B"))), Symbol(EmptyVariable("C"))),
+      Not(Symbol(EmptyVariable("D")))
+    )
+    exp1 shouldBe exp3
+    exp2 shouldBe exp3
   }
