@@ -30,11 +30,9 @@ object ComponentUtils:
     */
   def createInputTextArea(): TextArea =
     new TextArea:
+      rows = 22
+      columns = 45
       border = Swing.EmptyBorder(margin)
-      // scrollable
-      lineWrap = true
-      wordWrap = true
-      preferredSize = new Dimension(500, 300)
 
   /** Creates a combo box for the problem selection
     *
@@ -45,12 +43,12 @@ object ComponentUtils:
     new ComboBox(List("No selection", "N-Queens", "Graph Coloring", "Nurse Scheduling")):
       selection.reactions += { case event.SelectionChanged(_) => inputTextArea.text = selection.item }
 
-  /** Creates a button to solve the problem
+  /** Creates a button with the given text
     *
     * @param gui the gui
     * @return the button
     */
-  def createSolveButton(gui: GUI): Button = new Button("Solve"):
+  def createButton(gui: GUI, text: String): Button = new Button(text):
     font = Font(fontFamily, Font.ITALIC, 20)
     preferredSize = new Dimension(100, 40)
     background = Color.green
@@ -60,9 +58,10 @@ object ComponentUtils:
     *
     * @return the dialog
     */
-  def createOutputDialog(): Dialog =
+  def createOutputDialog(dialogTitle: String): Dialog =
     new Dialog:
       modal = true
+      title = dialogTitle
       val outputTextArea: TextArea = new TextArea:
         editable = false
         border = Swing.EmptyBorder(margin)
