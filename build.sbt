@@ -1,17 +1,16 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
-ThisBuild / scalaVersion := "3.3.0"
+val languageVersion = "3.3.0"
+ThisBuild / scalaVersion := languageVersion
 
 val scalaTest = "org.scalatest" %% "scalatest" % "3.2.16" % Test
 val archUnit = "com.tngtech.archunit" % "archunit" % "1.0.0" % Test
 val scalaSwing = "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
 val slf4jSimpleLog = "org.slf4j" % "slf4j-simple" % "2.0.7" % Test
+val scalaCompiler = "org.scala-lang" %% "scala3-compiler" % languageVersion
 
 lazy val root = (project in file("."))
   .settings(
     name := "satify",
-    libraryDependencies += scalaTest,
-    libraryDependencies += archUnit,
-    libraryDependencies += slf4jSimpleLog,
-    libraryDependencies += scalaSwing
+    libraryDependencies ++= Seq(scalaTest, archUnit, slf4jSimpleLog, scalaSwing, scalaCompiler)
   )
