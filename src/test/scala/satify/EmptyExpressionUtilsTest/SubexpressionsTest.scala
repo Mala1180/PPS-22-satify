@@ -1,4 +1,4 @@
-package EmptyExpressionUtilsTest
+package satify.EmptyExpressionUtilsTest
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

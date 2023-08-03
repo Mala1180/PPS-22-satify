@@ -1,4 +1,4 @@
-package dsl
+package satify.dsl
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.shouldBe
