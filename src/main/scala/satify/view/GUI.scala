@@ -33,7 +33,7 @@ object GUI:
       val outputDialog: Dialog = createOutputDialog()
       val solveButton: Button = createSolveButton(gui)
       solveButton.reactions += { case event.ButtonClicked(_) =>
-        //      gui.update(gui.model, Solve(gui.model.expression))
+        gui.update(gui.model, Message.Solve(inputTextArea.text))
         outputDialog.open()
       }
 
