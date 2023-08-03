@@ -33,13 +33,13 @@ object GUI:
       val solutionOutputDialog: Dialog = createOutputDialog("Solution")
       val solveButton: Button = createButton(gui, "Solve")
       solveButton.reactions += { case event.ButtonClicked(_) =>
-        //gui.update(gui.model, Solve(gui.model.expression))
+        // gui.update(gui.model, Solve(gui.model.expression))
         solutionOutputDialog.open()
       }
       val cnfOutputDialog: Dialog = createOutputDialog("CNF")
       val cnfButton: Button = createButton(gui, "CNF")
       cnfButton.reactions += { case event.ButtonClicked(_) =>
-        //gui.update(gui.model, CNF(gui.model.expression))
+        // gui.update(gui.model, CNF(gui.model.expression))
         cnfOutputDialog.open()
       }
 
