@@ -38,7 +38,7 @@ object Architecture:
         case Input(char) => model
         case Solve(exp) =>
           given CNFConverter with
-            def convert[T <: Variable](exp: Expression[T]): CNF = tseitin(exp)
+            def convert(exp: Expression): CNF = tseitin(exp)
 
           Solver().solve(exp)
           State()
