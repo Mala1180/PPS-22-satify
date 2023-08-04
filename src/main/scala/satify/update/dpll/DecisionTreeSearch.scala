@@ -1,6 +1,7 @@
-package satify.model.dpll
+package satify.update
 
 import satify.model.dpll.DecisionTree.*
+import satify.model.dpll.{Constraint, Decision, DecisionTree}
 import satify.model.{PartialExpression, PartialVariable}
 
 import scala.language.postfixOps
