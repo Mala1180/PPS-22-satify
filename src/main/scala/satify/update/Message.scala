@@ -6,3 +6,4 @@ import satify.model.EmptyExpression
 enum Message:
   case Input(char: Char)
   case Solve(expression: EmptyExpression)
+  case Convert(expression: EmptyExpression)

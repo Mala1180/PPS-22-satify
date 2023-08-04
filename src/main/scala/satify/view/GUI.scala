@@ -30,11 +30,17 @@ object GUI:
 
       val inputTextArea: TextArea = createInputTextArea()
       val problemComboBox: ComboBox[String] = createProblemComboBox(inputTextArea)
-      val outputDialog: Dialog = createOutputDialog()
-      val solveButton: Button = createSolveButton(gui)
+      val solutionOutputDialog: Dialog = createOutputDialog("Solution")
+      val solveButton: Button = createButton(gui, "Solve")
       solveButton.reactions += { case event.ButtonClicked(_) =>
-        //      gui.update(gui.model, Solve(gui.model.expression))
-        outputDialog.open()
+        // gui.update(gui.model, Solve(gui.model.expression))
+        solutionOutputDialog.open()
+      }
+      val cnfOutputDialog: Dialog = createOutputDialog("CNF")
+      val cnfButton: Button = createButton(gui, "CNF")
+      cnfButton.reactions += { case event.ButtonClicked(_) =>
+        // gui.update(gui.model, CNF(gui.model.expression))
+        cnfOutputDialog.open()
       }
 
       contents = new BoxPanel(Orientation.Vertical):
@@ -45,8 +51,7 @@ object GUI:
             contents += new FlowPanel():
               contents += new Label("Input:"):
                 font = headingFont
-            contents += new ScrollPane:
-              contents = inputTextArea
+            contents += new ScrollPane(inputTextArea)
           contents += new BoxPanel(Orientation.Vertical):
             contents += new FlowPanel():
               contents += new Label("Fill with problem:"):
@@ -54,6 +59,7 @@ object GUI:
             contents += problemComboBox
         contents += new FlowPanel():
           contents += solveButton
+          contents += cnfButton
 
       // size of the main frame based on the screen size
       size = new Dimension(windowSize.width / 2, windowSize.height / 3 * 2)

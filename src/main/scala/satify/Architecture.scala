@@ -1,7 +1,7 @@
 package satify
 
 import satify.model.{CNF, Expression, State, Variable}
-import satify.update.Message.{Input, Solve}
+import satify.update.Message.{Convert, Input, Solve}
 import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.tseitin
 import satify.update.{Message, Solver}
@@ -41,4 +41,7 @@ object Architecture:
             def convert[T <: Variable](exp: Expression[T]): CNF = tseitin(exp)
 
           Solver().solve(exp)
+          State()
+        case Convert(exp) =>
+          tseitin(exp)
           State()
