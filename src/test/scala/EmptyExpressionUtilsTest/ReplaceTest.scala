@@ -30,7 +30,6 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
     val expected: EmptyExpression =
       Or(And(Symbol(EmptyVariable("a")), Symbol(EmptyVariable("X0"))), Symbol(EmptyVariable("c")))
     val result = replace(exp, substitution, Symbol(EmptyVariable("X0")))
-    println(result)
     result shouldBe expected
   }
 

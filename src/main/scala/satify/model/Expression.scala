@@ -1,5 +1,4 @@
 package satify.model
-
 trait Variable:
   val name: String
 
@@ -21,8 +20,6 @@ type AssignedExpression = Expression[AssignedVariable]
 
 object Expression:
 
-  // import Expression.*
-
   /** Zip the subexpressions found in the given expression with a generic type A.
     *
     * @param exp the expression.
@@ -34,11 +31,11 @@ object Expression:
       case Symbol(_) => List()
       case e => (f(), exp) :: list ::: subop(e, list)(f)
 
-    // TODO: exhaustive match
     def subop(exp: Expression[T], list: List[(A, Expression[T])])(f: () => A): List[(A, Expression[T])] = exp match
       case And(exp1, exp2) => subexp(exp1, list)(f) ::: subexp(exp2, list)(f)
       case Or(exp1, exp2) => subexp(exp1, list)(f) ::: subexp(exp2, list)(f)
       case Not(exp) => subexp(exp, list)(f)
+      case _ => subexp(exp, list)(f)
     exp match
       case Symbol(_) => List((f(), exp))
       case Not(Symbol(_)) => List((f(), exp))
@@ -50,13 +47,23 @@ object Expression:
     * @return a list of the subexpressions found in the given expression zipped with the Symbol.
     */
   def zipWithSymbol[T <: Variable](exp: Expression[T]): List[(Symbol[T], Expression[T])] =
+    // TODO TO CHECK!
     var c = 0
-    // TODO: exhaustive match
-    def freshLabel(): Symbol[T] = exp match
-      case _: Expression[EmptyVariable] =>
-        val l: Symbol[EmptyVariable] = Symbol(EmptyVariable("X" + c))
-        c = c + 1
-        l
+    def freshLabel(): Symbol[T] =
+      exp match
+        case e: EmptyExpression if e.isInstanceOf[Expression[EmptyVariable]] =>
+          val l: Symbol[EmptyVariable] = Symbol(EmptyVariable("X" + c))
+          c = c + 1
+          l
+        case e: PartialExpression =>
+          val l: Symbol[PartialVariable] = Symbol(PartialVariable("X" + c, Option.empty))
+          c = c + 1
+          l
+        case e: AssignedExpression if e.isInstanceOf[Expression[AssignedVariable]] =>
+          val l: Symbol[AssignedVariable] = Symbol(AssignedVariable("X" + c, false))
+          c = c + 1
+          l
+        case And(_, _) | Or(_, _) | Not(_) | Symbol(_) => ???
     zipWith(exp)(freshLabel)
 
   /** Search for subexpressions in the given expression.
@@ -84,11 +91,11 @@ object Expression:
     */
   def replace[T <: Variable](exp: Expression[T], subexp: Expression[T], s: Symbol[T]): Expression[T] =
     def replaceExp(exp: Expression[T], subexp: Expression[T], s: Symbol[T]): Expression[T] =
-      // TODO: exhaustive match
       exp match
         case And(e1, e2) => And(replace(e1, subexp, s), replace(e2, subexp, s))
         case Or(e1, e2) => Or(replace(e1, subexp, s), replace(e2, subexp, s))
         case Not(e) => Not(replace(e, subexp, s))
+        case Symbol(_) => exp
     exp match
       case _ if exp == subexp => s
       case and @ And(_, _) => replaceExp(and, subexp, s)

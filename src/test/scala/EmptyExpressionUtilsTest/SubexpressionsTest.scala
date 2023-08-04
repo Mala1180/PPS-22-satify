@@ -105,9 +105,8 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
       Not(And(Symbol(EmptyVariable("p")), Symbol(EmptyVariable("q")))),
       Or(Symbol(EmptyVariable("r")), Symbol(EmptyVariable("s")))
     )
-    val list = zipWithSymbol(exp)
-    println(list)
-    list should contain only (
+    val result = zipWithSymbol(exp)
+    val expected = List(
       (
         Symbol(EmptyVariable("X0")),
         Or(
@@ -119,16 +118,17 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
       (Symbol(EmptyVariable("X2")), And(Symbol(EmptyVariable("p")), Symbol(EmptyVariable("q")))),
       (Symbol(EmptyVariable("X3")), Or(Symbol(EmptyVariable("r")), Symbol(EmptyVariable("s"))))
     )
+    result shouldBe expected
   }
 
   "In ¬(a ∧ b) the subexp (a ∧ b) and ¬(a ∧ b)" should "be decomposed correctly" in {
     val exp: EmptyExpression = Not(And(Symbol(EmptyVariable("a")), Symbol(EmptyVariable("b"))))
-    val list = zipWithSymbol(exp)
-    println(list)
-    list should contain only (
+    val result = zipWithSymbol(exp)
+    val expected = List(
       (Symbol(EmptyVariable("X0")), Not(And(Symbol(EmptyVariable("a")), Symbol(EmptyVariable("b"))))),
       (Symbol(EmptyVariable("X1")), And(Symbol(EmptyVariable("a")), Symbol(EmptyVariable("b"))))
     )
+    result shouldBe expected
   }
 
   "The (¬(p ∧ q) ∨ (r ∨ s))" should "be decomposed in 4 subexpressions following the nesting level" in {
