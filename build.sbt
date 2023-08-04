@@ -8,9 +8,10 @@ val archUnit = "com.tngtech.archunit" % "archunit" % "1.0.0" % Test
 val scalaSwing = "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
 val slf4jSimpleLog = "org.slf4j" % "slf4j-simple" % "2.0.7" % Test
 val scalaCompiler = "org.scala-lang" %% "scala3-compiler" % languageVersion
+val cucumber = "io.cucumber" %% "cucumber-scala" % "8.14.1" % Test
 
 lazy val root = (project in file("."))
   .settings(
     name := "satify",
-    libraryDependencies ++= Seq(scalaTest, archUnit, slf4jSimpleLog, scalaSwing, scalaCompiler)
+    libraryDependencies ++= Seq(scalaTest, archUnit, slf4jSimpleLog, scalaSwing, scalaCompiler, cucumber)
   )

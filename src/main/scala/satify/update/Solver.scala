@@ -12,7 +12,7 @@ trait Solver:
     */
   def dpll(cnf: CNF): Solution
 
-  /** Apply the Tseitin transformation and the DPLL algorithm to solve the SAT problem.
+  /** Apply a CNF conversion to the input expression and then it is given in input to the DPLL algorithm.
     * @param exp the input expression
     * @return the solution
     */
@@ -22,7 +22,7 @@ trait Solver:
 object Solver:
   def apply(): Solver = SolverImpl()
 
-  /** Private implementation of the Solver trait. */
+  /** Private implementation of [[Solver]]. */
   private case class SolverImpl() extends Solver:
     def dpll(cnf: CNF): Solution = ???
     def solve[T <: Variable](exp: Expression[T])(using converter: CNFConverter): Solution = dpll(converter.convert(exp))
