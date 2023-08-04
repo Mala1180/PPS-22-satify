@@ -1,3 +1,5 @@
+package satify
+
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.CNF.*

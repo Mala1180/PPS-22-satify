@@ -3,6 +3,7 @@ package satify.view
 import satify.Main.Model
 import satify.model.State
 import satify.update.Message
+import satify.update.Message.Convert
 import satify.view.Constants.*
 
 import javax.swing.ImageIcon
@@ -31,15 +32,15 @@ object GUI:
       val inputTextArea: TextArea = createInputTextArea()
       val problemComboBox: ComboBox[String] = createProblemComboBox(inputTextArea)
       val solutionOutputDialog: Dialog = createOutputDialog("Solution")
-      val solveButton: Button = createButton(gui, "Solve")
+      val solveButton: Button = createButton(gui, "Solve", 100, 40)
       solveButton.reactions += { case event.ButtonClicked(_) =>
-        // gui.update(gui.model, Solve(gui.model.expression))
+        gui.update(gui.model, Message.Solve(inputTextArea.text))
         solutionOutputDialog.open()
       }
-      val cnfOutputDialog: Dialog = createOutputDialog("CNF")
-      val cnfButton: Button = createButton(gui, "CNF")
+      val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
+      val cnfButton: Button = createButton(gui, "Convert to CNF", 170, 40)
       cnfButton.reactions += { case event.ButtonClicked(_) =>
-        // gui.update(gui.model, CNF(gui.model.expression))
+        gui.update(gui.model, Convert(inputTextArea.text))
         cnfOutputDialog.open()
       }
 
