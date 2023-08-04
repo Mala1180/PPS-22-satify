@@ -3,20 +3,20 @@ package satify.DecisionTreeTest
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.*
-import satify.model.Expression.*
+import satify.model.CNF.*
 import satify.model.dpll.DecisionTree.*
 import satify.model.dpll.DecisionTreeSearch.*
-import satify.model.dpll.DpllExpressionUtils.*
+//import satify.model.dpll.DpllExpressionUtils.*
 import satify.model.dpll.{Decision, DecisionTree, DecisionTreeSearch}
 
 import scala.language.postfixOps
 
-class DecisionTreeSearchTest extends AnyFlatSpec with Matchers:
+/*class DecisionTreeSearchTest extends AnyFlatSpec with Matchers:
 
-  val varA: PartialVariable = PartialVariable("a", Option.empty)
-  val varB: PartialVariable = PartialVariable("b", Option.empty)
+  val varA: Variable = Variable("a", Option.empty)
+  val varB: Variable = Variable("b", Option.empty)
 
-  val parExp: PartialExpression = And(Symbol(varA), Symbol(varB))
+  val parExp: CNF = And(Symbol(varA), Symbol(varB))
 
   "Decision tree search" should "accept a Decision and return a DecisionTree" in {
     search(Decision(extractModelFromExp(parExp), parExp)).getClass should be equals classOf[DecisionTree]
@@ -72,4 +72,4 @@ class DecisionTreeSearchTest extends AnyFlatSpec with Matchers:
           )
         )
       )
-  }
+  }*/

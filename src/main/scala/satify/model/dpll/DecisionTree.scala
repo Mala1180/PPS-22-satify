@@ -1,16 +1,16 @@
 package satify.model.dpll
 
-import satify.model.Expression.*
-import satify.model.{PartialExpression, PartialVariable, Variable}
+import satify.model.CNF.*
+import satify.model.{CNF, Variable}
 
 type Model[T <: Variable] = Seq[T]
-type PartialModel = Model[PartialVariable]
+type PartialModel = Model[Variable]
 
 /** Decision is a node of DecisionTree.
   * @param partialModel The current state of the PartialModel with varName's PartialVariable constrained.
-  * @param partialExpression Updated expression after the decision.
+  * @param Expression Updated expression after the decision.
   */
-case class Decision(partialModel: PartialModel, partialExpression: PartialExpression)
+case class Decision(partialModel: PartialModel, Expression: CNF)
 
 /** DecisionTree is the main data structure for the DPLL algorithm. */
 enum DecisionTree:

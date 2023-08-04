@@ -1,6 +1,6 @@
 package satify.update
 
-import satify.model.{CNF, EmptyExpression, EmptyVariable, Expression, State, Variable}
+import satify.model.{CNF, Expression, State, Variable}
 import satify.update.Message.*
 import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.tseitin
@@ -14,10 +14,11 @@ object Update:
         val exp = reflect(processInput(input))
         println(exp)
         State()
-//        given CNFConverter with
-//          def convert[T <: Variable](exp: Expression[T]): CNF = tseitin(exp)
-//        Solver().solve(exp)
-//        State()
+      // given CNFConverter with
+      //   def convert[T <: Variable](exp: Expression[T]): CNF = tseitin(exp)
+      // Solver().solve(exp)
+      // State()
+      case Convert(input) => model
 
   private def processInput(input: String): String =
     val operators = List("and", "or", "not", "=>", "\\/", "/\\", "(", ")")
@@ -25,13 +26,13 @@ object Update:
       // split for spaces or parenthesis
       .split("[ ()]")
       .filterNot(_.isBlank)
-      .map(symbol => if !operators.contains(symbol) then s""""$symbol"""" else symbol)
+      .map(symbol => if !operators.contains(symbol) then s"\"$symbol\"" else symbol)
       .reduce((a, b) => s"$a $b")
 
-  private def reflect(code: String): EmptyExpression =
+  private def reflect(code: String): Expression =
     val imports =
-      """import satify.model.{Expression, EmptyVariable}
+      """import satify.model.{Expression}
         |import satify.dsl.DSL.{*, given}
         |""".stripMargin
 
-    dotty.tools.repl.ScriptEngine().eval(imports + code).asInstanceOf[Expression[EmptyVariable]]
+    dotty.tools.repl.ScriptEngine().eval(imports + code).asInstanceOf[Expression]

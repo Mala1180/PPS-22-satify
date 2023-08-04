@@ -1,16 +1,16 @@
 package satify.dsl
 
+import satify.model.Expression
 import satify.model.Expression.*
-import satify.model.{EmptyExpression, EmptyVariable, Expression}
 
 import scala.language.postfixOps
 
 object DSL:
 
-  given Conversion[String, Symbol[EmptyVariable]] with
-    def apply(s: String): Symbol[EmptyVariable] = Symbol(EmptyVariable(s))
+  given Conversion[String, Symbol] with
+    def apply(s: String): Symbol = Symbol(s)
 
-  extension (exp1: EmptyExpression)
-    def and(exp2: EmptyExpression): EmptyExpression = And(exp1, exp2)
-    def or(exp2: EmptyExpression): EmptyExpression = Or(exp1, exp2)
-    def not: EmptyExpression = Not(exp1)
+  extension (exp1: Expression)
+    def and(exp2: Expression): Expression = And(exp1, exp2)
+    def or(exp2: Expression): Expression = Or(exp1, exp2)
+    def not: Expression = Not(exp1)

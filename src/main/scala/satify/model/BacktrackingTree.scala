@@ -1,12 +1,12 @@
 package satify.model
 
-import satify.model.EmptyExpression
+import satify.model.CNF
 import satify.model.dpll.PartialModel
 
 import scala.collection.immutable.Queue
 
 object BacktrackingTree:
-  def apply(emptyModel: EmptyExpression): BacktrackingTree =
+  def apply(emptyModel: CNF): BacktrackingTree =
     new BacktrackingTree(emptyModel, Queue.empty)
 
   // TODO
@@ -22,4 +22,4 @@ object BacktrackingTree:
         )
   }
 
-case class BacktrackingTree(emptyModel: EmptyExpression, partialModels: Queue[(String, PartialModel)])
+case class BacktrackingTree(emptyModel: CNF, partialModels: Queue[(String, PartialModel)])

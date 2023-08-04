@@ -4,3 +4,4 @@ package satify.update
 enum Message:
   case Input(char: Char)
   case Solve(input: String)
+  case Convert(input: String)

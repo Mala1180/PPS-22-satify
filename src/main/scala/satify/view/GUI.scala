@@ -3,6 +3,7 @@ package satify.view
 import satify.Main.Model
 import satify.model.State
 import satify.update.Message
+import satify.update.Message.Convert
 import satify.view.Constants.*
 
 import javax.swing.ImageIcon
@@ -30,11 +31,17 @@ object GUI:
 
       val inputTextArea: TextArea = createInputTextArea()
       val problemComboBox: ComboBox[String] = createProblemComboBox(inputTextArea)
-      val outputDialog: Dialog = createOutputDialog()
-      val solveButton: Button = createSolveButton(gui)
+      val solutionOutputDialog: Dialog = createOutputDialog("Solution")
+      val solveButton: Button = createButton(gui, "Solve", 100, 40)
       solveButton.reactions += { case event.ButtonClicked(_) =>
         gui.update(gui.model, Message.Solve(inputTextArea.text))
-        outputDialog.open()
+        solutionOutputDialog.open()
+      }
+      val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
+      val cnfButton: Button = createButton(gui, "Convert to CNF", 170, 40)
+      cnfButton.reactions += { case event.ButtonClicked(_) =>
+        gui.update(gui.model, Convert(inputTextArea.text))
+        cnfOutputDialog.open()
       }
 
       contents = new BoxPanel(Orientation.Vertical):
@@ -45,8 +52,7 @@ object GUI:
             contents += new FlowPanel():
               contents += new Label("Input:"):
                 font = headingFont
-            contents += new ScrollPane:
-              contents = inputTextArea
+            contents += new ScrollPane(inputTextArea)
           contents += new BoxPanel(Orientation.Vertical):
             contents += new FlowPanel():
               contents += new Label("Fill with problem:"):
@@ -54,6 +60,7 @@ object GUI:
             contents += problemComboBox
         contents += new FlowPanel():
           contents += solveButton
+          contents += cnfButton
 
       // size of the main frame based on the screen size
       size = new Dimension(windowSize.width / 2, windowSize.height / 3 * 2)
