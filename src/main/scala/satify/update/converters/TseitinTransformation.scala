@@ -11,7 +11,7 @@ object TseitinTransformation:
     * @param exp the expression to transform.
     * @return the CNF expression.
     */
-  def tseitin[T <: Variable](exp: Expression[T]): CNF =
+  def tseitin(exp: Expression): CNF =
     val cnf = toCNF(exp)
     // TODO to transform in CNF Model format here or in toCNF method
     ???
@@ -20,18 +20,18 @@ object TseitinTransformation:
     * @param exp the expression where to substitute Symbols
     * @return the decomposed expression in subexpressions with Symbols correctly substituted.
     */
-  def symbolsReplace[T <: Variable](exp: Expression[T]): List[(Symbol[T], Expression[T])] =
+  def symbolsReplace(exp: Expression): List[(Symbol, Expression)] =
     def replace(
-        list: List[(Symbol[T], Expression[T])],
-        subexp: Expression[T],
-        l: Symbol[T]
-    ): List[(Symbol[T], Expression[T])] =
+        list: List[(Symbol, Expression)],
+        subexp: Expression,
+        l: Symbol
+    ): List[(Symbol, Expression)] =
       list match
         case Nil => Nil
         case (lit, e) :: t if contains(e, subexp) => (lit, replaceExp(e, subexp, l)) :: replace(t, subexp, l)
         case (lit, e) :: t => (lit, e) :: replace(t, subexp, l)
 
-    def symbolSelector(list: List[(Symbol[T], Expression[T])]): List[(Symbol[T], Expression[T])] = list match
+    def symbolSelector(list: List[(Symbol, Expression)]): List[(Symbol, Expression)] = list match
       case Nil => Nil
       case (l, e) :: tail => (l, e) :: symbolSelector(replace(tail, e, l))
 
@@ -41,8 +41,8 @@ object TseitinTransformation:
     * @param exp a Symbol and the corresponding expression
     * @return a list of Symbol and expressions in CNF form for the given Symbol and expression
     */
-  def transform[T <: Variable](exp: (Symbol[T], Expression[T])): List[(Symbol[T], Expression[T])] =
-    def not(exp: Expression[T]): Expression[T] = exp match
+  def transform(exp: (Symbol, Expression)): List[(Symbol, Expression)] =
+    def not(exp: Expression): Expression = exp match
       case Not(sym) => sym
       case sym => Not(sym)
     exp match
@@ -58,7 +58,7 @@ object TseitinTransformation:
     * @param exp the expression to transform
     * @return the expression in CNF form with new symbols introduced.
     */
-  def toCNF[T <: Variable](exp: Expression[T]): Expression[T] =
-    var transformations: List[(Symbol[T], Expression[T])] = List()
+  def toCNF(exp: Expression): Expression =
+    var transformations: List[(Symbol, Expression)] = List()
     symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
     transformations.reduceRight((s1, s2) => (s1._1, And(s1._2, s2._2)))._2

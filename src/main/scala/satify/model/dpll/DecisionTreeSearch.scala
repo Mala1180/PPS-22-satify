@@ -1,7 +1,7 @@
 package satify.model.dpll
 
 import satify.model.dpll.DecisionTree.*
-import satify.model.{PartialExpression, PartialVariable}
+import satify.model.{CNF, Variable}
 
 import scala.language.postfixOps
 
@@ -32,20 +32,20 @@ object DecisionTreeSearch:
     * @return DecisionTree from search
     */
   private def recStep(
-      parVar: PartialVariable,
+      parVar: Variable,
       parModel: PartialModel,
-      parExp: PartialExpression,
+      parExp: CNF,
       b: Boolean
   ): DecisionTree =
     parVar match
-      case PartialVariable(name, _) => search(Decision(updateParModel(Constraint(name, b), parModel), parExp))
+      case Variable(name, _) => search(Decision(updateParModel(Constraint(name, b), parModel), parExp))
 
   /** Filters unconstrained variables from the partial model
     * @param parModel partial model
     * @return filtered partial model
     */
   private def filterUnconstrVars(parModel: PartialModel): PartialModel =
-    parModel.filter { case PartialVariable(_, o) => o.isEmpty }
+    parModel.filter { case Variable(_, o) => o.isEmpty }
 
   /** Update a PartialModel given as parameter constraining a variable (VariableConstraint)
     * @param varConstr variable constraint
@@ -54,7 +54,7 @@ object DecisionTreeSearch:
     */
   private def updateParModel(varConstr: Constraint, parModel: PartialModel): PartialModel =
     parModel.map {
-      case PartialVariable(name, _) if name == varConstr.variable =>
-        PartialVariable(name, Option(varConstr.value))
+      case Variable(name, _) if name == varConstr.variable =>
+        Variable(name, Option(varConstr.value))
       case v => v
     }
