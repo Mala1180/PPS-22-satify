@@ -54,7 +54,7 @@ object DecisionTreeSearch:
     */
   private def updateParModel(varConstr: Constraint, parModel: PartialModel): PartialModel =
     parModel.map {
-      case Variable(name, _) if name == varConstr.variable =>
+      case Variable(name, _) if name == varConstr.name =>
         Variable(name, Option(varConstr.value))
       case v => v
     }
