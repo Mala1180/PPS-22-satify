@@ -1,8 +1,9 @@
-package satify.update
+package satify.update.dpll
 
-import satify.model.dpll.DecisionTree.*
-import satify.model.dpll.{Constraint, Decision, DecisionTree}
-import satify.model.{PartialExpression, PartialVariable}
+import satify.model.DecisionTree.*
+import satify.model.{CNF, Constraint, Decision, DecisionTree, PartialModel, Variable}
+import satify.update.dpll.DpllCnfUtils.*
+import satify.model
 
 import scala.language.postfixOps
 
@@ -15,27 +16,27 @@ object DecisionTreeSearch:
    * @param dec decision to make
    * @return decision tree from the current decision
    */
-  def search(dec: Decision): DecisionTree = dec match
-    case Decision(parModel, parExp) =>
+  def dpll(dec: Decision): DecisionTree = dec match
+    case Decision(parModel, cnf) =>
       val unContrVars = filterUnconstrVars(parModel)
       if (unContrVars.nonEmpty)
-        Branch(dec, recStep(unContrVars.head, parModel, parExp, true),
-          recStep(unContrVars.head, parModel, parExp, false))
+        Branch(dec, recStep(unContrVars.head, parModel, updateCnf(cnf, Constraint(unContrVars.head.name, true)), true),
+          recStep(unContrVars.head, parModel, updateCnf(cnf, Constraint(unContrVars.head.name, false)), false))
       else Unsat
 
   /**
    * Recursive search step.
    * @param parVar partial variable
    * @param parModel partial model
-   * @param parExp partial expression
+   * @param cnf CNF expression
    * @param b boolean assignment
-   * @return DecisionTree from search
+   * @return DecisionTree from dpll
    */
-  private def recStep(parVar: PartialVariable, parModel: PartialModel,
-                      parExp: PartialExpression, b: Boolean): DecisionTree =
-    search(
+  private def recStep(parVar: Variable, parModel: PartialModel,
+                      cnf: CNF, b: Boolean): DecisionTree =
+    dpll(
       Decision(updateParModel(parVar match
-        case PartialVariable(name, _) => Constraint(name, b), parModel), parExp)
+        case Variable(name, _) => Constraint(name, b), parModel), cnf)
   )
 
   /**
@@ -44,7 +45,7 @@ object DecisionTreeSearch:
    * @return filtered partial model
    */
   private def filterUnconstrVars(parModel: PartialModel): PartialModel =
-    parModel.filter { case PartialVariable(_, o) => o.isEmpty }
+    parModel.filter { case Variable(_, o) => o.isEmpty }
 
   /**
    * Update a PartialModel given as parameter constraining a variable (VariableConstraint)
@@ -54,7 +55,7 @@ object DecisionTreeSearch:
    */
   private def updateParModel(varConstr: Constraint, parModel: PartialModel): PartialModel =
     parModel.map {
-      case PartialVariable(name, _) if name == varConstr.variable =>
-        PartialVariable(name, Option(varConstr.value))
+      case Variable(name, _) if name == varConstr.name =>
+        Variable(name, Option(varConstr.value))
       case v => v
     }
