@@ -5,10 +5,10 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.should
 import satify.model.DecisionTree
 import satify.model.DecisionTree.*
-import satify.model.{CNF, Decision, Variable}
+import satify.model.{CNF, TreeState, Variable}
 import satify.model.CNF.*
 import satify.update.dpll.DpllCnfUtils.*
-import satify.update.dpll.DecisionTreeSearch.*
+import satify.update.dpll.DPLL.*
 
 class DPLLTest extends AnyFlatSpec with Matchers:
 
@@ -17,54 +17,54 @@ class DPLLTest extends AnyFlatSpec with Matchers:
 
   val cnf: CNF = And(Symbol(varA), Symbol(varB))
 
-  "Function DPLL" should "accept a Decision and return a DecisionTree" in {
-    dpll(Decision(extractModelFromCnf(cnf), cnf)).getClass should be equals classOf[DecisionTree]
+  "DPLL" should "accept a Decision and return a DecisionTree" in {
+    dpll(TreeState(extractModelFromCnf(cnf), cnf)).getClass shouldBe classOf[Branch]
   }
 
-  "Function DPLL" should "explore all the possible assignments to the model" in {
-    val emptyDec = Decision(extractModelFromCnf(cnf), cnf)
-    dpll(emptyDec) should be equals
+  "DPLL" should "explore all the possible assignments to the model" in {
+    val emptyDec = TreeState(extractModelFromCnf(cnf), cnf)
+    dpll(emptyDec) shouldBe
       Branch(
         emptyDec,
         Branch(
-          Decision(
-            Seq(Variable("a", Option(true)), varB),
-            And(Symbol(Variable("a", Option(true))), Symbol(varB))
+          TreeState(
+            Seq(Variable("a", Some(true)), varB),
+            And(Symbol(Variable("a", Some(true))), Symbol(varB))
           ),
           Branch(
-            Decision(
-              Seq(Variable("a", Option(true)), Variable("b", Option(true))),
-              And(Symbol(Variable("a", Option(true))), Symbol(Variable("b", Option(true))))
+            TreeState(
+              Seq(Variable("a", Some(true)), Variable("b", Some(true))),
+              And(Symbol(Variable("a", Some(true))), Symbol(Variable("b", Some(true))))
             ),
             Unsat,
             Unsat
           ),
           Branch(
-            Decision(
-              Seq(Variable("a", Option(true)), Variable("b", Option(false))),
-              And(Symbol(Variable("a", Option(true))), Symbol(Variable("b", Option(false))))
+            TreeState(
+              Seq(Variable("a", Some(true)), Variable("b", Some(false))),
+              And(Symbol(Variable("a", Some(true))), Symbol(Variable("b", Some(false))))
             ),
             Unsat,
             Unsat
           )
         ),
         Branch(
-          Decision(
-            Seq(Variable("a", Option(false)), varB),
-            And(Symbol(Variable("a", Option(false))), Symbol(varB))
+          TreeState(
+            Seq(Variable("a", Some(false)), varB),
+            And(Symbol(Variable("a", Some(false))), Symbol(varB))
           ),
           Branch(
-            Decision(
-              Seq(Variable("a", Option(false)), Variable("b", Option(true))),
-              And(Symbol(Variable("a", Option(false))), Symbol(Variable("b", Option(true))))
+            TreeState(
+              Seq(Variable("a", Some(false)), Variable("b", Some(true))),
+              And(Symbol(Variable("a", Some(false))), Symbol(Variable("b", Some(true))))
             ),
             Unsat,
             Unsat
           ),
           Branch(
-            Decision(
-              Seq(Variable("a", Option(false)), Variable("b", Option(false))),
-              And(Symbol(Variable("a", Option(false))), Symbol(Variable("b", Option(false))))
+            TreeState(
+              Seq(Variable("a", Some(false)), Variable("b", Some(false))),
+              And(Symbol(Variable("a", Some(false))), Symbol(Variable("b", Some(false))))
             ),
             Unsat,
             Unsat
@@ -72,3 +72,4 @@ class DPLLTest extends AnyFlatSpec with Matchers:
         )
       )
   }
+

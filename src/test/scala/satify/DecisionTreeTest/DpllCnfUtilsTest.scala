@@ -17,13 +17,13 @@ class DpllCnfUtilsTest extends AnyFlatSpec with Matchers:
 
   "A PartialModel" should "be extractable from a CNF" in {
     val parModel: PartialModel = Seq(Variable("a"), Variable("c"), Variable("c"))
-    parModel should be equals extractModelFromCnf(cnf)
+    parModel shouldBe extractModelFromCnf(cnf)
   }
 
   "An expression in CNF" should "be mapped to another CNF by setting a variable" in {
-    updateCnf(cnf, Constraint("b", false)) should be equals
+    updateCnf(cnf, Constraint("b", false)) shouldBe
       And(Or(Symbol(Variable("a")), Symbol(Variable("b", Option(false)))), Symbol(Variable("c")))
 
-    updateCnf(And(Or(Symbol(varA), Symbol(varB)), Not(Symbol(varC))), Constraint("c", true)) should be equals
+    updateCnf(And(Or(Symbol(varA), Symbol(varB)), Not(Symbol(varC))), Constraint("c", true)) shouldBe
       And(Or(Symbol(Variable("a")), Symbol(Variable("b"))), Symbol(Variable("c", Option(true))))
   }

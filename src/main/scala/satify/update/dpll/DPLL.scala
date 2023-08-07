@@ -1,13 +1,13 @@
 package satify.update.dpll
 
 import satify.model.DecisionTree.*
-import satify.model.{CNF, Constraint, Decision, DecisionTree, PartialModel, Variable}
+import satify.model.{CNF, Constraint, TreeState, DecisionTree, PartialModel, Variable}
 import satify.update.dpll.DpllCnfUtils.*
 import satify.model
 
 import scala.language.postfixOps
 
-object DecisionTreeSearch:
+object DPLL:
   
   /**
    * Exhaustive search of all possible decisions to the partial model.
@@ -16,27 +16,31 @@ object DecisionTreeSearch:
    * @param dec decision to make
    * @return decision tree from the current decision
    */
-  def dpll(dec: Decision): DecisionTree = dec match
-    case Decision(parModel, cnf) =>
+  def dpll(dec: TreeState): DecisionTree = dec match
+    case TreeState(parModel, cnf) =>
       val unContrVars = filterUnconstrVars(parModel)
       if (unContrVars.nonEmpty)
-        Branch(dec, recStep(unContrVars.head, parModel, updateCnf(cnf, Constraint(unContrVars.head.name, true)), true),
-          recStep(unContrVars.head, parModel, updateCnf(cnf, Constraint(unContrVars.head.name, false)), false))
-      else Unsat
+        Branch(dec, recStep(unContrVars.head, parModel, cnf, true),
+          recStep(unContrVars.head, parModel, cnf, false))
+      else Branch(dec, Unsat, Unsat)
 
   /**
    * Recursive search step.
-   * @param parVar partial variable
+   * @param v partial variable
    * @param parModel partial model
    * @param cnf CNF expression
    * @param b boolean assignment
    * @return DecisionTree from dpll
    */
-  private def recStep(parVar: Variable, parModel: PartialModel,
+  private def recStep(v: Variable, parModel: PartialModel,
                       cnf: CNF, b: Boolean): DecisionTree =
+
+    val nModel = updateParModel(Constraint(v.name, b), parModel)
+    println(nModel)
     dpll(
-      Decision(updateParModel(parVar match
-        case Variable(name, _) => Constraint(name, b), parModel), cnf)
+      TreeState(nModel,
+        updateCnf(cnf, Constraint(v.name, b))
+      )
   )
 
   /**
@@ -56,6 +60,6 @@ object DecisionTreeSearch:
   private def updateParModel(varConstr: Constraint, parModel: PartialModel): PartialModel =
     parModel.map {
       case Variable(name, _) if name == varConstr.name =>
-        Variable(name, Option(varConstr.value))
+        Variable(name, Some(varConstr.value))
       case v => v
     }

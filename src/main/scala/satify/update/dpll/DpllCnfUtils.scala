@@ -28,6 +28,7 @@ object DpllCnfUtils:
     e match
       case Symbol(variable) if variable.name == constr.name =>
         Symbol(Variable(constr.name, Option(constr.value))).asInstanceOf[A]
+      case And(left, right) => And(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[A]
       case Or(left, right) => Or(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[A]
       case Not(symbol) => Not(updateCnf(symbol, constr)).asInstanceOf[A]
       case _ => e
