@@ -1,4 +1,3 @@
-
 package satify.model.dpll
 
 import satify.model.{Literal, *}
@@ -19,32 +18,51 @@ object DpllCnfUtils:
 
   /** Update a CNF expression after a variable constraint has been applied.
    * @param cnf to be updated
-   * @param varConstr constraint to be applied
+   * @param constr constraint to be applied
    * @return Updated PartialExpression
    */
-  def updateCnf(cnf : CNF, varConstr: Constraint): CNF =
+  def updateCnf(cnf : CNF, constr: Constraint): CNF =
     cnf match
-      case c: (Or | Literal) => updateCnfCommon(c, varConstr)
-      case a@_ => updateCnfAnd(a, varConstr)
+      case c: (Or | Literal) => updateCnfCommon(c, constr)
+      case a: And => updateCnfAnd(a, constr)
 
-  private def updateCnfCommon(cnf: Or | Literal, varConstr: Constraint): Or | Literal =
+  /**
+   * Update an Or or a Literal
+   *
+   * @param cnf of type Or | Literal
+   * @param constr constraint to be applied
+   * @return Updated Or or Literal
+   */
+  private def updateCnfCommon(cnf: Or | Literal, constr: Constraint): Or | Literal =
     cnf match
-      case Symbol(variable) if variable.name == varConstr.name =>
-        Symbol(Variable(varConstr.name, Option(varConstr.value)))
-      case Or(left, right) => Or(updateCnfCommon(left, varConstr), updateCnfCommon(right, varConstr))
-      case Not(symbol) => Not(updateSymbol(symbol, varConstr))
+      case Symbol(variable) => updateSymbol(Symbol(variable), constr)
+      case Or(left, right) => Or(updateCnfCommon(left, constr), updateCnfCommon(right, constr))
+      case Not(symbol) => Not(updateSymbol(symbol, constr))
       case _ => cnf
 
-  private def updateSymbol(symbol: Symbol, varConstr: Constraint): Symbol =
+  /**
+   * Update a Symbol
+   *
+   * @param cnf of type Or | Literal
+   * @param constr constraint to be applied
+   * @return updated symbol
+   */
+  private def updateSymbol(symbol: Symbol, constr: Constraint): Symbol =
     symbol match
-      case Symbol(variable) if variable.name == varConstr.name =>
-        Symbol(Variable(varConstr.name, Option(varConstr.value)))
+      case Symbol(variable) if variable.name == constr.name =>
+        Symbol(Variable(constr.name, Option(constr.value)))
       case _ => symbol
 
-  private def updateCnfAnd(cnf: CNF, varConstr: Constraint): CNF =
+  /**
+   * Update the right side of an And
+   *
+   * @param cnf of type
+   * @param constr constraint to be applied
+   * @return And | Or | Literal
+   */
+  private def updateCnfAnd(cnf: And | Or | Literal, constr: Constraint): And | Or | Literal =
     cnf match
-      case Symbol(value) => updateSymbol(Symbol(value), varConstr)
-      case And(left, right) => And(updateCnfCommon(left, varConstr), updateCnfAnd(right, varConstr))
-      case Or(left, right) => updateCnfCommon(Or(left, right), varConstr)
-      case Not(symbol) => Not(updateSymbol(symbol, varConstr))
-
+      case Symbol(variable) => updateSymbol(Symbol(variable), constr)
+      case And(left, right) => And(updateCnfCommon(left, constr), updateCnfAnd(right, constr))
+      case Or(left, right) => updateCnfCommon(Or(left, right), constr)
+      case Not(symbol) => Not(updateSymbol(symbol, constr))

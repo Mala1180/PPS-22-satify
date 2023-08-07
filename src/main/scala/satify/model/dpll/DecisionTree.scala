@@ -1,6 +1,5 @@
 package satify.model.dpll
 
-import satify.model.CNF.*
 import satify.model.{CNF, Variable}
 
 type PartialModel = Seq[Variable]

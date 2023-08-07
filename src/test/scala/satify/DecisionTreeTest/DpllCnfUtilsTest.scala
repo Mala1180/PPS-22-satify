@@ -3,9 +3,9 @@ package satify.DecisionTreeTest
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.*
-import satify.model.CNF.{And, Or, Symbol, Not}
 import satify.model.dpll.DpllCnfUtils.*
 import satify.model.dpll.{Constraint, PartialModel}
+import satify.model.CNF.*
 
 class DpllCnfUtilsTest extends AnyFlatSpec with Matchers:
 
