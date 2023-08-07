@@ -3,7 +3,7 @@ package satify.DecisionTreeTest
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.*
-import satify.model.dpll.DpllCnfUtils.*
+import satify.update.dpll.DpllCnfUtils.*
 import satify.model.dpll.{Constraint, PartialModel}
 import satify.model.CNF.*
 

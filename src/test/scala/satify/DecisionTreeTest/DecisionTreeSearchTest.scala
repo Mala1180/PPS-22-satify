@@ -4,9 +4,10 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.*
 import satify.model.dpll.DecisionTree.*
-import satify.model.dpll.DecisionTreeSearch.*
+import satify.update.dpll.DecisionTreeSearch.*
 //import satify.model.dpll.DpllExpressionUtils.*
-import satify.model.dpll.{Decision, DecisionTree, DecisionTreeSearch}
+import satify.model.dpll.{Decision, DecisionTree}
+import satify.update.dpll.DecisionTreeSearch
 
 import scala.language.postfixOps
 

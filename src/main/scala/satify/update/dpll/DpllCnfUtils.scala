@@ -1,7 +1,8 @@
-package satify.model.dpll
+package satify.update.dpll
 
-import satify.model.{Literal, *}
 import satify.model.CNF.*
+import satify.model.dpll.Constraint
+import satify.model.*
 
 object DpllCnfUtils:
 
