@@ -1,15 +1,14 @@
 package satify.model
 
-
 /** Sum Type representing the two possible results of SAT problem. */
 enum Result:
   case SAT
   case UNSAT
 
-/** Represents a list of [[AssignedVariable]] assigned to a value.
-  * @param list The list of [[AssignedVariable]].
+/** Represents a list of [[Variable]] assigned to a value.
+  * @param list The list of [[Variable]].
   */
-case class Assignment(list: List[AssignedVariable])
+case class Assignment(list: List[Variable])
 
 /** Represents a solution to the SAT problem. It is used by [[update.Solver]].
   * @param result The result of the SAT problem (SAT or UNSAT).

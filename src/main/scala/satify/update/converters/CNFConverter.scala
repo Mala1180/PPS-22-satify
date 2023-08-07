@@ -9,4 +9,4 @@ trait CNFConverter:
     * @param exp the expression to convert.
     * @return the CNF expression.
     */
-  def convert[T <: Variable](exp: Expression[T]): CNF
+  def convert(exp: Expression): CNF

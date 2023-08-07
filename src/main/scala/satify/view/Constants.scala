@@ -9,4 +9,3 @@ object Constants:
   val logoPath = "src/main/resources/img/Satify_logo-colored.png"
   val fontFamily = "Arial"
   val headingFont: Font = Font(fontFamily, Font.BOLD, 16)
-
