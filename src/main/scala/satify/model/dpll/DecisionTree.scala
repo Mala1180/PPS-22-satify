@@ -1,4 +1,4 @@
-package satify.model.dpll
+package satify.model
 
 import satify.model.{CNF, Variable}
 
