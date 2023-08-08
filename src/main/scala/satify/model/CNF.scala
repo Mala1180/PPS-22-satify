@@ -6,7 +6,7 @@ import satify.model.CNF.*
 case class Variable(name: String, value: Option[Boolean] = None)
 
 type Literal = Symbol | Not
-
+//type CNF = And
 enum CNF:
   case Symbol(value: Variable)
   case And(left: Or | Literal, right: And | Or | Literal)

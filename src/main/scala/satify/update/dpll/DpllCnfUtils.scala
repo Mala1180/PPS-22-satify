@@ -48,18 +48,15 @@ object DpllCnfUtils:
     simplifyUppermostOr(cnf, constr)
 
   private def simplifyUppermostOr[T <: CNF](cnf: T, constr: Constraint): T =
-
     def f[V <: CNF](e: V, cont: T): T = e match
-      case Symbol(value) if value.name == constr.name || value.name == "*" && constr.value =>
+      case Symbol(value) if (value.name == constr.name || value.name == "*") && constr.value =>
         Symbol(Variable("*", Some(true))).asInstanceOf[T]
-      case Not(Symbol(value)) if value.name == constr.name && !constr.value =>
+      case Not(Symbol(value)) if (value.name == constr.name || value.name == "*") && !constr.value =>
         Symbol(Variable("*", Some(true))).asInstanceOf[T]
       case _ => cont
 
     f(cnf, cnf) match
       case And(left, right) => And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr)).asInstanceOf[T]
       case Or(left, right) =>
-        f(left, f(right, Or(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr))
-          .asInstanceOf[T]))
+        f(left, f(right, f(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr).asInstanceOf[T])))
       case e@_ => e
-
