@@ -3,6 +3,7 @@ package satify.update.dpll
 import satify.model.CNF.*
 import satify.model.Constraint
 import satify.model.*
+import satify.model.Constant.True
 
 object DpllCnfUtils:
 
@@ -13,10 +14,11 @@ object DpllCnfUtils:
    */
   def extractModelFromCnf(cnf: CNF): PartialModel =
     cnf match
-      case Symbol(variable) => Seq(variable)
+      case Symbol(variable: Variable) => Seq(variable)
       case And(e1, e2) => extractModelFromCnf(e1) ++ extractModelFromCnf(e2)
       case Or(e1, e2) => extractModelFromCnf(e1) ++ extractModelFromCnf(e2)
       case Not(e) => extractModelFromCnf(e)
+      case _ => Seq.empty
 
   /** Update a CNF expression after a variable constraint has been applied.
    *
@@ -26,7 +28,7 @@ object DpllCnfUtils:
    */
   def updateCnf[T <: CNF](e: T, constr: Constraint): T =
     e match
-      case Symbol(variable) if variable.name == constr.name =>
+      case Symbol(variable: Variable) if variable.name == constr.name =>
         Symbol(Variable(constr.name, Option(constr.value))).asInstanceOf[T]
       case And(left, right) => And(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
       case Or(left, right) => Or(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
@@ -49,10 +51,12 @@ object DpllCnfUtils:
 
   private def simplifyUppermostOr[T <: CNF](cnf: T, constr: Constraint): T =
     def f[V <: CNF](e: V, cont: T): T = e match
-      case Symbol(value) if (value.name == constr.name || value.name == "*") && constr.value =>
-        Symbol(Variable("*", Some(true))).asInstanceOf[T]
-      case Not(Symbol(value)) if (value.name == constr.name || value.name == "*") && !constr.value =>
-        Symbol(Variable("*", Some(true))).asInstanceOf[T]
+      case Symbol(Variable(name, _)) if name == constr.name && constr.value =>
+        Symbol(True).asInstanceOf[T]
+      case s@Symbol(_: Constant) => s.asInstanceOf[T]
+      case Not(Symbol(Variable(name, _))) if name == constr.name && !constr.value =>
+          Symbol(True).asInstanceOf[T]
+      case s@Not(Symbol(c: Constant)) => s.asInstanceOf[T]
       case _ => cont
 
     f(cnf, cnf) match
@@ -60,3 +64,4 @@ object DpllCnfUtils:
       case Or(left, right) =>
         f(left, f(right, f(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr).asInstanceOf[T])))
       case e@_ => e
+

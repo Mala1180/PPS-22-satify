@@ -6,6 +6,7 @@ import satify.model.*
 import satify.update.dpll.DpllCnfUtils.*
 import satify.model.{Constraint, PartialModel}
 import satify.model.CNF.*
+import satify.model.Constant.True
 
 class DpllCnfUtilsTest extends AnyFlatSpec with Matchers:
 
@@ -30,7 +31,20 @@ class DpllCnfUtilsTest extends AnyFlatSpec with Matchers:
 
   "An expression in CNF" should "be simplified when a Literal inside a clause is set to true" in {
     val posLitCnf = cnf
-    simplifyCnf(posLitCnf, Constraint("a", true)) shouldBe And(Symbol(Variable("*", Some(true))), Symbol(varC))
+    simplifyCnf(posLitCnf, Constraint("a", true)) shouldBe And(Symbol(True), Symbol(varC))
     val negLitCnf: CNF = And(Or(Symbol(varA), Or(Not(Symbol(varB)), Symbol(varC))), Symbol(varC))
-    simplifyCnf(negLitCnf, Constraint("b", false)) shouldBe And(Symbol(Variable("*", Some(true))), Symbol(varC))
+    simplifyCnf(negLitCnf, Constraint("b", false)) shouldBe And(Symbol(True), Symbol(varC))
+  }
+
+  "An expression in CNF" should "be simplified in all branches when a Literal inside a clause is set to true" in {
+    val cnf = And(Or(Symbol(varA), Symbol(varB)), And(Or(Symbol(varC), Or(Symbol(varA), Symbol(varB))), Symbol(varC)))
+    simplifyCnf(cnf, Constraint("a", true)) shouldBe
+      And(Symbol(True), And(Symbol(True), Symbol(varC)))
+  }
+
+  "An expression in CNF" should "be simplified when a Literal inside a clause is set to false" in {
+    val posLitCnf = cnf
+    simplifyCnf(posLitCnf, Constraint("a", false)) shouldBe And(Symbol(varB), Symbol(varC))
+    val negLitCnf: CNF = And(Or(Symbol(varA), Not(Symbol(varB))), Symbol(varC))
+    simplifyCnf(negLitCnf, Constraint("b", true)) shouldBe And(Symbol(varA), Symbol(varC))
   }
