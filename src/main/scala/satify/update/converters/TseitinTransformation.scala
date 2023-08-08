@@ -43,27 +43,30 @@ object TseitinTransformation:
     * @return a list of Symbol and expressions in CNF form for the given Symbol and expression
     */
   import satify.model.Literal
-  def transform(exp: (Symbol, Expression)): List[(CNFSymbol, CNF)] =
-    def exp(exp: Expression): Literal = exp match
+  def transform(exp: (Expression.Symbol, Expression)): List[(CNFSymbol, CNF)] =
+    def expr(exp: Expression): Literal = exp match
       case Symbol(v) => CNFSymbol(Variable(v, None))
       case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v, None)))
+      case _ => throw new Exception("Expression is not a Symbol or a Not Symbol")
 
     def symbol(exp: Expression): CNFSymbol = exp match
       case Symbol(v) => CNFSymbol(Variable(v, None))
+      case _ => throw new Exception("Expression is not a Symbol")
 
     def not(exp: Expression): Literal = exp match
       case Not(Symbol(v)) => CNFSymbol(Variable(v, None))
       case Symbol(v) => CNFNot(CNFSymbol(Variable(v, None)))
+      case _ => throw new Exception("Expression is not a Symbol or a Not Symbol")
 
     exp match
       case (l@Symbol(v), Not(lit)) =>
-        List((symbol(l), CNFOr(not(lit), not(l))), (symbol(l), CNFOr(symbol(lit), symbol(l))))
+        List((symbol(Symbol(v)), CNFOr(not(lit), not(Symbol(v)))), (symbol(Symbol(v)), CNFOr(symbol(lit), symbol(Symbol(v)))))
 
       case (l@Symbol(v), And(e1, e2)) =>
-        List((symbol(l), CNFOr(CNFOr(not(e1), not(e2)), symbol(l))), (symbol(l), CNFOr(exp(e1), not(l))), (symbol(l), CNFOr(exp(e2), not(l))))
+        List((symbol(l), CNFOr(CNFOr(not(e1), not(e2)), symbol(l))), (symbol(l), CNFOr(expr(e1), not(l))), (symbol(l), CNFOr(expr(e2), not(l))))
 
       case (l@Symbol(v), Or(e1, e2)) =>
-        List((symbol(l), CNFOr(CNFOr(exp(e1), exp(e2)), not(l))), (symbol(l), CNFOr(not(e1), symbol(l))), (symbol(l), CNFOr(not(e2), symbol(l))))
+        List((symbol(l), CNFOr(CNFOr(expr(e1), expr(e2)), not(l))), (symbol(l), CNFOr(not(e1), symbol(l))), (symbol(l), CNFOr(not(e2), symbol(l))))
       case _ => List()
 
     /* Transform the Symbol and the corresponding expression to CNF form
@@ -92,6 +95,6 @@ object TseitinTransformation:
     var transformations: List[(CNFSymbol, CNF)] = List()
     symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
     //transformations.reduce((s1, s2) => (s1._1, CNFAnd(s1._2, s2._2)))._2
-    println(transformations)
+    transformations.foreach(println)
     ???
     //transformations.reduceRight((s1, s2) => (s1._1, CNFAnd(s1._2, s2._2)))._2
