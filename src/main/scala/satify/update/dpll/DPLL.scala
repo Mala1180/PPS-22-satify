@@ -22,7 +22,7 @@ object DPLL:
       if (unContrVars.nonEmpty)
         Branch(dec, recStep(unContrVars.head, parModel, cnf, true),
           recStep(unContrVars.head, parModel, cnf, false))
-      else Branch(dec, Unsat, Unsat)
+      else Branch(dec, Leaf, Leaf)
 
   /**
    * Recursive search step.

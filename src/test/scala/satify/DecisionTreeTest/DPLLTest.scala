@@ -17,15 +17,14 @@ class DPLLTest extends AnyFlatSpec with Matchers:
 
   val cnf: CNF = And(Symbol(varA), Symbol(varB))
 
-  "DPLL" should "accept a Decision and return a DecisionTree" in {
+  "DPLL" should "accept a Decision and return a DecisionTree of type Branch" in {
     dpll(TreeState(extractModelFromCnf(cnf), cnf)).getClass shouldBe classOf[Branch]
   }
 
   "DPLL" should "explore all the possible assignments to the model" in {
     val emptyDec = TreeState(extractModelFromCnf(cnf), cnf)
     dpll(emptyDec) shouldBe
-      Branch(
-        emptyDec,
+      Branch(emptyDec,
         Branch(
           TreeState(
             Seq(Variable("a", Some(true)), varB),
@@ -35,18 +34,12 @@ class DPLLTest extends AnyFlatSpec with Matchers:
             TreeState(
               Seq(Variable("a", Some(true)), Variable("b", Some(true))),
               And(Symbol(Variable("a", Some(true))), Symbol(Variable("b", Some(true))))
-            ),
-            Unsat,
-            Unsat
-          ),
+            ), Leaf, Leaf),
           Branch(
             TreeState(
               Seq(Variable("a", Some(true)), Variable("b", Some(false))),
               And(Symbol(Variable("a", Some(true))), Symbol(Variable("b", Some(false))))
-            ),
-            Unsat,
-            Unsat
-          )
+            ), Leaf, Leaf)
         ),
         Branch(
           TreeState(
@@ -57,19 +50,12 @@ class DPLLTest extends AnyFlatSpec with Matchers:
             TreeState(
               Seq(Variable("a", Some(false)), Variable("b", Some(true))),
               And(Symbol(Variable("a", Some(false))), Symbol(Variable("b", Some(true))))
-            ),
-            Unsat,
-            Unsat
-          ),
+            ), Leaf, Leaf),
           Branch(
             TreeState(
               Seq(Variable("a", Some(false)), Variable("b", Some(false))),
               And(Symbol(Variable("a", Some(false))), Symbol(Variable("b", Some(false))))
-            ),
-            Unsat,
-            Unsat
-          )
+            ), Leaf, Leaf)
         )
       )
   }
-
