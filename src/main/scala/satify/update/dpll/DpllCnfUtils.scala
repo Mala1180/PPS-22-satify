@@ -24,13 +24,13 @@ object DpllCnfUtils:
    * @param constr constraint to apply
    * @return Updated CNF
    */
-  def updateCnf[A <: CNF](e: A, constr: Constraint): A =
+  def updateCnf[T <: CNF](e: T, constr: Constraint): T =
     e match
       case Symbol(variable) if variable.name == constr.name =>
-        Symbol(Variable(constr.name, Option(constr.value))).asInstanceOf[A]
-      case And(left, right) => And(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[A]
-      case Or(left, right) => Or(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[A]
-      case Not(symbol) => Not(updateCnf(symbol, constr)).asInstanceOf[A]
+        Symbol(Variable(constr.name, Option(constr.value))).asInstanceOf[T]
+      case And(left, right) => And(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
+      case Or(left, right) => Or(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
+      case Not(symbol) => Not(updateCnf(symbol, constr)).asInstanceOf[T]
       case _ => e
 
   /**
@@ -47,23 +47,19 @@ object DpllCnfUtils:
   def simplifyCnf(cnf: CNF, constr: Constraint): CNF =
     simplifyUppermostOr(cnf, constr)
 
-  private def simplifyUppermostOr[A <: CNF](cnf: A, constr: Constraint): A = cnf match
-    case Symbol(value) if value.name == constr.name && constr.value =>
-      Symbol(Variable(value.name, Some(true))).asInstanceOf[A]
-    case Not(Symbol(value)) if value.name == constr.name && !constr.value =>
-      Symbol(Variable(value.name, Some(true))).asInstanceOf[A]
+  private def simplifyUppermostOr[T <: CNF](cnf: T, constr: Constraint): T =
 
-    case And(left, right) => And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr))
-      .asInstanceOf[A]
-    case Or(left, right) => left match
+    def f[V <: CNF](e: V, cont: T): T = e match
       case Symbol(value) if value.name == constr.name || value.name == "*" && constr.value =>
-        Symbol(Variable("*", Some(true))).asInstanceOf[A]
+        Symbol(Variable("*", Some(true))).asInstanceOf[T]
       case Not(Symbol(value)) if value.name == constr.name && !constr.value =>
-        Symbol(Variable("*", Some(true))).asInstanceOf[A]
-      case _ => right match
-        case Symbol(value) if value.name == constr.name || value.name == "*" => Symbol(Variable("*", Some(true))).asInstanceOf[A]
-        case Not(Symbol(value)) if value.name == constr.name && !constr.value =>
-          Symbol(Variable("*", Some(true))).asInstanceOf[A]
-        case _ => Or(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr)).asInstanceOf[A]
-    case e@_ => e
+        Symbol(Variable("*", Some(true))).asInstanceOf[T]
+      case _ => cont
+
+    f(cnf, cnf) match
+      case And(left, right) => And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr)).asInstanceOf[T]
+      case Or(left, right) =>
+        f(left, f(right, Or(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr))
+          .asInstanceOf[T]))
+      case e@_ => e
 
