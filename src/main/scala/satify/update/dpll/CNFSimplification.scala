@@ -7,33 +7,24 @@ import satify.model.Constant.{False, True}
 
 object CNFSimplification:
 
-  /** Extract a PartialModel from an expression in CNF.
-   *
-   * @param cnf where to extract a Model
-   * @return Correspondent model from CNF given as parameter.
-   */
-  def extractModelFromCnf(cnf: CNF): PartialModel =
-    cnf match
-      case Symbol(variable: Variable) => Seq(variable)
-      case And(e1, e2) => extractModelFromCnf(e1) ++ extractModelFromCnf(e2)
-      case Or(e1, e2) => extractModelFromCnf(e1) ++ extractModelFromCnf(e2)
-      case Not(e) => extractModelFromCnf(e)
-      case _ => Seq.empty
-
   /**
-  Simplify CNF:
-    - If a Literal in a clause is set to true s.t. v = true or Not(v) = true, simplify the clause
-      (e.g. the closest Or near the root of the CNF expression) substituting it with a Variable set to true.
-    - If a Literal in a clause is set to false s.t. v = false or Not(v) = false, simplify the clause
-      by deleting the Variable inside that clause (e.g. substituting the closest Or with the other branch).
-    - If an And have left and right true substitute it with a Variable set to true.
-  N.B.:
-    - Do not simplify when all the Literals of a clause are false
-    - Do not simplify when at least a Literal of an And is false
-  **/
+   * Simplify the CNF applying the constraint given as parameter.
+   * @param cnf expression in CNF
+   * @param constr constraint
+   * @return simplified CNF
+   */
   def simplifyCnf(cnf: CNF, constr: Constraint): CNF =
     simplifyClosestAnd(simplifyClosestOr(simplifyUppermostOr(cnf, constr), constr))
 
+  /**
+   * Simplify the clause (e.g. the uppermost Or near the root of CNF) substituting it with a True constant
+   * if the constrained Literal in a clause is set to true s.t. v = true or Not(v) = true.
+   *
+   * @param cnf expression in CNF
+   * @param constr constraint
+   * @tparam T type
+   * @return partial simplified CNF
+   */
   private def simplifyUppermostOr[T <: CNF](cnf: T, constr: Constraint): T =
     def f[V <: CNF](e: V, d: T): T = e match
       case Symbol(Variable(name, _)) if name == constr.name && constr.value => Symbol(True).asInstanceOf[T]
@@ -50,6 +41,15 @@ object CNFSimplification:
       case e@_ => e
 
 
+  /**
+   * Simplify the clause by deleting the constrained Literal inside that clause (e.g. substituting the
+   * closest Or with the other branch, if any) when it is set to false s.t. v = false or Not(v) = false,
+   *
+   * @param cnf CNF expression
+   * @param constr constraint
+   * @tparam T type
+   * @return partial simplified CNF
+   */
   private def simplifyClosestOr[T <: CNF](cnf: T, constr: Constraint): T =
     def g[V <: CNF](e: V, o: V, d: V): V = e match
       case Symbol(Variable(name, _)) if name == constr.name && !constr.value => o
@@ -65,6 +65,12 @@ object CNFSimplification:
       case e@_ => e
 
 
+  /**
+   * Simplify And(s) when a Literal is set to true s.t. v = true or Not(v) = true.
+   * @param cnf CNF expression
+   * @tparam T type
+   * @return partial simplified CNF
+   */
   private def simplifyClosestAnd[T <: CNF](cnf: T): T =
     def h[V <: CNF](e: V, o: V, d: V): V = e match
       case Symbol(True) => o

@@ -2,6 +2,7 @@ package satify.update.dpll
 
 import satify.model.DecisionTree.*
 import satify.model.{CNF, Constraint, TreeState, DecisionTree, PartialModel, Variable}
+import satify.model.CNF.*
 import satify.update.dpll.CNFSimplification.*
 import satify.model
 
@@ -42,6 +43,20 @@ object DPLL:
         simplifyCnf(cnf, Constraint(v.name, b))
       )
   )
+
+  /**
+   * Extract a PartialModel from an expression in CNF.
+   *
+   * @param cnf where to extract a Model
+   * @return Correspondent model from CNF given as parameter.
+   */
+  def extractModelFromCnf(cnf: CNF): PartialModel =
+    cnf match
+      case Symbol(variable: Variable) => Seq(variable)
+      case And(e1, e2) => extractModelFromCnf(e1) ++ extractModelFromCnf(e2)
+      case Or(e1, e2) => extractModelFromCnf(e1) ++ extractModelFromCnf(e2)
+      case Not(e) => extractModelFromCnf(e)
+      case _ => Seq.empty
 
   /**
    * Filters unconstrained variables from the partial model

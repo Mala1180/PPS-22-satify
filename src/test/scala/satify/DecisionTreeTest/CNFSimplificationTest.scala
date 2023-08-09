@@ -16,11 +16,6 @@ class CNFSimplificationTest extends AnyFlatSpec with Matchers:
 
   val cnf: CNF = And(Or(Symbol(varA), Symbol(varB)), Symbol(varC))
 
-  "A PartialModel" should "be extractable from a CNF" in {
-    val parModel: PartialModel = Seq(Variable("a"), Variable("b"), Variable("c"))
-    parModel shouldBe extractModelFromCnf(cnf)
-  }
-
   "An expression in CNF" should "be simplified when a Literal inside a clause is set to true" in {
     val posLitCnf = cnf
     simplifyCnf(posLitCnf, Constraint("a", true)) shouldBe Symbol(varC)
@@ -60,4 +55,3 @@ class CNFSimplificationTest extends AnyFlatSpec with Matchers:
     val complexCnf = And(Symbol(varA), And(Symbol(varB), And(Symbol(varA), Symbol(varC))))
     simplifyCnf(complexCnf, Constraint("a", true)) shouldBe And(Symbol(varB), Symbol(varC))
   }
-
