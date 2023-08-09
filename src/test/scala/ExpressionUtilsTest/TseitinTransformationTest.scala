@@ -47,9 +47,15 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val expected: List[(CNFSymbol, CNF)] = List(
       (
         CNFSymbol(Variable("X0", None)),
-        CNFOr(CNFOr(CNFSymbol(Variable("a", None)), CNFNot(CNFSymbol(Variable("b", None)))), CNFSymbol(Variable("X0", None)))
+        CNFOr(
+          CNFOr(CNFSymbol(Variable("a", None)), CNFNot(CNFSymbol(Variable("b", None)))),
+          CNFSymbol(Variable("X0", None))
+        )
       ),
-      (CNFSymbol(Variable("X0", None)), CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFNot(CNFSymbol(Variable("X0", None))))),
+      (
+        CNFSymbol(Variable("X0", None)),
+        CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFNot(CNFSymbol(Variable("X0", None))))
+      ),
       (CNFSymbol(Variable("X0", None)), CNFOr(CNFSymbol(Variable("b", None)), CNFNot(CNFSymbol(Variable("X0", None)))))
     )
     result shouldBe expected
@@ -62,10 +68,16 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val expected: List[(CNFSymbol, CNF)] = List(
       (
         CNFSymbol(Variable("X0", None)),
-        CNFOr(CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFSymbol(Variable("b", None))), CNFSymbol(Variable("X0", None)))
+        CNFOr(
+          CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFSymbol(Variable("b", None))),
+          CNFSymbol(Variable("X0", None))
+        )
       ),
       (CNFSymbol(Variable("X0", None)), CNFOr(CNFSymbol(Variable("a", None)), CNFNot(CNFSymbol(Variable("X0", None))))),
-      (CNFSymbol(Variable("X0", None)), CNFOr(CNFNot(CNFSymbol(Variable("b", None))), CNFNot(CNFSymbol(Variable("X0", None)))))
+      (
+        CNFSymbol(Variable("X0", None)),
+        CNFOr(CNFNot(CNFSymbol(Variable("b", None))), CNFNot(CNFSymbol(Variable("X0", None))))
+      )
     )
     result shouldBe expected
   }
@@ -79,8 +91,14 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
         CNFSymbol(Variable("X0", None)),
         CNFOr(CNFOr(CNFSymbol(Variable("a", None)), CNFSymbol(Variable("b", None))), CNFSymbol(Variable("X0", None)))
       ),
-      (CNFSymbol(Variable("X0", None)), CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFNot(CNFSymbol(Variable("X0", None))))),
-      (CNFSymbol(Variable("X0", None)), CNFOr(CNFNot(CNFSymbol(Variable("b", None))), CNFNot(CNFSymbol(Variable("X0", None)))))
+      (
+        CNFSymbol(Variable("X0", None)),
+        CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFNot(CNFSymbol(Variable("X0", None))))
+      ),
+      (
+        CNFSymbol(Variable("X0", None)),
+        CNFOr(CNFNot(CNFSymbol(Variable("b", None))), CNFNot(CNFSymbol(Variable("X0", None))))
+      )
     )
     result shouldBe expected
   }
@@ -92,7 +110,10 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val expected: List[(CNFSymbol, CNF)] = List(
       (
         CNFSymbol(Variable("X0", None)),
-        CNFOr(CNFOr(CNFSymbol(Variable("a", None)), CNFSymbol(Variable("b", None))), CNFNot(CNFSymbol(Variable("X0", None))))
+        CNFOr(
+          CNFOr(CNFSymbol(Variable("a", None)), CNFSymbol(Variable("b", None))),
+          CNFNot(CNFSymbol(Variable("X0", None)))
+        )
       ),
       (CNFSymbol(Variable("X0", None)), CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFSymbol(Variable("X0", None)))),
       (CNFSymbol(Variable("X0", None)), CNFOr(CNFNot(CNFSymbol(Variable("b", None))), CNFSymbol(Variable("X0", None))))
@@ -107,7 +128,10 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val expected: List[(CNFSymbol, CNF)] = List(
       (
         CNFSymbol(Variable("X0", None)),
-        CNFOr(CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFSymbol(Variable("b", None))), CNFNot(CNFSymbol(Variable("X0", None))))
+        CNFOr(
+          CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFSymbol(Variable("b", None))),
+          CNFNot(CNFSymbol(Variable("X0", None)))
+        )
       ),
       (CNFSymbol(Variable("X0", None)), CNFOr(CNFSymbol(Variable("a", None)), CNFSymbol(Variable("X0", None)))),
       (CNFSymbol(Variable("X0", None)), CNFOr(CNFNot(CNFSymbol(Variable("b", None))), CNFSymbol(Variable("X0", None))))
@@ -122,7 +146,10 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val expected: List[(CNFSymbol, CNF)] = List(
       (
         CNFSymbol(Variable("X0", None)),
-        CNFOr(CNFOr(CNFSymbol(Variable("a", None)), CNFNot(CNFSymbol(Variable("b", None)))), CNFNot(CNFSymbol(Variable("X0", None))))
+        CNFOr(
+          CNFOr(CNFSymbol(Variable("a", None)), CNFNot(CNFSymbol(Variable("b", None)))),
+          CNFNot(CNFSymbol(Variable("X0", None)))
+        )
       ),
       (CNFSymbol(Variable("X0", None)), CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFSymbol(Variable("X0", None)))),
       (CNFSymbol(Variable("X0", None)), CNFOr(CNFSymbol(Variable("b", None)), CNFSymbol(Variable("X0", None))))
@@ -137,7 +164,10 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val expected: List[(CNFSymbol, CNF)] = List(
       (
         CNFSymbol(Variable("X0", None)),
-        CNFOr(CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFNot(CNFSymbol(Variable("b", None)))), CNFNot(CNFSymbol(Variable("X0", None))))
+        CNFOr(
+          CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFNot(CNFSymbol(Variable("b", None)))),
+          CNFNot(CNFSymbol(Variable("X0", None)))
+        )
       ),
       (CNFSymbol(Variable("X0", None)), CNFOr(CNFSymbol(Variable("a", None)), CNFSymbol(Variable("X0", None)))),
       (CNFSymbol(Variable("X0", None)), CNFOr(CNFSymbol(Variable("b", None)), CNFSymbol(Variable("X0", None))))
