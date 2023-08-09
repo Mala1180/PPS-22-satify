@@ -39,7 +39,7 @@ object DPLL:
     println(nModel)
     dpll(
       TreeState(nModel,
-        updateCnf(cnf, Constraint(v.name, b))
+        simplifyCnf(cnf, Constraint(v.name, b))
       )
   )
 

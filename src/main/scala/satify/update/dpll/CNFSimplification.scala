@@ -3,7 +3,7 @@ package satify.update.dpll
 import satify.model.CNF.*
 import satify.model.Constraint
 import satify.model.*
-import satify.model.Constant.True
+import satify.model.Constant.{False, True}
 
 object CNFSimplification:
 
@@ -32,15 +32,15 @@ object CNFSimplification:
     - Do not simplify when at least a Literal of an And is false
   **/
   def simplifyCnf(cnf: CNF, constr: Constraint): CNF =
-    simplifyClosestOr(simplifyUppermostOr(cnf, constr), constr)
+    simplifyClosestAnd(simplifyClosestOr(simplifyUppermostOr(cnf, constr), constr))
 
-  def simplifyUppermostOr[T <: CNF](cnf: T, constr: Constraint): T =
-    def f[V <: CNF](e: V, cont: T): T = e match
+  private def simplifyUppermostOr[T <: CNF](cnf: T, constr: Constraint): T =
+    def f[V <: CNF](e: V, d: T): T = e match
       case Symbol(Variable(name, _)) if name == constr.name && constr.value => Symbol(True).asInstanceOf[T]
       case s@Symbol(_: Constant) => s.asInstanceOf[T]
       case Not(Symbol(Variable(name, _))) if name == constr.name && !constr.value => Symbol(True).asInstanceOf[T]
       case s@Not(Symbol(_: Constant)) => s.asInstanceOf[T]
-      case _ => cont
+      case _ => d
 
     f(cnf, cnf) match
       case And(left, right) => And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr)).asInstanceOf[T]
@@ -50,17 +50,30 @@ object CNFSimplification:
       case e@_ => e
 
 
-  def simplifyClosestOr[T <: CNF](cnf: T, constr: Constraint): T =
-    def g[V <: CNF](e: V, o: V, cont: V): V = e match
+  private def simplifyClosestOr[T <: CNF](cnf: T, constr: Constraint): T =
+    def g[V <: CNF](e: V, o: V, d: V): V = e match
       case Symbol(Variable(name, _)) if name == constr.name && !constr.value => o
       case Not(Symbol(Variable(name, _))) if name == constr.name && constr.value => o
-      case _ => cont
+      case _ => d
 
     cnf match
-      case s@Symbol(_) => s
       case And(left, right) => And(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr)).asInstanceOf[T]
       case Or(left, right) =>
         g(left, simplifyClosestOr(right, constr),
-          g(right, simplifyClosestOr(left, constr), 
+          g(right, simplifyClosestOr(left, constr),
             Or(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr)))).asInstanceOf[T]
+      case e@_ => e
+
+
+  private def simplifyClosestAnd[T <: CNF](cnf: T): T =
+    def h[V <: CNF](e: V, o: V, d: V): V = e match
+      case Symbol(True) => o
+      case Not(Symbol(False)) => o
+      case _ => d
+
+    cnf match
+      case Or(left, right) => Or(simplifyClosestAnd(left), simplifyClosestAnd(right)).asInstanceOf[T]
+      case And(left, right) =>
+        val sRight = simplifyClosestAnd(right)
+        h(left, h(sRight, Symbol(True), sRight), And(left, sRight)).asInstanceOf[T]
       case e@_ => e
