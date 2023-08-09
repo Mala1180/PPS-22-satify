@@ -37,7 +37,7 @@ object Expression:
     * @return a list of the subexpressions found in the given expression zipped with the Symbol.
     */
   def zipWithSymbol(exp: Expression): List[(Symbol, Expression)] =
-    // TODO TO CHECK!!
+    // TODO: introduction of a common name for the symbols
     var c = 0
     def freshLabel(): Symbol =
       val s: Symbol = Symbol("X" + c)

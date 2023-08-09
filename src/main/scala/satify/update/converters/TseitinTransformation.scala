@@ -2,30 +2,29 @@ package satify.update.converters
 
 import satify.model.{CNF, Expression, Literal, Variable}
 
-import scala.annotation.tailrec
-
 /** Object containing the Tseitin transformation algorithm. */
 object TseitinTransformation:
 
+  import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
   import satify.model.Expression.{replace as replaceExp, *}
-  import satify.model.CNF.{Symbol as CNFSymbol, And as CNFAnd, Or as CNFOr, Not as CNFNot}
 
   /** Applies the Tseitin transformation to the given expression in order to convert it into CNF.
     * @param exp the expression to transform.
     * @return the CNF expression.
     */
   def tseitin(exp: Expression): CNF =
+    def reduction(exp1: CNF, exp2: CNF): CNF = exp1 match
+      case l @ CNFOr(e1, e2) =>
+        exp2 match
+          case r @ CNFAnd(e3, e4) => CNFAnd(l, r)
+          case r @ CNFOr(e3, e4) => CNFAnd(l, r)
+          case _ => exp2
+      case _ => exp1
     var transformations: List[(CNFSymbol, CNF)] = List()
     symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
-    //transformations.reduce((s1, s2) => (s1._1, CNFAnd(s1._2, s2._2)))._2
-    transformations.reduceRight((s1, s2) => (s1._1, {
-      s1._2 match
-        case CNFOr(e1, e2) => s2._2 match
-          case CNFAnd(e3, e4) => CNFAnd(CNFOr(e1, e2), CNFAnd(e3, e4))
-          case CNFOr(e3, e4) => CNFAnd(CNFOr(e1, e2), CNFOr(e3, e4))
-          case _ => s2._2
-        case _ => s1._2
-    }))._2
+
+    if transformations.size == 1 then transformations.head._2
+    else transformations.reduceRight((s1, s2) => (s1._1, reduction(s1._2, s2._2)))._2
 
   /** Substitute Symbols of nested subexpressions in all others expressions
     * @param exp the expression where to substitute Symbols
@@ -46,7 +45,9 @@ object TseitinTransformation:
       case Nil => Nil
       case (l, e) :: tail => (l, e) :: symbolSelector(replace(tail, e, l))
 
-    symbolSelector(zipWithSymbol(exp).reverse)
+    val zipped = zipWithSymbol(exp)
+    if zipped.size == 1 then zipped
+    else symbolSelector(zipWithSymbol(exp).reverse)
 
   /** Transform the Symbol and the corresponding expression to CNF form
     * @param exp a Symbol and the corresponding expression
@@ -65,11 +66,21 @@ object TseitinTransformation:
       case Symbol(v) => CNFNot(CNFSymbol(Variable(v, None)))
       case _ => throw new Exception("Expression is not a Symbol or a Not Symbol")
     exp match
-      case (l@Symbol(v), Not(lit)) =>
-        List((symbol(Symbol(v)), CNFOr(not(lit), not(Symbol(v)))), (symbol(Symbol(v)), CNFOr(symbol(lit), symbol(Symbol(v)))))
-      case (l@Symbol(v), And(e1, e2)) =>
-        List((symbol(l), CNFOr(CNFOr(not(e1), not(e2)), symbol(l))), (symbol(l), CNFOr(expr(e1), not(l))), (symbol(l), CNFOr(expr(e2), not(l))))
-      case (l@Symbol(v), Or(e1, e2)) =>
-        List((symbol(l), CNFOr(CNFOr(expr(e1), expr(e2)), not(l))), (symbol(l), CNFOr(not(e1), symbol(l))), (symbol(l), CNFOr(not(e2), symbol(l))))
-      case _ => List()
-
+      case (s @ Symbol(v), Not(lit)) =>
+        List(
+          (symbol(Symbol(v)), CNFOr(not(lit), not(Symbol(v)))),
+          (symbol(Symbol(v)), CNFOr(symbol(lit), symbol(Symbol(v))))
+        )
+      case (s @ Symbol(v), And(e1, e2)) =>
+        List(
+          (symbol(s), CNFOr(CNFOr(not(e1), not(e2)), symbol(s))),
+          (symbol(s), CNFOr(expr(e1), not(s))),
+          (symbol(s), CNFOr(expr(e2), not(s)))
+        )
+      case (s @ Symbol(v), Or(e1, e2)) =>
+        List(
+          (symbol(s), CNFOr(CNFOr(expr(e1), expr(e2)), not(s))),
+          (symbol(s), CNFOr(not(e1), symbol(s))),
+          (symbol(s), CNFOr(not(e2), symbol(s)))
+        )
+      case (s @ Symbol(v), ss @ Symbol(vv)) => List((symbol(s), symbol(ss)))

@@ -7,9 +7,42 @@ import satify.model.Expression.*
 import satify.model.{CNF, Expression, Variable}
 import satify.update.converters.TseitinTransformation.tseitin
 
-class TseitinCNFTest extends AnyFlatSpec with Matchers:
+class TseitinTest extends AnyFlatSpec with Matchers:
 
-  "The CNF form test" should "be" in {
+  "The CNF form of b" should "remain b" in {
+    val exp = Symbol("b")
+    val result = tseitin(exp)
+    val expected: CNF = CNFSymbol(Variable("b", None))
+    result shouldBe expected
+  }
+
+  "The CNF form of ¬b" should "be correctly generated" in {
+    val exp = Not(Symbol("b"))
+    val result = tseitin(exp)
+    val expected: CNF = CNFAnd(
+      CNFOr(CNFNot(CNFSymbol(Variable("b", None))), CNFNot(CNFSymbol(Variable("X0", None)))),
+      CNFOr(CNFSymbol(Variable("b")), CNFSymbol(Variable("X0", None)))
+    )
+    result shouldBe expected
+  }
+
+  "For exp (a ∨ b) only the '∨' transformation" should "be applied" in {
+    val exp = Or(Symbol("a"), Symbol("b"))
+    val result = tseitin(exp)
+    val expected: CNF = CNFAnd(
+      CNFOr(
+        CNFOr(CNFSymbol(Variable("a", None)), CNFSymbol(Variable("b", None))),
+        CNFNot(CNFSymbol(Variable("X0", None)))
+      ),
+      CNFAnd(
+        CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFSymbol(Variable("X0", None))),
+        CNFOr(CNFNot(CNFSymbol(Variable("b", None))), CNFSymbol(Variable("X0", None)))
+      )
+    )
+    result shouldBe expected
+  }
+
+  "The CNF form of ((a ∧ ¬b) ∨ c)" should "be correctly generated" in {
     val exp = Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val result = tseitin(exp)
     println(result)
@@ -40,16 +73,6 @@ class TseitinCNFTest extends AnyFlatSpec with Matchers:
           )
         )
       )
-    )
-    result shouldBe expected
-  }
-
-  "The CNF form of ¬b" should "be correctly generated" in {
-    val exp = Not(Symbol("b"))
-    val result = tseitin(exp)
-    val expected: CNF = CNFAnd(
-      CNFOr(CNFNot(CNFSymbol(Variable("b", None))), CNFNot(CNFSymbol(Variable("X0", None)))),
-      CNFOr(CNFSymbol(Variable("b")), CNFSymbol(Variable("X0", None)))
     )
     result shouldBe expected
   }
