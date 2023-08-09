@@ -7,7 +7,7 @@ import satify.model.DecisionTree
 import satify.model.DecisionTree.*
 import satify.model.{CNF, TreeState, Variable}
 import satify.model.CNF.*
-import satify.update.dpll.DpllCnfUtils.*
+import satify.update.dpll.CNFSimplification.*
 import satify.update.dpll.DPLL.*
 
 class DPLLTest extends AnyFlatSpec with Matchers:

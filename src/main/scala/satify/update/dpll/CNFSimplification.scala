@@ -5,7 +5,7 @@ import satify.model.Constraint
 import satify.model.*
 import satify.model.Constant.True
 
-object DpllCnfUtils:
+object CNFSimplification:
 
   /** Extract a PartialModel from an expression in CNF.
    *
@@ -19,21 +19,6 @@ object DpllCnfUtils:
       case Or(e1, e2) => extractModelFromCnf(e1) ++ extractModelFromCnf(e2)
       case Not(e) => extractModelFromCnf(e)
       case _ => Seq.empty
-
-  /** Update a CNF expression after a variable constraint has been applied.
-   *
-   * @param e      CNF subexpression to be updated
-   * @param constr constraint to apply
-   * @return Updated CNF
-   */
-  def updateCnf[T <: CNF](e: T, constr: Constraint): T =
-    e match
-      case Symbol(variable: Variable) if variable.name == constr.name =>
-        Symbol(Variable(constr.name, Option(constr.value))).asInstanceOf[T]
-      case And(left, right) => And(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
-      case Or(left, right) => Or(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
-      case Not(symbol) => Not(updateCnf(symbol, constr)).asInstanceOf[T]
-      case _ => e
 
   /**
   Simplify CNF:
@@ -49,7 +34,7 @@ object DpllCnfUtils:
   def simplifyCnf(cnf: CNF, constr: Constraint): CNF =
     simplifyClosestOr(simplifyUppermostOr(cnf, constr), constr)
 
-  private def simplifyUppermostOr[T <: CNF](cnf: T, constr: Constraint): T =
+  def simplifyUppermostOr[T <: CNF](cnf: T, constr: Constraint): T =
     def f[V <: CNF](e: V, cont: T): T = e match
       case Symbol(Variable(name, _)) if name == constr.name && constr.value => Symbol(True).asInstanceOf[T]
       case s@Symbol(_: Constant) => s.asInstanceOf[T]
@@ -65,7 +50,7 @@ object DpllCnfUtils:
       case e@_ => e
 
 
-  private def simplifyClosestOr[T <: CNF](cnf: T, constr: Constraint): T =
+  def simplifyClosestOr[T <: CNF](cnf: T, constr: Constraint): T =
     def g[V <: CNF](e: V, o: V, cont: V): V = e match
       case Symbol(Variable(name, _)) if name == constr.name && !constr.value => o
       case Not(Symbol(Variable(name, _))) if name == constr.name && constr.value => o
@@ -74,6 +59,8 @@ object DpllCnfUtils:
     cnf match
       case s@Symbol(_) => s
       case And(left, right) => And(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr)).asInstanceOf[T]
-      case Or(left, right) => g(left, right, g(right, left,
-        Or(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr)))).asInstanceOf[T]
+      case Or(left, right) =>
+        g(left, simplifyClosestOr(right, constr),
+          g(right, simplifyClosestOr(left, constr), 
+            Or(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr)))).asInstanceOf[T]
       case e@_ => e

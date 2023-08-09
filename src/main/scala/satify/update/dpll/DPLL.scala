@@ -2,7 +2,7 @@ package satify.update.dpll
 
 import satify.model.DecisionTree.*
 import satify.model.{CNF, Constraint, TreeState, DecisionTree, PartialModel, Variable}
-import satify.update.dpll.DpllCnfUtils.*
+import satify.update.dpll.CNFSimplification.*
 import satify.model
 
 import scala.language.postfixOps
