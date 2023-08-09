@@ -47,7 +47,7 @@ object DpllCnfUtils:
     - Do not simplify when at least a Literal of an And is false
   **/
   def simplifyCnf(cnf: CNF, constr: Constraint): CNF =
-    simplifyUppermostOr(cnf, constr)
+    simplifyClosestOr(simplifyUppermostOr(cnf, constr), constr)
 
   private def simplifyUppermostOr[T <: CNF](cnf: T, constr: Constraint): T =
     def f[V <: CNF](e: V, cont: T): T = e match
