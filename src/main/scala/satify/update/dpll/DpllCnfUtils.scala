@@ -51,17 +51,29 @@ object DpllCnfUtils:
 
   private def simplifyUppermostOr[T <: CNF](cnf: T, constr: Constraint): T =
     def f[V <: CNF](e: V, cont: T): T = e match
-      case Symbol(Variable(name, _)) if name == constr.name && constr.value =>
-        Symbol(True).asInstanceOf[T]
+      case Symbol(Variable(name, _)) if name == constr.name && constr.value => Symbol(True).asInstanceOf[T]
       case s@Symbol(_: Constant) => s.asInstanceOf[T]
-      case Not(Symbol(Variable(name, _))) if name == constr.name && !constr.value =>
-          Symbol(True).asInstanceOf[T]
-      case s@Not(Symbol(c: Constant)) => s.asInstanceOf[T]
+      case Not(Symbol(Variable(name, _))) if name == constr.name && !constr.value => Symbol(True).asInstanceOf[T]
+      case s@Not(Symbol(_: Constant)) => s.asInstanceOf[T]
       case _ => cont
 
     f(cnf, cnf) match
       case And(left, right) => And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr)).asInstanceOf[T]
       case Or(left, right) =>
-        f(left, f(right, f(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr).asInstanceOf[T])))
+        f(left, f(right, f(simplifyUppermostOr(left, constr), f(simplifyUppermostOr(right, constr), Or(left, right)
+          .asInstanceOf[T]))))
       case e@_ => e
 
+
+  private def simplifyClosestOr[T <: CNF](cnf: T, constr: Constraint): T =
+    def g[V <: CNF](e: V, o: V, cont: V): V = e match
+      case Symbol(Variable(name, _)) if name == constr.name && !constr.value => o
+      case Not(Symbol(Variable(name, _))) if name == constr.name && constr.value => o
+      case _ => cont
+
+    cnf match
+      case s@Symbol(_) => s
+      case And(left, right) => And(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr)).asInstanceOf[T]
+      case Or(left, right) => g(left, right, g(right, left,
+        Or(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr)))).asInstanceOf[T]
+      case e@_ => e

@@ -36,10 +36,15 @@ class DpllCnfUtilsTest extends AnyFlatSpec with Matchers:
     simplifyCnf(negLitCnf, Constraint("b", false)) shouldBe And(Symbol(True), Symbol(varC))
   }
 
-  "An expression in CNF" should "be simplified in all branches when a Literal inside a clause is set to true" in {
+  "An expression in CNF" should "be simplified for each occurrence of the constrained Literal" in {
     val cnf = And(Or(Symbol(varA), Symbol(varB)), And(Or(Symbol(varC), Or(Symbol(varA), Symbol(varB))), Symbol(varC)))
     simplifyCnf(cnf, Constraint("a", true)) shouldBe
       And(Symbol(True), And(Symbol(True), Symbol(varC)))
+  }
+
+  "An expression in CNF" should "be simplified only on the branches where the Literal is found" in {
+    val cnf: CNF = And(Or(Symbol(varA), Or(Not(Symbol(varB)), Symbol(varC))), Or(Symbol(varA), Symbol(varC)))
+    simplifyCnf(cnf, Constraint("b", false)) shouldBe And(Symbol(True), Or(Symbol(varA), Symbol(varC)))
   }
 
   "An expression in CNF" should "be simplified when a Literal inside a clause is set to false" in {
