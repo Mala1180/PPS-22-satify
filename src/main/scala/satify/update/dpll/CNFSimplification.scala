@@ -19,7 +19,6 @@ object CNFSimplification:
   /**
    * Simplify the clause (e.g. the uppermost Or near the root of CNF) substituting it with a True constant
    * if the constrained Literal in a clause is set to true s.t. v = true or Not(v) = true.
-   *
    * @param cnf expression in CNF
    * @param constr constraint
    * @tparam T type
@@ -44,7 +43,6 @@ object CNFSimplification:
   /**
    * Simplify the clause by deleting the constrained Literal inside that clause (e.g. substituting the
    * closest Or with the other branch, if any) when it is set to false s.t. v = false or Not(v) = false,
-   *
    * @param cnf CNF expression
    * @param constr constraint
    * @tparam T type
@@ -84,14 +82,14 @@ object CNFSimplification:
         h(left, h(sRight, Symbol(True), sRight), And(left, sRight)).asInstanceOf[T]
       case e@_ => e
 
-  /** Update a CNF expression after a variable constraint has been applied.
-   *
-   * @param e      CNF subexpression to be updated
+  /**
+   * Update a CNF expression constraining a Variable.
+   * @param cnf CNF subexpression to be updated
    * @param constr constraint to apply
    * @return Updated CNF
    */
-  private def updateCnf[T <: CNF](e: T, constr: Constraint): T =
-    e match
+  private def updateCnf[T <: CNF](cnf: T, constr: Constraint): T =
+    cnf match
       case Symbol(variable: Variable) if variable.name == constr.name =>
         if constr.value then
           Symbol(True).asInstanceOf[T]
@@ -100,4 +98,4 @@ object CNFSimplification:
       case And(left, right) => And(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
       case Or(left, right) => Or(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
       case Not(symbol) => Not(updateCnf(symbol, constr)).asInstanceOf[T]
-      case _ => e
+      case _ => cnf
