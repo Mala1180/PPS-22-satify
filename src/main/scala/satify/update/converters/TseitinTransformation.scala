@@ -22,9 +22,10 @@ object TseitinTransformation:
       case _ => exp1
     var transformations: List[(CNFSymbol, CNF)] = List()
     symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
+    val transformedExp = transformations.map(_._2)
 
-    if transformations.size == 1 then transformations.head._2
-    else transformations.reduceRight((s1, s2) => (s1._1, reduction(s1._2, s2._2)))._2
+    if transformedExp.size == 1 then transformedExp.head
+    else transformedExp.reduceRight((s1, s2) => reduction(s1, s2))
 
   /** Substitute Symbols of nested subexpressions in all others expressions
     * @param exp the expression where to substitute Symbols

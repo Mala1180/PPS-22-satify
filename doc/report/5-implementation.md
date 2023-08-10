@@ -14,7 +14,7 @@ high level view:
   unsat. In this case the tree is backtracked to the previous decision, in order to let the algorithm to branch on
   another assignment/variable.
 
-The variable to be assigned at a decision branch is choosed:
+The variable to be assigned at a decision branch is chose:
 
 - randomly, if every clause of the expression has more than one literal
 - as a unit literal inside a clause of the expression, e.g. a literal which is the only one inside the clause. This
