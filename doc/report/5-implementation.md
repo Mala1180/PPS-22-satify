@@ -86,6 +86,23 @@ The expression in CNF is simplified according to the specific logical operator:
         <img src='./img/cOr2.svg' height="200" -aligned="center">
       </p>
 
+- `And`
+  - An expression in CNF should be simplified when an `And` contains at least a `True` Literal:
+
+    Examples: 
+
+      - Constraint `B = True`:
+        <p align=center>
+          <img src='./img/And1.svg' height="150" -aligned="center">
+        </p>
+
+      - A more complex example. Constraint `A = True`:
+        <p align=center>
+          <img src='./img/And2.svg' height="200" -aligned="center">
+        </p>
+
+    
+
 
 ## Mattia Matteini
 
