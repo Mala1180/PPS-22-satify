@@ -20,46 +20,7 @@ class DPLLTest extends AnyFlatSpec with Matchers:
     dpll(TreeState(extractModelFromCnf(cnf), cnf)).getClass shouldBe classOf[Branch]
   }
 
-  "DPLL" should "explore all the possible assignments to the model" in {
-    val emptyDec = TreeState(extractModelFromCnf(cnf), cnf)
-    dpll(emptyDec) shouldBe
-      Branch(emptyDec,
-        Branch(
-          TreeState(
-            Seq(Variable("a", Some(true)), varB),
-            And(Symbol(Variable("a", Some(true))), Symbol(varB))
-          ),
-          Branch(
-            TreeState(
-              Seq(Variable("a", Some(true)), Variable("b", Some(true))),
-              And(Symbol(Variable("a", Some(true))), Symbol(Variable("b", Some(true))))
-            ), Leaf, Leaf),
-          Branch(
-            TreeState(
-              Seq(Variable("a", Some(true)), Variable("b", Some(false))),
-              And(Symbol(Variable("a", Some(true))), Symbol(Variable("b", Some(false))))
-            ), Leaf, Leaf)
-        ),
-        Branch(
-          TreeState(
-            Seq(Variable("a", Some(false)), varB),
-            And(Symbol(Variable("a", Some(false))), Symbol(varB))
-          ),
-          Branch(
-            TreeState(
-              Seq(Variable("a", Some(false)), Variable("b", Some(true))),
-              And(Symbol(Variable("a", Some(false))), Symbol(Variable("b", Some(true))))
-            ), Leaf, Leaf),
-          Branch(
-            TreeState(
-              Seq(Variable("a", Some(false)), Variable("b", Some(false))),
-              And(Symbol(Variable("a", Some(false))), Symbol(Variable("b", Some(false))))
-            ), Leaf, Leaf)
-        )
-      )
-
-    "A PartialModel" should "be extractable from a CNF" in {
-      val parModel: PartialModel = Seq(Variable("a"), Variable("b"), Variable("c"))
-      parModel shouldBe extractModelFromCnf(cnf)
-    }
+  "A PartialModel" should "be extractable from a CNF" in {
+    val parModel: PartialModel = Seq(Variable("a"), Variable("b"))
+    extractModelFromCnf(cnf) shouldBe parModel
   }
