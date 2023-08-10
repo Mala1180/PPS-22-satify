@@ -7,47 +7,56 @@ import satify.model.Constant.{False, True}
 
 object CNFSimplification:
 
-  /**
-   * Simplify the CNF applying the constraint given as parameter.
-   * @param cnf expression in CNF
-   * @param constr constraint
-   * @return simplified CNF
-   */
+  /** Simplify the CNF applying the constraint given as parameter.
+    * @param cnf expression in CNF
+    * @param constr constraint
+    * @return simplified CNF
+    */
   def simplifyCnf(cnf: CNF, constr: Constraint): CNF =
     updateCnf(simplifyClosestAnd(simplifyClosestOr(simplifyUppermostOr(cnf, constr), constr)), constr)
 
-  /**
-   * Simplify the clause (e.g. the uppermost Or near the root of CNF) substituting it with a True constant
-   * if the constrained Literal in a clause is set to true s.t. v = true or Not(v) = true.
-   * @param cnf expression in CNF
-   * @param constr constraint
-   * @tparam T type
-   * @return partial simplified CNF
-   */
+  /** Simplify the clause (e.g. the uppermost Or near the root of CNF) substituting it with a True constant
+    * if the constrained Literal in a clause is set to true s.t. v = true or Not(v) = true.
+    * @param cnf expression in CNF
+    * @param constr constraint
+    * @tparam T type
+    * @return partial simplified CNF
+    */
   private def simplifyUppermostOr[T <: CNF](cnf: T, constr: Constraint): T =
     def f[V <: CNF](e: V, d: T): T = e match
       case Symbol(Variable(name, _)) if name == constr.name && constr.value => Symbol(True).asInstanceOf[T]
-      case s@Symbol(_: Constant) => s.asInstanceOf[T]
+      case s @ Symbol(_: Constant) => s.asInstanceOf[T]
       case Not(Symbol(Variable(name, _))) if name == constr.name && !constr.value => Symbol(True).asInstanceOf[T]
-      case s@Not(Symbol(_: Constant)) => s.asInstanceOf[T]
+      case s @ Not(Symbol(_: Constant)) => s.asInstanceOf[T]
       case _ => d
 
     f(cnf, cnf) match
-      case And(left, right) => And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr)).asInstanceOf[T]
+      case And(left, right) =>
+        And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr)).asInstanceOf[T]
       case Or(left, right) =>
-        f(left, f(right, f(simplifyUppermostOr(left, constr), f(simplifyUppermostOr(right, constr), Or(left, right)
-          .asInstanceOf[T]))))
-      case e@_ => e
+        f(
+          left,
+          f(
+            right,
+            f(
+              simplifyUppermostOr(left, constr),
+              f(
+                simplifyUppermostOr(right, constr),
+                Or(left, right)
+                  .asInstanceOf[T]
+              )
+            )
+          )
+        )
+      case e @ _ => e
 
-
-  /**
-   * Simplify the clause by deleting the constrained Literal inside that clause (e.g. substituting the
-   * closest Or with the other branch, if any) when it is set to false s.t. v = false or Not(v) = false,
-   * @param cnf CNF expression
-   * @param constr constraint
-   * @tparam T type
-   * @return partial simplified CNF
-   */
+  /** Simplify the clause by deleting the constrained Literal inside that clause (e.g. substituting the
+    * closest Or with the other branch, if any) when it is set to false s.t. v = false or Not(v) = false,
+    * @param cnf CNF expression
+    * @param constr constraint
+    * @tparam T type
+    * @return partial simplified CNF
+    */
   private def simplifyClosestOr[T <: CNF](cnf: T, constr: Constraint): T =
     def g[V <: CNF](e: V, o: V, d: V): V = e match
       case Symbol(Variable(name, _)) if name == constr.name && !constr.value => o
@@ -57,18 +66,22 @@ object CNFSimplification:
     cnf match
       case And(left, right) => And(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr)).asInstanceOf[T]
       case Or(left, right) =>
-        g(left, simplifyClosestOr(right, constr),
-          g(right, simplifyClosestOr(left, constr),
-            Or(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr)))).asInstanceOf[T]
-      case e@_ => e
+        g(
+          left,
+          simplifyClosestOr(right, constr),
+          g(
+            right,
+            simplifyClosestOr(left, constr),
+            Or(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr))
+          )
+        ).asInstanceOf[T]
+      case e @ _ => e
 
-
-  /**
-   * Simplify And(s) when a Literal is set to true s.t. v = true or Not(v) = true.
-   * @param cnf CNF expression
-   * @tparam T type
-   * @return partial simplified CNF
-   */
+  /** Simplify And(s) when a Literal is set to true s.t. v = true or Not(v) = true.
+    * @param cnf CNF expression
+    * @tparam T type
+    * @return partial simplified CNF
+    */
   private def simplifyClosestAnd[T <: CNF](cnf: T): T =
     def h[V <: CNF](e: V, o: V, d: V): V = e match
       case Symbol(True) => o
@@ -80,21 +93,18 @@ object CNFSimplification:
       case And(left, right) =>
         val sRight = simplifyClosestAnd(right)
         h(left, h(sRight, Symbol(True), sRight), And(left, sRight)).asInstanceOf[T]
-      case e@_ => e
+      case e @ _ => e
 
-  /**
-   * Update a CNF expression constraining a Variable.
-   * @param cnf CNF subexpression to be updated
-   * @param constr constraint to apply
-   * @return Updated CNF
-   */
+  /** Update a CNF expression constraining a Variable.
+    * @param cnf CNF subexpression to be updated
+    * @param constr constraint to apply
+    * @return Updated CNF
+    */
   private def updateCnf[T <: CNF](cnf: T, constr: Constraint): T =
     cnf match
       case Symbol(variable: Variable) if variable.name == constr.name =>
-        if constr.value then
-          Symbol(True).asInstanceOf[T]
-        else
-          Symbol(False).asInstanceOf[T]
+        if constr.value then Symbol(True).asInstanceOf[T]
+        else Symbol(False).asInstanceOf[T]
       case And(left, right) => And(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
       case Or(left, right) => Or(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
       case Not(symbol) => Not(updateCnf(symbol, constr)).asInstanceOf[T]

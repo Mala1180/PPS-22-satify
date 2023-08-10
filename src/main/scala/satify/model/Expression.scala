@@ -6,7 +6,6 @@ enum Expression:
   case And(right: Expression, left: Expression)
   case Or(right: Expression, left: Expression)
 
-
 /** Object with methods to manipulate expressions */
 
 object Expression:
