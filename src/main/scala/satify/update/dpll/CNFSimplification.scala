@@ -14,7 +14,7 @@ object CNFSimplification:
    * @return simplified CNF
    */
   def simplifyCnf(cnf: CNF, constr: Constraint): CNF =
-    simplifyClosestAnd(simplifyClosestOr(simplifyUppermostOr(cnf, constr), constr))
+    updateCnf(simplifyClosestAnd(simplifyClosestOr(simplifyUppermostOr(cnf, constr), constr)), constr)
 
   /**
    * Simplify the clause (e.g. the uppermost Or near the root of CNF) substituting it with a True constant
@@ -83,3 +83,21 @@ object CNFSimplification:
         val sRight = simplifyClosestAnd(right)
         h(left, h(sRight, Symbol(True), sRight), And(left, sRight)).asInstanceOf[T]
       case e@_ => e
+
+  /** Update a CNF expression after a variable constraint has been applied.
+   *
+   * @param e      CNF subexpression to be updated
+   * @param constr constraint to apply
+   * @return Updated CNF
+   */
+  private def updateCnf[T <: CNF](e: T, constr: Constraint): T =
+    e match
+      case Symbol(variable: Variable) if variable.name == constr.name =>
+        if constr.value then
+          Symbol(True).asInstanceOf[T]
+        else
+          Symbol(False).asInstanceOf[T]
+      case And(left, right) => And(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
+      case Or(left, right) => Or(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
+      case Not(symbol) => Not(updateCnf(symbol, constr)).asInstanceOf[T]
+      case _ => e

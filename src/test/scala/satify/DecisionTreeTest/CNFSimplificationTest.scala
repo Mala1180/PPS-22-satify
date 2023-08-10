@@ -6,7 +6,7 @@ import satify.model.*
 import satify.update.dpll.CNFSimplification.*
 import satify.model.{Constraint, PartialModel}
 import satify.model.CNF.*
-import satify.model.Constant.True
+import satify.model.Constant.{False, True}
 
 class CNFSimplificationTest extends AnyFlatSpec with Matchers:
 
@@ -54,4 +54,13 @@ class CNFSimplificationTest extends AnyFlatSpec with Matchers:
     simplifyCnf(cnf, Constraint("b", true)) shouldBe Symbol(varC)
     val complexCnf = And(Symbol(varA), And(Symbol(varB), And(Symbol(varA), Symbol(varC))))
     simplifyCnf(complexCnf, Constraint("a", true)) shouldBe And(Symbol(varB), Symbol(varC))
+  }
+
+  "An expression in CNF" should "be simplified when a Literal appears in positive and negative form" in {
+    val cnf = And(Symbol(varA), Or(Symbol(varB), Or(Symbol(varC), Not(Symbol(varA)))))
+    simplifyCnf(cnf, Constraint("a", true)) shouldBe Or(Symbol(varB), Symbol(varC))
+    val complexCnf = And(Not(Symbol(varA)), Or(Symbol(varB), Or(Not(Symbol(varA)), Not(Symbol(varA)))))
+    simplifyCnf(complexCnf, Constraint("a", false)) shouldBe Symbol(True)
+    val complexCnf1 = And(Symbol(varA), Or(Symbol(varB), Or(Not(Symbol(varA)), Not(Symbol(varA)))))
+    simplifyCnf(complexCnf1, Constraint("a", false)) shouldBe And(Symbol(False), Symbol(True))
   }
