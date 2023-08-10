@@ -1,10 +1,7 @@
 package satify
 
-import satify.model.{CNF, Expression, State, Variable}
-import satify.update.Message.{Convert, Input, Solve}
-import satify.update.converters.CNFConverter
-import satify.update.converters.TseitinTransformation.tseitin
-import satify.update.{Message, Solver}
+import satify.model.State
+import satify.update.{Message, Update}
 import satify.view.GUI
 
 /** Object containing the necessary components for the Model-View-Update architecture. */
@@ -33,15 +30,4 @@ object Architecture:
   trait MVU extends ModelComponent with ViewComponent with UpdateComponent:
     var model: Model = State()
     override val view: View = model => GUI(model, update)
-    override val update: Update = (model, message) =>
-      message match
-        case Input(char) => model
-        case Solve(exp) =>
-          given CNFConverter with
-            def convert(exp: Expression): CNF = tseitin(exp)
-
-          Solver().solve(exp)
-          State()
-        case Convert(exp) =>
-          tseitin(exp)
-          State()
+    override val update: Update = Update.update

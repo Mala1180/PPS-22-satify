@@ -48,9 +48,9 @@ object ComponentUtils:
     * @param gui the gui
     * @return the button
     */
-  def createButton(gui: GUI, text: String): Button = new Button(text):
+  def createButton(gui: GUI, text: String, width: Int, height: Int): Button = new Button(text):
     font = Font(fontFamily, Font.ITALIC, 20)
-    preferredSize = new Dimension(100, 40)
+    preferredSize = new Dimension(width, height)
     background = Color.green
     foreground = Color(200, 0, 0)
 
