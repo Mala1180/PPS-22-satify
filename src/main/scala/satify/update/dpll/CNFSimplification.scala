@@ -31,16 +31,17 @@ object CNFSimplification:
       * @tparam V subtype of CNF
       * @return a Symbol(True) or d
       */
-    def f[V <: CNF](e: V, d: T): T = e match
-      case Symbol(Variable(name, _)) if name == constr.name && constr.value => Symbol(True).asInstanceOf[T]
-      case s @ Symbol(True) => s.asInstanceOf[T]
-      case Not(Symbol(Variable(name, _))) if name == constr.name && !constr.value => Symbol(True).asInstanceOf[T]
-      case Not(Symbol(False)) => Symbol(True).asInstanceOf[T]
-      case _ => d
+    def f[V <: CNF](e: V, d: T): T =
+      (e match
+        case Symbol(Variable(name, _)) if name == constr.name && constr.value => Symbol(True)
+        case s @ Symbol(True) => s
+        case Not(Symbol(Variable(name, _))) if name == constr.name && !constr.value => Symbol(True)
+        case Not(Symbol(False)) => Symbol(True)
+        case _ => d).asInstanceOf[T]
 
-    f(cnf, cnf) match
+    (f(cnf, cnf) match
       case And(left, right) =>
-        And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr)).asInstanceOf[T]
+        And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr))
       case Or(left, right) =>
         /*
         1. Check if left branch is a True constant or the constrained Variable:
@@ -60,13 +61,12 @@ object CNFSimplification:
               simplifyUppermostOr(left, constr),
               f(
                 simplifyUppermostOr(right, constr),
-                Or(left, right)
-                  .asInstanceOf[T]
+                Or(left, right).asInstanceOf[T]
               )
             )
           )
         )
-      case e @ _ => e
+      case e @ _ => e).asInstanceOf[T]
 
   /** Simplify the clause by deleting the constrained Literal inside that clause (e.g. substituting the
     * closest Or with the other branch, if any) when it is set to false s.t. v = false or Not(v) = false,
@@ -91,8 +91,8 @@ object CNFSimplification:
       case Symbol(False) => o
       case _ => d
 
-    cnf match
-      case And(left, right) => And(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr)).asInstanceOf[T]
+    (cnf match
+      case And(left, right) => And(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr))
       case Or(left, right) =>
         /*
         1. Check if the left branch is a negative Literal:
@@ -110,8 +110,8 @@ object CNFSimplification:
             simplifyClosestOr(left, constr),
             Or(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr))
           )
-        ).asInstanceOf[T]
-      case e @ _ => e
+        )
+      case e @ _ => e).asInstanceOf[T]
 
   /** Simplify And(s) when a Literal is set to true s.t. v = true or Not(v) = true.
     * @param cnf CNF expression
@@ -132,8 +132,8 @@ object CNFSimplification:
       case Not(Symbol(False)) => o
       case _ => d
 
-    cnf match
-      case Or(left, right) => Or(simplifyClosestAnd(left), simplifyClosestAnd(right)).asInstanceOf[T]
+    (cnf match
+      case Or(left, right) => Or(simplifyClosestAnd(left), simplifyClosestAnd(right))
       case And(left, right) =>
         /*
         1. Check if the left branch is a positive Literal:
@@ -151,8 +151,8 @@ object CNFSimplification:
             simplifyClosestAnd(left),
             And(simplifyClosestAnd(left), simplifyClosestAnd(right))
           )
-        ).asInstanceOf[T]
-      case e @ _ => e
+        )
+      case e @ _ => e).asInstanceOf[T]
 
   /** Update a CNF expression constraining a Variable.
     * @param cnf CNF subexpression to be updated
@@ -160,11 +160,11 @@ object CNFSimplification:
     * @return Updated CNF
     */
   private def updateCnf[T <: CNF](cnf: T, constr: Constraint): T =
-    cnf match
+    (cnf match
       case Symbol(variable: Variable) if variable.name == constr.name =>
-        if constr.value then Symbol(True).asInstanceOf[T]
-        else Symbol(False).asInstanceOf[T]
-      case And(left, right) => And(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
-      case Or(left, right) => Or(updateCnf(left, constr), updateCnf(right, constr)).asInstanceOf[T]
-      case Not(symbol) => Not(updateCnf(symbol, constr)).asInstanceOf[T]
-      case _ => cnf
+        if constr.value then Symbol(True)
+        else Symbol(False)
+      case And(left, right) => And(updateCnf(left, constr), updateCnf(right, constr))
+      case Or(left, right) => Or(updateCnf(left, constr), updateCnf(right, constr))
+      case Not(symbol) => Not(updateCnf(symbol, constr))
+      case _ => cnf).asInstanceOf[T]
