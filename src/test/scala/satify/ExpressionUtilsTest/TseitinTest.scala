@@ -45,7 +45,6 @@ class TseitinTest extends AnyFlatSpec with Matchers:
   "The CNF form of ((a ∧ ¬b) ∨ c)" should "be correctly generated" in {
     val exp = Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val result = tseitin(exp)
-    println(result)
     val expected = CNFAnd(
       CNFOr(
         CNFOr(CNFSymbol(Variable("X1", None)), CNFSymbol(Variable("c", None))),
@@ -74,5 +73,46 @@ class TseitinTest extends AnyFlatSpec with Matchers:
         )
       )
     )
+    result shouldBe expected
+  }
+
+  "The CNF form of ((¬a ∨ (b ∧ c)) ∨ d)" should "be correctly generated" in {
+    val exp = Or(Or(Not(Symbol("a")), And(Symbol("b"), Symbol("c"))), Symbol("d"))
+    val result = tseitin(exp)
+    val expected = CNFAnd(
+      CNFOr(CNFOr(CNFSymbol(Variable("X1", None)), CNFSymbol(Variable("d", None))), CNFNot(CNFSymbol(Variable("X0", None)))),
+      CNFAnd(
+        CNFOr(CNFNot(CNFSymbol(Variable("X1", None))), CNFSymbol(Variable("X0", None))),
+        CNFAnd(
+          CNFOr(CNFNot(CNFSymbol(Variable("d", None))), CNFSymbol(Variable("X0", None))),
+          CNFAnd(
+            CNFOr(CNFOr(CNFSymbol(Variable("X2", None)), CNFSymbol(Variable("X3", None))), CNFNot(CNFSymbol(Variable("X1", None)))),
+            CNFAnd(
+              CNFOr(CNFNot(CNFSymbol(Variable("X2", None))), CNFSymbol(Variable("X1", None))),
+              CNFAnd(
+                CNFOr(CNFNot(CNFSymbol(Variable("X3", None))), CNFSymbol(Variable("X1", None))),
+                CNFAnd(
+                  CNFOr(CNFNot(CNFSymbol(Variable("a", None))), CNFNot(CNFSymbol(Variable("X2", None)))),
+                  CNFAnd(
+                    CNFOr(CNFSymbol(Variable("a", None)), CNFSymbol(Variable("X2", None))),
+                    CNFAnd(
+                      CNFOr(
+                        CNFOr(CNFNot(CNFSymbol(Variable("b", None))), CNFNot(CNFSymbol(Variable("c", None)))),
+                        CNFSymbol(Variable("X3", None))
+                      ),
+                      CNFAnd(
+                        CNFOr(CNFSymbol(Variable("b", None)), CNFNot(CNFSymbol(Variable("X3", None)))),
+                        CNFOr(CNFSymbol(Variable("c", None)), CNFNot(CNFSymbol(Variable("X3", None))))
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+
     result shouldBe expected
   }
