@@ -21,7 +21,6 @@ object Update:
       case Convert(input) =>
         println(reflect(processInput(input)))
         val op = tseitin(reflect(processInput(input)))
-        println(op)
         State()
 
   private def processInput(input: String): String =

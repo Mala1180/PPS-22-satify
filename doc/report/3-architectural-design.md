@@ -5,7 +5,7 @@ we chose to use the **MVU** (Model-View-Update) architectural pattern: it fits w
 
 The following figure shows the typical behavior of this pattern.
 
-<img src="../diagrams/mvu/mvu.png" alt="Diagramma Model-View-Update">
+<img src="../diagrams/mvu/mvu.png" alt="Diagram Model-View-Update">
 
 ## Model
 

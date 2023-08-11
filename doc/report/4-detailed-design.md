@@ -88,7 +88,7 @@ $C$ is a unit clause under $m$ if a literal $l \in C$ in unassigned and the rest
 #### DPLL
 
 - maintains a partial model, initially $\emptyset$
-- assigns unassignmed variables 0 or 1 randomly one after another
+- assigns unassigned variables 0 or 1 randomly one after another
 - sometimes forced to choose assignments due to unit literals
 
 <img src="./img/dpll.png" height="300">
