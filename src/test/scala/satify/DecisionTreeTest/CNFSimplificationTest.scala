@@ -62,5 +62,5 @@ class CNFSimplificationTest extends AnyFlatSpec with Matchers:
     val complexCnf = And(Not(Symbol(varA)), Or(Symbol(varB), Or(Not(Symbol(varA)), Not(Symbol(varA)))))
     simplifyCnf(complexCnf, Constraint("a", false)) shouldBe Symbol(True)
     val complexCnf1 = And(Symbol(varA), Or(Symbol(varB), Or(Not(Symbol(varA)), Not(Symbol(varA)))))
-    simplifyCnf(complexCnf1, Constraint("a", false)) shouldBe And(Symbol(False), Symbol(True))
+    simplifyCnf(complexCnf1, Constraint("a", false)) shouldBe Symbol(False)
   }
