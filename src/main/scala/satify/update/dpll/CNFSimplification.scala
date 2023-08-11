@@ -24,14 +24,13 @@ object CNFSimplification:
     */
   private def simplifyUppermostOr[T <: CNF](cnf: T, constr: Constraint): T =
 
-    /**
-     * Propagate the simplification if the CNF in input is a Literal equal to the constrained Variable and
-     * it is evaluated true, or if it is a Literal with a Constant which is evaluated true.
-     * @param e expression in CNF
-     * @param d default match case
-     * @tparam V subtype of CNF
-     * @return a Symbol(True) or d
-     */
+    /** Propagate the simplification if the CNF in input is a Literal equal to the constrained Variable and
+      * it is evaluated true, or if it is a Literal with a Constant which is evaluated true.
+      * @param e expression in CNF
+      * @param d default match case
+      * @tparam V subtype of CNF
+      * @return a Symbol(True) or d
+      */
     def f[V <: CNF](e: V, d: T): T = e match
       case Symbol(Variable(name, _)) if name == constr.name && constr.value => Symbol(True).asInstanceOf[T]
       case s @ Symbol(True) => s.asInstanceOf[T]
@@ -52,7 +51,7 @@ object CNFSimplification:
           2.2. if it doesn't reduce to a True, then recursively call the function on the right branch repeating 1.;
               If also 2.2. doesn't reduce to a True, the Or doesn't contain the constrained Variable,
               so return Or(left, right).
-        */
+         */
         f(
           left,
           f(
@@ -78,14 +77,13 @@ object CNFSimplification:
     */
   private def simplifyClosestOr[T <: CNF](cnf: T, constr: Constraint): T =
 
-    /**
-     * Return the specified value if the CNF is a negative Literal
-     * @param e CNF expression to check
-     * @param o return value if CNF is a negative Literal
-     * @param d default match case
-     * @tparam V subtype of CNF
-     * @return o if cnf is a negative Literal, d otherwise
-     */
+    /** Return the specified value if the CNF is a negative Literal
+      * @param e CNF expression to check
+      * @param o return value if CNF is a negative Literal
+      * @param d default match case
+      * @tparam V subtype of CNF
+      * @return o if cnf is a negative Literal, d otherwise
+      */
     def g[V <: CNF](e: V, o: V, d: V): V = e match
       case Symbol(Variable(name, _)) if name == constr.name && !constr.value => o
       case Not(Symbol(Variable(name, _))) if name == constr.name && constr.value => o
@@ -103,7 +101,7 @@ object CNFSimplification:
           1.2. Else, repeat 1. on the right branch instead of the left (and using the left in 1.1.).
               If also the right branch isn't a negative Literal, then the current Or mustn't be simplified,
               so return an Or recursively call the function on the left branch and on the right.
-        */
+         */
         g(
           left,
           simplifyClosestOr(right, constr),
@@ -122,14 +120,13 @@ object CNFSimplification:
     */
   private def simplifyClosestAnd[T <: CNF](cnf: T): T =
 
-    /**
-     * Return the specified value if CNF is a Literal contains a Constant and it is evaluated true.
-     * @param e expression in CNF
-     * @param o return value if CNF is a positive Literal
-     * @param d default match case
-     * @tparam V subtype of CNF
-     * @return o if cnf is a positive Literal containing a Constant, d otherwise
-     */
+    /** Return the specified value if CNF is a Literal contains a Constant and it is evaluated true.
+      * @param e expression in CNF
+      * @param o return value if CNF is a positive Literal
+      * @param d default match case
+      * @tparam V subtype of CNF
+      * @return o if cnf is a positive Literal containing a Constant, d otherwise
+      */
     def h[V <: CNF](e: V, o: V, d: V): V = e match
       case Symbol(True) => o
       case Not(Symbol(False)) => o
@@ -145,14 +142,16 @@ object CNFSimplification:
           1.2. Else, repeat 1. on the right branch instead of the left (and using the left in 1.1.).
               If also the right branch isn't a positive Literal, then the current And mustn't be simplified,
               so return an And recursively call the function on the left branch and on the right.
-        */
-        h(left,
+         */
+        h(
+          left,
           simplifyClosestAnd(right),
           h(
             right,
             simplifyClosestAnd(left),
             And(simplifyClosestAnd(left), simplifyClosestAnd(right))
-          )).asInstanceOf[T]
+          )
+        ).asInstanceOf[T]
       case e @ _ => e
 
   /** Update a CNF expression constraining a Variable.
