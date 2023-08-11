@@ -80,13 +80,19 @@ class TseitinTest extends AnyFlatSpec with Matchers:
     val exp = Or(Or(Not(Symbol("a")), And(Symbol("b"), Symbol("c"))), Symbol("d"))
     val result = tseitin(exp)
     val expected = CNFAnd(
-      CNFOr(CNFOr(CNFSymbol(Variable("X1", None)), CNFSymbol(Variable("d", None))), CNFNot(CNFSymbol(Variable("X0", None)))),
+      CNFOr(
+        CNFOr(CNFSymbol(Variable("X1", None)), CNFSymbol(Variable("d", None))),
+        CNFNot(CNFSymbol(Variable("X0", None)))
+      ),
       CNFAnd(
         CNFOr(CNFNot(CNFSymbol(Variable("X1", None))), CNFSymbol(Variable("X0", None))),
         CNFAnd(
           CNFOr(CNFNot(CNFSymbol(Variable("d", None))), CNFSymbol(Variable("X0", None))),
           CNFAnd(
-            CNFOr(CNFOr(CNFSymbol(Variable("X2", None)), CNFSymbol(Variable("X3", None))), CNFNot(CNFSymbol(Variable("X1", None)))),
+            CNFOr(
+              CNFOr(CNFSymbol(Variable("X2", None)), CNFSymbol(Variable("X3", None))),
+              CNFNot(CNFSymbol(Variable("X1", None)))
+            ),
             CNFAnd(
               CNFOr(CNFNot(CNFSymbol(Variable("X2", None))), CNFSymbol(Variable("X1", None))),
               CNFAnd(
