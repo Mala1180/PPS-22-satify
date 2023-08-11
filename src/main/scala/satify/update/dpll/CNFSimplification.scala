@@ -93,7 +93,7 @@ object CNFSimplification:
       case Symbol(False) => o
       case _ => d
 
-    (cnf match
+    (g(cnf, Symbol(False), cnf) match
       case And(left, right) => And(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr))
       case Or(left, right) =>
         /*
