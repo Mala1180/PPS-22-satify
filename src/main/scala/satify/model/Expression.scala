@@ -1,5 +1,5 @@
 package satify.model
-case class Variable(name: String, value: Option[Boolean] = None)
+
 enum Expression:
   case Symbol(value: String)
   case Not(branch: Expression)
