@@ -15,11 +15,23 @@ class DPLLTest extends AnyFlatSpec with Matchers:
 
   val varA: Variable = Variable("a")
   val varB: Variable = Variable("b")
+  val varC: Variable = Variable("c")
+
 
   val cnf: CNF = And(Symbol(varA), Symbol(varB))
 
   "DPLL" should "accept a Decision and return a DecisionTree of type Branch" in {
     dpll(TreeState(extractModelFromCnf(cnf), cnf)).getClass shouldBe classOf[Branch]
+  }
+
+  "All solutions" should "be extractable from a PartialModel" in {
+    val pm: PartialModel = Seq(Variable("a"), Variable("b"), Variable("c", Some(true)))
+    explodeSolutions(pm) shouldBe
+      Set(Seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(true))),
+        Seq(Variable("a", Some(false)), Variable("b", Some(true)), Variable("c", Some(true))),
+        Seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true))),
+        Seq(Variable("a", Some(false)), Variable("b", Some(false)), Variable("c", Some(true))),
+      )
   }
 
   "DPLL" should "return a specific DecisionTree for a specific CNF" in {
@@ -30,19 +42,19 @@ class DPLLTest extends AnyFlatSpec with Matchers:
           TreeState(Seq(Variable("a", Some(true)), varB), Symbol(varB)),
           Branch(
             TreeState(Seq(Variable("a", Some(true)), Variable("b", Some(true))), Symbol(True)),
-            SAT,
-            SAT
+            Leaf,
+            Leaf
           ),
           Branch(
             TreeState(Seq(Variable("a", Some(true)), Variable("b", Some(false))), Symbol(False)),
-            UNSAT,
-            UNSAT,
+            Leaf,
+            Leaf
           )
         ),
         Branch(
           TreeState(Seq(Variable("a", Some(false)), varB), Symbol(False)),
-          UNSAT,
-          UNSAT
+          Leaf,
+          Leaf
         )
       )
   }

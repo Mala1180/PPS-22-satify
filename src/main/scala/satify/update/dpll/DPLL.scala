@@ -7,7 +7,7 @@ import satify.update.dpll.CNFSimplification.*
 import satify.update.dpll.PartialModelUtils.*
 import satify.update.dpll.ConflictIdentification.isUnsat
 import satify.model
-import satify.model.Constant.True
+import satify.model.Constant.{False, True}
 
 import scala.language.postfixOps
 
@@ -30,7 +30,7 @@ object DPLL:
     dec match
       case TreeState(parModel, cnf) =>
         if (isUnsat(cnf))
-          Branch(dec, UNSAT, UNSAT)
+          Branch(dec, Leaf, Leaf)
         else
           filterUnconstrVars(extractModelFromCnf(cnf)) match
             case Variable(name, _) +: _ =>
@@ -39,4 +39,24 @@ object DPLL:
                 recCall(parModel, cnf, Constraint(name, true)),
                 recCall(parModel, cnf, Constraint(name, false))
               )
-            case _ => Branch(dec, SAT, SAT)
+            case _ => Branch(dec, Leaf, Leaf)
+
+  def extractSolutionsFromDT(dt: DecisionTree): Set[PartialModel] =
+    dt match
+      case Branch(TreeState(pm, cnf), Leaf, Leaf) => cnf match
+        case Symbol(True) => Set(pm)
+        case _ => Set.empty
+      case Branch(_, left, right) => extractSolutionsFromDT(left) ++ extractSolutionsFromDT(right)
+      case Leaf => Set.empty
+
+  def explodeSolutions(pm: PartialModel): Set[PartialModel] =
+    pm.head match
+      case Variable(name, None) =>
+        if pm.tail.nonEmpty then
+          val rSols = explodeSolutions(pm.tail)
+          rSols.map(p => Seq(Variable(name, Some(true))) ++ p) ++
+            rSols.map(p => Seq(Variable(name, Some(false))) ++ p)
+        else Set(Seq(Variable(name, Some(true))), Seq(Variable(name, Some(false))))
+      case v @ Variable(_, _) =>
+        if pm.tail.nonEmpty then explodeSolutions(pm.tail).map(p => Seq(v) ++ p)
+        else Set(Seq(v))
