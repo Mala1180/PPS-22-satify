@@ -17,7 +17,6 @@ class DPLLTest extends AnyFlatSpec with Matchers:
   val varB: Variable = Variable("b")
   val varC: Variable = Variable("c")
 
-
   val cnf: CNF = And(Symbol(varA), Symbol(varB))
 
   "DPLL" should "accept a Decision and return a DecisionTree of type Branch" in {
@@ -27,10 +26,11 @@ class DPLLTest extends AnyFlatSpec with Matchers:
   "All solutions" should "be extractable from a PartialModel" in {
     val pm: PartialModel = Seq(Variable("a"), Variable("b"), Variable("c", Some(true)))
     explodeSolutions(pm) shouldBe
-      Set(Seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(true))),
+      Set(
+        Seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(true))),
         Seq(Variable("a", Some(false)), Variable("b", Some(true)), Variable("c", Some(true))),
         Seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true))),
-        Seq(Variable("a", Some(false)), Variable("b", Some(false)), Variable("c", Some(true))),
+        Seq(Variable("a", Some(false)), Variable("b", Some(false)), Variable("c", Some(true)))
       )
   }
 
@@ -38,13 +38,14 @@ class DPLLTest extends AnyFlatSpec with Matchers:
     extractSolutionsFromDT(dpll(TreeState(extractModelFromCnf(cnf), cnf))) shouldBe
       Set(Seq(Variable("a", Some(true)), Variable("b", Some(true))))
     val secCnf = And(Symbol(varA), Or(Symbol(varB), Symbol(varC)))
-    val solutions = for
-      pmSet <- extractSolutionsFromDT(dpll(TreeState(extractModelFromCnf(secCnf), secCnf)))
-    yield explodeSolutions(pmSet)
+    val solutions =
+      for pmSet <- extractSolutionsFromDT(dpll(TreeState(extractModelFromCnf(secCnf), secCnf)))
+      yield explodeSolutions(pmSet)
     solutions.flatten shouldBe
-      Set(Seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(true))),
+      Set(
+        Seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(true))),
         Seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(false))),
-        Seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true))),
+        Seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true)))
       )
   }
 

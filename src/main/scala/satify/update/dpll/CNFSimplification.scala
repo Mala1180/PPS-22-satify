@@ -124,7 +124,7 @@ object CNFSimplification:
   private def simplifyClosestAnd[T <: CNF](cnf: T): T =
 
     /** Return the specified value if CNF is a Literal contains a Constant and it is evaluated true,
-     * or Symbol(False) if the CNF contains such element.
+      * or Symbol(False) if the CNF contains such element.
       * @param e expression in CNF
       * @param o return value if CNF is a positive Literal
       * @param d default match case

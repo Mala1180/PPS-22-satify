@@ -15,8 +15,8 @@ class PartialModelUtilsTest extends AnyFlatSpec with Matchers:
 
   "A PartialModel" should "be extractable from a CNF" in {
     extractModelFromCnf(cnf) shouldBe Seq(varA, varB)
-    val allCnf: CNF = And(Symbol(Variable("c")),
-      And(Or(Symbol(Variable("d")), Not(Symbol(Variable("e")))), Symbol(Variable("f"))))
+    val allCnf: CNF =
+      And(Symbol(Variable("c")), And(Or(Symbol(Variable("d")), Not(Symbol(Variable("e")))), Symbol(Variable("f"))))
     extractModelFromCnf(allCnf) shouldBe Seq(Variable("c"), Variable("d"), Variable("e"), Variable("f"))
   }
 
