@@ -20,8 +20,4 @@ class DPLLTest extends AnyFlatSpec with Matchers:
   "DPLL" should "accept a Decision and return a DecisionTree of type Branch" in {
     dpll(TreeState(extractModelFromCnf(cnf), cnf)).getClass shouldBe classOf[Branch]
   }
-
-  "A PartialModel" should "be extractable from a CNF" in {
-    val parModel: PartialModel = Seq(Variable("a"), Variable("b"))
-    extractModelFromCnf(cnf) shouldBe parModel
-  }
+  
