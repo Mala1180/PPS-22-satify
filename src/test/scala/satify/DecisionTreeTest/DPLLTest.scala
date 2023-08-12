@@ -34,6 +34,20 @@ class DPLLTest extends AnyFlatSpec with Matchers:
       )
   }
 
+  "Solutions" should "be extractable from a DecisionTree" in {
+    extractSolutionsFromDT(dpll(TreeState(extractModelFromCnf(cnf), cnf))) shouldBe
+      Set(Seq(Variable("a", Some(true)), Variable("b", Some(true))))
+    val secCnf = And(Symbol(varA), Or(Symbol(varB), Symbol(varC)))
+    val solutions = for
+      pmSet <- extractSolutionsFromDT(dpll(TreeState(extractModelFromCnf(secCnf), secCnf)))
+    yield explodeSolutions(pmSet)
+    solutions.flatten shouldBe
+      Set(Seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(true))),
+        Seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(false))),
+        Seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true))),
+      )
+  }
+
   "DPLL" should "return a specific DecisionTree for a specific CNF" in {
     dpll(TreeState(extractModelFromCnf(cnf), cnf)) shouldBe
       Branch(
