@@ -12,7 +12,8 @@ case class TreeState(parModel: PartialModel, cnf: CNF)
 
 /** DecisionTree is the main data structure for the DPLL algorithm. */
 enum DecisionTree:
-  case Leaf
+  case SAT
+  case UNSAT
   case Branch(d: TreeState, left: DecisionTree, right: DecisionTree)
 
 /** A Constraint is a boolean assignment to a variable.

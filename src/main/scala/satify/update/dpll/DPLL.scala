@@ -1,11 +1,13 @@
 package satify.update.dpll
 
 import satify.model.DecisionTree.*
-import satify.model.{CNF, Constraint, TreeState, DecisionTree, PartialModel, Variable}
+import satify.model.{CNF, Constraint, DecisionTree, PartialModel, TreeState, Variable}
 import satify.model.CNF.*
 import satify.update.dpll.CNFSimplification.*
 import satify.update.dpll.PartialModelUtils.*
+import satify.update.dpll.ConflictIdentification.isUnsat
 import satify.model
+import satify.model.Constant.True
 
 import scala.language.postfixOps
 
@@ -27,11 +29,14 @@ object DPLL:
 
     dec match
       case TreeState(parModel, cnf) =>
-        filterUnconstrVars(parModel) match
-          case Variable(name, _) +: _ =>
-            Branch(
-              dec,
-              recCall(parModel, cnf, Constraint(name, true)),
-              recCall(parModel, cnf, Constraint(name, false))
-            )
-          case _ => Branch(dec, Leaf, Leaf)
+        if (isUnsat(cnf))
+          Branch(dec, UNSAT, UNSAT)
+        else
+          filterUnconstrVars(extractModelFromCnf(cnf)) match
+            case Variable(name, _) +: _ =>
+              Branch(
+                dec,
+                recCall(parModel, cnf, Constraint(name, true)),
+                recCall(parModel, cnf, Constraint(name, false))
+              )
+            case _ => Branch(dec, SAT, SAT)

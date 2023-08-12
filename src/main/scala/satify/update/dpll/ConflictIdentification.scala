@@ -14,7 +14,6 @@ object ConflictIdentification:
         case _ => d
 
     cnf match
-      case Not(Symbol(_: Variable)) | Symbol(_: Variable) |
-           Not(Symbol(False)) | Symbol(True) | Or(_, _) => false
+      case Not(Symbol(_: Variable)) | Symbol(_: Variable) | Not(Symbol(False)) | Symbol(True) | Or(_, _) => false
       case Not(Symbol(True)) | Symbol(False) => true
       case And(left, right) => f(left, f(right, isUnsat(left) | isUnsat(right)))
