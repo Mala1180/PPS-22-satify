@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.{CNF, Constraint, Variable}
 import satify.model.CNF.{And, Not, Or, Symbol}
 import satify.model.Constant.{False, True}
-import satify.update.dpll.ConflictIdentification.hasConflict
+import satify.update.dpll.ConflictIdentification.isUnsat
 import satify.update.dpll.CNFSimplification.simplifyCnf
 
 class ConflictIdentificationTest extends AnyFlatSpec with Matchers:
@@ -14,13 +14,20 @@ class ConflictIdentificationTest extends AnyFlatSpec with Matchers:
   val varB: Variable = Variable("b")
   val varC: Variable = Variable("c")
 
-  "An expression in CNF" should "not contain a conflict" in {
-    val cnfAll = And(Or(Symbol(varA), Or(Symbol(varB), Not(Symbol(varA)))), Symbol(varC))
-    hasConflict(simplifyCnf(cnfAll, Constraint("c", true))) shouldBe false
+  val cnf: CNF = And(Or(Symbol(varA), Or(Symbol(varB), Not(Symbol(varA)))), Symbol(varC))
+
+  "Expressions in CNF" should "not be UNSAT" in {
+    isUnsat(simplifyCnf(cnf, Constraint("c", true))) shouldBe false
     val cnfOr = Or(Symbol(varA), Or(Symbol(varB), Not(Symbol(varC))))
-    hasConflict(simplifyCnf(cnfOr, Constraint("c", true))) shouldBe false
+    isUnsat(simplifyCnf(cnfOr, Constraint("c", true))) shouldBe false
     val cnfPosLit = Symbol(varA)
-    hasConflict(simplifyCnf(cnfPosLit, Constraint("a", true))) shouldBe false
+    isUnsat(simplifyCnf(cnfPosLit, Constraint("a", true))) shouldBe false
     val cnfNegLit = Not(Symbol(varB))
-    hasConflict(simplifyCnf(cnfNegLit, Constraint("b", true))) shouldBe false
+    isUnsat(simplifyCnf(cnfNegLit, Constraint("b", false))) shouldBe false
+  }
+
+  "Expressions in CNF" should "be UNSAT" in {
+    isUnsat(simplifyCnf(cnf, Constraint("c", false))) shouldBe true
+    val anCnf = And(Symbol(varA), Or(Symbol(varB), Symbol(varB)))
+    isUnsat(simplifyCnf(anCnf, Constraint("b", false))) shouldBe true
   }

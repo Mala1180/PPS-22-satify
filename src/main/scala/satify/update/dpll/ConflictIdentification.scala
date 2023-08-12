@@ -6,7 +6,7 @@ import satify.model.{CNF, Constant, Constraint, Variable}
 
 object ConflictIdentification:
 
-  def hasConflict(cnf: CNF): Boolean =
+  def isUnsat(cnf: CNF): Boolean =
 
     val f: (CNF, Boolean) => Boolean = (cnf, d) =>
       cnf match
@@ -14,5 +14,7 @@ object ConflictIdentification:
         case _ => d
 
     cnf match
-      case Symbol(_: Variable) | Symbol(_: Constant) | Or(_, _) | Not(_) => false
-      case And(left, right) => f(left, f(right, hasConflict(left) | hasConflict(right)))
+      case Not(Symbol(_: Variable)) | Symbol(_: Variable) |
+           Not(Symbol(False)) | Symbol(True) | Or(_, _) => false
+      case Not(Symbol(True)) | Symbol(False) => true
+      case And(left, right) => f(left, f(right, isUnsat(left) | isUnsat(right)))
