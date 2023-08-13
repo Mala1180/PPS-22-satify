@@ -41,8 +41,7 @@ object DPLL:
               )
             case _ => Leaf(dec)
 
-  /** Get all SAT solutions, e.g. all parent nodes of DecisionTree leaves where the CNF
-    * has been simplified to Symbol(True).
+  /** Get all SAT solutions, e.g. all Leaf nodes where the CNF has been simplified to Symbol(True).
     * @param dt DecisionTree
     * @return a set of PartialModel(s).
     */
@@ -53,19 +52,3 @@ object DPLL:
           case Symbol(True) => Set(pm)
           case _ => Set.empty
       case Branch(_, left, right) => extractSolutionsFromDT(left) ++ extractSolutionsFromDT(right)
-
-  /** Cartesian product of all possible Variable assignments to a PartialModel.
-    * @param pm PartialModel
-    * @return Cartesian product of pm
-    */
-  def explodeSolutions(pm: PartialModel): Set[PartialModel] =
-    pm.head match
-      case Variable(name, None) =>
-        if pm.tail.nonEmpty then
-          val rSols = explodeSolutions(pm.tail)
-          rSols.map(p => Seq(Variable(name, Some(true))) ++ p) ++
-            rSols.map(p => Seq(Variable(name, Some(false))) ++ p)
-        else Set(Seq(Variable(name, Some(true))), Seq(Variable(name, Some(false))))
-      case v @ Variable(_, _) =>
-        if pm.tail.nonEmpty then explodeSolutions(pm.tail).map(p => Seq(v) ++ p)
-        else Set(Seq(v))

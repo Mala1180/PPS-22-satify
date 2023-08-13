@@ -30,3 +30,14 @@ class PartialModelUtilsTest extends AnyFlatSpec with Matchers:
     updateParModel(parModel, Constraint("a", true)) shouldBe Seq(Variable("a", Some(true)), varB)
     updateParModel(parModel, Constraint("b", false)) shouldBe Seq(varA, Variable("b", Some(false)))
   }
+
+  "All solutions" should "be extractable from a PartialModel" in {
+    val pm: PartialModel = Seq(Variable("a"), Variable("b"), Variable("c", Some(true)))
+    explodeSolutions(pm) shouldBe
+      Set(
+        Seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(true))),
+        Seq(Variable("a", Some(false)), Variable("b", Some(true)), Variable("c", Some(true))),
+        Seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true))),
+        Seq(Variable("a", Some(false)), Variable("b", Some(false)), Variable("c", Some(true)))
+      )
+  }

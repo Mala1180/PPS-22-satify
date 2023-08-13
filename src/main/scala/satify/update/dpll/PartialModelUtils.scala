@@ -38,3 +38,20 @@ object PartialModelUtils:
         Variable(name, Some(varConstr.value))
       case v => v
     }
+
+  /** Cartesian product of all possible Variable assignments to a PartialModel.
+    *
+    * @param pm PartialModel
+    * @return Cartesian product of pm
+    */
+  def explodeSolutions(pm: PartialModel): Set[PartialModel] =
+    pm.head match
+      case Variable(name, None) =>
+        if pm.tail.nonEmpty then
+          val rSols = explodeSolutions(pm.tail)
+          rSols.map(p => Seq(Variable(name, Some(true))) ++ p) ++
+            rSols.map(p => Seq(Variable(name, Some(false))) ++ p)
+        else Set(Seq(Variable(name, Some(true))), Seq(Variable(name, Some(false))))
+      case v @ Variable(_, _) =>
+        if pm.tail.nonEmpty then explodeSolutions(pm.tail).map(p => Seq(v) ++ p)
+        else Set(Seq(v))
