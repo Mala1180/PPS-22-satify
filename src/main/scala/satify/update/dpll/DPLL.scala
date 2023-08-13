@@ -1,7 +1,7 @@
 package satify.update.dpll
 
 import satify.model.DecisionTree.*
-import satify.model.{CNF, Constraint, DecisionTree, PartialModel, TreeState, Variable}
+import satify.model.{CNF, Constraint, DecisionTree, PartialModel, Decision, Variable}
 import satify.model.CNF.*
 import satify.update.dpll.CNFSimplification.*
 import satify.update.dpll.PartialModelUtils.*
@@ -19,27 +19,27 @@ object DPLL:
     * @param dec decision to make
     * @return decision tree from the current decision
     */
-  def dpll(dec: TreeState): DecisionTree =
+  def dpll(dec: Decision): DecisionTree =
 
-    lazy val recCall: (PartialModel, CNF, Constraint) => DecisionTree =
+    lazy val decide: (PartialModel, CNF, Constraint) => DecisionTree =
       (parModel, cnf, constr) =>
         dpll(
-          TreeState(updateParModel(parModel, constr), simplifyCnf(cnf, constr))
+          Decision(updateParModel(parModel, constr), simplifyCnf(cnf, constr))
         )
 
     dec match
-      case TreeState(parModel, cnf) =>
+      case Decision(parModel, cnf) =>
         if (isUnsat(cnf))
-          Branch(dec, Leaf, Leaf)
+          Leaf(dec)
         else
           filterUnconstrVars(extractModelFromCnf(cnf)) match
             case Variable(name, _) +: _ =>
               Branch(
                 dec,
-                recCall(parModel, cnf, Constraint(name, true)),
-                recCall(parModel, cnf, Constraint(name, false))
+                decide(parModel, cnf, Constraint(name, true)),
+                decide(parModel, cnf, Constraint(name, false))
               )
-            case _ => Branch(dec, Leaf, Leaf)
+            case _ => Leaf(dec)
 
   /** Get all SAT solutions, e.g. all parent nodes of DecisionTree leaves where the CNF
     * has been simplified to Symbol(True).
@@ -48,12 +48,11 @@ object DPLL:
     */
   def extractSolutionsFromDT(dt: DecisionTree): Set[PartialModel] =
     dt match
-      case Branch(TreeState(pm, cnf), Leaf, Leaf) =>
+      case Leaf(Decision(pm, cnf)) =>
         cnf match
           case Symbol(True) => Set(pm)
           case _ => Set.empty
       case Branch(_, left, right) => extractSolutionsFromDT(left) ++ extractSolutionsFromDT(right)
-      case Leaf => Set.empty
 
   /** Cartesian product of all possible Variable assignments to a PartialModel.
     * @param pm PartialModel
