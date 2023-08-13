@@ -6,16 +6,13 @@ import satify.model.{CNF, Constant, Constraint, Variable}
 
 object ConflictIdentification:
 
-  /**
-   * Check if CNF is UNSAT.
-   * @param cnf to be checked.
-   * @return true if cnf is UNSAT false otherwise. Note that !UNSAT doesn't imply SAT.
-   */
+  /** Check if CNF is UNSAT.
+    * @param cnf to be checked.
+    * @return true if cnf is UNSAT false otherwise. Note that !UNSAT doesn't imply SAT.
+    */
   def isUnsat(cnf: CNF): Boolean =
 
-    /**
-     * Returns true if CNF is a Symbol(False), d otherwise.
-     */
+    /** Returns true if CNF is a Symbol(False), d otherwise. */
     val f: (CNF, Boolean) => Boolean = (cnf, d) =>
       cnf match
         case Symbol(False) => true

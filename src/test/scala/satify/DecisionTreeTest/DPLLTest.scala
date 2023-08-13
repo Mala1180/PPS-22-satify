@@ -61,4 +61,13 @@ class DPLLTest extends AnyFlatSpec with Matchers:
   "DPLL" should "be UNSAT" in {
     Dpll(And(Symbol(varA), Not(Symbol(varA)))) shouldBe Set.empty
     Dpll(And(Symbol(varA), And(Or(Symbol(varB), Symbol(varC)), Not(Symbol(varA))))) shouldBe Set.empty
+    Dpll(
+      And(
+        Or(Symbol(varA), Symbol(varB)),
+        And(
+          Or(Not(Symbol(varA)), Symbol(varB)),
+          And(Or(Symbol(varA), Not(Symbol(varB))), Or(Not(Symbol(varA)), Not(Symbol(varB))))
+        )
+      )
+    ) shouldBe Set.empty
   }
