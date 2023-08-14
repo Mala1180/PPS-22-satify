@@ -1,8 +1,8 @@
 # Satify
 
-<div style="text-align: center;">
+<p align="center">
 <img src="src/main/resources/img/Satify_logo.png" style="width: 40%" alt="Satify logo"/>
-</div>
+</p>
 
 Satify is a pure functional SAT solver written in Scala.
 
