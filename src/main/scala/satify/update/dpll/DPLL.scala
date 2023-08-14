@@ -29,8 +29,7 @@ object DPLL:
 
     dec match
       case Decision(parModel, cnf) =>
-        if (isUnsat(cnf))
-          Leaf(dec)
+        if isUnsat(cnf) then Leaf(dec)
         else
           filterUnconstrVars(extractModelFromCnf(cnf)) match
             case Variable(name, _) +: _ =>
