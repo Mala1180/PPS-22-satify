@@ -9,8 +9,6 @@ import satify.model.*
 
 class DimacsTest extends AnyFlatSpec with Matchers {
 
-  behavior of "DimacsCNF"
-
   "DimacsCNF" should "parse empty formulas" in {
     DimacsCNF.parse(Seq("p cnf 0 0")) should matchPattern { case None => }
   }
@@ -29,7 +27,8 @@ class DimacsTest extends AnyFlatSpec with Matchers {
   }
 
   // TODO: after dpll conflict id merge
-  /*it should "dump CNF formulas" in {
+  /*
+  it should "dump CNF formulas" in {
     val formula = And(
       Or(Symbol(Variable("X_1")), Symbol(Variable("X_2"))),
       Or(Symbol(Variable("X_3")), Not(Symbol(Variable("X_1"))))

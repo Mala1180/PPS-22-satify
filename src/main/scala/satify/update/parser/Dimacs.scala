@@ -14,10 +14,12 @@ trait Dimacs[T] {
   // TODO: after dpll conflict id merge
   // def dump(obj: T): Seq[String]
 
-  /*def write(path: String, obj: T): Unit = {
+  /*
+  def write(path: String, obj: T): Unit = {
     val writer = new PrintWriter(new File(path))
     try dump(obj).foreach(writer.println) finally writer.close()
-  }*/
+  }
+   */
 
   def read(path: String): Option[T] = readSource(Source.fromFile(path))
 
@@ -42,7 +44,7 @@ object DimacsCNF extends Dimacs[CNF]:
       case Header(_, _) +: clauses =>
         Some(
           buildAndCNF(
-            clauses map { clause =>
+            clauses.map(clause =>
               buildOrCNF(
                 clause
                   .split(" ")
@@ -55,19 +57,21 @@ object DimacsCNF extends Dimacs[CNF]:
                   )
                   .toSeq
               )
-            }
+            )
           )
         )
       case _ => None
 
   // TODO: after dpll conflict id merge
-  /*def dump(cnf: CNF): Seq[String] = {
+  /*
+  def dump(cnf: CNF): Seq[String] = {
     val header = s"p cnf ${cnf.variableCount} ${cnf.clauseCount}"
     val clauses = cnf.clauses.map {
       clause => s"${clause.literals.mkString(" ")} 0"
     }
     header +: clauses
-  }*/
+  }
+   */
 
   private def buildOrCNF(cnf: Seq[Literal]): Or | Literal = cnf match
     case head +: Seq() => head
