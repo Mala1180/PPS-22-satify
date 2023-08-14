@@ -16,7 +16,7 @@ high level view:
   unsat. In this case the tree is backtracked to the previous decision, in order to let the algorithm to branch on
   another assignment/variable.
 
-The variable to be assigned at a decision branch is choosed:
+The variable to be assigned at a decision branch is chose:
 
 - randomly, if every clause of the expression has more than one literal
 - as a unit literal inside a clause of the expression, e.g. a literal which is the only one inside the clause. This
@@ -125,14 +125,19 @@ object Main extends App with MVU
 
 ## Alberto Paganelli
 
-My first task was to analyze in depth the Tseitin transformation algorithm.
+My first task was to analyze in depth the Tseitin transformation algorithm and before the implementation defining the data structures collaborating with the team. 
+After the definition of a data structure I started to define the algorithm's phases.
 
-Not having sufficient knowledge I spent some time understanding the algorithm and its intermediate phases so that I
-could approach the development in an incremental way.
+The first defined data structure was the Enumeration `Expression` that represents the expression of the formula in the enumeration form.
+Looking to the algoritm's phases I started writing some utils method for the `Expression` object that can be used from all. 
+In particular to zip the subexpressions with new variables I made use of generic type to make the code more reusable. 
 
-I had assumed that it would take me more time to understand the algorithm, but its sub-parts are relatively
-simple. The transformation consists in the division of the formula into sub-clauses, a part of introduction of new
-variables and a rewriting of the initial formula through these last ones in CNF.
+After the definition of these methods, where I have made great use of Pattern Matching, it was possible to start implementing the algorithm's phases.
+
+The idea was to use the functional programming, so I defined the `Tseitin` object as a singleton object that contains the algorithm's phases and exposing only the `tseitin` method that is the entry point of the algorithm.
+
+I followed the TDD approach for the core of the algorithm and for the utils methods.
+
 
 ## Tseitin Algorithm
 

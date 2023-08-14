@@ -18,7 +18,10 @@ object Update:
       //   def convert[T <: Variable](exp: Expression[T]): CNF = tseitin(exp)
       // Solver().solve(exp)
       // State()
-      case Convert(input) => model
+      case Convert(input) =>
+        println(reflect(processInput(input)))
+        val op = tseitin(reflect(processInput(input)))
+        State()
 
   private def processInput(input: String): String =
     val operators = List("and", "or", "not", "=>", "\\/", "/\\", "(", ")")
