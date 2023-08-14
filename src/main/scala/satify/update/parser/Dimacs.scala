@@ -62,6 +62,9 @@ object DimacsCNF extends Dimacs[CNF]:
         )
       case _ => None
 
+  x = Variable
+  And(Not(x), ...)
+
   // TODO: after dpll conflict id merge
   /*
   def dump(cnf: CNF): Seq[String] = {
