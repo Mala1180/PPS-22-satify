@@ -16,7 +16,7 @@ project/local-plugins.sbt
 local.sbt
 
 # Bloop
-.bsp
+.bsp/
 
 # VS Code
 .vscode/
@@ -27,6 +27,4 @@ local.sbt
 metals.sbt
 
 # IDEA
-.idea
-.idea_modules
-/.worksheet/
+.idea/

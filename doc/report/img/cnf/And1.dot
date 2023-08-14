@@ -1,0 +1,43 @@
+digraph BinaryTree {
+
+    graph [bgcolor="transparent", fontcolor=white];
+
+    subgraph before { 
+
+        node [fontname="monospace", shape=box];
+
+        And11 [label="And"];
+            True11 [label="True"];
+            And12 [label="And"];
+                B11 [label="B"];
+                C11 [label="C"];
+        
+        And11 -> True11;
+        And11 -> And12;
+        And12 -> B11;
+        And12 -> C11;
+    }
+
+
+
+    subgraph invisible_space1 {
+        // Invisible nodes with no content and shape=point
+        invisible_node_11 [shape=point, width=0];
+        invisible_node_22 [shape=point, width=0];
+        invisible_node_33 [shape=point, width=0];
+        invisible_node_11 -> invisible_node_22 [style=invis];
+        invisible_node_11 -> invisible_node_33 [style=invis];
+    }
+
+    
+
+    subgraph after { 
+
+        node [fontname="monospace", shape=box];
+
+        C
+    }
+
+
+
+}
