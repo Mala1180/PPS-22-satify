@@ -1,6 +1,6 @@
 # Satify Report
 
-Satify is a program that allows to resolve Boolean Satisfability Problems (SAT).
+Satify is a program that allows to resolve Boolean Satisfiability Problems (SAT).
 
 In the following, the report divided into sections is shown.
 

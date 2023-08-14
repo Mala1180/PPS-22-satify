@@ -14,7 +14,7 @@ is replaced every time a new Update is triggered.
 
 ## View
 
-The View provides the GUI and the application, relying on the state of the application (Model).
+The View provides the GUI for the application, relying on the state of the application (Model).
 It is a simple function that takes in input a Model and returns a graphic interface, without causing any side effect.
 
 ## Update
