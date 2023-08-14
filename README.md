@@ -19,7 +19,7 @@ Moreover, Satify provides a set of problems (N-Queens, Coloring Graph, Nurse Sch
 It will try also to give an instance of the problem satisfiable if it exists.
 
 ## Requirements
-To run correctly Satify you need at least these versions of the following dependencies:
+To correctly run Satify, you need at least these versions of the following dependencies:
 - Scala 3.3.0 (currently LTS)
 - SBT 1.9.1
 - Java 17 (currently LTS)
