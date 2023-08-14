@@ -1,8 +1,7 @@
 package satify.update
 
-import satify.model.{CNF, Expression, State, Variable}
+import satify.model.{Expression, State}
 import satify.update.Message.*
-import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.tseitin
 
 object Update:
@@ -19,9 +18,10 @@ object Update:
       // Solver().solve(exp)
       // State()
       case Convert(input) =>
-        println(reflect(processInput(input)))
-        val op = tseitin(reflect(processInput(input)))
-        State()
+        val exp = reflect(processInput(input))
+        println(exp)
+        val cnf = tseitin(exp)
+        State(exp, cnf)
 
   private def processInput(input: String): String =
     val operators = List("and", "or", "not", "=>", "\\/", "/\\", "(", ")")
@@ -37,5 +37,6 @@ object Update:
       """import satify.model.{Expression}
         |import satify.dsl.DSL.{*, given}
         |""".stripMargin
-
+    println(imports + code)
+    // TODO: does not work with only one symbol
     dotty.tools.repl.ScriptEngine().eval(imports + code).asInstanceOf[Expression]

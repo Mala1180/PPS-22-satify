@@ -7,6 +7,7 @@ import satify.update.Message.Convert
 import satify.view.Constants.*
 
 import javax.swing.ImageIcon
+import scala.swing
 import scala.swing.*
 
 /** The GUI for the game */
@@ -40,7 +41,16 @@ object GUI:
       val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
       val cnfButton: Button = createButton(gui, "Convert to CNF", 170, 40)
       cnfButton.reactions += { case event.ButtonClicked(_) =>
-        gui.update(gui.model, Convert(inputTextArea.text))
+        val newModel: Model = gui.update(gui.model, Convert(inputTextArea.text))
+        cnfOutputDialog.contents = new FlowPanel():
+          contents += new TextArea(newModel.toString):
+            editable = false
+            // wrap
+            lineWrap = true
+            wordWrap = true
+            // dimension
+            preferredSize = new Dimension(windowSize.width / 2, windowSize.height / 3 * 2)
+
         cnfOutputDialog.open()
       }
 

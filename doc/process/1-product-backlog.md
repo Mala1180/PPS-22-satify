@@ -1,4 +1,4 @@
-# Product Backlog - Sprint 1
+# Product Backlog — Sprint 1
 
 <table>
     <thead> 
