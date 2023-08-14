@@ -1,10 +1,13 @@
 package satify.update.dpll
 
 import satify.model.DecisionTree.*
-import satify.model.{CNF, Constraint, TreeState, DecisionTree, PartialModel, Variable}
+import satify.model.{CNF, Constraint, DecisionTree, PartialModel, Decision, Variable}
 import satify.model.CNF.*
 import satify.update.dpll.CNFSimplification.*
+import satify.update.dpll.PartialModelUtils.*
+import satify.update.dpll.ConflictIdentification.isUnsat
 import satify.model
+import satify.model.Constant.{False, True}
 
 import scala.language.postfixOps
 
@@ -16,56 +19,35 @@ object DPLL:
     * @param dec decision to make
     * @return decision tree from the current decision
     */
-  def dpll(dec: TreeState): DecisionTree = dec match
-    case TreeState(parModel, cnf) =>
-      val unContrVars = filterUnconstrVars(parModel)
-      if (unContrVars.nonEmpty)
-        Branch(dec, recStep(unContrVars.head, parModel, cnf, true), recStep(unContrVars.head, parModel, cnf, false))
-      else Branch(dec, Leaf, Leaf)
+  def dpll(dec: Decision): DecisionTree =
 
-  /** Recursive search step.
-    * @param v partial variable
-    * @param parModel partial model
-    * @param cnf CNF expression
-    * @param b boolean assignment
-    * @return DecisionTree from dpll
+    lazy val decide: (PartialModel, CNF, Constraint) => DecisionTree =
+      (parModel, cnf, constr) =>
+        dpll(
+          Decision(updateParModel(parModel, constr), simplifyCnf(cnf, constr))
+        )
+
+    dec match
+      case Decision(parModel, cnf) =>
+        if isUnsat(cnf) then Leaf(dec)
+        else
+          filterUnconstrVars(extractModelFromCnf(cnf)) match
+            case Variable(name, _) +: _ =>
+              Branch(
+                dec,
+                decide(parModel, cnf, Constraint(name, true)),
+                decide(parModel, cnf, Constraint(name, false))
+              )
+            case _ => Leaf(dec)
+
+  /** Get all SAT solutions, e.g. all Leaf nodes where the CNF has been simplified to Symbol(True).
+    * @param dt DecisionTree
+    * @return a set of PartialModel(s).
     */
-  private def recStep(v: Variable, parModel: PartialModel, cnf: CNF, b: Boolean): DecisionTree =
-
-    val nModel = updateParModel(Constraint(v.name, b), parModel)
-    println(nModel)
-    dpll(
-      TreeState(nModel, simplifyCnf(cnf, Constraint(v.name, b)))
-    )
-
-  /** Extract a PartialModel from an expression in CNF.
-    *
-    * @param cnf where to extract a Model
-    * @return Correspondent model from CNF given as parameter.
-    */
-  def extractModelFromCnf(cnf: CNF): PartialModel =
-    cnf match
-      case Symbol(variable: Variable) => Seq(variable)
-      case And(e1, e2) => extractModelFromCnf(e1) ++ extractModelFromCnf(e2)
-      case Or(e1, e2) => extractModelFromCnf(e1) ++ extractModelFromCnf(e2)
-      case Not(e) => extractModelFromCnf(e)
-      case _ => Seq.empty
-
-  /** Filters unconstrained variables from the partial model
-    * @param parModel partial model
-    * @return filtered partial model
-    */
-  private def filterUnconstrVars(parModel: PartialModel): PartialModel =
-    parModel.filter { case Variable(_, o) => o.isEmpty }
-
-  /** Update a PartialModel given as parameter constraining a variable (VariableConstraint)
-    * @param varConstr variable constraint
-    * @param parModel partial model
-    * @return Updated PartialModel
-    */
-  private def updateParModel(varConstr: Constraint, parModel: PartialModel): PartialModel =
-    parModel.map {
-      case Variable(name, _) if name == varConstr.name =>
-        Variable(name, Some(varConstr.value))
-      case v => v
-    }
+  def extractSolutionsFromDT(dt: DecisionTree): Set[PartialModel] =
+    dt match
+      case Leaf(Decision(pm, cnf)) =>
+        cnf match
+          case Symbol(True) => Set(pm)
+          case _ => Set.empty
+      case Branch(_, left, right) => extractSolutionsFromDT(left) ++ extractSolutionsFromDT(right)
