@@ -15,7 +15,7 @@ _No remaining tasks from the previous sprint._
     <tbody>
         <tr>
             <td>1</td>
-            <td rowspan="4">Domain Specific Language</td>
+            <td rowspan="4">Domain-Specific Language</td>
             <td>DSL Design</td>
             <td>Matteini</td>
             <td>2</td>
