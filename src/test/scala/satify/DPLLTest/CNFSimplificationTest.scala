@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers
 import satify.update.dpll.CNFSimplification.*
 import satify.model.{CNF, Constraint, PartialModel, Variable}
 import satify.model.CNF.*
-import satify.model.Constant.{False, True}
+import satify.model.Bool.{False, True}
 
 class CNFSimplificationTest extends AnyFlatSpec with Matchers:
 

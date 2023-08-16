@@ -2,7 +2,7 @@ package satify.update.dpll
 
 import satify.model.CNF.*
 import satify.model.{CNF, Constraint, Variable}
-import satify.model.Constant.{False, True}
+import satify.model.Bool.{False, True}
 
 object CNFSimplification:
 

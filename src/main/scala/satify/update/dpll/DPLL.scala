@@ -7,7 +7,7 @@ import satify.update.dpll.CNFSimplification.*
 import satify.update.dpll.PartialModelUtils.*
 import satify.update.dpll.ConflictIdentification.isUnsat
 import satify.model
-import satify.model.Constant.{False, True}
+import satify.model.Bool.{False, True}
 
 import scala.language.postfixOps
 import scala.util.Random

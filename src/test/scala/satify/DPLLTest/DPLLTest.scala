@@ -6,7 +6,7 @@ import org.scalatest.matchers.should.Matchers.should
 import satify.model.{CNF, DecisionTree, PartialModel, Decision, Variable}
 import satify.model.DecisionTree.*
 import satify.model.CNF.*
-import satify.model.Constant.{False, True}
+import satify.model.Bool.{False, True}
 import satify.update.dpll.CNFSimplification.*
 import satify.update.dpll.PartialModelUtils.*
 import satify.update.dpll.DPLL.*
