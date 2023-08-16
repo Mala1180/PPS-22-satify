@@ -4,14 +4,22 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.update.dpll.PartialModelUtils.*
 import satify.model.CNF.*
-import satify.model.{CNF, Constraint, PartialModel, Variable}
+import satify.model.{CNF, Constraint, Decision, PartialModel, Variable}
+import satify.update.dpll.DPLL.dpll
 
 class PartialModelUtilsTest extends AnyFlatSpec with Matchers:
 
   val varA: Variable = Variable("a")
   val varB: Variable = Variable("b")
+  val varC: Variable = Variable("c")
 
   val cnf: CNF = And(Symbol(varA), Symbol(varB))
+
+  val Dpll: CNF => Set[PartialModel] = cnf =>
+    val s =
+      for pmSet <- extractSolutionsFromDT(dpll(Decision(extractModelFromCnf(cnf), cnf)))
+      yield explodeSolutions(pmSet)
+    s.flatten
 
   "A PartialModel" should "be extractable from a CNF" in {
     extractModelFromCnf(cnf) shouldBe Seq(varA, varB)
@@ -29,6 +37,17 @@ class PartialModelUtilsTest extends AnyFlatSpec with Matchers:
     val parModel = extractModelFromCnf(cnf)
     updateParModel(parModel, Constraint("a", true)) shouldBe Seq(Variable("a", Some(true)), varB)
     updateParModel(parModel, Constraint("b", false)) shouldBe Seq(varA, Variable("b", Some(false)))
+  }
+
+  "All solutions" should "be extractable from a DecisionTree" in {
+    extractSolutionsFromDT(dpll(Decision(extractModelFromCnf(cnf), cnf))) shouldBe
+      Set(Seq(Variable("a", Some(true)), Variable("b", Some(true))))
+    Dpll(And(Symbol(varA), Or(Symbol(varB), Symbol(varC)))) shouldBe
+      Set(
+        Seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(true))),
+        Seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(false))),
+        Seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true)))
+      )
   }
 
   "All solutions" should "be extractable from a PartialModel" in {

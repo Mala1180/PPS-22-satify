@@ -1,7 +1,9 @@
 package satify.update.dpll
 
-import satify.model.{CNF, Constraint, PartialModel, Variable}
+import satify.model.Bool.True
+import satify.model.{CNF, Constraint, Decision, DecisionTree, PartialModel, Variable}
 import satify.model.CNF.*
+import satify.model.DecisionTree.{Branch, Leaf}
 
 object PartialModelUtils:
 
@@ -13,8 +15,8 @@ object PartialModelUtils:
   def extractModelFromCnf(cnf: CNF): PartialModel =
     cnf match
       case Symbol(variable: Variable) => Seq(variable)
-      case And(e1, e2) => extractModelFromCnf(e1) ++ extractModelFromCnf(e2)
-      case Or(e1, e2) => extractModelFromCnf(e1) ++ extractModelFromCnf(e2)
+      case And(e1, e2) => (extractModelFromCnf(e1) ++ extractModelFromCnf(e2)).distinct
+      case Or(e1, e2) => (extractModelFromCnf(e1) ++ extractModelFromCnf(e2)).distinct
       case Not(e) => extractModelFromCnf(e)
       case _ => Seq.empty
 
@@ -38,6 +40,19 @@ object PartialModelUtils:
         Variable(name, Some(varConstr.value))
       case v => v
     }
+
+  /** Get all SAT solutions, e.g. all Leaf nodes where the CNF has been simplified to Symbol(True).
+    *
+    * @param dt DecisionTree
+    * @return a set of PartialModel(s).
+    */
+  def extractSolutionsFromDT(dt: DecisionTree): Set[PartialModel] =
+    dt match
+      case Leaf(Decision(pm, cnf)) =>
+        cnf match
+          case Symbol(True) => Set(pm)
+          case _ => Set.empty
+      case Branch(_, left, right) => extractSolutionsFromDT(left) ++ extractSolutionsFromDT(right)
 
   /** Cartesian product of all possible Variable assignments to a PartialModel.
     *
