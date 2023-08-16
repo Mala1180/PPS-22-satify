@@ -34,7 +34,7 @@ object DPLL:
       * @param dec the previous Decision
       * @return an Option containing a Branch if there's a unit literal, None otherwise.
       */
-    def unitPropBranch(dec: Decision): Option[Branch] = dec match
+    def unitPropDecision(dec: Decision): Option[Branch] = dec match
       case Decision(parModel, cnf) =>
         unitPropagation(cnf) match
           case Some(c @ Constraint(name, value)) =>
@@ -52,7 +52,7 @@ object DPLL:
       * @param dec the previous Decision
       * @return updated DecisionTree with the random Decision.
       */
-    def randomBranch(dec: Decision): DecisionTree = dec match
+    def randomDecision(dec: Decision): DecisionTree = dec match
       case Decision(parModel, cnf) =>
         val unVars = filterUnconstrVars(extractModelFromCnf(cnf))
         if unVars.nonEmpty then
@@ -70,9 +70,9 @@ object DPLL:
       case Decision(parModel, cnf) =>
         if isUnsat(cnf) then Leaf(dec)
         else
-          unitPropBranch(dec) match
+          unitPropDecision(dec) match
             case Some(branch) => branch
-            case None => randomBranch(dec)
+            case None => randomDecision(dec)
 
   /** Apply unit propagation.
     * @param cnf where to search for a unit literal
