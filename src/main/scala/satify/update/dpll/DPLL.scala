@@ -1,5 +1,6 @@
 package satify.update.dpll
 
+import dotty.tools.dotc.transform.sjs.JSSymUtils.JSName.Literal
 import satify.model.DecisionTree.*
 import satify.model.{CNF, Constraint, Decision, DecisionTree, PartialModel, Variable}
 import satify.model.CNF.*
@@ -9,6 +10,7 @@ import satify.update.dpll.ConflictIdentification.isUnsat
 import satify.model
 import satify.model.Bool.{False, True}
 
+import scala.annotation.tailrec
 import scala.language.postfixOps
 import scala.util.Random
 
@@ -47,6 +49,19 @@ object DPLL:
             )
           case None => None
 
+    def pureLitElDecision(dec: Decision): Option[Branch] = dec match
+      case Decision(parModel, cnf) =>
+        pureLitElimination(dec) match
+          case Some(c @ Constraint(name, value)) =>
+            Some(
+              Branch(
+                dec,
+                decide(dec, c),
+                decide(dec, Constraint(name, !value))
+              )
+            )
+          case None => None
+
     /** Branch the decision tree by choosing a random variable among the available ones and by
       * applying a random constraint.
       * @param dec the previous Decision
@@ -72,7 +87,9 @@ object DPLL:
         else
           unitPropDecision(dec) match
             case Some(branch) => branch
-            case None => randomDecision(dec)
+            case None => pureLitElDecision(dec) match
+              case Some(branch) => branch
+              case None => randomDecision(dec)
 
   /** Apply unit propagation.
     * @param cnf where to search for a unit literal
@@ -93,3 +110,27 @@ object DPLL:
         case Or(left, right) => None
         case _ => None
     )
+
+
+  @tailrec
+  private def pureLitElimination(dec: Decision): Option[Constraint] =
+
+    def find(value: String, cnf: CNF): Option[Constraint] =
+      val f: (String, CNF, CNF) => Option[Constraint] = (name, left, right) =>
+        val leftRec = find(name, left)
+        if leftRec == find(name, right) then leftRec else None
+      cnf match
+        case Symbol(Variable(name, _)) if value == name => Some(Constraint(name, true))
+        case Not(Symbol(Variable(name, _))) if value == name => Some(Constraint(name, false))
+        case And(left, right) => f(value, left, right)
+        case Or(left, right) => f(value, left, right)
+        case _ => None
+    
+    dec match
+      case Decision(parModel, cnf) => parModel match
+        case Seq() => None
+        case Variable(name, None) +: tail =>
+          val fVar = find(name, cnf)
+          if fVar.isEmpty then pureLitElimination(Decision(tail, cnf))
+          else fVar
+        case Variable(name, _) +: tail => pureLitElimination(Decision(tail, cnf))
