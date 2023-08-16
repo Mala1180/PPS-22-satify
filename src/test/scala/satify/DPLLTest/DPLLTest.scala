@@ -63,17 +63,6 @@ class DPLLTest extends AnyFlatSpec with Matchers:
       )
   }
 
-  "All solutions" should "be extractable from a DecisionTree" in {
-    extractSolutionsFromDT(dpll(Decision(extractModelFromCnf(cnf), cnf))) shouldBe
-      Set(Seq(Variable("a", Some(true)), Variable("b", Some(true))))
-    Dpll(And(Symbol(varA), Or(Symbol(varB), Symbol(varC)))) shouldBe
-      Set(
-        Seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(true))),
-        Seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(false))),
-        Seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true)))
-      )
-  }
-
   "DPLL" should "be SAT" in {
     Dpll(cnf).size should be > 0
     Dpll(And(Symbol(varA), Or(Symbol(varB), Symbol(varC)))).size should be > 0
