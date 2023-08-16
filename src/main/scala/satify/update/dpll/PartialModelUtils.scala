@@ -13,8 +13,8 @@ object PartialModelUtils:
   def extractModelFromCnf(cnf: CNF): PartialModel =
     cnf match
       case Symbol(variable: Variable) => Seq(variable)
-      case And(e1, e2) => extractModelFromCnf(e1) ++ extractModelFromCnf(e2)
-      case Or(e1, e2) => extractModelFromCnf(e1) ++ extractModelFromCnf(e2)
+      case And(e1, e2) => (extractModelFromCnf(e1) ++ extractModelFromCnf(e2)).distinct
+      case Or(e1, e2) => (extractModelFromCnf(e1) ++ extractModelFromCnf(e2)).distinct
       case Not(e) => extractModelFromCnf(e)
       case _ => Seq.empty
 

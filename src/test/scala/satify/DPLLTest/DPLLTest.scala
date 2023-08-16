@@ -29,21 +29,38 @@ class DPLLTest extends AnyFlatSpec with Matchers:
     dpll(Decision(extractModelFromCnf(cnf), cnf)).getClass shouldBe classOf[Branch]
   }
 
-  "DPLL" should "return a specific DecisionTree for a specific CNF" in {
+  "DPLL" should "do unit propagation when there's only a Variable inside a clause and it is in positive form" in {
+    val cnf: CNF = And(Symbol(varA), And(Symbol(varB), Or(Symbol(varB), Symbol(varC))))
     dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
       Branch(
         Decision(
-          List(Variable("a"), Variable("b")),
-          And(Symbol(Variable("a")), Symbol(Variable("b")))
+          List(varA, varB, varC),
+          And(Symbol(varA), And(Symbol(varB), Or(Symbol(varB), Symbol(varC))))
         ),
-        Leaf(Decision(List(Variable("a"), Variable("b", Some(false))), Symbol(False))),
         Branch(
-          Decision(List(Variable("a"), Variable("b", Some(true))), Symbol(Variable("a"))),
-          Leaf(Decision(List(Variable("a", Some(false)), Variable("b", Some(true))), Symbol(False))),
-          Leaf(Decision(List(Variable("a", Some(true)), Variable("b", Some(true))), Symbol(True)))
-        )
+          Decision(List(Variable("a", Some(true)), varB, varC), And(Symbol(varB), Or(Symbol(varB), Symbol(varC)))),
+          Leaf(Decision(List(Variable("a", Some(true)), Variable("b", Some(true)), varC), Symbol(True))),
+          Leaf(Decision(List(Variable("a", Some(true)), Variable("b", Some(false)), varC), Symbol(False)))
+        ),
+        Leaf(Decision(List(Variable("a", Some(false)), varB, varC), Symbol(False)))
       )
+  }
 
+  "DPLL" should "do unit propagation when there's only a Variable inside a clause and it is in negative form" in {
+    val cnf: CNF = And(Not(Symbol(varA)), Or(Symbol(varA), Symbol(varB)))
+    dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
+      Branch(
+        Decision(
+          List(varA, varB),
+          And(Not(Symbol(varA)), Or(Symbol(varA), Symbol(varB)))
+        ),
+        Branch(
+          Decision(List(Variable("a", Some(false)), varB), Symbol(varB)),
+          Leaf(Decision(List(Variable("a", Some(false)), Variable("b", Some(true))), Symbol(True))),
+          Leaf(Decision(List(Variable("a", Some(false)), Variable("b", Some(false))), Symbol(False)))
+        ),
+        Leaf(Decision(List(Variable("a", Some(true)), varB), Symbol(False)))
+      )
   }
 
   "All solutions" should "be extractable from a DecisionTree" in {
