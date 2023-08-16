@@ -32,14 +32,18 @@ class DPLLTest extends AnyFlatSpec with Matchers:
   "DPLL" should "return a specific DecisionTree for a specific CNF" in {
     dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
       Branch(
-        Decision(extractModelFromCnf(cnf), cnf),
-        Branch(
-          Decision(Seq(Variable("a", Some(true)), varB), Symbol(varB)),
-          Leaf(Decision(Seq(Variable("a", Some(true)), Variable("b", Some(true))), Symbol(True))),
-          Leaf(Decision(Seq(Variable("a", Some(true)), Variable("b", Some(false))), Symbol(False)))
+        Decision(
+          List(Variable("a"), Variable("b")),
+          And(Symbol(Variable("a")), Symbol(Variable("b")))
         ),
-        Leaf(Decision(Seq(Variable("a", Some(false)), varB), Symbol(False)))
+        Leaf(Decision(List(Variable("a"), Variable("b", Some(false))), Symbol(False))),
+        Branch(
+          Decision(List(Variable("a"), Variable("b", Some(true))), Symbol(Variable("a"))),
+          Leaf(Decision(List(Variable("a", Some(false)), Variable("b", Some(true))), Symbol(False))),
+          Leaf(Decision(List(Variable("a", Some(true)), Variable("b", Some(true))), Symbol(True)))
+        )
       )
+
   }
 
   "All solutions" should "be extractable from a DecisionTree" in {

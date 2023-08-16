@@ -1,7 +1,7 @@
 package satify.update.dpll
 
 import satify.model.DecisionTree.*
-import satify.model.{CNF, Constraint, DecisionTree, PartialModel, Decision, Variable}
+import satify.model.{CNF, Constraint, Decision, DecisionTree, PartialModel, Variable}
 import satify.model.CNF.*
 import satify.update.dpll.CNFSimplification.*
 import satify.update.dpll.PartialModelUtils.*
@@ -10,8 +10,11 @@ import satify.model
 import satify.model.Constant.{False, True}
 
 import scala.language.postfixOps
+import scala.util.Random
 
 object DPLL:
+
+  private val rnd = Random(42)
 
   /** Exhaustive search of all possible decisions to the partial model.
     * The three branches left assigning true to the first unconstrained variable, false to the right one, until
@@ -31,14 +34,17 @@ object DPLL:
       case Decision(parModel, cnf) =>
         if isUnsat(cnf) then Leaf(dec)
         else
-          filterUnconstrVars(extractModelFromCnf(cnf)) match
-            case Variable(name, _) +: _ =>
-              Branch(
-                dec,
-                decide(parModel, cnf, Constraint(name, true)),
-                decide(parModel, cnf, Constraint(name, false))
-              )
-            case _ => Leaf(dec)
+          val unVars = filterUnconstrVars(extractModelFromCnf(cnf))
+          if unVars.nonEmpty then
+            val recBranch = rnd.nextBoolean()
+            unVars(rnd.between(0, unVars.size)) match
+              case Variable(name, _) =>
+                Branch(
+                  dec,
+                  decide(parModel, cnf, Constraint(name, recBranch)),
+                  decide(parModel, cnf, Constraint(name, !recBranch))
+                )
+          else Leaf(dec)
 
   /** Get all SAT solutions, e.g. all Leaf nodes where the CNF has been simplified to Symbol(True).
     * @param dt DecisionTree
@@ -51,3 +57,4 @@ object DPLL:
           case Symbol(True) => Set(pm)
           case _ => Set.empty
       case Branch(_, left, right) => extractSolutionsFromDT(left) ++ extractSolutionsFromDT(right)
+
