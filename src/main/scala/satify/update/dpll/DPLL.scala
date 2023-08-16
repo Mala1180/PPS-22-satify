@@ -24,35 +24,43 @@ object DPLL:
     */
   def dpll(dec: Decision): DecisionTree =
 
-    lazy val decide: (PartialModel, CNF, Constraint) => DecisionTree =
-      (parModel, cnf, constr) =>
-        dpll(
-          Decision(updateParModel(parModel, constr), simplifyCnf(cnf, constr))
-        )
+    def decide(parModel: PartialModel, cnf: CNF, constr: Constraint): DecisionTree =
+      dpll(Decision(updateParModel(parModel, constr), simplifyCnf(cnf, constr)))
 
-    dec match
+    def unitPropBranch(dec: Decision): Option[Branch] = dec match
       case Decision(parModel, cnf) =>
-        if isUnsat(cnf) then Leaf(dec)
-        else
-          unitPropagation(cnf) match
-            case Some(c @ Constraint(name, value)) =>
+        unitPropagation(cnf) match
+          case Some(c @ Constraint(name, value)) =>
+            Some(
               Branch(
                 dec,
                 decide(parModel, cnf, c),
                 Leaf(Decision(updateParModel(parModel, Constraint(name, !value)), Symbol(False)))
               )
-            case None =>
-              val unVars = filterUnconstrVars(extractModelFromCnf(cnf))
-              if unVars.nonEmpty then
-                val v = rnd.nextBoolean()
-                unVars(rnd.between(0, unVars.size)) match
-                  case Variable(name, _) =>
-                    Branch(
-                      dec,
-                      decide(parModel, cnf, Constraint(name, v)),
-                      decide(parModel, cnf, Constraint(name, !v))
-                    )
-              else Leaf(dec)
+            )
+          case None => None
+
+    def randomBranch(dec: Decision): DecisionTree = dec match
+      case Decision(parModel, cnf) =>
+        val unVars = filterUnconstrVars(extractModelFromCnf(cnf))
+        if unVars.nonEmpty then
+          val v = rnd.nextBoolean()
+          unVars(rnd.between(0, unVars.size)) match
+            case Variable(name, _) =>
+              Branch(
+                dec,
+                decide(parModel, cnf, Constraint(name, v)),
+                decide(parModel, cnf, Constraint(name, !v))
+              )
+        else Leaf(dec)
+
+    dec match
+      case Decision(parModel, cnf) =>
+        if isUnsat(cnf) then Leaf(dec)
+        else
+          unitPropBranch(dec) match
+            case Some(branch) => branch
+            case None => randomBranch(dec)
 
   /** Get all SAT solutions, e.g. all Leaf nodes where the CNF has been simplified to Symbol(True).
     * @param dt DecisionTree
@@ -68,12 +76,16 @@ object DPLL:
 
   private def unitPropagation(cnf: CNF): Option[Constraint] =
 
-    val f: (CNF, Option[Constraint]) => Option[Constraint] = (cnf, d) => cnf match
-      case Symbol(Variable(name, _)) => Some(Constraint(name, true))
-      case Not(Symbol(Variable(name, _))) => Some(Constraint(name, false))
-      case _ => d
+    val f: (CNF, Option[Constraint]) => Option[Constraint] = (cnf, d) =>
+      cnf match
+        case Symbol(Variable(name, _)) => Some(Constraint(name, true))
+        case Not(Symbol(Variable(name, _))) => Some(Constraint(name, false))
+        case _ => d
 
-    f(cnf, cnf match
-      case And(left, right) => f(left, f(right, unitPropagation(right)))
-      case Or(left, right) => None
-      case _ => None)
+    f(
+      cnf,
+      cnf match
+        case And(left, right) => f(left, f(right, unitPropagation(right)))
+        case Or(left, right) => None
+        case _ => None
+    )
