@@ -127,9 +127,9 @@ _No remaining tasks from the previous sprint._
 
 The goals of this sprint are:
 
-- Termination of Tseitin transformation
-- Providing a basic DSL
-- Proceeding with the implementation of the DPLL algorithm
+- Terminate Tseitin transformation
+- Provide a basic DSL
+- Proceed with the implementation of the DPLL algorithm
 
 There will be the first release of the project permitting to take in input an expression through DSL and to apply the
 Tseitin transformation (CNF conversion).
