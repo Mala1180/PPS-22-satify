@@ -16,17 +16,27 @@ object DPLL:
 
   private val rnd = Random(42)
 
-  /** Exhaustive search of all possible decisions to the partial model.
-    * The three branches left assigning true to the first unconstrained variable, false to the right one, until
-    * no more assignments are possible.
-    * @param dec decision to make
-    * @return decision tree from the current decision
-    */
+  /**
+   * DPLL (Davis-Putnam-Logemann-Loveland) algorithm.
+   * @param dec Decision to apply
+   * @return built DecisionTree from dec
+   */
   def dpll(dec: Decision): DecisionTree =
 
-    def decide(parModel: PartialModel, cnf: CNF, constr: Constraint): DecisionTree =
-      dpll(Decision(updateParModel(parModel, constr), simplifyCnf(cnf, constr)))
+    /**
+     * Recursively call dpll applying the given constraint.
+     * @param dec the previous Decision
+     * @param constr Constraint to apply
+     * @return updated DecisionTree with the new Decision
+     */
+    def decide(dec: Decision, constr: Constraint): DecisionTree = dec match
+      case Decision(parModel, cnf) => dpll(Decision(updateParModel(parModel, constr), simplifyCnf(cnf, constr)))
 
+    /**
+     * Branch on a unit literal.
+     * @param dec the previous Decision
+     * @return an Option containing a Branch if there's a unit literal, None otherwise.
+     */
     def unitPropBranch(dec: Decision): Option[Branch] = dec match
       case Decision(parModel, cnf) =>
         unitPropagation(cnf) match
@@ -34,12 +44,18 @@ object DPLL:
             Some(
               Branch(
                 dec,
-                decide(parModel, cnf, c),
+                decide(dec, c),
                 Leaf(Decision(updateParModel(parModel, Constraint(name, !value)), Symbol(False)))
               )
             )
           case None => None
 
+    /**
+     * Branch the decision tree by choosing a random variable among the available ones and by
+     * applying a random constraint.
+     * @param dec the previous Decision
+     * @return updated DecisionTree with the random Decision.
+     */
     def randomBranch(dec: Decision): DecisionTree = dec match
       case Decision(parModel, cnf) =>
         val unVars = filterUnconstrVars(extractModelFromCnf(cnf))
@@ -49,8 +65,8 @@ object DPLL:
             case Variable(name, _) =>
               Branch(
                 dec,
-                decide(parModel, cnf, Constraint(name, v)),
-                decide(parModel, cnf, Constraint(name, !v))
+                decide(dec, Constraint(name, v)),
+                decide(dec, Constraint(name, !v))
               )
         else Leaf(dec)
 
@@ -74,6 +90,11 @@ object DPLL:
           case _ => Set.empty
       case Branch(_, left, right) => extractSolutionsFromDT(left) ++ extractSolutionsFromDT(right)
 
+  /**
+   * Apply unit propagation.
+   * @param cnf where to search for a unit literal
+   * @return an Option containing a Constraint if a unit literal is present, None otherwise.
+   */
   private def unitPropagation(cnf: CNF): Option[Constraint] =
 
     val f: (CNF, Option[Constraint]) => Option[Constraint] = (cnf, d) =>
