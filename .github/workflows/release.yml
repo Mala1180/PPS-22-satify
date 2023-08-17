@@ -30,6 +30,7 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
+          title: "Sprint 3 Release (${{ github.ref_name }})"
           prerelease: true
           files: |
             target/scala-3.3.0/*.jar
