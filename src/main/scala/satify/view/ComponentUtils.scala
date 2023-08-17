@@ -3,6 +3,7 @@ package satify.view
 import satify.view.Constants.{fontFamily, headingFont, margin, windowSize}
 
 import java.awt.{Color, Font, Image, Toolkit}
+import java.net.{URI, URL}
 import javax.swing.ImageIcon
 import scala.swing.*
 
@@ -15,7 +16,10 @@ object ComponentUtils:
     * @return the image icon
     */
   def createImage(path: String, scaledBy: Int): ImageIcon =
-    val image = ImageIcon(path)
+    println(path)
+    val url: URL = getClass.getResource(path)
+    println(url)
+    val image = ImageIcon(url)
     // resize the image maintaining the aspect ratio
     val screenDimension: Dimension = Toolkit.getDefaultToolkit.getScreenSize
     val width: Int = screenDimension.getWidth.toInt
