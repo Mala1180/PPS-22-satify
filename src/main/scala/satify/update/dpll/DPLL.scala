@@ -52,6 +52,11 @@ object DPLL:
             )
           case None => None
 
+    /**
+     * Branch on the pure literal branch first.
+     * @param dec the previous Decision.
+     * @return an Option containing a Branch if there's a pure literal, None otherwise.
+     */
     def pureLitElDecision(dec: Decision): Option[Branch] =
       pureLitElimination(dec) match
         case Some(c @ Constraint(name, value)) =>
