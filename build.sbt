@@ -13,5 +13,6 @@ val cucumber = "io.cucumber" %% "cucumber-scala" % "8.14.1" % Test
 lazy val root = (project in file("."))
   .settings(
     name := "satify",
-    libraryDependencies ++= Seq(scalaTest, archUnit, slf4jSimpleLog, scalaSwing, scalaCompiler, cucumber)
+    libraryDependencies ++= Seq(scalaTest, archUnit, slf4jSimpleLog, scalaSwing, scalaCompiler, cucumber),
+    assembly / assemblyJarName := "satify.jar",
   )
