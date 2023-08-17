@@ -1,18 +1,3 @@
-## [0.1.1-test](https://github.com/Mala1180/PPS-22-satify/compare/v0.1.0...v0.1.1-test) (2023-08-17)
-
-
-### Bug Fixes
-
-* PartialModelUtilsTest, format code ([c3d7c30](https://github.com/Mala1180/PPS-22-satify/commit/c3d7c30df61b30dfab9bdaac2a3c82391af94bd9))
-
-
-### Features
-
-* add sbt-assembly, fixed image in jar, modify README ([d8d7339](https://github.com/Mala1180/PPS-22-satify/commit/d8d7339d9052d7c5d5cc008f0fb90c8e48618a47))
-* comment ([368407f](https://github.com/Mala1180/PPS-22-satify/commit/368407f9380605ffcdb580920c37012b85bf2c50))
-
-
-
 # [0.1.0](https://github.com/Mala1180/PPS-22-satify/compare/47a5b9fb00c7757cf5a6520fe326cc164dfefd38...v0.1.0) (2023-08-14)
 
 

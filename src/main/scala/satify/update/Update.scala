@@ -26,7 +26,6 @@ object Update:
   private def processInput(input: String): String =
     val operators = List("and", "or", "not", "=>", "\\/", "/\\", "(", ")")
     input.trim
-      // split for spaces or parenthesis
       .split("[ ()]")
       .filterNot(_.isBlank)
       .map(symbol => if !operators.contains(symbol) then s"\"$symbol\"" else symbol)
