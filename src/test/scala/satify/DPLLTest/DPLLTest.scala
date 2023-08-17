@@ -63,6 +63,23 @@ class DPLLTest extends AnyFlatSpec with Matchers:
       )
   }
 
+  "DPLL" should "do pure Literals elimination" in {
+    val cnf: CNF = And(Or(Not(Symbol(varA)), Not(Symbol(varB))), And(Not(Symbol(varA)), Symbol(varB)))
+    dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
+      Branch(
+        Decision(
+          Seq(varA, varB),
+          And(Or(Not(Symbol(varA)), Not(Symbol(varB))), And(Not(Symbol(varA)), Symbol(varB)))
+        ),
+        Branch(
+          Decision(Seq(Variable("a", Some(false)), varB), Symbol(varB)),
+          Leaf(Decision(Seq(Variable("a", Some(false)), Variable("b", Some(true))), Symbol(True))),
+          Leaf(Decision(Seq(Variable("a", Some(false)), Variable("b", Some(false))), Symbol(False)))
+        ),
+        Leaf(Decision(Seq(Variable("a", Some(true)), varB), Symbol(False)))
+      )
+  }
+
   "DPLL" should "be SAT" in {
     Dpll(cnf).size should be > 0
     Dpll(And(Symbol(varA), Or(Symbol(varB), Symbol(varC)))).size should be > 0
@@ -80,25 +97,4 @@ class DPLLTest extends AnyFlatSpec with Matchers:
         )
       )
     ) shouldBe Set.empty
-  }
-
-  "DPLL" should "do pure Literal elimination" in {
-    val cnf: CNF = And(Or(Not(Symbol(varA)), Not(Symbol(varB))), And(Not(Symbol(varA)), Symbol(varC)))
-    dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
-      Branch(
-        Decision(
-          Seq(varA, varB, varC),
-          And(Or(Not(Symbol(varA)), Not(Symbol(varB))), And(Not(Symbol(varA)), Symbol(varC)))
-        ),
-        Branch(
-          Decision(Seq(Variable("a", Some(false)), varB, varC), Symbol(varC)),
-          Leaf(
-            Decision(Seq(Variable("a", Some(false)), varB, Variable("c", Some(true))), Symbol(True))
-          ),
-          Leaf(
-            Decision(Seq(Variable("a", Some(false)), varB, Variable("c", Some(false))), Symbol(False))
-          )
-        ),
-        Leaf(Decision(Seq(Variable("a", Some(true)), varB, varC), Symbol(False)))
-      )
   }
