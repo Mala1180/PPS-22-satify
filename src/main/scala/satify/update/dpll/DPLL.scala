@@ -1,14 +1,17 @@
 package satify.update.dpll
 
 import dotty.tools.dotc.transform.sjs.JSSymUtils.JSName.Literal
-import satify.model.DecisionTree.*
-import satify.model.{CNF, Constraint, Decision, DecisionTree, PartialModel, Variable}
+import satify.model.dpll.DecisionTree.*
+import satify.model.{CNF, Variable}
 import satify.model.CNF.*
 import satify.update.dpll.CNFSimplification.*
 import satify.update.dpll.PartialModelUtils.*
 import satify.update.dpll.ConflictIdentification.isUnsat
 import satify.model
 import satify.model.Bool.{False, True}
+import satify.model.dpll.given_Ordering_Variable
+import satify.model.dpll.OrderedSeq.seq
+import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
 
 import scala.annotation.tailrec
 import scala.language.postfixOps
@@ -49,26 +52,26 @@ object DPLL:
             )
           case None => None
 
-    def pureLitElDecision(dec: Decision): Option[Branch] = dec match
-      case Decision(parModel, cnf) =>
-        pureLitElimination(dec) match
-          case Some(c @ Constraint(name, value)) =>
-            Some(
-              Branch(
-                dec,
-                decide(dec, c),
-                decide(dec, Constraint(name, !value))
-              )
+    def pureLitElDecision(dec: Decision): Option[Branch] =
+      pureLitElimination(dec) match
+        case Some(c @ Constraint(name, value)) =>
+          Some(
+            Branch(
+              dec,
+              decide(dec, c),
+              decide(dec, Constraint(name, !value))
             )
-          case None => None
+          )
+        case None => None
 
     /** Branch the decision tree by choosing a random variable among the available ones and by
       * applying a random constraint.
       * @param dec the previous Decision
       * @return updated DecisionTree with the random Decision.
       */
-    def randomDecision(dec: Decision): DecisionTree = dec match
-      case Decision(parModel, cnf) =>
+    def randomDecision(dec: Decision): DecisionTree =
+      dec match
+      case Decision(_, cnf) =>
         val unVars = filterUnconstrVars(extractModelFromCnf(cnf))
         if unVars.nonEmpty then
           val v = rnd.nextBoolean()
@@ -82,14 +85,15 @@ object DPLL:
         else Leaf(dec)
 
     dec match
-      case Decision(parModel, cnf) =>
+      case Decision(_, cnf) =>
         if isUnsat(cnf) then Leaf(dec)
         else
           unitPropDecision(dec) match
             case Some(branch) => branch
-            case None => pureLitElDecision(dec) match
-              case Some(branch) => branch
-              case None => randomDecision(dec)
+            case None =>
+              pureLitElDecision(dec) match
+                case Some(branch) => branch
+                case None => randomDecision(dec)
 
   /** Apply unit propagation.
     * @param cnf where to search for a unit literal
@@ -107,11 +111,14 @@ object DPLL:
       cnf,
       cnf match
         case And(left, right) => f(left, f(right, unitPropagation(right)))
-        case Or(left, right) => None
+        case Or(_, _) => None
         case _ => None
     )
 
-
+  /** Eliminate a pure literal.
+    * @param dec previous Decision
+    * @return an Option containing a Constraint if a pure literal is present, None otherwise.
+    */
   @tailrec
   private def pureLitElimination(dec: Decision): Option[Constraint] =
 
@@ -125,12 +132,13 @@ object DPLL:
         case And(left, right) => f(value, left, right)
         case Or(left, right) => f(value, left, right)
         case _ => None
-    
+
     dec match
-      case Decision(parModel, cnf) => parModel match
-        case Seq() => None
-        case Variable(name, None) +: tail =>
-          val fVar = find(name, cnf)
-          if fVar.isEmpty then pureLitElimination(Decision(tail, cnf))
-          else fVar
-        case Variable(name, _) +: tail => pureLitElimination(Decision(tail, cnf))
+      case Decision(parModel, cnf) =>
+        parModel match
+          case Seq() => None
+          case Variable(name, None) +: tail =>
+            val fVar = find(name, cnf)
+            if fVar.isEmpty then pureLitElimination(Decision(tail, cnf))
+            else fVar
+          case Variable(_, _) +: tail => pureLitElimination(Decision(tail, cnf))

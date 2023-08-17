@@ -2,7 +2,8 @@ package satify.update.dpll
 
 import satify.model.CNF.{And, Not, Or, Symbol}
 import satify.model.Bool.{False, True}
-import satify.model.{CNF, Bool, Constraint, Variable}
+import satify.model.dpll.Constraint
+import satify.model.{CNF, Bool, Variable}
 
 object ConflictIdentification:
 

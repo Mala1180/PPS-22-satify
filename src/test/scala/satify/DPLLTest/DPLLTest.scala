@@ -3,12 +3,15 @@ package satify.DPLLTest
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.should
-import satify.model.{CNF, DecisionTree, PartialModel, Decision, Variable}
-import satify.model.DecisionTree.*
+import satify.model.{CNF, Variable}
+import satify.model.dpll.DecisionTree.*
 import satify.model.CNF.*
 import satify.model.Bool.{False, True}
 import satify.update.dpll.CNFSimplification.*
 import satify.update.dpll.PartialModelUtils.*
+import satify.model.dpll.given_Ordering_Variable
+import satify.model.dpll.OrderedSeq.*
+import satify.model.dpll.{Decision, DecisionTree, PartialModel}
 import satify.update.dpll.DPLL.*
 
 class DPLLTest extends AnyFlatSpec with Matchers:
@@ -34,15 +37,15 @@ class DPLLTest extends AnyFlatSpec with Matchers:
     dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
       Branch(
         Decision(
-          Seq(varA, varB, varC),
+          seq(varA, varB, varC),
           And(Symbol(varA), And(Symbol(varB), Or(Symbol(varB), Symbol(varC))))
         ),
         Branch(
-          Decision(Seq(Variable("a", Some(true)), varB, varC), And(Symbol(varB), Or(Symbol(varB), Symbol(varC)))),
-          Leaf(Decision(Seq(Variable("a", Some(true)), Variable("b", Some(true)), varC), Symbol(True))),
-          Leaf(Decision(Seq(Variable("a", Some(true)), Variable("b", Some(false)), varC), Symbol(False)))
+          Decision(seq(Variable("a", Some(true)), varB, varC), And(Symbol(varB), Or(Symbol(varB), Symbol(varC)))),
+          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(true)), varC), Symbol(True))),
+          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(false)), varC), Symbol(False)))
         ),
-        Leaf(Decision(Seq(Variable("a", Some(false)), varB, varC), Symbol(False)))
+        Leaf(Decision(seq(Variable("a", Some(false)), varB, varC), Symbol(False)))
       )
   }
 
@@ -51,15 +54,15 @@ class DPLLTest extends AnyFlatSpec with Matchers:
     dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
       Branch(
         Decision(
-          Seq(varA, varB),
+          seq(varA, varB),
           And(Not(Symbol(varA)), Or(Symbol(varA), Symbol(varB)))
         ),
         Branch(
-          Decision(Seq(Variable("a", Some(false)), varB), Symbol(varB)),
-          Leaf(Decision(Seq(Variable("a", Some(false)), Variable("b", Some(true))), Symbol(True))),
-          Leaf(Decision(Seq(Variable("a", Some(false)), Variable("b", Some(false))), Symbol(False)))
+          Decision(seq(Variable("a", Some(false)), varB), Symbol(varB)),
+          Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(true))), Symbol(True))),
+          Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(false))), Symbol(False)))
         ),
-        Leaf(Decision(Seq(Variable("a", Some(true)), varB), Symbol(False)))
+        Leaf(Decision(seq(Variable("a", Some(true)), varB), Symbol(False)))
       )
   }
 
@@ -68,15 +71,15 @@ class DPLLTest extends AnyFlatSpec with Matchers:
     dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
       Branch(
         Decision(
-          Seq(varA, varB),
+          seq(varA, varB),
           And(Or(Not(Symbol(varA)), Not(Symbol(varB))), And(Not(Symbol(varA)), Symbol(varB)))
         ),
         Branch(
-          Decision(Seq(Variable("a", Some(false)), varB), Symbol(varB)),
-          Leaf(Decision(Seq(Variable("a", Some(false)), Variable("b", Some(true))), Symbol(True))),
-          Leaf(Decision(Seq(Variable("a", Some(false)), Variable("b", Some(false))), Symbol(False)))
+          Decision(seq(Variable("a", Some(false)), varB), Symbol(varB)),
+          Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(true))), Symbol(True))),
+          Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(false))), Symbol(False)))
         ),
-        Leaf(Decision(Seq(Variable("a", Some(true)), varB), Symbol(False)))
+        Leaf(Decision(seq(Variable("a", Some(true)), varB), Symbol(False)))
       )
   }
 
