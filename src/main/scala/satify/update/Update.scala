@@ -24,7 +24,8 @@ object Update:
         State(exp, cnf)
 
   private def processInput(input: String): String =
-    val operators = List("and", "or", "not", "=>", "\\/", "/\\", "(", ")")
+    // TODO: link these operators to the ones in the DSL
+    val operators = List("and", "or", "not", "=>", "\\/", "/\\", "(", ")", "⊕")
     input
       // split for spaces or parenthesis
       .split("[ ()]")
