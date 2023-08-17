@@ -26,8 +26,7 @@ object Update:
   private def processInput(input: String): String =
     // TODO: link these operators to the ones in the DSL
     val operators = List("and", "or", "not", "=>", "\\/", "/\\", "(", ")", "⊕")
-    input
-      // split for spaces or parenthesis
+    input.trim
       .split("[ ()]")
       .filterNot(_.isBlank)
       .map(symbol => if !operators.contains(symbol) then s"\"$symbol\"" else symbol)
