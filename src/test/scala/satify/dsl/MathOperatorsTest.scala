@@ -22,4 +22,3 @@ class MathOperatorsTest extends AnyFlatSpec:
   """ "A" ⊕ "B" """ should """ be equal to "A" xor "B" """ in {
     "A" ⊕ "B" shouldBe ("A" xor "B")
   }
-
