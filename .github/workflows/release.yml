@@ -33,3 +33,5 @@ jobs:
           prerelease: true
           files: |
             target/scala-3.3.0/*.jar
+
+# for test
