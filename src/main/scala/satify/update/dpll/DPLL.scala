@@ -55,13 +55,7 @@ object DPLL:
     def pureLitElDecision(dec: Decision): Option[Branch] =
       pureLitElimination(dec) match
         case Some(c @ Constraint(name, value)) =>
-          Some(
-            Branch(
-              dec,
-              decide(dec, c),
-              decide(dec, Constraint(name, !value))
-            )
-          )
+          Some(Branch(dec, decide(dec, c), decide(dec, Constraint(name, !value))))
         case None => None
 
     /** Branch the decision tree by choosing a random variable among the available ones and by
@@ -71,18 +65,14 @@ object DPLL:
       */
     def randomDecision(dec: Decision): DecisionTree =
       dec match
-      case Decision(_, cnf) =>
-        val unVars = filterUnconstrVars(extractModelFromCnf(cnf))
-        if unVars.nonEmpty then
-          val v = rnd.nextBoolean()
-          unVars(rnd.between(0, unVars.size)) match
-            case Variable(name, _) =>
-              Branch(
-                dec,
-                decide(dec, Constraint(name, v)),
-                decide(dec, Constraint(name, !v))
-              )
-        else Leaf(dec)
+        case Decision(_, cnf) =>
+          val unVars = filterUnconstrVars(extractModelFromCnf(cnf))
+          if unVars.nonEmpty then
+            val v = rnd.nextBoolean()
+            unVars(rnd.between(0, unVars.size)) match
+              case Variable(name, _) =>
+                Branch(dec, decide(dec, Constraint(name, v)), decide(dec, Constraint(name, !v)))
+          else Leaf(dec)
 
     dec match
       case Decision(_, cnf) =>
@@ -100,7 +90,6 @@ object DPLL:
     * @return an Option containing a Constraint if a unit literal is present, None otherwise.
     */
   private def unitPropagation(cnf: CNF): Option[Constraint] =
-
     val f: (CNF, Option[Constraint]) => Option[Constraint] = (cnf, d) =>
       cnf match
         case Symbol(Variable(name, _)) => Some(Constraint(name, true))
