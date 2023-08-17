@@ -1,8 +1,8 @@
-name: Satify CI
+name: Satify CI Build
 
 on:
   push:
-    branches: [ "main", "develop", "feature/**", "release/**", "hotfix/**" ]
+    branches: *
   pull_request:
     branches: [ "main", "develop", "release/**" ]
 
