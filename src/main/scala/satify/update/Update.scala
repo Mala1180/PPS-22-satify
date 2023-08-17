@@ -25,7 +25,7 @@ object Update:
 
   private def processInput(input: String): String =
     val operators = List("and", "or", "not", "=>", "\\/", "/\\", "(", ")")
-    input
+    input.trim
       // split for spaces or parenthesis
       .split("[ ()]")
       .filterNot(_.isBlank)
