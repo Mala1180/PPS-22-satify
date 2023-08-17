@@ -33,6 +33,4 @@ jobs:
           title: "Sprint 3 Release (${{ github.ref_name }})"
           prerelease: true
           files: |
-            target/scala-3.3.0/*.jar
-
-# for test
+            target/scala-3.3.0/satify.jar
