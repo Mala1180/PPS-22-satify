@@ -5,7 +5,10 @@ on:
     types:
       - closed
     branches:
-      - main
+      - test
+
+permissions:
+  contents: write
 
 jobs:
   release:
@@ -25,7 +28,8 @@ jobs:
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
           prerelease: true
           files: |
             target/scala-3.3.0/*.jar
