@@ -16,3 +16,12 @@ enum CNF:
   case And(left: Or | Literal, right: And | Or | Literal)
   case Or(left: Or | Literal, right: Or | Literal)
   case Not(branch: Symbol)
+
+  override def toString: String =
+    this match
+      case Symbol(value) => value match
+        case Variable(name, v) => name
+        case v => v.toString
+      case And(left, right) => s"$left ∧\n$right"
+      case Or(left, right) => s"($left ∨ $right)"
+      case Not(branch) => s"¬$branch"

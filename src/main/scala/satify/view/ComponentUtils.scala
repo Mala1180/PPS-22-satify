@@ -66,18 +66,6 @@ object ComponentUtils:
     new Dialog:
       modal = true
       title = dialogTitle
-      val outputTextArea: TextArea = new TextArea:
-        editable = false
-        border = Swing.EmptyBorder(margin)
-        lineWrap = true
-        wordWrap = true
-        preferredSize = new Dimension((windowSize.width / 3) - margin, (windowSize.height / 4 * 2) - margin)
-      contents = new BoxPanel(Orientation.Vertical):
-        contents += new FlowPanel():
-          contents += new Label("Output:"):
-            font = headingFont
-        contents += new ScrollPane:
-          contents = outputTextArea
       // size of the main frame based on the screen size
       size = new Dimension(windowSize.width / 3, windowSize.height / 4 * 2)
       centerOnScreen()

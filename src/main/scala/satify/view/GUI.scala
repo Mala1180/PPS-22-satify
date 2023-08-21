@@ -43,14 +43,15 @@ object GUI:
       cnfButton.reactions += { case event.ButtonClicked(_) =>
         val newModel: Model = gui.update(gui.model, Convert(inputTextArea.text))
         cnfOutputDialog.contents = new FlowPanel():
-          contents += new TextArea(newModel.toString):
+          var result : String = "No CNF"
+          if newModel.cnf.isDefined then result = newModel.cnf.get.toString
+          val outputTextArea: TextArea = new TextArea:
+            text = result
             editable = false
-            // wrap
-            lineWrap = true
-            wordWrap = true
-            // dimension
-            preferredSize = new Dimension(windowSize.width / 2, windowSize.height / 3 * 2)
-
+            rows = 30
+            columns = 35
+            border = Swing.EmptyBorder(margin)
+          contents += new ScrollPane(outputTextArea)
         cnfOutputDialog.open()
       }
 

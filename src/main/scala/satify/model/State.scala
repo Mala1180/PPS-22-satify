@@ -4,19 +4,19 @@ package satify.model
 trait State:
   /** A general expression of boolean logic, it is the user input */
   type Expression
-//  val expression: Option[Expression] = None
+  val expression: Option[Expression] = None
 
   /** The input expression converted to Conjunctive Normal Form (CNF) */
   type CNF
-//  val cnf: Option[CNF] = None
+  val cnf: Option[CNF] = None
 
   /** An entity containing the solution of the problem (SAT or UNSAT, optional Assignment), it is the output of DPLL */
   type Solution
-//  val solution: Option[Solution] = None
+  val solution: Option[Solution] = None
 
   /** An entity representing the problem to solve */
   type Problem
-//  val problem: Option[Problem] = None
+  val problem: Option[Problem] = None
 
 /** Factory for [[satify.model.State]] instances. */
 object State:
@@ -32,9 +32,9 @@ object State:
     */
   def apply(exp: Expression, cnf: CNF): State = StateImpl(Some(exp), Some(cnf))
   private case class StateImpl(
-      expression: Option[Expression] = None,
-      cnf: Option[CNF] = None,
-      solution: Option[Solution] = None
+      override val expression: Option[Expression] = None,
+      override val cnf: Option[CNF] = None,
+      override val solution: Option[Solution] = None
   ) extends State:
     override type Expression = satify.model.Expression
     override type CNF = satify.model.CNF
