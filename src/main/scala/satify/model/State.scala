@@ -20,16 +20,34 @@ trait State:
 
 /** Factory for [[satify.model.State]] instances. */
 object State:
-  /** Creates a new application state.
-    * @return a new State instance.
+  /** Creates a new empty application state.
+    * @return a new [[State]] instance.
     */
   def apply(): State = StateImpl()
 
-  /** Creates a new application state with the given CNF.
-    * @param cnf the CNF to set
-    * @return a new State instance.
+  /** Creates a new application state with input expression and its CNF.
+    * @param exp the input [[Expression]]
+    * @param cnf the [[CNF]]
+    * @return a new [[State]] instance.
     */
   def apply(exp: Expression, cnf: CNF): State = StateImpl(Some(exp), Some(cnf))
+
+  /** Creates a new application state with the input expression, its CNF and the solution.
+    * @param exp the input [[Expression]]
+    * @param cnf the [[CNF]]
+    * @param sol the [[Solution]]
+    * @return a new [[State]] instance.
+    */
+  def apply(exp: Expression, cnf: CNF, sol: Solution): State = StateImpl(Some(exp), Some(cnf), Some(sol))
+
+  /** Creates a new application state with an input problem, its CNF, and its solution.
+    * @param cnf the [[CNF]]
+    * @param sol the [[Solution]]
+    * @param problem the [[Problem]] selected
+    * @return a new [[State]] instance.
+    */
+  def apply(cnf: CNF, sol: Solution, problem: Problem): State =
+    StateImpl(None, Some(cnf), Some(sol), Some(problem))
 
   private case class StateImpl(
       override val expression: Option[Expression] = None,
