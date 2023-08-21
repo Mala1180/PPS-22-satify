@@ -1,7 +1,7 @@
 package satify.view
 
 import satify.Main.Model
-import satify.model.State
+import satify.model.{CNF, State, Variable}
 import satify.update.Message
 import satify.update.Message.Convert
 import satify.view.Constants.*
@@ -44,7 +44,7 @@ object GUI:
         val newModel: Model = gui.update(gui.model, Convert(inputTextArea.text))
         cnfOutputDialog.contents = new FlowPanel():
           var result: String = "No CNF"
-          if newModel.cnf.isDefined then result = newModel.cnf.get.toString
+          if newModel.cnf.isDefined then result = newModel.cnf.get.print
           val outputTextArea: TextArea = new TextArea:
             text = result
             editable = false

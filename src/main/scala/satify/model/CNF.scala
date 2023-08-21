@@ -17,12 +17,14 @@ enum CNF:
   case Or(left: Or | Literal, right: Or | Literal)
   case Not(branch: Symbol)
 
-  override def toString: String =
-    this match
-      case Symbol(value) =>
-        value match
-          case Variable(name, v) => name
-          case v => v.toString
-      case And(left, right) => s"$left ∧\n$right"
-      case Or(left, right) => s"($left ∨ $right)"
-      case Not(branch) => s"¬$branch"
+object CNF:
+  extension (cnf: CNF)
+    def print: String =
+      cnf match
+        case Symbol(value) =>
+          value match
+            case Variable(name, v) => name
+            case v => v.toString
+        case And(left, right) => s"${left.print} ∧\n${right.print}"
+        case Or(left, right) => s"(${left.print} ∨ ${right.print})"
+        case Not(branch) => s"¬${branch.print}"
