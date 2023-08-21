@@ -19,6 +19,6 @@ class MathOperatorsTest extends AnyFlatSpec:
     !"A" shouldBe not("A")
   }
 
-  """ "A" ⊕ "B" """ should """ be equal to "A" xor "B" """ in {
-    "A" ⊕ "B" shouldBe ("A" xor "B")
+  """ "A" ^ "B" """ should """ be equal to "A" xor "B" """ in {
+    "A" ^ "B" shouldBe ("A" xor "B")
   }
