@@ -25,4 +25,4 @@ object DSL:
     @targetName("notSymbol")
     def unary_! : Expression = not
     @targetName("xorSymbol")
-    def ⊕(exp2: Expression): Expression = xor(exp2)
+    def ^(exp2: Expression): Expression = xor(exp2)
