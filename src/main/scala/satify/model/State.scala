@@ -34,9 +34,10 @@ object State:
   private case class StateImpl(
       override val expression: Option[Expression] = None,
       override val cnf: Option[CNF] = None,
-      override val solution: Option[Solution] = None
+      override val solution: Option[Solution] = None,
+      override val problem: Option[Unit] = None
   ) extends State:
     override type Expression = satify.model.Expression
     override type CNF = satify.model.CNF
     override type Solution = satify.model.Solution
-//    type Problem = satify.model.Problem
+    override type Problem = Unit
