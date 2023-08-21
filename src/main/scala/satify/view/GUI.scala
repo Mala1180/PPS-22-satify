@@ -43,7 +43,7 @@ object GUI:
       cnfButton.reactions += { case event.ButtonClicked(_) =>
         val newModel: Model = gui.update(gui.model, Convert(inputTextArea.text))
         cnfOutputDialog.contents = new FlowPanel():
-          var result : String = "No CNF"
+          var result: String = "No CNF"
           if newModel.cnf.isDefined then result = newModel.cnf.get.toString
           val outputTextArea: TextArea = new TextArea:
             text = result

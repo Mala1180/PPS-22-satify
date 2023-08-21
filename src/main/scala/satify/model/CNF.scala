@@ -19,9 +19,10 @@ enum CNF:
 
   override def toString: String =
     this match
-      case Symbol(value) => value match
-        case Variable(name, v) => name
-        case v => v.toString
+      case Symbol(value) =>
+        value match
+          case Variable(name, v) => name
+          case v => v.toString
       case And(left, right) => s"$left ∧\n$right"
       case Or(left, right) => s"($left ∨ $right)"
       case Not(branch) => s"¬$branch"
