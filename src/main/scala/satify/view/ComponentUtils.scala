@@ -16,9 +16,7 @@ object ComponentUtils:
     * @return the image icon
     */
   def createImage(path: String, scaledBy: Int): ImageIcon =
-    println(path)
     val url: URL = getClass.getResource(path)
-    println(url)
     val image = ImageIcon(url)
     // resize the image maintaining the aspect ratio
     val screenDimension: Dimension = Toolkit.getDefaultToolkit.getScreenSize
@@ -49,10 +47,9 @@ object ComponentUtils:
 
   /** Creates a button with the given text
     *
-    * @param gui the gui
     * @return the button
     */
-  def createButton(gui: GUI, text: String, width: Int, height: Int): Button = new Button(text):
+  def createButton(text: String, width: Int, height: Int): Button = new Button(text):
     font = Font(fontFamily, Font.ITALIC, 20)
     preferredSize = new Dimension(width, height)
     background = Color.green
@@ -69,3 +66,12 @@ object ComponentUtils:
       // size of the main frame based on the screen size
       size = new Dimension(windowSize.width / 3, windowSize.height / 4 * 2)
       centerOnScreen()
+
+  def createOutputTextArea(txt: String, r: Int, c: Int): TextArea =
+    new TextArea:
+      text = txt
+      rows = r
+      columns = c
+      border = Swing.EmptyBorder(margin)
+      editable = false
+      font = Font(fontFamily, Font.ITALIC, 18)

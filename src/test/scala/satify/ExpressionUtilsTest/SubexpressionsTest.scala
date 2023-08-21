@@ -30,7 +30,6 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
   "In ¬a the subexp ¬a" should "be decomposed correctly" in {
     val exp: Expression = Not(Symbol("a"))
     val list = zipWithSymbol(exp)
-    println(list)
     list should contain only ((Symbol("X0"), Not(Symbol("a"))))
   }
 
@@ -38,7 +37,6 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
     val exp: Expression =
       And(Symbol("c"), And(Symbol("a"), Not(Symbol("b"))))
     val list = zipWithSymbol(exp)
-    println(list)
     list should contain only (
       (
         Symbol("X0"),
@@ -52,7 +50,6 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
   "In (c ∧ a) the subexp (c ∧ a)" should "be decomposed correctly" in {
     val exp: Expression = And(Symbol("c"), Symbol("a"))
     val list = zipWithSymbol(exp)
-    println(list)
     list should contain only (
       (Symbol("X0"), And(Symbol("c"), Symbol("a")))
     )
