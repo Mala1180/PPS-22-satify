@@ -10,6 +10,15 @@ enum Expression:
 
 object Expression:
 
+  extension (exp: Expression)
+    /** Print the expression in a human readable format. */
+    def print: String =
+      exp match
+        case Symbol(value) => value
+        case And(left, right) => s"${left.print} ∧\n${right.print}"
+        case Or(left, right) => s"(${left.print} ∨ ${right.print})"
+        case Not(branch) => s"¬${branch.print}"
+
   /** Zip the subexpressions found in the given expression with a generic type A.
     *
     * @param exp the expression.

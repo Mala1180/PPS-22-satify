@@ -25,7 +25,7 @@ object DSL:
   def atMostOne(variables: Symbol*): Expression =
     val generator = symbolGenerator("ENC")
     // removing duplicates
-    val vars =  variables.distinct
+    val vars = variables.distinct
     // generate new n - 1 variables
     val newVars = (1 until vars.length).map(_ => generator()).toList
     val startingClauses = (not(vars.head) or newVars.head) and (not(vars.last) or newVars.last)
