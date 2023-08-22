@@ -29,20 +29,19 @@ abstract types:
 
 ## View
 
-**View** it will be, as already said, a function that takes as input the **Model** and returns a **GUI** object.
+**View** it will be, as already said, a function that takes as input the **Model** and returns a set of components.
 Until now, we have not seen any side effect, but in order to provide a user interface it's necessary having one, so the
-**GUI**
-object is in charge of render the application.
-
-....................
-
+**GUI** object is in charge of render the new state of application showing the new updated components.
+In this way, every time the **Model** changes, the **GUI** will be correctly updated but without reloading the entire UI. 
 
 ---
 
 ## Update
 
-Finally, the **Update** type will be a function that takes in input the **Model** and a **Message** and returns a new
+The **Update** type will be a function that takes in input the **Model** and a **Message** and returns an updated new
 **Model**.
+For every type of message one behaviour is defined, so the **Update** function will be a _match_ on the **Message** type.
+Following this approach, combined with the GUI component to update, every interaction with the user will refresh exactly the needed part of the UI. 
 
 ---
 
