@@ -11,21 +11,15 @@ object Update:
       case Input(char) => model
       case Solve(input) =>
         val exp = reflect(processInput(input))
-        println(exp)
         State()
-      // given CNFConverter with
-      //   def convert[T <: Variable](exp: Expression[T]): CNF = tseitin(exp)
-      // Solver().solve(exp)
-      // State()
       case Convert(input) =>
         val exp = reflect(processInput(input))
-        println(exp)
         val cnf = tseitin(exp)
         State(exp, cnf)
 
   private def processInput(input: String): String =
     // TODO: link these operators to the ones in the DSL
-    val operators = List("and", "or", "not", "=>", "\\/", "/\\", "(", ")", "⊕")
+    val operators = List("and", "or", "not", "=>", "\\/", "/\\", "(", ")", "^")
     input.trim
       .split("[ ()]")
       .filterNot(_.isBlank)

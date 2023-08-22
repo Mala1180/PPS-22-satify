@@ -12,6 +12,8 @@ import satify.Main.Model
 import satify.update.Message
 import satify.view.GUI
 
+import scala.swing.Component
+
 class TestArchitecture extends AnyFlatSpec with Matchers:
 
   val mvu: MVU = new MVU {}
@@ -53,8 +55,8 @@ class TestArchitecture extends AnyFlatSpec with Matchers:
     independence.check(allClasses)
   }
 
-  "View" should "be a function which takes a Model and returns a GUI" in {
-    mvu.view shouldBe a[Model => GUI]
+  "View" should "be a function which takes a Model and returns a set of components" in {
+    mvu.view shouldBe a[Model => Set[Component]]
   }
 
   "Update" should "be a function taking a Model and a Message, returning a new Model" in {
