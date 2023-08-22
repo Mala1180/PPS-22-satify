@@ -38,12 +38,18 @@ object Expression:
     */
   def zipWithSymbol(exp: Expression): List[(Symbol, Expression)] =
     // TODO: introduction of a common name for the symbols
+    zipWith(exp)(symbolGenerator("X"))
+
+  /** Generate a new Symbol starting from the given prefix.
+    * @param prefix the prefix of the new Symbol.
+    * @return a new Symbol.
+    */
+  def symbolGenerator(prefix: String): () => Symbol =
     var c = 0
-    def freshLabel(): Symbol =
-      val s: Symbol = Symbol("X" + c)
-      c += 1
+    () =>
+      val s: Symbol = Symbol(prefix + c)
+      c = c + 1
       s
-    zipWith(exp)(freshLabel)
 
   /** Search for subexpressions in the given expression.
     *
