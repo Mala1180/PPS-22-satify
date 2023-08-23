@@ -1,9 +1,9 @@
 package satify.update.dpll
 
 import satify.model.CNF.*
-import satify.model.Constraint
-import satify.model.*
-import satify.model.Constant.{False, True}
+import satify.model.{CNF, Variable}
+import satify.model.Bool.{False, True}
+import satify.model.dpll.Constraint
 
 object CNFSimplification:
 
@@ -116,14 +116,15 @@ object CNFSimplification:
       case e @ _ => e
     ).asInstanceOf[T]
 
-  /** Simplify And(s) when a Literal is set to true s.t. v = true or Not(v) = true.
+  /** Simplify And(s)
     * @param cnf CNF expression
     * @tparam T type
     * @return partial simplified CNF
     */
   private def simplifyClosestAnd[T <: CNF](cnf: T): T =
 
-    /** Return the specified value if CNF is a Literal contains a Constant and it is evaluated true.
+    /** Return the specified value if CNF is a Literal contains a Constant and it is evaluated true,
+      * or Symbol(False) if the CNF contains such element.
       * @param e expression in CNF
       * @param o return value if CNF is a positive Literal
       * @param d default match case
@@ -133,6 +134,8 @@ object CNFSimplification:
     def h[V <: CNF](e: V, o: V, d: V): V = e match
       case Symbol(True) => o
       case Not(Symbol(False)) => o
+      case s @ Symbol(False) => s
+      case s @ Not(Symbol(True)) => s
       case _ => d
 
     (cnf match

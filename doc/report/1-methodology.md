@@ -12,7 +12,7 @@ In order to organize the work in the best possible way, it has been decided that
 of two weeks, after which a meeting of variable duration would take place.
 
 Initially we decided to dedicate the first Sprint to the project setup and for the definition of the used technologies
-and framerowks that we'd go to use later.
+and frameworks that we'd go to use later.
 
 Only after the first setup Stream we decided how to divide the work at best, without overwhelm or privilege any team
 member and trying to divide the work type of each one. Moreover, for each Sprint Review, a potential artifact could be
@@ -51,7 +51,7 @@ Like said in the Continuous Integration section(TODO), following this approach w
 the develop branch was always working.
 
 First, we introduced tests for the architecture of the software, using the ArchUnit library, which allowed us to verify
-that the architecture of the software was respected during the implementation phase.
+that the architecture of the software was respected during the implementation phase and that the code was not violating MVU dependency rules.
 
 Subsequently, to let the tests more readable for an external user, we used FlatSpec and the relatives Matchers for
 ScalaTest in order to obtain tests in BDD-style.
