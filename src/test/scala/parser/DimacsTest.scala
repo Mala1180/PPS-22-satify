@@ -5,7 +5,10 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.CNF.*
 import satify.update.parser.DimacsCNF
 
+import scala.io.Source
 import satify.model.*
+
+import scala.util.Using
 
 class DimacsTest extends AnyFlatSpec with Matchers {
 
@@ -26,7 +29,14 @@ class DimacsTest extends AnyFlatSpec with Matchers {
       )
   }
 
-  // TODO: after dpll conflict id merge
+  "DimacsCNF" should "open a DIMACS file and parse it" in {
+    val filename = "src/main/resources/cnf/aim-100-1_6-no-1.cnf"
+    val source = Source.fromFile(filename)
+    val lines = source.getLines().toSeq
+    DimacsCNF.parse(lines) should matchPattern { case Some(_) => }
+  }
+
+  // TODO
   /*
   it should "dump CNF formulas" in {
     val formula = And(

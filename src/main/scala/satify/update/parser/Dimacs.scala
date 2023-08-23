@@ -11,7 +11,7 @@ trait Dimacs[T] {
 
   def parse(lines: Seq[String]): Option[T]
 
-  // TODO: after dpll conflict id merge
+  // TODO
   // def dump(obj: T): Seq[String]
 
   /*
@@ -40,32 +40,14 @@ object DimacsCNF extends Dimacs[CNF]:
 
   def parse(lines: Seq[String]): Option[CNF] =
     stripComments(lines) match
-      case Header(_, _) +: Seq() => None
+      case Nil => None
       case Header(_, _) +: clauses =>
-        Some(
-          buildAndCNF(
-            clauses.map(clause =>
-              buildOrCNF(
-                clause
-                  .split(" ")
-                  .dropRight(1)
-                  .map(x =>
-                    (x.toInt match
-                      case n if n >= 0 => Symbol(Variable(f"X_$n"))
-                      case n if n < 0 => Not(Symbol(Variable(f"X_${math.abs(n)}")))
-                    ).asInstanceOf[Literal]
-                  )
-                  .toSeq
-              )
-            )
-          )
-        )
+        val or = clauses.map(parseOr)
+        if or.forall(o => o.isDefined) then buildAndCNF(or.map(o => o.get))
+        else None
       case _ => None
 
-  x = Variable
-  And(Not(x), ...)
-
-  // TODO: after dpll conflict id merge
+  // TODO
   /*
   def dump(cnf: CNF): Seq[String] = {
     val header = s"p cnf ${cnf.variableCount} ${cnf.clauseCount}"
@@ -76,10 +58,32 @@ object DimacsCNF extends Dimacs[CNF]:
   }
    */
 
-  private def buildOrCNF(cnf: Seq[Literal]): Or | Literal = cnf match
-    case head +: Seq() => head
-    case head +: tail => Or(head, buildOrCNF(tail))
+  private def parseOr(clause: String): Option[Or | Literal] =
+    buildOrCNF(
+      clause
+        .split(" ")
+        .dropRight(1)
+        .map(x =>
+          val literal: Literal = x.toInt match
+            case n if n >= 0 => Symbol(Variable(f"X_$n"))
+            case n if n < 0 => Not(Symbol(Variable(f"X_${math.abs(n)}")))
+          literal
+        )
+        .toSeq
+    )
 
-  private def buildAndCNF(cnf: Seq[Or | Literal]): And | Or | Literal = cnf match
-    case head +: Seq() => head
-    case head +: tail => And(head, buildAndCNF(tail))
+  private def buildOrCNF(cnf: Seq[Literal]): Option[Or | Literal] = cnf match
+    case Nil => None
+    case head +: Nil => Some(head)
+    case head +: tail =>
+      buildOrCNF(tail) match
+        case Some(value) => Some(Or(head, value))
+        case None => Some(head)
+
+  private def buildAndCNF(cnf: Seq[Or | Literal]): Option[And | Or | Literal] = cnf match
+    case Nil => None
+    case head +: Nil => Some(head)
+    case head +: tail =>
+      buildAndCNF(tail) match
+        case Some(value) => Some(And(head, value))
+        case None => Some(head)
