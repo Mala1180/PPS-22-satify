@@ -1,9 +1,12 @@
 package satify.update.dpll
 
 import satify.model.Bool.True
-import satify.model.{CNF, Constraint, Decision, DecisionTree, PartialModel, Variable}
+import satify.model.{CNF, Variable}
 import satify.model.CNF.*
-import satify.model.DecisionTree.{Branch, Leaf}
+import satify.model.dpll.OrderedSeq.given_Ordering_Variable
+import satify.model.dpll.OrderedSeq.*
+import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
+import satify.model.dpll.DecisionTree.{Branch, Leaf}
 
 object PartialModelUtils:
 
@@ -14,11 +17,11 @@ object PartialModelUtils:
     */
   def extractModelFromCnf(cnf: CNF): PartialModel =
     cnf match
-      case Symbol(variable: Variable) => Seq(variable)
-      case And(e1, e2) => (extractModelFromCnf(e1) ++ extractModelFromCnf(e2)).distinct
-      case Or(e1, e2) => (extractModelFromCnf(e1) ++ extractModelFromCnf(e2)).distinct
+      case Symbol(variable: Variable) => seq(variable)
+      case And(e1, e2) => seq(extractModelFromCnf(e1) ++ extractModelFromCnf(e2): _*)
+      case Or(e1, e2) => seq(extractModelFromCnf(e1) ++ extractModelFromCnf(e2): _*)
       case Not(e) => extractModelFromCnf(e)
-      case _ => Seq.empty
+      case _ => seq()
 
   /** Filters unconstrained variables from the partial model
     *
@@ -64,9 +67,9 @@ object PartialModelUtils:
       case Variable(name, None) =>
         if pm.tail.nonEmpty then
           val rSols = explodeSolutions(pm.tail)
-          rSols.map(p => Seq(Variable(name, Some(true))) ++ p) ++
-            rSols.map(p => Seq(Variable(name, Some(false))) ++ p)
-        else Set(Seq(Variable(name, Some(true))), Seq(Variable(name, Some(false))))
+          rSols.map(p => seq(Variable(name, Some(true))) ++ p) ++
+            rSols.map(p => seq(Variable(name, Some(false))) ++ p)
+        else Set(seq(Variable(name, Some(true))), seq(Variable(name, Some(false))))
       case v @ Variable(_, _) =>
-        if pm.tail.nonEmpty then explodeSolutions(pm.tail).map(p => Seq(v) ++ p)
-        else Set(Seq(v))
+        if pm.tail.nonEmpty then explodeSolutions(pm.tail).map(p => seq(v) ++ p)
+        else Set(seq(v))

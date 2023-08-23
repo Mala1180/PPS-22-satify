@@ -1,14 +1,17 @@
 package satify.update.dpll
 
-import satify.model.DecisionTree.*
-import satify.model.{CNF, Constraint, Decision, DecisionTree, PartialModel, Variable}
+import satify.model.dpll.DecisionTree.*
+import satify.model.{CNF, Variable}
 import satify.model.CNF.*
 import satify.update.dpll.CNFSimplification.*
 import satify.update.dpll.PartialModelUtils.*
 import satify.update.dpll.ConflictIdentification.isUnsat
 import satify.model
 import satify.model.Bool.{False, True}
+import satify.model.dpll.OrderedSeq.{seq, given_Ordering_Variable}
+import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
 
+import scala.annotation.tailrec
 import scala.language.postfixOps
 import scala.util.Random
 
@@ -47,39 +50,48 @@ object DPLL:
             )
           case None => None
 
+    /** Branch on the pure literal branch first.
+      * @param dec the previous Decision.
+      * @return an Option containing a Branch if there's a pure literal, None otherwise.
+      */
+    def pureLiteralEliminationDecision(dec: Decision): Option[Branch] =
+      pureLiteralElimination(dec) match
+        case Some(c @ Constraint(name, value)) =>
+          Some(Branch(dec, decide(dec, c), decide(dec, Constraint(name, !value))))
+        case None => None
+
     /** Branch the decision tree by choosing a random variable among the available ones and by
       * applying a random constraint.
       * @param dec the previous Decision
       * @return updated DecisionTree with the random Decision.
       */
-    def randomDecision(dec: Decision): DecisionTree = dec match
-      case Decision(parModel, cnf) =>
-        val unVars = filterUnconstrVars(extractModelFromCnf(cnf))
-        if unVars.nonEmpty then
-          val v = rnd.nextBoolean()
-          unVars(rnd.between(0, unVars.size)) match
-            case Variable(name, _) =>
-              Branch(
-                dec,
-                decide(dec, Constraint(name, v)),
-                decide(dec, Constraint(name, !v))
-              )
-        else Leaf(dec)
+    def randomDecision(dec: Decision): DecisionTree =
+      dec match
+        case Decision(_, cnf) =>
+          val unVars = filterUnconstrVars(extractModelFromCnf(cnf))
+          if unVars.nonEmpty then
+            val v = rnd.nextBoolean()
+            unVars(rnd.between(0, unVars.size)) match
+              case Variable(name, _) =>
+                Branch(dec, decide(dec, Constraint(name, v)), decide(dec, Constraint(name, !v)))
+          else Leaf(dec)
 
     dec match
-      case Decision(parModel, cnf) =>
+      case Decision(_, cnf) =>
         if isUnsat(cnf) then Leaf(dec)
         else
           unitPropDecision(dec) match
             case Some(branch) => branch
-            case None => randomDecision(dec)
+            case None =>
+              pureLiteralEliminationDecision(dec) match
+                case Some(branch) => branch
+                case None => randomDecision(dec)
 
   /** Apply unit propagation.
     * @param cnf where to search for a unit literal
     * @return an Option containing a Constraint if a unit literal is present, None otherwise.
     */
   private def unitPropagation(cnf: CNF): Option[Constraint] =
-
     val f: (CNF, Option[Constraint]) => Option[Constraint] = (cnf, d) =>
       cnf match
         case Symbol(Variable(name, _)) => Some(Constraint(name, true))
@@ -90,6 +102,34 @@ object DPLL:
       cnf,
       cnf match
         case And(left, right) => f(left, f(right, unitPropagation(right)))
-        case Or(left, right) => None
+        case Or(_, _) => None
         case _ => None
     )
+
+  /** Eliminate a pure literal.
+    * @param dec previous Decision
+    * @return an Option containing a Constraint if a pure literal is present, None otherwise.
+    */
+  @tailrec
+  private def pureLiteralElimination(dec: Decision): Option[Constraint] =
+
+    def find(value: String, cnf: CNF): Option[Constraint] =
+      val f: (String, CNF, CNF) => Option[Constraint] = (name, left, right) =>
+        val leftRec = find(name, left)
+        if leftRec == find(name, right) then leftRec else None
+      cnf match
+        case Symbol(Variable(name, _)) if value == name => Some(Constraint(name, true))
+        case Not(Symbol(Variable(name, _))) if value == name => Some(Constraint(name, false))
+        case And(left, right) => f(value, left, right)
+        case Or(left, right) => f(value, left, right)
+        case _ => None
+
+    dec match
+      case Decision(parModel, cnf) =>
+        parModel match
+          case Seq() => None
+          case Variable(name, None) +: tail =>
+            val fVar = find(name, cnf)
+            if fVar.isEmpty then pureLiteralElimination(Decision(tail, cnf))
+            else fVar
+          case Variable(_, _) +: tail => pureLiteralElimination(Decision(tail, cnf))

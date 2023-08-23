@@ -1,8 +1,7 @@
-package satify.model
+package satify.model.dpll
 
 import satify.model.{CNF, Variable}
-
-type PartialModel = Seq[Variable]
+import satify.model.dpll.PartialModel
 
 /** Decision is a node of DecisionTree.
   * @param parModel The current state of the PartialModel with varName's PartialVariable constrained.
