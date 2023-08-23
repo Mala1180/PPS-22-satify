@@ -16,3 +16,13 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(scalaTest, archUnit, slf4jSimpleLog, scalaSwing, scalaCompiler, cucumber),
     assembly / assemblyJarName := "satify.jar",
   )
+
+jacocoReportSettings := JacocoReportSettings()
+  .withTitle("Jacoco Satify Coverage Report")
+  .withThresholds(
+    JacocoThresholds(
+      branch = 40,
+      line = 70)
+  )
+  .withFormats(JacocoReportFormats.ScalaHTML)
+jacocoExcludes := Seq("*view*", "*update.Message*", "*Main*")
