@@ -8,8 +8,7 @@ import satify.update.dpll.PartialModelUtils.*
 import satify.update.dpll.ConflictIdentification.isUnsat
 import satify.model
 import satify.model.Bool.{False, True}
-import satify.model.dpll.given_Ordering_Variable
-import satify.model.dpll.OrderedSeq.seq
+import satify.model.dpll.OrderedSeq.{seq, given_Ordering_Variable}
 import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
 
 import scala.annotation.tailrec
