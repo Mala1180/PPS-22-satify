@@ -3,7 +3,7 @@ package satify.update.dpll
 import satify.model.Bool.True
 import satify.model.{CNF, Variable}
 import satify.model.CNF.*
-import satify.model.dpll.given_Ordering_Variable
+import satify.model.dpll.OrderedSeq.given_Ordering_Variable
 import satify.model.dpll.OrderedSeq.*
 import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
 import satify.model.dpll.DecisionTree.{Branch, Leaf}

@@ -1,6 +1,5 @@
 package satify.update.dpll
 
-import dotty.tools.dotc.transform.sjs.JSSymUtils.JSName.Literal
 import satify.model.dpll.DecisionTree.*
 import satify.model.{CNF, Variable}
 import satify.model.CNF.*
@@ -56,8 +55,8 @@ object DPLL:
       * @param dec the previous Decision.
       * @return an Option containing a Branch if there's a pure literal, None otherwise.
       */
-    def pureLitElDecision(dec: Decision): Option[Branch] =
-      pureLitElimination(dec) match
+    def pureLiteralEliminationDecision(dec: Decision): Option[Branch] =
+      pureLiteralElimination(dec) match
         case Some(c @ Constraint(name, value)) =>
           Some(Branch(dec, decide(dec, c), decide(dec, Constraint(name, !value))))
         case None => None
@@ -85,7 +84,7 @@ object DPLL:
           unitPropDecision(dec) match
             case Some(branch) => branch
             case None =>
-              pureLitElDecision(dec) match
+              pureLiteralEliminationDecision(dec) match
                 case Some(branch) => branch
                 case None => randomDecision(dec)
 
@@ -113,7 +112,7 @@ object DPLL:
     * @return an Option containing a Constraint if a pure literal is present, None otherwise.
     */
   @tailrec
-  private def pureLitElimination(dec: Decision): Option[Constraint] =
+  private def pureLiteralElimination(dec: Decision): Option[Constraint] =
 
     def find(value: String, cnf: CNF): Option[Constraint] =
       val f: (String, CNF, CNF) => Option[Constraint] = (name, left, right) =>
@@ -132,6 +131,6 @@ object DPLL:
           case Seq() => None
           case Variable(name, None) +: tail =>
             val fVar = find(name, cnf)
-            if fVar.isEmpty then pureLitElimination(Decision(tail, cnf))
+            if fVar.isEmpty then pureLiteralElimination(Decision(tail, cnf))
             else fVar
-          case Variable(_, _) +: tail => pureLitElimination(Decision(tail, cnf))
+          case Variable(_, _) +: tail => pureLiteralElimination(Decision(tail, cnf))
