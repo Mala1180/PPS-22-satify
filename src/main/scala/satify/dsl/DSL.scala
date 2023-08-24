@@ -23,7 +23,7 @@ object DSL:
     * @return the expression that encodes the constraint
     */
   def atMostOne(variables: Symbol*): Expression =
-    val generator = symbolGenerator("ENC")
+    val generator: () => Symbol = symbolGenerator("ENC")
     // removing duplicates
     val vars = variables.distinct
     // generate new n - 1 variables
