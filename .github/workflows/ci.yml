@@ -25,16 +25,17 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Clear Target Folder
-        run: rm ~/target
-
       - uses: actions/checkout@v3
+
+      - name: Clear Target Folder
+        run: rm -D -r ./target
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'none'
+          cache: 'sbt'
       - name: Run tests
         run: sbt test
 
@@ -47,5 +48,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'sbt'
       - name: Check scalafmt formatting
         run: sbt scalafmtCheckAll
