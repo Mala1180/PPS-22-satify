@@ -31,7 +31,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'sbt'
       - name: Run tests
         run: sbt test
 
@@ -44,6 +43,5 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'sbt'
       - name: Check scalafmt formatting
         run: sbt scalafmtCheckAll
