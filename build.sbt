@@ -14,5 +14,5 @@ lazy val root = (project in file("."))
   .settings(
     name := "satify",
     libraryDependencies ++= Seq(scalaTest, archUnit, slf4jSimpleLog, scalaSwing, scalaCompiler, cucumber),
-    assembly / assemblyJarName := "satify.jar",
+    assembly / assemblyJarName := "satify.jar"
   )
