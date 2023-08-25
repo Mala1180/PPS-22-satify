@@ -26,7 +26,8 @@ object CNF:
             case Variable(name, v) => name
             case v => v.toString
         case And(left, right) =>
-          if flat then s"${left.printAsFormal(flat)} ∧ ${right.printAsFormal(flat)}" else s"${left.printAsFormal(flat)} ∧\n${right.printAsFormal(flat)}"
+          if flat then s"${left.printAsFormal(flat)} ∧ ${right.printAsFormal(flat)}"
+          else s"${left.printAsFormal(flat)} ∧\n${right.printAsFormal(flat)}"
         case Or(left, right) => s"${left.printAsFormal(flat)} ∨ ${right.printAsFormal(flat)}"
         case Not(branch) => s"¬${branch.printAsFormal(flat)}"
 
