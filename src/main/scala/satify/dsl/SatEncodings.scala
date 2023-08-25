@@ -81,3 +81,15 @@ object SatEncodings:
         yield vars(i) +: subCombination
 
     combinations(vars, k).map(_.reduceLeft(_ and _)).reduceLeft(_ or _)
+
+  private def tupleToSymbols(tuple: Tuple): List[Symbol] =
+    tuple.productIterator.toList.map(_.toString).map(Symbol.apply)
+
+  extension (expressions: Tuple)
+    def atMost(k: Int): Expression = k match
+      case 1 => atMostOne(tupleToSymbols(expressions): _*)
+      case _ => atMostK(k)(tupleToSymbols(expressions): _*)
+
+    def atLeast(k: Int): Expression = k match
+      case 1 => atLeastOne(tupleToSymbols(expressions): _*)
+      case _ => atLeastK(k)(tupleToSymbols(expressions): _*)
