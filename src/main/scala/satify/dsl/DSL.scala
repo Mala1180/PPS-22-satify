@@ -5,4 +5,3 @@ object DSL:
   export satify.dsl.Operators.*
   export satify.dsl.Numbers.*
   export satify.dsl.SatEncodings.*
-
