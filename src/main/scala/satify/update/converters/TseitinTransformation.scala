@@ -20,12 +20,16 @@ object TseitinTransformation:
           case r @ CNFOr(e3, e4) => CNFAnd(l, r)
           case _ => exp2
       case _ => exp1
-    var transformations: List[(CNFSymbol, CNF)] = List()
-    symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
-    val transformedExp = transformations.map(_._2)
 
-    if transformedExp.size == 1 then transformedExp.head
-    else transformedExp.reduceRight((s1, s2) => reduction(s1, s2))
+    if !isCNF(exp) then
+      var transformations: List[(CNFSymbol, CNF)] = List()
+      symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
+      val transformedExp = transformations.map(_._2)
+      if transformedExp.size == 1 then transformedExp.head
+      else transformedExp.reduceRight((s1, s2) => reduction(s1, s2))
+    else
+      println("ci passo")
+      convertToCNF(exp)
 
   /** Substitute Symbols of nested subexpressions in all others expressions
     * @param exp the expression where to substitute Symbols
@@ -86,11 +90,10 @@ object TseitinTransformation:
         )
       case (s @ Symbol(v), ss @ Symbol(vv)) => List((symbol(s), symbol(ss)))
 
-  /**
-   * Method to check if an expression is in CNF form and can be converted to CNF form.
-   * @param expression The expression to check.
-   * @return true if the expression could be converted to CNF form, false otherwise and in case of empty expression.
-   */
+  /** Method to check if an expression is in CNF form and can be converted to CNF form.
+    * @param expression The expression to check.
+    * @return true if the expression could be converted to CNF form, false otherwise and in case of empty expression.
+    */
   def isCNF(expression: Expression): Boolean =
     import Expression.*
     expression match
@@ -108,13 +111,12 @@ object TseitinTransformation:
           case _ => isCNF(l) && isCNF(r);
       case _ => false
 
-  /**
-   * Method to check if an expression is in CNF form and can be converted to CNF form.
-   * @param expression The expression to check.
-   * @return true if the expression could be converted to CNF form, false otherwise and in case of empty expression.
-   */
+  /** Method to check if an expression is in CNF form and can be converted to CNF form.
+    * @param expression The expression to check.
+    * @return true if the expression could be converted to CNF form, false otherwise and in case of empty expression.
+    */
   def convertToCNF(expression: Expression): CNF =
-    def convL(exp: Expression) : CNFOr | Literal = exp match
+    def convL(exp: Expression): CNFOr | Literal = exp match
       case Or(l, r) => CNFOr(convL(l), convL(r))
       case Symbol(v) => CNFSymbol(Variable(v))
       case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))

@@ -20,6 +20,9 @@ object View:
       if model.solution.isDefined then result = model.solution.get.print
       contents += new ScrollPane(createOutputTextArea(result, 30, 35))
 
-    val expComponent: TextArea = createInputTextArea(model.cnf.get.printAsDSL())
+    // TODO TO CHANGE
+    var expComponent: TextArea = createInputTextArea()
+    if model.cnf.isDefined then expComponent = createInputTextArea(model.cnf.get.printAsDSL())
+    // END TODO
 
     Set(expComponent, cnfComponent, solutionComponent)

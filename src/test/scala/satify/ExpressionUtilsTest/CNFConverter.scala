@@ -2,19 +2,36 @@ package satify.ExpressionUtilsTest
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
 import satify.model.Expression.*
 import satify.model.{CNF, Expression, Variable}
 import satify.update.converters.TseitinTransformation.{convertToCNF, isCNF}
-import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
 
 class CNFConverter extends AnyFlatSpec with Matchers:
 
   "The exp a and b" should "be converted to CNF" in {
     val exp: Expression = And(Symbol("a"), Symbol("b"))
-
     val result: CNF = convertToCNF(exp)
-    val expected : CNF = CNFAnd(CNFSymbol(Variable("a")), CNFSymbol(Variable("b")))
+    val expected: CNF = CNFAnd(CNFSymbol(Variable("a")), CNFSymbol(Variable("b")))
+    result shouldBe expected
+  }
 
+  "The exp a and b and c and d and e" should "be converted to CNF" in {
+    val exp: Expression = And(Symbol("a"), And(Symbol("b"), And(Symbol("c"), And(Symbol("d"), Symbol("e")))))
+    val result: CNF = convertToCNF(exp)
+    val expected: CNF = CNFAnd(
+      CNFSymbol(Variable("a")),
+      CNFAnd(
+        CNFSymbol(Variable("b")),
+        CNFAnd(
+          CNFSymbol(Variable("c")),
+          CNFAnd(
+            CNFSymbol(Variable("d")),
+            CNFSymbol(Variable("e"))
+          )
+        )
+      )
+    )
     result shouldBe expected
   }
 
@@ -101,6 +118,5 @@ class CNFConverter extends AnyFlatSpec with Matchers:
         )
       )
     )
-
     result shouldBe expected
   }
