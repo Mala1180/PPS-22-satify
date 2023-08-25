@@ -1,7 +1,10 @@
 package satify.update
 
-import satify.model.{CNF, Expression, Solution, Variable}
+import satify.model.{Assignment, CNF, Expression, Solution, Variable}
+import satify.model.Result.*
+import satify.model.dpll.PartialModel
 import satify.update.converters.CNFConverter
+import satify.update.dpll.DPLL.*
 
 /** Entity providing the necessary methods to solve the SAT problem. */
 trait Solver:
@@ -25,5 +28,10 @@ object Solver:
 
   /** Private implementation of [[Solver]]. */
   private case class SolverImpl() extends Solver:
-    def dpll(cnf: CNF): Solution = ???
+    def dpll(cnf: CNF): Solution =
+      val s = extractSolutions(cnf)
+      s match
+        case _ if s.isEmpty => Solution(UNSAT, None)
+        case _ => Solution(SAT, Some(Assignment(s.head)))
+
     def solve(exp: Expression)(using converter: CNFConverter): Solution = dpll(converter.convert(exp))

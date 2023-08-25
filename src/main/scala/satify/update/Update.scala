@@ -2,8 +2,9 @@ package satify.update
 
 import satify.dsl.Reflection.*
 import satify.model.CNF.Symbol
-import satify.model.{Expression, State, Variable}
+import satify.model.{CNF, Expression, State, Variable}
 import satify.update.Message.*
+import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.tseitin
 import satify.update.parser.DimacsCNF.*
 
@@ -16,7 +17,10 @@ object Update:
       case Input(char) => model
       case Solve(input) =>
         val exp = reflect(input)
-        State()
+        given CNFConverter with
+          def convert(exp: Expression): CNF = tseitin(exp)
+
+        State(exp, Solver().solve(exp))
       case Convert(input) =>
         val exp = reflect(input)
         val cnf = tseitin(exp)
