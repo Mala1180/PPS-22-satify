@@ -85,17 +85,17 @@ object Expression:
       case _ => exp
 
   extension (exp: Expression)
-    def print(flat: Boolean = false): String =
+    def printAsFormal(flat: Boolean = false): String =
       exp match
         case Symbol(value) => value
         case And(left, right) =>
-          if flat then s"${left.print(flat)} and ${right.print(flat)}"
-          else s"${left.print(flat)} and\n${right.print(flat)}"
-        case Or(left, right) => s"${left.print(flat)} or ${right.print(flat)}"
-        case Not(branch) => s"not(${branch.print(flat)})"
+          if flat then s"${left.printAsFormal(flat)} and ${right.printAsFormal(flat)}"
+          else s"${left.printAsFormal(flat)} and\n${right.printAsFormal(flat)}"
+        case Or(left, right) => s"${left.printAsFormal(flat)} or ${right.printAsFormal(flat)}"
+        case Not(branch) => s"not(${branch.printAsFormal(flat)})"
 
-    def printAsCNF(flat: Boolean = false): String =
-      var r = print(flat)
+    def printAsDSL(flat: Boolean = false): String =
+      var r = printAsFormal(flat)
         .replace("and", "∧")
         .replace("or", "∨")
         .replace("not", "¬")
