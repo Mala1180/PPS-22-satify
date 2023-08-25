@@ -1,13 +1,13 @@
 package satify.update.parser
 
-import satify.model.{CNF, Variable, Literal}
 import satify.model.CNF.*
+import satify.model.{CNF, Literal, Variable}
 
 import java.io.{File, PrintWriter}
 import scala.io.Source
 
 /** Read/write objects in DIMACS format. */
-trait Dimacs[T] {
+trait Dimacs[T]:
 
   def parse(lines: Seq[String]): Option[T]
 
@@ -31,7 +31,6 @@ trait Dimacs[T] {
 
   protected def stripComments(lines: Seq[String]): Seq[String] =
     lines.filterNot(_.startsWith("c"))
-}
 
 /** Read/write formulas in DIMACS format. */
 object DimacsCNF extends Dimacs[CNF]:
