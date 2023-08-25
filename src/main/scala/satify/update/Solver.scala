@@ -16,6 +16,7 @@ trait Solver:
   def dpll(cnf: CNF): Solution
 
   /** Apply a CNF conversion to the input expression and then it is given in input to the DPLL algorithm.
+    *
     * @param exp the input expression
     * @return the solution
     */

@@ -1,6 +1,6 @@
 package satify.view
 
-import satify.view.Constants.{fontFamily, headingFont, margin, windowSize}
+import satify.view.Constants.*
 
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.{URI, URL}
@@ -30,8 +30,10 @@ object ComponentUtils:
     *
     * @return the text area
     */
-  def createInputTextArea(): TextArea =
+  def createInputTextArea(txt: String = ""): TextArea =
     new TextArea:
+      name = expTextAreaName
+      text = txt
       rows = 22
       columns = 45
       border = Swing.EmptyBorder(margin)

@@ -1,9 +1,12 @@
 package satify.update
 
-import satify.model.{CNF, Expression, State}
+import satify.model.{CNF, Expression, State, Variable}
 import satify.update.Message.*
 import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.tseitin
+import satify.update.parser.DimacsCNF.*
+
+import scala.io.Source
 
 object Update:
 
@@ -20,6 +23,12 @@ object Update:
         val exp = reflect(processInput(input))
         val cnf = tseitin(exp)
         State(exp, cnf)
+      case Import(file) =>
+        val s: Source = Source.fromFile(file)
+        val lines = s.getLines.toSeq
+        s.close()
+        val optCnf = parse(lines)
+        State(Expression.Symbol("NO EXP"), optCnf.getOrElse(CNF.Symbol(Variable("NO CNF FOUND"))))
 
   private def processInput(input: String): String =
     // TODO: link these operators to the ones in the DSL

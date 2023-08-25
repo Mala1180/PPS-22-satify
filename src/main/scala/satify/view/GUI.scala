@@ -3,7 +3,8 @@ package satify.view
 import satify.view.ComponentUtils.*
 import satify.view.Constants.{headingFont, logoPath, margin}
 
-import javax.swing.ImageIcon
+import javax.swing.{ImageIcon, JFileChooser}
+import javax.swing.filechooser.FileNameExtensionFilter
 import scala.swing.*
 
 object GUI:
@@ -14,7 +15,9 @@ object GUI:
     border = Swing.EmptyBorder(margin)
 
   // input text area and problem combo box
+
   val inputTextArea: TextArea = createInputTextArea()
+  var inputScrollPane = new ScrollPane(inputTextArea)
   private val problemComboBox: ComboBox[String] = createProblemComboBox(inputTextArea)
 
   // solve and convert to cnf buttons
@@ -25,9 +28,14 @@ object GUI:
   val solutionOutputDialog: Dialog = createOutputDialog("Solution")
   val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
 
+  val fileChooser: FileChooser = createImportFileChooser
+  val importMenuItem: MenuItem = new MenuItem("Import")
+
   // base gui definition and disposal
   def createBaseGUI(): BoxPanel =
     new BoxPanel(Orientation.Vertical):
+      contents += new MenuBar():
+        contents += importMenuItem
       contents += new FlowPanel():
         contents += logoLabel
       contents += new FlowPanel():
@@ -35,7 +43,7 @@ object GUI:
           contents += new FlowPanel():
             contents += new Label("Input:"):
               font = headingFont
-          contents += new ScrollPane(inputTextArea)
+          contents += inputScrollPane
         contents += new BoxPanel(Orientation.Vertical):
           contents += new FlowPanel():
             contents += new Label("Fill with problem:"):
@@ -44,3 +52,9 @@ object GUI:
       contents += new FlowPanel():
         contents += solveButton
         contents += cnfButton
+
+  private def createImportFileChooser: FileChooser = new FileChooser:
+    title = "Import DIMACS formula"
+    fileSelectionMode = FileChooser.SelectionMode.FilesOnly
+    fileFilter = new FileNameExtensionFilter("Text files", "txt")
+    multiSelectionEnabled = false
