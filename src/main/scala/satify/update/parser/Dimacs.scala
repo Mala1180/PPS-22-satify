@@ -32,7 +32,6 @@ trait Dimacs[T]:
   protected def stripComments(lines: Seq[String]): Seq[String] =
     lines.filterNot(_.startsWith("c"))
 
-
 /** Read/write formulas in DIMACS format. */
 object DimacsCNF extends Dimacs[CNF]:
 
