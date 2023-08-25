@@ -13,10 +13,7 @@ object Update:
       case Solve(input) =>
         val exp = reflect(processInput(input))
         given CNFConverter with
-          def convert(exp: Expression): CNF =
-            val cnf = tseitin(exp)
-            println(cnf.print)
-            cnf
+          def convert(exp: Expression): CNF = tseitin(exp)
 
         State(exp, Solver().solve(exp))
       case Convert(input) =>
