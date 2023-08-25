@@ -3,6 +3,7 @@ import satify.model.Expression
 import satify.model.Expression.*
 
 import scala.annotation.targetName
+
 object Operators:
 
   extension (exp: Expression)

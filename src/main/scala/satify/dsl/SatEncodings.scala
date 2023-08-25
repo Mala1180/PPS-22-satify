@@ -59,6 +59,7 @@ object SatEncodings:
     val vars: Seq[Symbol] = removeDuplicates(variables)
     requireVariables(vars, 2, "atMostK")
     require(k <= vars.length, "atMostK encoding requires k <= n")
+
     Symbol("TODO")
 
   /** Encodes the constraint that at least k of the given variables are true.
