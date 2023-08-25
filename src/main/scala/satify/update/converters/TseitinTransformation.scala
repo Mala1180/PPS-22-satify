@@ -27,9 +27,7 @@ object TseitinTransformation:
       val transformedExp = transformations.map(_._2)
       if transformedExp.size == 1 then transformedExp.head
       else transformedExp.reduceRight((s1, s2) => reduction(s1, s2))
-    else
-      println("ci passo")
-      convertToCNF(exp)
+    else convertToCNF(exp)
 
   /** Substitute Symbols of nested subexpressions in all others expressions
     * @param exp the expression where to substitute Symbols
