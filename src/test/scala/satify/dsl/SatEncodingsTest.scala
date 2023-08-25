@@ -6,8 +6,7 @@ import satify.model.Expression
 
 class SatEncodingsTest extends AnyFlatSpec:
 
-  import satify.dsl.DSL.{*, given}
-  import satify.dsl.Encodings.*
+  import satify.dsl.DSLExports.{given, *}
 
   """ atLeastOne("A", "B", "C")  """ should """ be equal to "A" or "B" or "C" """ in {
     atLeastOne("A", "B", "C") shouldBe ("A" or "B" or "C")
@@ -15,6 +14,10 @@ class SatEncodingsTest extends AnyFlatSpec:
 
   """ atMostOne("A", "B") """ should """ be equal to (not("A") or "ENC0") and (not("B") or "ENC0") """ in {
     atMostOne("A", "B") shouldBe ((not("A") or "ENC0") and (not("B") or "ENC0"))
+  }
+
+  """ exactlyOne("A", "B") """ should """ be equal to atMostOne("A", "B") and atLeastOne("A", "B") """ in {
+    exactlyOne("A", "B") shouldBe (atLeastOne("A", "B") and atMostOne("A", "B"))
   }
 
   """ atMostOne("A", "B", "C") """ should """ be equal to  """ in {
@@ -40,6 +43,6 @@ class SatEncodingsTest extends AnyFlatSpec:
     ("A", "B", "C") atLeast one shouldBe (("A", "B", "C") atLeast 1)
   }
 
-  """ atLeastK(2, "A", "B", "C")  """ should """ be equal to "A" or "B" or "C" """ in {
-    atLeastK(2, "A", "B", "C") shouldBe (("A" and "B") or ("A" and "C") or ("B" and "C"))
+  """ atLeastK(2)("A", "B", "C")  """ should """ be equal to "A" or "B" or "C" """ in {
+    atLeastK(2)("A", "B", "C") shouldBe (("A" and "B") or ("A" and "C") or ("B" and "C"))
   }
