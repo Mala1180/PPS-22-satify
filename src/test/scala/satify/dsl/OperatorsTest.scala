@@ -4,7 +4,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.shouldBe
 import satify.model.Expression.*
 
-class BasicOperatorsTest extends AnyFlatSpec:
+class OperatorsTest extends AnyFlatSpec:
 
   import satify.dsl.DSL.{*, given}
 
@@ -35,13 +35,13 @@ class BasicOperatorsTest extends AnyFlatSpec:
     )
   }
 
-  "operators" should "be able to be combined with parenthesis" in {
+  "Operators" should "be able to be combined with parenthesis" in {
     not("A") and "B" or "C" shouldBe Or(And(Not(Symbol("A")), Symbol("B")), Symbol("C"))
     "A" and (not("B") or "C") shouldBe And(Symbol("A"), Or(Not(Symbol("B")), Symbol("C")))
     ("A" and "B") or not("C") shouldBe Or(And(Symbol("A"), Symbol("B")), Not(Symbol("C")))
   }
 
-  "operators" should "be left associative" in {
+  "Operators" should "be left associative" in {
     val exp1 = "A" and "B" or "C" and not("D")
     val exp2 = (("A" and "B") or "C") and not("D")
     val expected = And(
