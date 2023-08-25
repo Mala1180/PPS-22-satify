@@ -19,12 +19,21 @@ enum CNF:
 
 object CNF:
   extension (cnf: CNF)
-    def print: String =
+    def print(flat: Boolean = false): String =
       cnf match
         case Symbol(value) =>
           value match
             case Variable(name, v) => name
             case v => v.toString
-        case And(left, right) => s"${left.print} ∧\n${right.print}"
-        case Or(left, right) => s"(${left.print} ∨ ${right.print})"
-        case Not(branch) => s"¬${branch.print}"
+        case And(left, right) =>
+          if flat then s"${left.print(flat)} ∧ ${right.print(flat)}" else s"${left.print(flat)} ∧\n${right.print(flat)}"
+        case Or(left, right) => s"${left.print(flat)} ∨ ${right.print(flat)}"
+        case Not(branch) => s"¬${branch.print(flat)}"
+
+    def printAsExp(flat: Boolean = false): String =
+      var r = print(flat)
+        .replace("∧", "and")
+        .replace("∨", "or")
+        .replace("¬", "not")
+      if flat then r = r.replace("\n", " ")
+      r

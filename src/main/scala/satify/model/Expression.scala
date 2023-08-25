@@ -1,5 +1,7 @@
 package satify.model
 
+import scala.annotation.tailrec
+
 enum Expression:
   case Symbol(value: String)
   case Not(branch: Expression)
@@ -81,3 +83,21 @@ object Expression:
       case or @ Or(_, _) => replaceExp(or, subexp, s)
       case not @ Not(_) => replaceExp(not, subexp, s)
       case _ => exp
+
+  extension (exp: Expression)
+    def print(flat: Boolean = false): String =
+      exp match
+        case Symbol(value) => value
+        case And(left, right) =>
+          if flat then s"${left.print(flat)} and ${right.print(flat)}"
+          else s"${left.print(flat)} and\n${right.print(flat)}"
+        case Or(left, right) => s"${left.print(flat)} or ${right.print(flat)}"
+        case Not(branch) => s"not(${branch.print(flat)})"
+
+    def printAsCNF(flat: Boolean = false): String =
+      var r = print(flat)
+        .replace("and", "∧")
+        .replace("or", "∨")
+        .replace("not", "¬")
+      if flat then r = r.replace("\n", " ")
+      r
