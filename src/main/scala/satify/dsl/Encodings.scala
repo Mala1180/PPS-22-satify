@@ -8,7 +8,6 @@ object Encodings:
 
   /** Encodes the constraint that at least one of the given variables is true.
     * It is implemented concatenating the expressions with the OR operator.
-    *
     * @param variables the input variables
     * @return the expression that encodes the constraint
     */
@@ -16,7 +15,6 @@ object Encodings:
 
   /** Encodes the constraint that at most one of the given variables is true.
     * It uses the sequential encoding that produces 3n − 4 clauses (O(n) complexity).
-    *
     * @param variables the input variables
     * @return the expression that encodes the constraint
     */
@@ -44,7 +42,7 @@ object Encodings:
     yield vars(i) and vars(j)
     clauses.reduceLeft(_ or _)
 
-  val one = 1
+  val one: Int = 1
   private def tupleToSymbols(tuple: Product): List[Symbol] =
     tuple.productIterator.toList.distinct.map(_.toString).map(sym => Symbol(sym))
 
@@ -54,17 +52,3 @@ object Encodings:
 
     def atLeast(k: Int): Expression =
       if k == 1 then atLeastOne(tupleToSymbols(expressions): _*) else atLeastK(k, tupleToSymbols(expressions): _*)
-
-//  extension (expressions: Tuple)
-//    infix def at(): AtEncoding = AtEncoding(expressions.productIterator.toList.distinct.map(_.toString).map(sym => Symbol(sym)))
-//      val symbols: List[Symbol] =
-//      enc match
-//        case Most(k) => if k == 1 then atMostOne(symbols: _*) else atMostK(k, symbols: _*)
-//        case Least(k) => if k == 1 then atLeastOne(symbols: _*) else atLeastK(k, symbols: _*)
-
-//    case class AtEncoding(symbols: List[Symbol])
-//
-//    object AtEncoding:
-//      extension (atEncoding: AtEncoding)
-//        def most(k: Int): Expression = if k == 1 then atMostOne(atEncoding.symbols: _*) else atMostK(k, atEncoding.symbols: _*)
-//        def least(k: Int): Expression = if k == 1 then atLeastOne(atEncoding.symbols: _*) else atLeastK(k, atEncoding.symbols: _*)
