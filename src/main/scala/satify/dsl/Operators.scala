@@ -26,4 +26,4 @@ object Operators:
     @targetName("impliesSymbol")
     def ->(exp2: Expression): Expression = implies(exp2)
     @targetName("iffSymbol")
-    def <-> (exp2: Expression): Expression = iff(exp2)
+    def <->(exp2: Expression): Expression = iff(exp2)
