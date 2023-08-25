@@ -14,7 +14,7 @@ object SatEncodings:
   /** Encodes the constraint that at least one of the given variables is true.
     * It is implemented concatenating the expressions with the OR operator.
     * @param variables the input variables
-    * @return the expression that encodes the constraint
+    * @return the [[satify.model.Expression]] that encodes the constraint
     */
   def atLeastOne(variables: Symbol*): Expression =
     val vars: Seq[Symbol] = removeDuplicates(variables)
@@ -24,7 +24,7 @@ object SatEncodings:
   /** Encodes the constraint that at most one of the given variables is true.
     * It uses the sequential encoding that produces 3n − 4 clauses (O(n) complexity).
     * @param variables the input variables
-    * @return the expression that encodes the constraint
+    * @return the [[satify.model.Expression]] that encodes the constraint
     */
   def atMostOne(variables: Symbol*): Expression =
     val vars = removeDuplicates(variables)
@@ -42,7 +42,7 @@ object SatEncodings:
 
   /** Encodes the constraint that exactly one of the given variables is true.
     * @param variables the input variables
-    * @return the expression that encodes the constraint
+    * @return the [[satify.model.Expression]] that encodes the constraint
     */
   def exactlyOne(variables: Symbol*): Expression =
     val vars: Seq[Symbol] = removeDuplicates(variables)
@@ -53,7 +53,7 @@ object SatEncodings:
     * It is implemented using sequential encoding that produces 2nk + n − 3k − 1 clauses (O(n) complexity).
     * @param k the number of variables that must be true
     * @param variables the input variables
-    * @return the expression that encodes the constraint
+    * @return the [[satify.model.Expression]] that encodes the constraint
     */
   def atMostK(k: Int)(variables: Symbol*): Expression =
     val vars: Seq[Symbol] = removeDuplicates(variables)
@@ -66,7 +66,7 @@ object SatEncodings:
     * It is implemented using the pairwise encoding that produces O(n&#94;2) clauses.
     * @param k the number of variables that must be true
     * @param variables the input variables
-    * @return the expression that encodes the constraint
+    * @return the [[satify.model.Expression]] that encodes the constraint
     */
   def atLeastK(k: Int)(variables: Symbol*): Expression =
     val vars: Seq[Symbol] = removeDuplicates(variables)
@@ -83,14 +83,25 @@ object SatEncodings:
 
     combinations(vars, k).map(_.reduceLeft(_ and _)).reduceLeft(_ or _)
 
+  /** Converts a tuple to a list of [[Symbol]]
+    * @param tuple the input [[Tuple]]
+    * @return the list of [[Symbol]]
+    */
   private def tupleToSymbols(tuple: Tuple): List[Symbol] =
     tuple.productIterator.toList.map(_.toString).map(Symbol.apply)
 
   extension (expressions: Tuple)
+
+    /** Calls [[atMostOne]] if k is 1, [[atMostK]] otherwise.
+      * @see [[atMostOne]] and [[atMostK]]
+      */
     def atMost(k: Int): Expression = k match
       case 1 => atMostOne(tupleToSymbols(expressions): _*)
       case _ => atMostK(k)(tupleToSymbols(expressions): _*)
 
+    /** Calls [[atLeastOne]] if k is 1, [[atLeastK]] otherwise.
+      * @see [[atLeastOne]] and [[atLeastK]]
+      */
     def atLeast(k: Int): Expression = k match
       case 1 => atLeastOne(tupleToSymbols(expressions): _*)
       case _ => atLeastK(k)(tupleToSymbols(expressions): _*)
