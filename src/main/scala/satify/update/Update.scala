@@ -1,7 +1,8 @@
 package satify.update
 
-import satify.model.{Expression, State}
+import satify.model.{CNF, Expression, State}
 import satify.update.Message.*
+import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.tseitin
 
 object Update:
@@ -11,7 +12,13 @@ object Update:
       case Input(char) => model
       case Solve(input) =>
         val exp = reflect(processInput(input))
-        State()
+        given CNFConverter with
+          def convert(exp: Expression): CNF =
+            val cnf = tseitin(exp)
+            println(cnf.print)
+            cnf
+
+        State(exp, Solver().solve(exp))
       case Convert(input) =>
         val exp = reflect(processInput(input))
         val cnf = tseitin(exp)

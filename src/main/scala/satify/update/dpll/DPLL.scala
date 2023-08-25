@@ -133,3 +133,9 @@ object DPLL:
             if fVar.isEmpty then pureLiteralElimination(Decision(tail, cnf))
             else fVar
           case Variable(_, _) +: tail => pureLiteralElimination(Decision(tail, cnf))
+  
+  def extractSolutions(cnf: CNF): Set[PartialModel] =
+    val s =
+      for pmSet <- extractSolutionsFromDT(dpll(Decision(extractModelFromCnf(cnf), cnf)))
+        yield explodeSolutions(pmSet)
+    s.flatten

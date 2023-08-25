@@ -1,5 +1,7 @@
 package satify.model
 
+import satify.model.dpll.PartialModel
+
 /** Sum Type representing the two possible results of SAT problem. */
 enum Result:
   case SAT
@@ -8,7 +10,7 @@ enum Result:
 /** Represents a list of [[Variable]] assigned to a value.
   * @param list The list of [[Variable]].
   */
-case class Assignment(list: List[Variable])
+case class Assignment(parModel: PartialModel)
 
 /** Represents a solution to the SAT problem. It is used by [[update.Solver]].
   * @param result The result of the SAT problem (SAT or UNSAT).
