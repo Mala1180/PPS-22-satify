@@ -22,6 +22,5 @@ object View:
       contents += new ScrollPane(createOutputTextArea(result, 30, 35))
 
     val expComponent: TextArea = createInputTextArea(model.cnf.get.printAsExp())
-    println(model.cnf.get.printAsExp())
 
     Set(expComponent, cnfComponent, solutionComponent)

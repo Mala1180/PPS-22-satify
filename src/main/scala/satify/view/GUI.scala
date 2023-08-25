@@ -28,9 +28,8 @@ object GUI:
   val solutionOutputDialog: Dialog = createOutputDialog("Solution")
   val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
 
-  val fileChooser : FileChooser = createImportFileChooser
-  val importMenuItem : MenuItem = new MenuItem("Import")
-
+  val fileChooser: FileChooser = createImportFileChooser
+  val importMenuItem: MenuItem = new MenuItem("Import")
 
   // base gui definition and disposal
   def createBaseGUI(): BoxPanel =
@@ -53,7 +52,6 @@ object GUI:
       contents += new FlowPanel():
         contents += solveButton
         contents += cnfButton
-
 
   private def createImportFileChooser: FileChooser = new FileChooser:
     title = "Import DIMACS formula"

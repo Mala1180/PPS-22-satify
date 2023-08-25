@@ -1,6 +1,6 @@
 package satify.view
 
-import satify.view.Constants.{expTextAreaName, fontFamily, headingFont, margin, windowSize}
+import satify.view.Constants.*
 
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.{URI, URL}

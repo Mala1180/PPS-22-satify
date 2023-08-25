@@ -1,10 +1,10 @@
 package satify.update
 
+import satify.model.CNF.Symbol
 import satify.model.{Expression, State, Variable}
 import satify.update.Message.*
 import satify.update.converters.TseitinTransformation.tseitin
 import satify.update.parser.DimacsCNF.*
-import satify.model.CNF.Symbol
 
 import scala.io.Source
 

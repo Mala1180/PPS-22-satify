@@ -23,11 +23,10 @@ object Reactions:
     cnfOutputDialog.open()
 
   def importReaction(model: Model): Unit =
-    val file : File = fileChooser.selectedFile
+    val file: File = fileChooser.selectedFile
     val newComponents: Set[Component] = view(update(model, Import(file)))
-    //solutionOutputDialog.contents = newComponents.filter(_.name == solOutputDialogName).head
+    // solutionOutputDialog.contents = newComponents.filter(_.name == solOutputDialogName).head
     cnfOutputDialog.contents = newComponents.filter(_.name == cnfOutputDialogName).head
     inputScrollPane.contents = newComponents.filter(_.name == expTextAreaName).head
-    //solutionOutputDialog.open()
+    // solutionOutputDialog.open()
     cnfOutputDialog.open()
-

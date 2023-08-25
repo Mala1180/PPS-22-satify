@@ -20,8 +20,7 @@ object Main extends App with MVU:
 
     importMenuItem.reactions += { case ButtonClicked(_) =>
       val result = fileChooser.showOpenDialog(null)
-      if result == FileChooser.Result.Approve then
-        importReaction(model)
+      if result == FileChooser.Result.Approve then importReaction(model)
     }
 
     contents = createBaseGUI()
