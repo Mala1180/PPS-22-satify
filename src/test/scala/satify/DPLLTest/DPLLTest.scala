@@ -22,12 +22,6 @@ class DPLLTest extends AnyFlatSpec with Matchers:
 
   val cnf: CNF = And(Symbol(varA), Symbol(varB))
 
-  val Dpll: CNF => Set[PartialModel] = cnf =>
-    val s =
-      for pmSet <- extractSolutionsFromDT(dpll(Decision(extractModelFromCnf(cnf), cnf)))
-      yield explodeSolutions(pmSet)
-    s.flatten
-
   "DPLL" should "accept a Decision and return a DecisionTree of type Branch" in {
     dpll(Decision(extractModelFromCnf(cnf), cnf)).getClass shouldBe classOf[Branch]
   }
@@ -84,14 +78,14 @@ class DPLLTest extends AnyFlatSpec with Matchers:
   }
 
   "DPLL" should "be SAT" in {
-    Dpll(cnf).size should be > 0
-    Dpll(And(Symbol(varA), Or(Symbol(varB), Symbol(varC)))).size should be > 0
+    extractSolutions(cnf).size should be > 0
+    extractSolutions(And(Symbol(varA), Or(Symbol(varB), Symbol(varC)))).size should be > 0
   }
 
   "DPLL" should "be UNSAT" in {
-    Dpll(And(Symbol(varA), Not(Symbol(varA)))) shouldBe Set.empty
-    Dpll(And(Symbol(varA), And(Or(Symbol(varB), Symbol(varC)), Not(Symbol(varA))))) shouldBe Set.empty
-    Dpll(
+    extractSolutions(And(Symbol(varA), Not(Symbol(varA)))) shouldBe Set.empty
+    extractSolutions(And(Symbol(varA), And(Or(Symbol(varB), Symbol(varC)), Not(Symbol(varA))))) shouldBe Set.empty
+    extractSolutions(
       And(
         Or(Symbol(varA), Symbol(varB)),
         And(

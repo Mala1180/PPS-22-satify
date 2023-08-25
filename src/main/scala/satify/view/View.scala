@@ -17,8 +17,7 @@ object View:
     val solutionComponent: FlowPanel = new FlowPanel():
       name = solOutputDialogName
       var result: String = "No Solution"
-      // TODO: implement print method for Solution
-      // if model.solution.isDefined then result = model.solution.get.print
+      if model.solution.isDefined then result = model.solution.get.print
       contents += new ScrollPane(createOutputTextArea(result, 30, 35))
 
     val expComponent: TextArea = createInputTextArea(model.cnf.get.printAsDSL())

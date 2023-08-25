@@ -1,8 +1,8 @@
 package satify.update
 
-import satify.model.CNF.Symbol
-import satify.model.{Expression, State, Variable}
+import satify.model.{CNF, Expression, State, Variable}
 import satify.update.Message.*
+import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.tseitin
 import satify.update.parser.DimacsCNF.*
 
@@ -15,7 +15,10 @@ object Update:
       case Input(char) => model
       case Solve(input) =>
         val exp = reflect(processInput(input))
-        State()
+        given CNFConverter with
+          def convert(exp: Expression): CNF = tseitin(exp)
+
+        State(exp, Solver().solve(exp))
       case Convert(input) =>
         val exp = reflect(processInput(input))
         val cnf = tseitin(exp)
@@ -25,7 +28,7 @@ object Update:
         val lines = s.getLines.toSeq
         s.close()
         val optCnf = parse(lines)
-        State(Expression.Symbol("NO EXP"), optCnf.getOrElse(Symbol(Variable("NO CNF FOUND"))))
+        State(Expression.Symbol("NO EXP"), optCnf.getOrElse(CNF.Symbol(Variable("NO CNF FOUND"))))
 
   private def processInput(input: String): String =
     // TODO: link these operators to the ones in the DSL
