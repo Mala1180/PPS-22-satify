@@ -37,7 +37,7 @@ class NQueensTest extends AnyFlatSpec with Matchers:
     // val sol = Solver().solve(NQueens(n).exp)
     val oCnf = DimacsCNF.read("src/main/resources/cnf/nqueens4.txt")
     oCnf should matchPattern { case Some(_) => }
-    //println(oCnf.get)
+    // println(oCnf.get)
     val sol = Solver().dpll(oCnf.get)
     sol should matchPattern { case Solution(SAT, _) => }
     println("NQueens 4x4")
