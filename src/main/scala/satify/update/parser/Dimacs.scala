@@ -63,9 +63,10 @@ object DimacsCNF extends Dimacs[CNF]:
         .split(" ")
         .dropRight(1)
         .map(x =>
-          val literal: Literal = x.toInt match
-            case n if n >= 0 => Symbol(Variable(f"X_$n"))
-            case n if n < 0 => Not(Symbol(Variable(f"X_${math.abs(n)}")))
+          val s = x.split("-").toSeq
+          val literal: Literal = s match
+            case Seq(v) => Symbol(Variable(f"X_$v"))
+            case Seq(_, v) => Not(Symbol(Variable(f"X_$v")))
           literal
         )
         .toSeq
