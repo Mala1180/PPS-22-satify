@@ -30,10 +30,7 @@ class DimacsTest extends AnyFlatSpec with Matchers {
   }
 
   "DimacsCNF" should "open a DIMACS file and parse it" in {
-    val filename = "src/main/resources/cnf/aim-100-1_6-no-1.txt"
-    val source = Source.fromFile(filename)
-    val lines = source.getLines().toSeq
-    DimacsCNF.parse(lines) should matchPattern { case Some(_) => }
+    DimacsCNF.read("src/main/resources/cnf/aim-100-1_6-no-1.txt") should matchPattern { case Some(_) => }
   }
 
   // TODO
