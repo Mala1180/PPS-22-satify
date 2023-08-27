@@ -21,14 +21,49 @@ object TseitinTransformation:
           case _ => exp2
       case _ => exp1
 
-    if !isCNF(exp) then
-      var transformations: List[(CNFSymbol, CNF)] = List()
-      symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
-      val transformedExp = transformations.map(_._2)
-      if transformedExp.size == 1 then transformedExp.head
-      else transformedExp.reduceRight((s1, s2) => reduction(s1, s2))
-    else convertToCNF(exp)
+    println(exp)
 
+    if !isCNF(exp) then
+      println("applico tseitin")
+      var transformations: List[(CNFSymbol, CNF)] = List()
+      /*println("sostituzioni: ")
+      println(symbolsReplace(exp))
+      println("\n")*/
+      //var transformedExp : List[CNF]= List()
+      symbolsReplace(exp).foreach(s => {
+        val t = transform(s)
+    /*    println("mappata: ")
+        println(t.map(_._2).reduceLeft((s1, s2) =>  CNFAnd(s2.asInstanceOf[CNFOr | Literal], s1.asInstanceOf[CNFAnd | CNFOr | Literal])))
+        println("\n")*/
+        //transformedExp = transformedExp ::: List(t.map(_._2).reduceRight((s1, s2) =>  CNFAnd(s1.asInstanceOf[CNFOr | Literal], s2.asInstanceOf[CNFAnd | CNFOr | Literal])))
+        transformations = transform(s) ::: transformations
+      })
+      var transformedExp = transformations.map(_._2)
+      println("trasformazioni: ")
+      transformedExp.foreach(println)
+      println("\n")
+      if transformedExp.size == 1 then
+        println("ritorno")
+        transformedExp.head
+      else
+        println("ritorno")
+        var c=0
+        val gen = symbolGenerator2("T")
+        println(transformedExp)
+        transformedExp = transformedExp.prepended(CNFSymbol(Variable("X0")))
+        println(transformedExp)
+        //.map(_=> gen())
+        transformedExp.reduceRight((s1, s2) =>  CNFAnd(s1.asInstanceOf[CNFOr | Literal], s2.asInstanceOf[CNFAnd | CNFOr | Literal]))//reduction(s1, s2))
+    else
+      println("non applico tseitin")
+      convertToCNF(exp)
+
+  def symbolGenerator2(prefix: String): () => CNFSymbol =
+    var c = 0
+    () =>
+      val s: CNFSymbol = CNFSymbol(Variable(prefix + c))
+      c = c + 1
+      s
   /** Substitute Symbols of nested subexpressions in all others expressions
     * @param exp the expression where to substitute Symbols
     * @return the decomposed expression in subexpressions with Symbols correctly substituted.
@@ -68,6 +103,7 @@ object TseitinTransformation:
       case Not(Symbol(v)) => CNFSymbol(Variable(v, None))
       case Symbol(v) => CNFNot(CNFSymbol(Variable(v, None)))
       case _ => throw new Exception("Expression is not a Symbol or a Not Symbol")
+
     exp match
       case (s @ Symbol(v), Not(lit)) =>
         List(

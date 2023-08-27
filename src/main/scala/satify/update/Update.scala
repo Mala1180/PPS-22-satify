@@ -15,6 +15,10 @@ object Update:
       case Input(char) => model
       case Solve(input) =>
         val exp = reflect(processInput(input))
+        println("espressione: ")
+        println(exp)
+        println("\n")
+
         given CNFConverter with
           def convert(exp: Expression): CNF = tseitin(exp)
 
