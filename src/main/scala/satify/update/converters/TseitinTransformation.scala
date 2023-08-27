@@ -7,6 +7,7 @@ object TseitinTransformation:
 
   import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
   import satify.model.Expression.{replace as replaceExp, *}
+  import satify.model.Literal
 
   /** Applies the Tseitin transformation to the given expression in order to convert it into CNF.
     * @param exp the expression to transform.
@@ -14,17 +15,14 @@ object TseitinTransformation:
     */
   def tseitin(exp: Expression): CNF =
     var transformations: List[(CNFSymbol, CNF)] = List()
-    symbolsReplace(exp).foreach(s => {
-      val t = transform(s)
-      transformations = transform(s) ::: transformations
-    })
+    symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
     var transformedExp = transformations.map(_._2)
-    if transformedExp.size == 1 then
-      transformedExp.head
+    if transformedExp.size == 1 then transformedExp.head
     else
       transformedExp = transformedExp.prepended(CNFSymbol(Variable("X0")))
-      //TODO: use reduction for types
-      transformedExp.reduceRight((s1, s2) => CNFAnd(s1.asInstanceOf[CNFOr | Literal], s2.asInstanceOf[CNFAnd | CNFOr | Literal]))//reduction(s1, s2))
+      transformedExp.reduceRight((s1, s2) =>
+        CNFAnd(s1.asInstanceOf[CNFOr | Literal], s2.asInstanceOf[CNFAnd | CNFOr | Literal])
+      )
 
   /** Substitute Symbols of nested subexpressions in all others expressions
     * @param exp the expression where to substitute Symbols
@@ -95,12 +93,10 @@ object TseitinTransformation:
     expression match
       case Symbol(_) => true
       case Not(Symbol(_)) => true
-
       case And(l, r) =>
         (l, r) match
           case (And(_, _), _) => false
           case _ => isCNF(l) && isCNF(r);
-
       case Or(l, r) =>
         (l, r) match
           case (And(_, _), _) | (_, And(_, _)) => false
@@ -117,14 +113,12 @@ object TseitinTransformation:
       case Symbol(v) => CNFSymbol(Variable(v))
       case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
       case _ => throw new Exception("Expression is not convertible to CNF form")
-
     def convR(exp: Expression): CNFAnd | CNFOr | Literal = exp match
       case And(l, r) => CNFAnd(convL(l), convR(r))
       case Or(l, r) => CNFOr(convL(l), convL(r))
       case Symbol(v) => CNFSymbol(Variable(v))
       case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
       case _ => throw new Exception("Expression is not convertible to CNF form")
-
     expression match
       case Symbol(v) => CNFSymbol(Variable(v))
       case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
