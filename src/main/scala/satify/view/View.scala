@@ -1,8 +1,8 @@
 package satify.view
 
-import satify.model.{Expression, State}
+import satify.model.{CNF, State}
 import satify.view.ComponentUtils.{createInputTextArea, createOutputTextArea}
-import satify.view.Constants.{cnfOutputDialogName, margin, solOutputDialogName}
+import satify.view.Constants.{cnfOutputDialogName, solOutputDialogName}
 
 import scala.swing.*
 
@@ -19,10 +19,8 @@ object View:
       var result: String = "No Solution"
       if model.solution.isDefined then result = model.solution.get.print
       contents += new ScrollPane(createOutputTextArea(result, 30, 35))
-
-    // TODO TO CHANGE
-    var expComponent: TextArea = createInputTextArea()
-    if model.cnf.isDefined then expComponent = createInputTextArea(model.cnf.get.printAsDSL())
-    // END TODO
+    
+    val cnf: Option[CNF] = model.cnf
+    val expComponent: TextArea = createInputTextArea(s"${if cnf.isDefined then cnf.get.printAsDSL() else ""}")
 
     Set(expComponent, cnfComponent, solutionComponent)

@@ -1,11 +1,10 @@
 package satify
 
 import satify.Architecture.MVU
-import satify.Main.{model, view}
+import satify.Main.model
 import satify.view.Constants.windowSize
 import satify.view.GUI.*
 import satify.view.Reactions.{cnfReaction, importReaction, solutionReaction}
-import satify.view.View.*
 
 import scala.swing.event.ButtonClicked
 import scala.swing.{Dimension, FileChooser, MainFrame}
