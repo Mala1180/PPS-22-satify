@@ -22,3 +22,11 @@ class MathOperatorsTest extends AnyFlatSpec:
   """ "A" ^ "B" """ should """ be equal to "A" xor "B" """ in {
     "A" ^ "B" shouldBe ("A" xor "B")
   }
+
+  """ "A" -> "B" """ should """ be equal to "A" implies "B" """ in {
+    "A" -> "B" shouldBe ("A" implies "B")
+  }
+
+  """ "A" <-> "B" """ should """ be equal to "A" iff "B" """ in {
+    "A" <-> "B" shouldBe ("A" iff "B")
+  }
