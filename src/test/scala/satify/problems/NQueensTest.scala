@@ -1,4 +1,4 @@
-package satify.examples
+package satify.problems
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -32,17 +32,15 @@ class NQueensTest extends AnyFlatSpec with Matchers:
   }
 
   "NQueens 3x3" should "be UNSAT" in {
-    val n = 4
     val oCnf = DimacsCNF.read("src/main/resources/cnf/nqueens3.txt")
     oCnf should matchPattern { case Some(_) => }
-    val sol = Solver().dpll(oCnf.get)
-    sol should matchPattern { case Solution(UNSAT, _) => }
+    Solver().dpll(oCnf.get) should matchPattern { case Solution(UNSAT, _) => }
   }
 
   "NQueens 4x4" should "be SAT" in {
     val n = 4
     // TO FIX
-    // val sol = Solver().solve(NQueens(n).exp)
+    val sol1 = Solver().solve(NQueens(n).exp)
     val oCnf = DimacsCNF.read("src/main/resources/cnf/nqueens4.txt")
     oCnf should matchPattern { case Some(_) => }
     // println(oCnf.get)

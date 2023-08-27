@@ -1,8 +1,13 @@
-package satify.examples
+package satify.problems
 
-import satify.model.{Expression, Variable}
-import satify.model.Expression.*
 import satify.dsl.SatEncodings.*
+import satify.model.Expression.*
+import satify.model.{Expression, Variable}
+
+enum Problem:
+  case NQueens(n: Int)
+  case NurseScheduling()
+  case ColoringGraph()
 
 trait Example:
   val exp: Expression
@@ -50,6 +55,12 @@ case class NQueens(n: Int) extends Example:
 
   val exp: Expression = buildAnd(rowColConstr ++ diagConstr: _*)
 
-private def buildAnd(exp: Expression*): Expression = exp match
+case class NurseScheduling() extends Example:
+  val exp: Expression = ???
+
+case class ColoringGraph() extends Example:
+  val exp: Expression = ???
+
+def buildAnd(exp: Expression*): Expression = exp match
   case _ if exp.size == 1 => exp(0)
   case _ if exp.nonEmpty => And(exp.head, buildAnd(exp.tail: _*))
