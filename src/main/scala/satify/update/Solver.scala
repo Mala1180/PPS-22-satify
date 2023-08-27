@@ -32,8 +32,6 @@ object Solver:
       val s = extractSolutions(cnf)
       s match
         case _ if s.isEmpty => Solution(UNSAT, None)
-        case _ =>
-          s.foreach(println)
-          Solution(SAT, Some(Assignment(s.head)))
+        case _ => Solution(SAT, Some(Assignment(s.head)))
 
     def solve(exp: Expression)(using converter: CNFConverter): Solution = dpll(converter.convert(exp))
