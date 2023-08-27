@@ -9,7 +9,7 @@ object TseitinTransformation:
   import satify.model.Expression.{replace as replaceExp, *}
   import satify.model.Literal
 
-  /** Applies the Tseitin transformation to the given expression in order to convert it into CNF.
+  /** Applies the Tseitin transformation to the gt iven expression in order to convert it into CNF.
     * @param exp the expression to transform.
     * @return the CNF expression.
     */
