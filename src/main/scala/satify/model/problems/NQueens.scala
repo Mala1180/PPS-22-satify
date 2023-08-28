@@ -76,6 +76,4 @@ object NQueens:
       )
       printNqueens(n, pm.drop(n))
 
-def buildAnd(exp: Expression*): Expression = exp match
-  case _ if exp.size == 1 => exp(0)
-  case _ if exp.nonEmpty => And(exp.head, buildAnd(exp.tail: _*))
+def buildAnd(exp: Expression*): Expression = exp.reduceLeft(And(_, _))
