@@ -1,8 +1,12 @@
 package satify.problems
 
 import satify.dsl.SatEncodings.{atLeastOne, atMostOne}
-import satify.model.Expression
+import satify.model.{Expression, Variable}
 import satify.model.Expression.{And, Symbol}
+import satify.model.dpll.OrderedSeq.{seq, given_Ordering_Variable}
+import satify.model.dpll.PartialModel
+
+import scala.annotation.tailrec
 
 trait Example:
   val exp: Expression
@@ -43,12 +47,36 @@ case class NQueens(n: Int) extends Example:
       And(
         atMostOne(s.map((t, _, _, _) => t): _*),
         And(
-          atMostOne(s.map((t, _, _, _) => t): _*),
+          atMostOne(s.map((_, t, _, _) => t): _*),
           And(atMostOne(s.map((_, _, t, _) => t): _*), atMostOne(s.map((_, _, _, t) => t): _*))
         )
       )
 
   val exp: Expression = buildAnd(rowColConstr ++ diagConstr: _*)
+
+object NQueens:
+  def printNQueensFromDimacs(n: Int, pm: PartialModel): Unit =
+    val mapPm: PartialModel = seq(pm.map {
+      case Variable(s"x_$i", value) =>
+        val xx = i.toInt - 1
+        val row: Int = xx / n
+        val col: Int = xx % n
+        Variable(s"x_${row}_$col", value)
+      case v => v
+    }: _*)
+    printNqueens(n, mapPm)
+
+  @tailrec
+  final def printNqueens(n: Int, pm: PartialModel): Unit =
+    val firstN = pm.take(n)
+    if firstN.nonEmpty then
+      println(
+        firstN.foldLeft("")((p, c) =>
+          p + (if c.value.isDefined then if c.value.get then s" ♕ " else " · "
+               else " ")
+        )
+      )
+      printNqueens(n, pm.drop(n))
 
 case class NurseScheduling() extends Example:
   val exp: Expression = ???

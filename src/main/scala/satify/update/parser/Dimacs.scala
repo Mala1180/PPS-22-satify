@@ -62,11 +62,18 @@ object DimacsCNF extends Dimacs[CNF]:
       clause
         .split(" ")
         .dropRight(1)
-        .map(x =>
-          val s = x.split("-").toSeq
-          val literal: Literal = s match
-            case Seq(v) => Symbol(Variable(f"X_$v"))
-            case Seq(_, v) => Not(Symbol(Variable(f"X_$v")))
+        .map(s =>
+          /*val flatIdx = s.toInt
+          val row: Int = math.abs(flatIdx) / n
+          val col: Int =  math.abs(flatIdx) % n
+          flatIdx match
+            case _ if flatIdx >= 0 =>  Symbol(Variable(f"x_${row}_$col"))
+            case _ => Not(Symbol(Variable(f"x_${row}_$col")))
+           */
+          val flatIdx = math.abs(s.toInt)
+          val literal: Literal = s.toInt match
+            case _ if s.toInt > 0 => Symbol(Variable(f"x_$flatIdx"))
+            case _ => Not(Symbol(Variable(f"x_$flatIdx")))
           literal
         )
         .toSeq
