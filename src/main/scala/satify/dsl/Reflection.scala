@@ -35,7 +35,7 @@ object Reflection:
         case "" => throw new IllegalArgumentException("Empty input")
         case i => processInput(i)
       val imports =
-        """import satify.model.Expression
+        """import satify.model.expression.Expression
           |import satify.dsl.DSL.{*, given}
           |""".stripMargin
       println(imports + code)
