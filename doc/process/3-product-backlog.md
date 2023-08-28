@@ -174,7 +174,16 @@ The deadline for this sprint is 28/08/2023.
 
 ## Sprint Review
 
+The sprint terminates with all tasks completed except for the problem instances.
+
+It is released a prototype that permits inserting a more complex input using the DSL.
+It is possible to solve the SAT problem using the DPLL, and also importing a problem in DIMACS format.
+
 ## Sprint Retrospective
+
+We discovered a problem in the Tseitin Transformation that is corrected in this sprint.
+We have taken a look at a possible new implementation of expression that includes the use of monads.
+Finally, some tasks on code and package organization are demanded to the next sprint because of the lack of time.
 
 ---
 [Previous](2-product-backlog.md) | [Next](4-product-backlog.md)

@@ -82,4 +82,4 @@ Our goal was not to obtain a 100% coverage, but to have a good coverage (percent
 functionalities of the software.
 
 ---
-[Previous](README.md) | [Next](2-requirements.md)
+[Back to Index](README.md) | [Next](2-requirements.md)
