@@ -89,12 +89,12 @@ object SatEncodings:
       * @see [[atMostOne]] and [[atMostK]]
       */
     def atMost(k: Int): Expression = k match
-        case 1 => atMostOne(expressions: _*)
-        case _ => atMostK(k)(expressions: _*)
+      case 1 => atMostOne(expressions: _*)
+      case _ => atMostK(k)(expressions: _*)
 
     /** Calls [[atLeastOne]] if k is 1, [[atLeastK]] otherwise.
       * @see [[atLeastOne]] and [[atLeastK]]
       */
     def atLeast(k: Int): Expression = k match
-        case 1 => atLeastOne(expressions: _*)
-        case _ => atLeastK(k)(expressions: _*)
+      case 1 => atLeastOne(expressions: _*)
+      case _ => atLeastK(k)(expressions: _*)

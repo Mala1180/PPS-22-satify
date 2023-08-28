@@ -9,28 +9,28 @@ class ReflectionTest extends AnyFlatSpec:
   import satify.dsl.Reflection.*
   import satify.model.Expression.*
 
-  """ processInput """ should """ add "" to all variables, excluding operators """ in {
+  """processInput""" should """add "" to all variables, excluding operators""" in {
     processInput("a or not(B) and c") shouldBe """"a" or not("B") and "c""""
     processInput("xor(or(a, b), and(c, d))") shouldBe """xor(or("a", "b"), and("c", "d"))"""
   }
 
-  """ processInput """ should """ work also excluding math operators """ in {
+  """processInput""" should """work also excluding math operators""" in {
     processInput("""a \/ !B /\ c""") shouldBe """"a" \/ !"B" /\ "c""""
     processInput("""\/(/\(a, b), !(b, c))""") shouldBe """\/(/\("a", "b"), !("b", "c"))"""
   }
 
-  """ processInput """ should """ work also works with SAT encodings """ in {
+  """processInput""" should """work also works with SAT encodings""" in {
     processInput(
       """atLeast(1)(a, b, c) and atMostOne(a, b)"""
     ) shouldBe """atLeast(1)("a", "b", "c") and atMostOne("a", "b")"""
   }
 
-  """ processInput """ should """ ignore number constants """ in {
+  """processInput""" should """ignore number constants""" in {
     processInput("""atLeast(two)(a, b, c)""") shouldBe """atLeast(two)("a", "b", "c")"""
     processInput("""(a, b, c) atLeast three""") shouldBe """("a", "b", "c") atLeast three"""
   }
 
-  """ reflection """ should """return a valid expression """ in {
+  """reflection""" should """return a valid expression""" in {
     reflect("a or not(B) and c") shouldBe And(Or(Symbol("a"), Not(Symbol("B"))), Symbol("c"))
     reflect("(a -> b) and !c") shouldBe And(Or(Not(Symbol("a")), Symbol("b")), Not(Symbol("c")))
     reflect("(a, b, c) atLeast two and ((c, d, e) atMost one)") shouldBe And(
@@ -43,4 +43,20 @@ class ReflectionTest extends AnyFlatSpec:
         )
       )
     )
+  }
+
+  """reflection""" should """throw an IllegalArgumentException if the passed code is empty""" in {
+    assertThrows[IllegalArgumentException] {
+      reflect("")
+    }
+  }
+
+  """reflection""" should """throw an Exception if the passed code is malformed""" in {
+    assertThrows[Exception] {
+      reflect("a b c")
+    }
+  }
+
+  """reflection""" should """return a Symbol if only a word (variable) is inserted""" in {
+    reflect("var") shouldBe Symbol("var")
   }

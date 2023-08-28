@@ -1,6 +1,7 @@
 package satify.dsl
 
 import satify.model.Expression
+import satify.model.Expression.Symbol
 
 object Reflection:
 
@@ -11,20 +12,31 @@ object Reflection:
     val objectMethods = classOf[Object].getMethods.map(_.getName).toList
     (operators ::: encodings ::: numbers).filterNot(objectMethods.contains(_))
 
+  /** Prepares the input for the reflection, adding quotes to all words that are not keywords
+    * @param input the input to process
+    * @return the processed input
+    */
   def processInput(input: String): String =
     // TODO: link these operators to the ones in the DSL
     val excludedWords = getDSLKeywords.mkString("|")
-    println(excludedWords)
     // regExp to match all words that are not operators
     val regexPattern = s"""((?!$excludedWords\\b)\\b[A-Z|a-z]+)"""
     input.replaceAll(regexPattern, "\"$1\"")
 
+  /** Reflects the input to the REPL returning an Expression
+    * @param input the input to evaluate
+    * @return the [[Expression]]
+    */
   def reflect(input: String): Expression =
-    val code = processInput(input)
-    val imports =
-      """import satify.model.Expression
-        |import satify.dsl.DSL.{*, given}
-        |""".stripMargin
-    println(imports + code)
-    // TODO: does not work with only one symbol
-    dotty.tools.repl.ScriptEngine().eval(imports + code).asInstanceOf[Expression]
+    // if input is a word
+    if input.matches("""\b[A-Z|a-z]+\b""") then Symbol(input)
+    else
+      val code: String = input match
+        case "" => throw new IllegalArgumentException("Empty input")
+        case i => processInput(i)
+      val imports =
+        """import satify.model.Expression
+          |import satify.dsl.DSL.{*, given}
+          |""".stripMargin
+      println(imports + code)
+      dotty.tools.repl.ScriptEngine().eval(imports + code).asInstanceOf[Expression]

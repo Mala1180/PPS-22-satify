@@ -3,6 +3,8 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 val languageVersion = "3.3.0"
 ThisBuild / scalaVersion := languageVersion
 
+Test / fork := true
+
 val scalaTest = "org.scalatest" %% "scalatest" % "3.2.16" % Test
 val archUnit = "com.tngtech.archunit" % "archunit" % "1.0.0" % Test
 val scalaSwing = "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
