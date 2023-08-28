@@ -6,6 +6,7 @@ import org.scalatest.matchers.should.Matchers.shouldBe
 class MathOperatorsTest extends AnyFlatSpec:
 
   import satify.dsl.DSL.{*, given}
+  import satify.dsl.Operators.{->, <->, iff, implies}
 
   """ "A" /\ "B" """ should """ be equal to "A" and "B" """ in {
     "A" /\ "B" shouldBe ("A" and "B")
@@ -21,4 +22,12 @@ class MathOperatorsTest extends AnyFlatSpec:
 
   """ "A" ^ "B" """ should """ be equal to "A" xor "B" """ in {
     "A" ^ "B" shouldBe ("A" xor "B")
+  }
+
+  """ "A" -> "B" """ should """ be equal to "A" implies "B" """ in {
+    "A" -> "B" shouldBe ("A" implies "B")
+  }
+
+  """ "A" <-> "B" """ should """ be equal to "A" iff "B" """ in {
+    "A" <-> "B" shouldBe ("A" iff "B")
   }

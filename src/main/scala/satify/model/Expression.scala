@@ -1,7 +1,5 @@
 package satify.model
 
-import scala.annotation.tailrec
-
 enum Expression:
   case Symbol(value: String)
   case Not(branch: Expression)

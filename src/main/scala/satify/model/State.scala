@@ -20,7 +20,7 @@ trait State:
   type Problem = model.Problem
   val problem: Option[Problem] = None
 
-/** Factory for [[satify.model.State]] instances. */
+/** Factory for [[State]] instances. */
 object State:
   /** Creates a new empty application state.
     * @return a new [[State]] instance.
