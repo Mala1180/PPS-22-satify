@@ -86,7 +86,6 @@ object Encodings:
 
     combinations(vars, k).map(_.reduceLeft(And(_, _))).reduceLeft(Or(_, _))
 
-
   extension (expressions: Seq[Symbol])
 
     /** Calls [[atMostOne]] if k is 1, [[atMostK]] otherwise.
