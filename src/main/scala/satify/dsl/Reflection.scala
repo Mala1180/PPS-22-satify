@@ -1,39 +1,42 @@
 package satify.dsl
 
 import satify.model.expression.Expression
+import satify.model.expression.Expression.Symbol
 
 object Reflection:
 
-  private def getDSLOperators: List[String] =
-    def lookupSymbol(name: String): String = name match
-      case "xorSymbol" => "^"
-      case "andSymbol" => "/\\"
-      case "orSymbol" => "\\/"
-      case "notSymbol" => "!"
-      case "impliesSymbol" => "->"
-      case "iffSymbol" => "<->"
-      case _ => name
-
-    val operators = classOf[Operators.type].getMethods.map(_.getName).map(lookupSymbol).toList
+  private def getDSLKeywords: List[String] =
+    val operators = classOf[Operators.type].getMethods.map(_.getName).toList
     val encodings = classOf[Encodings.type].getMethods.map(_.getName).toList
+    val numbers = classOf[Numbers.type].getMethods.map(_.getName).toList
     val objectMethods = classOf[Object].getMethods.map(_.getName).toList
-    (operators ::: encodings).filterNot(objectMethods.contains(_))
+    (operators ::: encodings ::: numbers).filterNot(objectMethods.contains(_))
 
-  private def processInput(input: String): String =
+  /** Prepares the input for the reflection, adding quotes to all words that are not keywords
+    * @param input the input to process
+    * @return the processed input
+    */
+  def processInput(input: String): String =
     // TODO: link these operators to the ones in the DSL
-    val operators = getDSLOperators
-    input.trim
-      .split("[ ()]")
-      .filterNot(_.isBlank)
-      .map(symbol => if !operators.contains(symbol) then s"\"$symbol\"" else symbol)
-      .reduce((a, b) => s"$a $b")
+    val excludedWords = getDSLKeywords.mkString("|")
+    // regExp to match all words that are not operators
+    val regexPattern = s"""((?!$excludedWords\\b)\\b[A-Z|a-z]+)"""
+    input.replaceAll(regexPattern, "\"$1\"")
 
+  /** Reflects the input to the REPL returning an Expression
+    * @param input the input to evaluate
+    * @return the [[Expression]]
+    */
   def reflect(input: String): Expression =
-    val code = processInput(input)
-    val imports =
-      """import satify.model.Expression
-        |import satify.dsl.DSL.{*, given}
-        |""".stripMargin
-    println(imports + code)
-    // TODO: does not work with only one symbol
-    dotty.tools.repl.ScriptEngine().eval(imports + code).asInstanceOf[Expression]
+    // if input is a word
+    if input.matches("""\b[A-Z|a-z]+\b""") then Symbol(input)
+    else
+      val code: String = input match
+        case "" => throw new IllegalArgumentException("Empty input")
+        case i => processInput(i)
+      val imports =
+        """import satify.model.Expression
+          |import satify.dsl.DSL.{*, given}
+          |""".stripMargin
+      println(imports + code)
+      dotty.tools.repl.ScriptEngine().eval(imports + code).asInstanceOf[Expression]

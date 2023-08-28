@@ -85,3 +85,20 @@ object Encodings:
         yield vars(i) +: subCombination
 
     combinations(vars, k).map(_.reduceLeft(And(_, _))).reduceLeft(Or(_, _))
+
+
+  extension (expressions: Seq[Symbol])
+
+    /** Calls [[atMostOne]] if k is 1, [[atMostK]] otherwise.
+      * @see [[atMostOne]] and [[atMostK]]
+      */
+    def atMost(k: Int): Expression = k match
+      case 1 => atMostOne(expressions: _*)
+      case _ => atMostK(k)(expressions: _*)
+
+    /** Calls [[atLeastOne]] if k is 1, [[atLeastK]] otherwise.
+      * @see [[atLeastOne]] and [[atLeastK]]
+      */
+    def atLeast(k: Int): Expression = k match
+      case 1 => atLeastOne(expressions: _*)
+      case _ => atLeastK(k)(expressions: _*)
