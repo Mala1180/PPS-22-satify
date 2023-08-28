@@ -1,6 +1,6 @@
 package satify.dsl
 
-import satify.model.Expression.Symbol
+import satify.model.expression.Expression.Symbol
 object Conversion:
 
   given Conversion[String, Symbol] with

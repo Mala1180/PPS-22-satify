@@ -1,8 +1,8 @@
-package satify.dsl
+package satify.ExpressionUtilsTest
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.{should, shouldBe}
-import satify.model.Expression
+import satify.model.expression.Expression.*
 
 class SatEncodingsWrongUseTest extends AnyFlatSpec:
 
@@ -10,31 +10,31 @@ class SatEncodingsWrongUseTest extends AnyFlatSpec:
 
   """ atLeastOne("A")  """ should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
-      atLeastOne("A")
+      atLeastOne(Symbol("A"))
     }
   }
 
   """ atMostOne("A")  """ should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
-      atMostOne("A")
+      atMostOne(Symbol("A"))
     }
   }
 
   """ atLeastK(1)("A") """ should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
-      atLeastK(1)("A")
+      atLeastK(1)(Symbol("A"))
     }
   }
 
   """ atLeastK(4)("A", "B", "C") """ should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
-      atLeastK(4)("A", "B", "C")
+      atLeastK(4)(Symbol("A"), Symbol("B"), Symbol("C"))
     }
   }
 
   """ atMostK(1)("A") """ should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
-      atMostK(1)("A")
+      atMostK(1)(Symbol("A"))
     }
   }
 

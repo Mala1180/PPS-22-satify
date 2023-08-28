@@ -1,12 +1,13 @@
 package satify.update.converters
 
-import satify.model.{CNF, Expression, Literal, Variable}
+import satify.model.expression.Expression
+import satify.model.{CNF, Literal, Variable}
 
 /** Object containing the Tseitin transformation algorithm. */
 object TseitinTransformation:
 
   import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
-  import satify.model.Expression.{replace as replaceExp, *}
+  import satify.model.expression.Expression.{replace as replaceExp, *}
   import satify.model.Literal
 
   /** Applies the Tseitin transformation to the gt iven expression in order to convert it into CNF.

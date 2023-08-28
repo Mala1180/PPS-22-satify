@@ -2,8 +2,9 @@ package satify.ExpressionUtilsTest
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.Expression.*
-import satify.model.{CNF, Expression, Variable}
+import satify.model.expression.Expression
+import satify.model.expression.Expression.*
+import satify.model.{CNF, Variable}
 import satify.update.converters.TseitinTransformation.isCNF
 
 class CNFValidator extends AnyFlatSpec with Matchers:

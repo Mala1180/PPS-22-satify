@@ -1,7 +1,7 @@
 package satify.dsl
 
-import satify.model.Expression
-import satify.model.Expression.*
+import satify.model.expression.Expression
+import satify.model.expression.Expression.*
 
 import scala.annotation.targetName
 

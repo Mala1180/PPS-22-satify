@@ -2,7 +2,7 @@ package satify.dsl
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.shouldBe
-import satify.model.Expression.*
+import satify.model.expression.Expression.*
 
 class OperatorsTest extends AnyFlatSpec:
 

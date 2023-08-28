@@ -1,6 +1,6 @@
 package satify.dsl
 
-import satify.model.Expression
+import satify.model.expression.Expression
 
 object Reflection:
 
@@ -15,7 +15,7 @@ object Reflection:
       case _ => name
 
     val operators = classOf[Operators.type].getMethods.map(_.getName).map(lookupSymbol).toList
-    val encodings = classOf[SatEncodings.type].getMethods.map(_.getName).toList
+    val encodings = classOf[Encodings.type].getMethods.map(_.getName).toList
     val objectMethods = classOf[Object].getMethods.map(_.getName).toList
     (operators ::: encodings).filterNot(objectMethods.contains(_))
 

@@ -3,7 +3,8 @@ package steps
 import io.cucumber.scala.{EN, ScalaDsl}
 import org.scalatest.matchers.should.Matchers.*
 import satify.dsl.Reflection.reflect
-import satify.model.{CNF, Expression}
+import satify.model.CNF
+import satify.model.expression.Expression
 import satify.update.converters.TseitinTransformation.tseitin
 
 class TseitinTransformation extends ScalaDsl with EN:
