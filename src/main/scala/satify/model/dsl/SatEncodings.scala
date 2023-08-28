@@ -1,9 +1,8 @@
-package satify.dsl
+package satify.model.dsl
 
-import satify.dsl.DSL.*
+import DSL.*
 import satify.model.Expression
 import satify.model.Expression.*
-import satify.problems.buildAnd
 
 object SatEncodings:
 
@@ -30,7 +29,7 @@ object SatEncodings:
   def atMostOne(variables: Symbol*): Expression =
     val vars = removeDuplicates(variables)
     requireVariables(vars, 2, "atMostOne")
-    /*val generator: () => Symbol = symbolGenerator("ENC")
+    val generator: () => Symbol = symbolGenerator("ENC")
     // removing duplicates
     // generate new n - 1 variables
     val newVars = (1 until vars.length).map(_ => generator()).toList
@@ -40,8 +39,6 @@ object SatEncodings:
       (not(newVars(i - 1)) or newVars(i)) and
       (not(x) or not(newVars(i - 1)))
     middleClauses.foldLeft(startingClauses)(_ and _)
-     */
-    buildAnd(vars.combinations(2).toSeq.map(p => Not(And(p.head, p(1)))): _*)
 
   /** Encodes the constraint that exactly one of the given variables is true.
     * @param variables the input variables

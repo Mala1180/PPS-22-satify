@@ -6,7 +6,7 @@ import satify.model.Expression
 
 class SatEncodingsTest extends AnyFlatSpec:
 
-  import satify.dsl.DSL.{*, given}
+  import satify.model.dsl.DSL.{*, given}
 
   """ atLeastOne("A", "B", "C")  """ should """ be equal to "A" or "B" or "C" """ in {
     atLeastOne("A", "B", "C") shouldBe ("A" or "B" or "C")

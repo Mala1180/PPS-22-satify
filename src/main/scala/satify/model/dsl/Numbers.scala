@@ -1,4 +1,4 @@
-package satify.dsl
+package satify.model.dsl
 
 object Numbers:
 

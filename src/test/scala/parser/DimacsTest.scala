@@ -23,8 +23,8 @@ class DimacsTest extends AnyFlatSpec with Matchers {
     DimacsCNF.parse(lines) shouldBe
       Some(
         And(
-          Or(Symbol(Variable("X_1")), Symbol(Variable("X_2"))),
-          Or(Symbol(Variable("X_3")), Not(Symbol(Variable("X_1"))))
+          Or(Symbol(Variable("x_1")), Symbol(Variable("x_2"))),
+          Or(Symbol(Variable("x_3")), Not(Symbol(Variable("x_1"))))
         )
       )
   }
@@ -37,8 +37,8 @@ class DimacsTest extends AnyFlatSpec with Matchers {
   /*
   it should "dump CNF formulas" in {
     val formula = And(
-      Or(Symbol(Variable("X_1")), Symbol(Variable("X_2"))),
-      Or(Symbol(Variable("X_3")), Not(Symbol(Variable("X_1"))))
+      Or(Symbol(Variable("x_1")), Symbol(Variable("x_2"))),
+      Or(Symbol(Variable("x_3")), Not(Symbol(Variable("x_1"))))
     )
     DimacsCNF.dump(formula) shouldEqual Seq("p cnf 3 2", "1 2 0", "3 -1 0")
   }

@@ -1,6 +1,6 @@
-package satify.problems
+package satify.model.problems
 
-import satify.dsl.SatEncodings.{atLeastOne, atMostOne}
+import satify.model.dsl.SatEncodings.{atLeastOne, atMostOne}
 import satify.model.{Expression, Variable}
 import satify.model.Expression.{And, Symbol}
 import satify.model.dpll.OrderedSeq.{seq, given_Ordering_Variable}
@@ -8,10 +8,7 @@ import satify.model.dpll.PartialModel
 
 import scala.annotation.tailrec
 
-trait Example:
-  val exp: Expression
-
-case class NQueens(n: Int) extends Example:
+case class NQueens(n: Int) extends Problem:
 
   private val variables: Seq[Seq[Symbol]] =
     for i <- 0 until n
@@ -77,12 +74,6 @@ object NQueens:
         )
       )
       printNqueens(n, pm.drop(n))
-
-case class NurseScheduling() extends Example:
-  val exp: Expression = ???
-
-case class ColoringGraph() extends Example:
-  val exp: Expression = ???
 
 def buildAnd(exp: Expression*): Expression = exp match
   case _ if exp.size == 1 => exp(0)
