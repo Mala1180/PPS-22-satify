@@ -11,7 +11,6 @@ enum Expression:
 object Expression:
 
   /** Zip the subexpressions found in the given expression with a generic type A.
-    *
     * @param exp the expression.
     * @param f the supplier of the generic type A.
     * @return a list of the subexpressions found in the given expression zipped with the generic type.
@@ -32,7 +31,6 @@ object Expression:
       case _ => subexp(exp, List())(f)
 
   /** Zip the subexpressions found in the given expression with a Symbol.
-    *
     * @param exp the expression.
     * @return a list of the subexpressions found in the given expression zipped with the Symbol.
     */
@@ -52,7 +50,6 @@ object Expression:
       s
 
   /** Search for subexpressions in the given expression.
-    *
     * @param exp the expression.
     * @return a list of the subexpressions found in the given expression.
     */
@@ -60,7 +57,6 @@ object Expression:
     zipWithSymbol(exp).map(_._2)
 
   /** Search if a subexpression is contained in the given expression.
-    *
     * @param exp the expression.
     * @param subexp the subexpression to find.
     * @return true if the subexpression is contained in the expression, false otherwise.
@@ -68,7 +64,6 @@ object Expression:
   def contains(exp: Expression, subexp: Expression): Boolean = subexpressions(exp).contains(subexp)
 
   /** Replace a subexpression of an expression with the given Symbol.
-    *
     * @param exp the expression.
     * @param subexp the subexpression to replace.
     * @param s the Symbol inserted in place of the subexpression.

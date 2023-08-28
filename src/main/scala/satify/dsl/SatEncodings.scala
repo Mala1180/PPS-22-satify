@@ -1,4 +1,4 @@
-package satify.model.dsl
+package satify.dsl
 
 import DSL.*
 import satify.model.Expression

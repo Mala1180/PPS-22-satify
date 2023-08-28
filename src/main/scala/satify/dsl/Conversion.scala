@@ -1,4 +1,4 @@
-package satify.model.dsl
+package satify.dsl
 
 import satify.model.Expression.Symbol
 object Conversion:

@@ -1,6 +1,6 @@
 package satify.update
 
-import satify.model.dsl.Reflection.*
+import satify.dsl.Reflection.reflect
 import satify.model.CNF.Symbol
 import satify.model.{CNF, Expression, State, Variable}
 import satify.update.Message.*

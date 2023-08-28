@@ -6,8 +6,7 @@ import satify.model.Expression.*
 
 class OperatorsTest extends AnyFlatSpec:
 
-  import satify.model.dsl.DSL.{*, given}
-  import satify.model.dsl.Operators.{iff, implies}
+  import satify.dsl.DSL.{*, given}
 
   """ "A" and "B" """ should "be equal to And(Symbol(A), Symbol(B))" in {
     "A" and "B" shouldBe And(Symbol("A"), Symbol("B"))

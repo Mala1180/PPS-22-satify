@@ -5,8 +5,7 @@ import org.scalatest.matchers.should.Matchers.shouldBe
 
 class MathOperatorsTest extends AnyFlatSpec:
 
-  import satify.model.dsl.DSL.{*, given}
-  import satify.model.dsl.Operators.{->, <->, iff, implies}
+  import satify.dsl.DSL.{*, given}
 
   """ "A" /\ "B" """ should """ be equal to "A" and "B" """ in {
     "A" /\ "B" shouldBe ("A" and "B")

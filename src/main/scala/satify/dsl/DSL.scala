@@ -1,4 +1,4 @@
-package satify.model.dsl
+package satify.dsl
 
 object DSL:
   export Conversion.given

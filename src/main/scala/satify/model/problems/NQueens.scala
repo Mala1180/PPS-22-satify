@@ -1,9 +1,9 @@
 package satify.model.problems
 
-import satify.model.dsl.SatEncodings.{atLeastOne, atMostOne}
+import satify.dsl.SatEncodings.{atLeastOne, atMostOne}
 import satify.model.{Expression, Variable}
 import satify.model.Expression.{And, Symbol}
-import satify.model.dpll.OrderedSeq.{seq, given_Ordering_Variable}
+import satify.model.dpll.OrderedSeq.{given_Ordering_Variable, seq}
 import satify.model.dpll.PartialModel
 
 import scala.annotation.tailrec
