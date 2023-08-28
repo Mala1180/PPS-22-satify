@@ -28,7 +28,6 @@ object Reflection:
     * @return the [[Expression]]
     */
   def reflect(input: String): Expression =
-    // if input is a word
     if input.matches("""\b[A-Z|a-z]+\b""") then Symbol(input)
     else
       val code: String = input match
