@@ -1,13 +1,8 @@
 package satify.problems
 
-import satify.dsl.SatEncodings.*
-import satify.model.Expression.*
-import satify.model.{Expression, Variable}
-
-enum Problem:
-  case NQueens(n: Int)
-  case NurseScheduling()
-  case ColoringGraph()
+import satify.dsl.SatEncodings.{atLeastOne, atMostOne}
+import satify.model.Expression
+import satify.model.Expression.{And, Symbol}
 
 trait Example:
   val exp: Expression

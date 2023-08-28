@@ -1,7 +1,6 @@
 package satify.model
 
-import satify.problems
-import satify.problems.Problem
+import satify.model
 
 /** The immutable entity representing the application state (Model). */
 trait State:
@@ -18,7 +17,7 @@ trait State:
   val solution: Option[Solution] = None
 
   /** An entity representing the problem to solve */
-  type Problem = problems.Problem
+  type Problem = model.Problem
   val problem: Option[Problem] = None
 
 /** Factory for [[satify.model.State]] instances. */

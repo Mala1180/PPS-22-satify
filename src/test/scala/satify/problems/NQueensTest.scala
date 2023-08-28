@@ -2,6 +2,7 @@ package satify.problems
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import satify.problems.NQueens
 import satify.update.converters.TseitinTransformation.tseitin
 import satify.model.{CNF, Expression, Solution}
 import satify.model.Result.*
