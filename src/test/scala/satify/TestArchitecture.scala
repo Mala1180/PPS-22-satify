@@ -1,7 +1,7 @@
 package satify
 
 import com.tngtech.archunit.core.domain.JavaClasses
-import com.tngtech.archunit.core.importer.ClassFileImporter
+import com.tngtech.archunit.core.importer.{ClassFileImporter, ImportOption, Location}
 import com.tngtech.archunit.lang.ArchRule
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.{classes, noClasses}
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices
@@ -22,14 +22,14 @@ class TestArchitecture extends AnyFlatSpec with Matchers:
   val UpdatePackage: String = RootPackage + ".update"
   val ViewPackage: String = RootPackage + ".view"
 
-  val allClasses: JavaClasses = ClassFileImporter().importPackages(RootPackage)
+  val excludeInstrumented: ImportOption = (location: Location) => !location.contains("instrumented-classes")
+  val allClasses: JavaClasses = ClassFileImporter().withImportOption(excludeInstrumented).importPackages(RootPackage)
 
   "Architecture" should "not have cyclic dependencies" in {
     val noCycles: ArchRule = slices()
       .matching(RootPackage + ".(*)..")
       .should()
       .beFreeOfCycles()
-
     noCycles.check(allClasses)
   }
 
