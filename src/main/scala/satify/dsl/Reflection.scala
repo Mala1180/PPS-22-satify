@@ -4,29 +4,20 @@ import satify.model.Expression
 
 object Reflection:
 
-  private def getDSLOperators: List[String] =
-    def lookupSymbol(name: String): String = name match
-      case "xorSymbol" => "^"
-      case "andSymbol" => "/\\"
-      case "orSymbol" => "\\/"
-      case "notSymbol" => "!"
-      case "impliesSymbol" => "->"
-      case "iffSymbol" => "<->"
-      case _ => name
-
-    val operators = classOf[Operators.type].getMethods.map(_.getName).map(lookupSymbol).toList
+  private def getDSLKeywords: List[String] =
+    val operators = classOf[Operators.type].getMethods.map(_.getName).toList
     val encodings = classOf[SatEncodings.type].getMethods.map(_.getName).toList
+    val numbers = classOf[Numbers.type].getMethods.map(_.getName).toList
     val objectMethods = classOf[Object].getMethods.map(_.getName).toList
-    (operators ::: encodings).filterNot(objectMethods.contains(_))
+    (operators ::: encodings ::: numbers).filterNot(objectMethods.contains(_))
 
-  private def processInput(input: String): String =
+  def processInput(input: String): String =
     // TODO: link these operators to the ones in the DSL
-    val operators = getDSLOperators
-    input.trim
-      .split("[ ()]")
-      .filterNot(_.isBlank)
-      .map(symbol => if !operators.contains(symbol) then s"\"$symbol\"" else symbol)
-      .reduce((a, b) => s"$a $b")
+    val excludedWords = getDSLKeywords.mkString("|")
+    println(excludedWords)
+    // regExp to match all words that are not operators
+    val regexPattern = s"""((?!$excludedWords\\b)\\b[A-Z|a-z]+)"""
+    input.replaceAll(regexPattern, "\"$1\"")
 
   def reflect(input: String): Expression =
     val code = processInput(input)
