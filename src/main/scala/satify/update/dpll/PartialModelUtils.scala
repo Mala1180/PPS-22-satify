@@ -53,7 +53,14 @@ object PartialModelUtils:
     dt match
       case Leaf(Decision(pm, cnf)) =>
         cnf match
-          case Symbol(True) => Set(pm)
+          case Symbol(True) =>
+            Set(
+              pm.filter(v =>
+                v match
+                  case Variable(name, _) if name.startsWith("X") || name.startsWith("ENC") => false
+                  case _ => true
+              )
+            )
           case _ => Set.empty
       case Branch(_, left, right) => extractSolutionsFromDT(left) ++ extractSolutionsFromDT(right)
 

@@ -2,12 +2,11 @@ package satify.dsl
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.shouldBe
-import satify.model.Expression.*
+import satify.model.expression.Expression.*
 
 class OperatorsTest extends AnyFlatSpec:
 
   import satify.dsl.DSL.{*, given}
-  import satify.dsl.Operators.{iff, implies}
 
   """ "A" and "B" """ should "be equal to And(Symbol(A), Symbol(B))" in {
     "A" and "B" shouldBe And(Symbol("A"), Symbol("B"))

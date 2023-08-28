@@ -1,8 +1,9 @@
 package satify.update
 
-import satify.dsl.Reflection.*
+import satify.dsl.Reflection.reflect
 import satify.model.CNF.Symbol
-import satify.model.{CNF, Expression, State, Variable}
+import satify.model.expression.Expression
+import satify.model.{CNF, State, Variable}
 import satify.update.Message.*
 import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.tseitin

@@ -23,25 +23,22 @@ class DimacsTest extends AnyFlatSpec with Matchers {
     DimacsCNF.parse(lines) shouldBe
       Some(
         And(
-          Or(Symbol(Variable("X_1")), Symbol(Variable("X_2"))),
-          Or(Symbol(Variable("X_3")), Not(Symbol(Variable("X_1"))))
+          Or(Symbol(Variable("x_1")), Symbol(Variable("x_2"))),
+          Or(Symbol(Variable("x_3")), Not(Symbol(Variable("x_1"))))
         )
       )
   }
 
   "DimacsCNF" should "open a DIMACS file and parse it" in {
-    val filename = "src/main/resources/cnf/aim-100-1_6-no-1.txt"
-    val source = Source.fromFile(filename)
-    val lines = source.getLines().toSeq
-    DimacsCNF.parse(lines) should matchPattern { case Some(_) => }
+    DimacsCNF.read("src/main/resources/cnf/aim-100-1_6-no-1.txt") should matchPattern { case Some(_) => }
   }
 
   // TODO
   /*
   it should "dump CNF formulas" in {
     val formula = And(
-      Or(Symbol(Variable("X_1")), Symbol(Variable("X_2"))),
-      Or(Symbol(Variable("X_3")), Not(Symbol(Variable("X_1"))))
+      Or(Symbol(Variable("x_1")), Symbol(Variable("x_2"))),
+      Or(Symbol(Variable("x_3")), Not(Symbol(Variable("x_1"))))
     )
     DimacsCNF.dump(formula) shouldEqual Seq("p cnf 3 2", "1 2 0", "3 -1 0")
   }

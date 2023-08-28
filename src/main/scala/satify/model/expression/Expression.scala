@@ -1,4 +1,4 @@
-package satify.model
+package satify.model.expression
 
 enum Expression:
   case Symbol(value: String)
@@ -10,8 +10,10 @@ enum Expression:
 
 object Expression:
 
+  export satify.model.expression.Utils.*
+  export satify.model.expression.Encodings.*
+
   /** Zip the subexpressions found in the given expression with a generic type A.
-    *
     * @param exp the expression.
     * @param f the supplier of the generic type A.
     * @return a list of the subexpressions found in the given expression zipped with the generic type.
@@ -32,7 +34,6 @@ object Expression:
       case _ => subexp(exp, List())(f)
 
   /** Zip the subexpressions found in the given expression with a Symbol.
-    *
     * @param exp the expression.
     * @return a list of the subexpressions found in the given expression zipped with the Symbol.
     */
@@ -40,19 +41,7 @@ object Expression:
     // TODO: introduction of a common name for the symbols
     zipWith(exp)(symbolGenerator("X"))
 
-  /** Generate a new Symbol starting from the given prefix.
-    * @param prefix the prefix of the new Symbol.
-    * @return a new Symbol.
-    */
-  def symbolGenerator(prefix: String): () => Symbol =
-    var c = 0
-    () =>
-      val s: Symbol = Symbol(prefix + c)
-      c = c + 1
-      s
-
   /** Search for subexpressions in the given expression.
-    *
     * @param exp the expression.
     * @return a list of the subexpressions found in the given expression.
     */
@@ -60,7 +49,6 @@ object Expression:
     zipWithSymbol(exp).map(_._2)
 
   /** Search if a subexpression is contained in the given expression.
-    *
     * @param exp the expression.
     * @param subexp the subexpression to find.
     * @return true if the subexpression is contained in the expression, false otherwise.
@@ -68,7 +56,6 @@ object Expression:
   def contains(exp: Expression, subexp: Expression): Boolean = subexpressions(exp).contains(subexp)
 
   /** Replace a subexpression of an expression with the given Symbol.
-    *
     * @param exp the expression.
     * @param subexp the subexpression to replace.
     * @param s the Symbol inserted in place of the subexpression.
@@ -87,21 +74,3 @@ object Expression:
       case or @ Or(_, _) => replaceExp(or, subexp, s)
       case not @ Not(_) => replaceExp(not, subexp, s)
       case _ => exp
-
-  extension (exp: Expression)
-    def printAsFormal(flat: Boolean = false): String =
-      exp match
-        case Symbol(value) => value
-        case And(left, right) =>
-          if flat then s"${left.printAsFormal(flat)} and ${right.printAsFormal(flat)}"
-          else s"${left.printAsFormal(flat)} and\n${right.printAsFormal(flat)}"
-        case Or(left, right) => s"${left.printAsFormal(flat)} or ${right.printAsFormal(flat)}"
-        case Not(branch) => s"not(${branch.printAsFormal(flat)})"
-
-    def printAsDSL(flat: Boolean = false): String =
-      var r = printAsFormal(flat)
-        .replace("and", "∧")
-        .replace("or", "∨")
-        .replace("not", "¬")
-      if flat then r = r.replace("\n", " ")
-      r

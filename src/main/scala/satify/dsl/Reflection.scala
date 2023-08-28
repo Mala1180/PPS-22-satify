@@ -1,13 +1,13 @@
 package satify.dsl
 
-import satify.model.Expression
-import satify.model.Expression.Symbol
+import satify.model.expression.Expression
+import satify.model.expression.Expression.Symbol
 
 object Reflection:
 
   private def getDSLKeywords: List[String] =
     val operators = classOf[Operators.type].getMethods.map(_.getName).toList
-    val encodings = classOf[SatEncodings.type].getMethods.map(_.getName).toList
+    val encodings = classOf[Encodings.type].getMethods.map(_.getName).toList
     val numbers = classOf[Numbers.type].getMethods.map(_.getName).toList
     val objectMethods = classOf[Object].getMethods.map(_.getName).toList
     (operators ::: encodings ::: numbers).filterNot(objectMethods.contains(_))
