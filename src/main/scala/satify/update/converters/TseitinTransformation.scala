@@ -7,25 +7,22 @@ object TseitinTransformation:
 
   import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
   import satify.model.Expression.{replace as replaceExp, *}
+  import satify.model.Literal
 
-  /** Applies the Tseitin transformation to the given expression in order to convert it into CNF.
+  /** Applies the Tseitin transformation to the gt iven expression in order to convert it into CNF.
     * @param exp the expression to transform.
     * @return the CNF expression.
     */
   def tseitin(exp: Expression): CNF =
-    def reduction(exp1: CNF, exp2: CNF): CNF = exp1 match
-      case l @ CNFOr(e1, e2) =>
-        exp2 match
-          case r @ CNFAnd(e3, e4) => CNFAnd(l, r)
-          case r @ CNFOr(e3, e4) => CNFAnd(l, r)
-          case _ => exp2
-      case _ => exp1
     var transformations: List[(CNFSymbol, CNF)] = List()
     symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
-    val transformedExp = transformations.map(_._2)
-
+    var transformedExp = transformations.map(_._2)
     if transformedExp.size == 1 then transformedExp.head
-    else transformedExp.reduceRight((s1, s2) => reduction(s1, s2))
+    else
+      transformedExp = transformedExp.prepended(CNFSymbol(Variable("X0")))
+      transformedExp.reduceRight((s1, s2) =>
+        CNFAnd(s1.asInstanceOf[CNFOr | Literal], s2.asInstanceOf[CNFAnd | CNFOr | Literal])
+      )
 
   /** Substitute Symbols of nested subexpressions in all others expressions
     * @param exp the expression where to substitute Symbols
@@ -66,6 +63,7 @@ object TseitinTransformation:
       case Not(Symbol(v)) => CNFSymbol(Variable(v, None))
       case Symbol(v) => CNFNot(CNFSymbol(Variable(v, None)))
       case _ => throw new Exception("Expression is not a Symbol or a Not Symbol")
+
     exp match
       case (s @ Symbol(v), Not(lit)) =>
         List(
@@ -85,3 +83,45 @@ object TseitinTransformation:
           (symbol(s), CNFOr(not(e2), symbol(s)))
         )
       case (s @ Symbol(v), ss @ Symbol(vv)) => List((symbol(s), symbol(ss)))
+
+  /** Method to check if an expression is in CNF form and can be converted to CNF form.
+    * @param expression The expression to check.
+    * @return true if the expression could be converted to CNF form, false otherwise and in case of empty expression.
+    */
+  def isCNF(expression: Expression): Boolean =
+    import Expression.*
+    expression match
+      case Symbol(_) => true
+      case Not(Symbol(_)) => true
+      case And(l, r) =>
+        (l, r) match
+          case (And(_, _), _) => false
+          case _ => isCNF(l) && isCNF(r);
+      case Or(l, r) =>
+        (l, r) match
+          case (And(_, _), _) | (_, And(_, _)) => false
+          case _ => isCNF(l) && isCNF(r);
+      case _ => false
+
+  /** Method to check if an expression is in CNF form and can be converted to CNF form.
+    * @param expression The expression to check.
+    * @return true if the expression could be converted to CNF form, false otherwise and in case of empty expression.
+    */
+  def convertToCNF(expression: Expression): CNF =
+    def convL(exp: Expression): CNFOr | Literal = exp match
+      case Or(l, r) => CNFOr(convL(l), convL(r))
+      case Symbol(v) => CNFSymbol(Variable(v))
+      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
+      case _ => throw new Exception("Expression is not convertible to CNF form")
+    def convR(exp: Expression): CNFAnd | CNFOr | Literal = exp match
+      case And(l, r) => CNFAnd(convL(l), convR(r))
+      case Or(l, r) => CNFOr(convL(l), convL(r))
+      case Symbol(v) => CNFSymbol(Variable(v))
+      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
+      case _ => throw new Exception("Expression is not convertible to CNF form")
+    expression match
+      case Symbol(v) => CNFSymbol(Variable(v))
+      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
+      case And(l, r) => CNFAnd(convL(l), convR(r))
+      case Or(l, r) => CNFOr(convL(l), convL(r))
+      case _ => throw new Exception("Expression is not convertible to CNF form")
