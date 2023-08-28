@@ -2,11 +2,11 @@ package satify.DPLLTest
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.*
 import satify.update.dpll.CNFSimplification.*
-import satify.model.{Constraint, PartialModel}
+import satify.model.{CNF, Variable}
 import satify.model.CNF.*
-import satify.model.Constant.{False, True}
+import satify.model.Bool.{False, True}
+import satify.model.dpll.{Constraint, PartialModel}
 
 class CNFSimplificationTest extends AnyFlatSpec with Matchers:
 

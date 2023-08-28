@@ -1,78 +1,60 @@
 package satify.view
 
-import satify.Main.Model
-import satify.model.State
-import satify.update.Message
-import satify.update.Message.Convert
-import satify.view.Constants.*
+import satify.view.ComponentUtils.*
+import satify.view.Constants.{headingFont, logoPath, margin}
 
-import javax.swing.ImageIcon
-import scala.swing
+import javax.swing.{ImageIcon, JFileChooser}
+import javax.swing.filechooser.FileNameExtensionFilter
 import scala.swing.*
 
-/** The GUI for the game */
-case class GUI(model: State, update: (Model, Message) => Model)
-
-/** Companion object of the GUI */
 object GUI:
-  import ComponentUtils.*
+  // logo and logo label
+  private val logoIcon: ImageIcon = createImage(logoPath, 5)
+  private val logoLabel: Label = new Label:
+    icon = logoIcon
+    border = Swing.EmptyBorder(margin)
 
-  /** Renders the GUI
-    * @param gui the GUI to render
-    */
-  def render(gui: GUI): Unit =
-    new MainFrame:
-      title = "Satify SAT Solver"
-      // Create a new ImageIcon
-      val logoIcon: ImageIcon = createImage(logoPath, 5)
-      // Create a Label and set its icon with margin
-      val logoLabel: Label = new Label:
-        icon = logoIcon
-        border = Swing.EmptyBorder(margin)
+  // input text area and problem combo box
 
-      val inputTextArea: TextArea = createInputTextArea()
-      val problemComboBox: ComboBox[String] = createProblemComboBox(inputTextArea)
-      val solutionOutputDialog: Dialog = createOutputDialog("Solution")
-      val solveButton: Button = createButton(gui, "Solve", 100, 40)
-      solveButton.reactions += { case event.ButtonClicked(_) =>
-        gui.update(gui.model, Message.Solve(inputTextArea.text))
-        solutionOutputDialog.open()
-      }
-      val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
-      val cnfButton: Button = createButton(gui, "Convert to CNF", 170, 40)
-      cnfButton.reactions += { case event.ButtonClicked(_) =>
-        val newModel: Model = gui.update(gui.model, Convert(inputTextArea.text))
-        cnfOutputDialog.contents = new FlowPanel():
-          contents += new TextArea(newModel.toString):
-            editable = false
-            // wrap
-            lineWrap = true
-            wordWrap = true
-            // dimension
-            preferredSize = new Dimension(windowSize.width / 2, windowSize.height / 3 * 2)
+  val inputTextArea: TextArea = createInputTextArea()
+  var inputScrollPane = new ScrollPane(inputTextArea)
+  private val problemComboBox: ComboBox[String] = createProblemComboBox(inputTextArea)
 
-        cnfOutputDialog.open()
-      }
+  // solve and convert to cnf buttons
+  val solveButton: Button = createButton("Solve", 100, 40)
+  val cnfButton: Button = createButton("Convert to CNF", 170, 40)
 
-      contents = new BoxPanel(Orientation.Vertical):
-        contents += new FlowPanel():
-          contents += logoLabel
-        contents += new FlowPanel():
-          contents += new BoxPanel(Orientation.Vertical):
-            contents += new FlowPanel():
-              contents += new Label("Input:"):
-                font = headingFont
-            contents += new ScrollPane(inputTextArea)
-          contents += new BoxPanel(Orientation.Vertical):
-            contents += new FlowPanel():
-              contents += new Label("Fill with problem:"):
-                font = headingFont
-            contents += problemComboBox
-        contents += new FlowPanel():
-          contents += solveButton
-          contents += cnfButton
+  // output dialogs
+  val solutionOutputDialog: Dialog = createOutputDialog("Solution")
+  val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
 
-      // size of the main frame based on the screen size
-      size = new Dimension(windowSize.width / 2, windowSize.height / 3 * 2)
-      centerOnScreen()
-      open()
+  val fileChooser: FileChooser = createImportFileChooser
+  val importMenuItem: MenuItem = new MenuItem("Import")
+
+  // base gui definition and disposal
+  def createBaseGUI(): BoxPanel =
+    new BoxPanel(Orientation.Vertical):
+      contents += new MenuBar():
+        contents += importMenuItem
+      contents += new FlowPanel():
+        contents += logoLabel
+      contents += new FlowPanel():
+        contents += new BoxPanel(Orientation.Vertical):
+          contents += new FlowPanel():
+            contents += new Label("Input:"):
+              font = headingFont
+          contents += inputScrollPane
+        contents += new BoxPanel(Orientation.Vertical):
+          contents += new FlowPanel():
+            contents += new Label("Fill with problem:"):
+              font = headingFont
+          contents += problemComboBox
+      contents += new FlowPanel():
+        contents += solveButton
+        contents += cnfButton
+
+  private def createImportFileChooser: FileChooser = new FileChooser:
+    title = "Import DIMACS formula"
+    fileSelectionMode = FileChooser.SelectionMode.FilesOnly
+    fileFilter = new FileNameExtensionFilter("Text files", "txt")
+    multiSelectionEnabled = false

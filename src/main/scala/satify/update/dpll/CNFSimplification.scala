@@ -1,9 +1,9 @@
 package satify.update.dpll
 
+import satify.model.Bool.{False, True}
 import satify.model.CNF.*
-import satify.model.Constraint
-import satify.model.*
-import satify.model.Constant.{False, True}
+import satify.model.dpll.Constraint
+import satify.model.{CNF, Variable}
 
 object CNFSimplification:
 
@@ -54,14 +54,16 @@ object CNFSimplification:
               If also 2.2. doesn't reduce to a True, the Or doesn't contain the constrained Variable,
               so return Or(left, right).
          */
+        lazy val simplLeft = simplifyUppermostOr(left, constr)
+        lazy val simplRight = simplifyUppermostOr(right, constr)
         f(
           left,
           f(
             right,
             f(
-              simplifyUppermostOr(left, constr),
+              simplLeft,
               f(
-                simplifyUppermostOr(right, constr),
+                simplRight,
                 Or(left, right).asInstanceOf[T]
               )
             )
@@ -104,13 +106,15 @@ object CNFSimplification:
               If also the right branch isn't a negative Literal, then the current Or mustn't be simplified,
               so return an Or recursively call the function on the left branch and on the right.
          */
+        lazy val simplLeft = simplifyClosestOr(left, constr)
+        lazy val simplRight = simplifyClosestOr(right, constr)
         g(
           left,
-          simplifyClosestOr(right, constr),
+          simplRight,
           g(
             right,
-            simplifyClosestOr(left, constr),
-            Or(simplifyClosestOr(left, constr), simplifyClosestOr(right, constr))
+            simplLeft,
+            Or(simplLeft, simplRight)
           )
         )
       case e @ _ => e
@@ -139,7 +143,6 @@ object CNFSimplification:
       case _ => d
 
     (cnf match
-      case Or(left, right) => Or(simplifyClosestAnd(left), simplifyClosestAnd(right))
       case And(left, right) =>
         /*
         1. Check if the left branch is a positive Literal:
@@ -149,13 +152,14 @@ object CNFSimplification:
               If also the right branch isn't a positive Literal, then the current And mustn't be simplified,
               so return an And recursively call the function on the left branch and on the right.
          */
+        lazy val recRight = simplifyClosestAnd(right)
         h(
           left,
-          simplifyClosestAnd(right),
+          recRight,
           h(
             right,
-            simplifyClosestAnd(left),
-            And(simplifyClosestAnd(left), simplifyClosestAnd(right))
+            left,
+            And(left, recRight)
           )
         )
       case e @ _ => e

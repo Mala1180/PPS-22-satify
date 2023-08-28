@@ -1,6 +1,7 @@
 package satify.update.converters
 
-import satify.model.{CNF, Expression, Variable}
+import satify.model.expression.Expression
+import satify.model.{CNF, Variable}
 
 /** Functional interface for converting an expression into a CNF. */
 trait CNFConverter:

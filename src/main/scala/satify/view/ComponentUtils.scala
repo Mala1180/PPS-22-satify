@@ -1,8 +1,9 @@
 package satify.view
 
-import satify.view.Constants.{fontFamily, headingFont, margin, windowSize}
+import satify.view.Constants.*
 
 import java.awt.{Color, Font, Image, Toolkit}
+import java.net.{URI, URL}
 import javax.swing.ImageIcon
 import scala.swing.*
 
@@ -15,7 +16,8 @@ object ComponentUtils:
     * @return the image icon
     */
   def createImage(path: String, scaledBy: Int): ImageIcon =
-    val image = ImageIcon(path)
+    val url: URL = getClass.getResource(path)
+    val image = ImageIcon(url)
     // resize the image maintaining the aspect ratio
     val screenDimension: Dimension = Toolkit.getDefaultToolkit.getScreenSize
     val width: Int = screenDimension.getWidth.toInt
@@ -28,8 +30,10 @@ object ComponentUtils:
     *
     * @return the text area
     */
-  def createInputTextArea(): TextArea =
+  def createInputTextArea(txt: String = ""): TextArea =
     new TextArea:
+      name = expTextAreaName
+      text = txt
       rows = 22
       columns = 45
       border = Swing.EmptyBorder(margin)
@@ -45,10 +49,9 @@ object ComponentUtils:
 
   /** Creates a button with the given text
     *
-    * @param gui the gui
     * @return the button
     */
-  def createButton(gui: GUI, text: String, width: Int, height: Int): Button = new Button(text):
+  def createButton(text: String, width: Int, height: Int): Button = new Button(text):
     font = Font(fontFamily, Font.ITALIC, 20)
     preferredSize = new Dimension(width, height)
     background = Color.green
@@ -62,18 +65,15 @@ object ComponentUtils:
     new Dialog:
       modal = true
       title = dialogTitle
-      val outputTextArea: TextArea = new TextArea:
-        editable = false
-        border = Swing.EmptyBorder(margin)
-        lineWrap = true
-        wordWrap = true
-        preferredSize = new Dimension((windowSize.width / 3) - margin, (windowSize.height / 4 * 2) - margin)
-      contents = new BoxPanel(Orientation.Vertical):
-        contents += new FlowPanel():
-          contents += new Label("Output:"):
-            font = headingFont
-        contents += new ScrollPane:
-          contents = outputTextArea
       // size of the main frame based on the screen size
       size = new Dimension(windowSize.width / 3, windowSize.height / 4 * 2)
       centerOnScreen()
+
+  def createOutputTextArea(txt: String, r: Int, c: Int): TextArea =
+    new TextArea:
+      text = txt
+      rows = r
+      columns = c
+      border = Swing.EmptyBorder(margin)
+      editable = false
+      font = Font(fontFamily, Font.ITALIC, 18)

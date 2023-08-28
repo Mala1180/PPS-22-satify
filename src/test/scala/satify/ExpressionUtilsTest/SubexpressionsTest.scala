@@ -2,8 +2,9 @@ package satify.ExpressionUtilsTest
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.Expression.*
-import satify.model.{Expression, Variable}
+import satify.model.expression.Expression.*
+import satify.model.Variable
+import satify.model.expression.Expression
 
 class SubexpressionsTest extends AnyFlatSpec with Matchers:
 
@@ -30,7 +31,6 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
   "In ¬a the subexp ¬a" should "be decomposed correctly" in {
     val exp: Expression = Not(Symbol("a"))
     val list = zipWithSymbol(exp)
-    println(list)
     list should contain only ((Symbol("X0"), Not(Symbol("a"))))
   }
 
@@ -38,7 +38,6 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
     val exp: Expression =
       And(Symbol("c"), And(Symbol("a"), Not(Symbol("b"))))
     val list = zipWithSymbol(exp)
-    println(list)
     list should contain only (
       (
         Symbol("X0"),
@@ -52,7 +51,6 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
   "In (c ∧ a) the subexp (c ∧ a)" should "be decomposed correctly" in {
     val exp: Expression = And(Symbol("c"), Symbol("a"))
     val list = zipWithSymbol(exp)
-    println(list)
     list should contain only (
       (Symbol("X0"), And(Symbol("c"), Symbol("a")))
     )

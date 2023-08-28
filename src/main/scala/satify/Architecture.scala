@@ -2,7 +2,9 @@ package satify
 
 import satify.model.State
 import satify.update.{Message, Update}
-import satify.view.GUI
+import satify.view.{GUI, View}
+
+import scala.swing.Component
 
 /** Object containing the necessary components for the Model-View-Update architecture. */
 object Architecture:
@@ -16,7 +18,7 @@ object Architecture:
     dependency: ModelComponent =>
 
     /** The View type is a function which takes a Model and returns a GUI. */
-    type View = Model => GUI
+    type View = Model => Set[Component]
     val view: View
 
   trait UpdateComponent:
@@ -29,5 +31,5 @@ object Architecture:
   /** Represents the Model-View-Update architecture. */
   trait MVU extends ModelComponent with ViewComponent with UpdateComponent:
     var model: Model = State()
-    override val view: View = model => GUI(model, update)
+    override val view: View = View.view
     override val update: Update = Update.update
