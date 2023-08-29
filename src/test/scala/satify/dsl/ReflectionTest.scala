@@ -30,33 +30,33 @@ class ReflectionTest extends AnyFlatSpec:
     processInput("""(a, b, c) atLeast three""") shouldBe """("a", "b", "c") atLeast three"""
   }
 
-//  """reflection""" should """return a valid expression""" in {
-//    reflect("a or not(B) and c") shouldBe And(Or(Symbol("a"), Not(Symbol("B"))), Symbol("c"))
-//    reflect("(a -> b) and !c") shouldBe And(Or(Not(Symbol("a")), Symbol("b")), Not(Symbol("c")))
-//    reflect("(a, b, c) atLeast two and ((c, d, e) atMost one)") shouldBe And(
-//      Or(Or(And(Symbol("a"), Symbol("b")), And(Symbol("a"), Symbol("c"))), And(Symbol("b"), Symbol("c"))),
-//      And(
-//        And(Or(Not(Symbol("c")), Symbol("ENC0")), Or(Not(Symbol("e")), Symbol("ENC1"))),
-//        And(
-//          And(Or(Not(Symbol("d")), Symbol("ENC1")), Or(Not(Symbol("ENC0")), Symbol("ENC1"))),
-//          Or(Not(Symbol("d")), Not(Symbol("ENC0")))
-//        )
-//      )
-//    )
-//  }
-//
-//  """reflection""" should """throw an IllegalArgumentException if the passed code is empty""" in {
-//    assertThrows[IllegalArgumentException] {
-//      reflect("")
-//    }
-//  }
-//
-//  """reflection""" should """throw an Exception if the passed code is malformed""" in {
-//    assertThrows[Exception] {
-//      reflect("a b c")
-//    }
-//  }
-//
-//  """reflection""" should """return a Symbol if only a word (variable) is inserted""" in {
-//    reflect("var") shouldBe Symbol("var")
-//  }
+  """reflection""" should """return a valid expression""" in {
+    reflect("a or not(B) and c") shouldBe And(Or(Symbol("a"), Not(Symbol("B"))), Symbol("c"))
+    reflect("(a -> b) and !c") shouldBe And(Or(Not(Symbol("a")), Symbol("b")), Not(Symbol("c")))
+    reflect("(a, b, c) atLeast two and ((c, d, e) atMost one)") shouldBe And(
+      Or(Or(And(Symbol("a"), Symbol("b")), And(Symbol("a"), Symbol("c"))), And(Symbol("b"), Symbol("c"))),
+      And(
+        And(Or(Not(Symbol("c")), Symbol("ENC0")), Or(Not(Symbol("e")), Symbol("ENC1"))),
+        And(
+          And(Or(Not(Symbol("d")), Symbol("ENC1")), Or(Not(Symbol("ENC0")), Symbol("ENC1"))),
+          Or(Not(Symbol("d")), Not(Symbol("ENC0")))
+        )
+      )
+    )
+  }
+
+  """reflection""" should """throw an IllegalArgumentException if the passed code is empty""" in {
+    assertThrows[IllegalArgumentException] {
+      reflect("")
+    }
+  }
+
+  """reflection""" should """throw an Exception if the passed code is malformed""" in {
+    assertThrows[Exception] {
+      reflect("a b c")
+    }
+  }
+
+  """reflection""" should """return a Symbol if only a word (variable) is inserted""" in {
+    reflect("var") shouldBe Symbol("var")
+  }

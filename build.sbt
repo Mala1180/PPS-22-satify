@@ -3,8 +3,6 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 val languageVersion = "3.3.0"
 ThisBuild / scalaVersion := languageVersion
 
-Test / fork := true
-
 val scalaTest = "org.scalatest" %% "scalatest" % "3.2.16" % Test
 val archUnit = "com.tngtech.archunit" % "archunit" % "1.0.0" % Test
 val scalaSwing = "org.scala-lang.modules" %% "scala-swing" % "3.0.0"
@@ -22,9 +20,12 @@ lazy val root = (project in file("."))
 jacocoReportSettings := JacocoReportSettings()
   .withTitle("Jacoco Satify Coverage Report")
   .withThresholds(
-    JacocoThresholds(
-      branch = 40,
-      line = 70)
+    JacocoThresholds(branch = 40, line = 70)
   )
   .withFormats(JacocoReportFormats.ScalaHTML)
 jacocoExcludes := Seq("*view*", "*update.Message*", "*Main*")
+
+enablePlugins(CucumberPlugin)
+
+CucumberPlugin.glues := List("satify.features")
+CucumberPlugin.envProperties := Map("K" -> "2049")
