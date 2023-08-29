@@ -1,7 +1,7 @@
 package satify.view
 
 import satify.view.ComponentUtils.*
-import satify.view.Constants.{headingFont, logoPath, margin}
+import satify.view.Constants.{headingFont, logoPath, margin, windowSize}
 
 import javax.swing.{ImageIcon, JFileChooser}
 import javax.swing.filechooser.FileNameExtensionFilter
@@ -27,14 +27,20 @@ object GUI:
   // output dialogs
   val solutionOutputDialog: Dialog = createOutputDialog("Solution")
   val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
+  val helpDialog: Dialog = createHelpDialog()
 
   val fileChooser: FileChooser = createImportFileChooser
-  val importMenuItem: MenuItem = new MenuItem("Import")
+  val helpMenuItem: MenuItem = new MenuItem("Help"):
+    maximumSize = new Dimension(30, 80)
+  val importMenuItem: MenuItem = new MenuItem("Import"):
+    preferredSize = new Dimension(40, 30)
+
 
   // base gui definition and disposal
   def createBaseGUI(): BoxPanel =
     new BoxPanel(Orientation.Vertical):
       contents += new MenuBar():
+        contents += helpMenuItem
         contents += importMenuItem
       contents += new FlowPanel():
         contents += logoLabel

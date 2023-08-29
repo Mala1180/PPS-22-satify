@@ -77,3 +77,17 @@ object ComponentUtils:
       border = Swing.EmptyBorder(margin)
       editable = false
       font = Font(fontFamily, Font.ITALIC, 18)
+
+
+  def createHelpDialog(): Dialog =
+    new Dialog:
+      modal = true
+      title = "Help"
+      size = new Dimension(windowSize.width / 3, windowSize.height / 4 * 2)
+      centerOnScreen()
+/*      contents = new BoxPanel(Orientation.Vertical):
+        contents += new Label("DSL Explanation"):
+          font = Font(fontFamily, Font.ITALIC, 20)
+        contents += new Label("The DSL is composed of 3 main parts:")
+          font = Font(fontFamily, Font.ITALIC, 18)*/
+

@@ -4,7 +4,7 @@ import satify.Main.{Model, view}
 import satify.update.Message.{Convert, Import, Solve}
 import satify.update.Update.update
 import satify.view.Constants.{cnfOutputDialogName, expTextAreaName, solOutputDialogName}
-import satify.view.GUI.{cnfOutputDialog, fileChooser, inputScrollPane, inputTextArea, solutionOutputDialog}
+import satify.view.GUI.{cnfOutputDialog, helpDialog, fileChooser, inputScrollPane, inputTextArea, solutionOutputDialog}
 
 import java.io.File
 import scala.swing.{Component, TextArea}
@@ -30,3 +30,7 @@ object Reactions:
     inputScrollPane.contents = newComponents.filter(_.name == expTextAreaName).head
     // solutionOutputDialog.open()
     cnfOutputDialog.open()
+
+
+  def helpReaction(model: Model): Unit =
+    helpDialog.open()
