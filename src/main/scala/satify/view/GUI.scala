@@ -3,9 +3,10 @@ package satify.view
 import satify.view.ComponentUtils.*
 import satify.view.Constants.{headingFont, logoPath, margin, windowSize}
 
-import javax.swing.{ImageIcon, JFileChooser}
 import javax.swing.filechooser.FileNameExtensionFilter
+import javax.swing.{ImageIcon, JFileChooser}
 import scala.swing.*
+import scala.swing.TabbedPane.Page
 
 object GUI:
   // logo and logo label
@@ -22,6 +23,7 @@ object GUI:
 
   // solve and convert to cnf buttons
   val solveButton: Button = createButton("Solve", 100, 40)
+  val solveProblemButton: Button = createButton("Solve", 100, 40)
   val cnfButton: Button = createButton("Convert to CNF", 170, 40)
 
   // output dialogs
@@ -31,12 +33,10 @@ object GUI:
 
   val fileChooser: FileChooser = createImportFileChooser
   val helpMenuItem: MenuItem = new MenuItem("Help"):
-    maximumSize = new Dimension(30, 80)
+    maximumSize = new Dimension(50, 200)
   val importMenuItem: MenuItem = new MenuItem("Import"):
-    preferredSize = new Dimension(40, 30)
+    maximumSize = new Dimension(1000, 200)
 
-
-  // base gui definition and disposal
   def createBaseGUI(): BoxPanel =
     new BoxPanel(Orientation.Vertical):
       contents += new MenuBar():
@@ -44,20 +44,35 @@ object GUI:
         contents += importMenuItem
       contents += new FlowPanel():
         contents += logoLabel
-      contents += new FlowPanel():
-        contents += new BoxPanel(Orientation.Vertical):
-          contents += new FlowPanel():
-            contents += new Label("Input:"):
-              font = headingFont
-          contents += inputScrollPane
-        contents += new BoxPanel(Orientation.Vertical):
-          contents += new FlowPanel():
-            contents += new Label("Fill with problem:"):
-              font = headingFont
-          contents += problemComboBox
+      contents += new TabbedPane:
+        pages += new Page("Input", createInputComponent())
+        pages += new Page("Problems", createProblemsComponent())
+
+  private def createInputComponent(): Component =
+    new FlowPanel():
+      contents += new BoxPanel(Orientation.Vertical):
+        contents += new FlowPanel():
+          contents += new Label("Input:"):
+            font = headingFont
+        contents += inputScrollPane
       contents += new FlowPanel():
         contents += solveButton
         contents += cnfButton
+
+  private def createProblemsComponent(): Component =
+    new FlowPanel():
+      contents += new BoxPanel(Orientation.Vertical):
+        contents += new FlowPanel():
+          contents += new Label("Choose problem:"):
+            font = headingFont
+        contents += problemComboBox
+        contents += new FlowPanel():
+          contents += new Label("Parameter:"):
+            font = headingFont
+        contents += new TextField():
+          maximumSize = new Dimension(100, 30)
+        contents += new FlowPanel():
+          contents += solveProblemButton
 
   private def createImportFileChooser: FileChooser = new FileChooser:
     title = "Import DIMACS formula"

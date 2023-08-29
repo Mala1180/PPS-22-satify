@@ -27,6 +27,6 @@ object Main extends App with MVU:
     }
 
     contents = createBaseGUI()
-    size = new Dimension(windowSize.width / 2, windowSize.height / 3 * 2)
+    size = new Dimension(windowSize.width / 2, windowSize.height / 4 * 3)
     centerOnScreen()
     open()

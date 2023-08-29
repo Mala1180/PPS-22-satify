@@ -10,7 +10,6 @@ import scala.swing.*
 object ComponentUtils:
 
   /** Creates an image icon from the given path and scales it by the given factor
-    *
     * @param path the path of the image
     * @param scaledBy the factor to scale the image by
     * @return the image icon
@@ -27,7 +26,6 @@ object ComponentUtils:
     ImageIcon(image.getImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH))
 
   /** Creates a text area for the input
-    *
     * @return the text area
     */
   def createInputTextArea(txt: String = ""): TextArea =
@@ -39,7 +37,6 @@ object ComponentUtils:
       border = Swing.EmptyBorder(margin)
 
   /** Creates a combo box for the problem selection
-    *
     * @param inputTextArea the text area to fill with the problem selected
     * @return the combo box
     */
@@ -48,7 +45,6 @@ object ComponentUtils:
       selection.reactions += { case event.SelectionChanged(_) => inputTextArea.text = selection.item }
 
   /** Creates a button with the given text
-    *
     * @return the button
     */
   def createButton(text: String, width: Int, height: Int): Button = new Button(text):
@@ -58,7 +54,6 @@ object ComponentUtils:
     foreground = Color(200, 0, 0)
 
   /** Creates a dialog to show the output
-    *
     * @return the dialog
     */
   def createOutputDialog(dialogTitle: String): Dialog =
@@ -69,6 +64,12 @@ object ComponentUtils:
       size = new Dimension(windowSize.width / 3, windowSize.height / 4 * 2)
       centerOnScreen()
 
+  /** Creates a text area for the output
+    * @param txt text to show in the text area
+    * @param r rows
+    * @param c columns
+    * @return the text area
+    */
   def createOutputTextArea(txt: String, r: Int, c: Int): TextArea =
     new TextArea:
       text = txt
@@ -78,16 +79,12 @@ object ComponentUtils:
       editable = false
       font = Font(fontFamily, Font.ITALIC, 18)
 
-
+  /** Creates a dialog to show the help
+    * @return the dialog
+    */
   def createHelpDialog(): Dialog =
     new Dialog:
       modal = true
       title = "Help"
       size = new Dimension(windowSize.width / 3, windowSize.height / 4 * 2)
       centerOnScreen()
-/*      contents = new BoxPanel(Orientation.Vertical):
-        contents += new Label("DSL Explanation"):
-          font = Font(fontFamily, Font.ITALIC, 20)
-        contents += new Label("The DSL is composed of 3 main parts:")
-          font = Font(fontFamily, Font.ITALIC, 18)*/
-

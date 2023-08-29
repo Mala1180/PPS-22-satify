@@ -31,6 +31,5 @@ object Reactions:
     // solutionOutputDialog.open()
     cnfOutputDialog.open()
 
-
   def helpReaction(model: Model): Unit =
     helpDialog.open()
