@@ -12,13 +12,14 @@ import satify.view.GUI.{
   helpDialog,
   inputScrollPane,
   inputTextArea,
+  loadingLabel,
   parameterInputText,
   problemComboBox,
   solutionOutputDialog
 }
 
 import java.io.File
-import scala.swing.{Component, TextArea}
+import scala.swing.{Component, Swing, TextArea}
 
 object Reactions:
   def cnfReaction(model: Model): Unit =
@@ -30,20 +31,23 @@ object Reactions:
     val newComponents: Set[Component] = view(update(model, Solve(inputTextArea.text)))
     solutionOutputDialog.contents = newComponents.filter(_.name == solOutputDialogName).head
     cnfOutputDialog.contents = newComponents.filter(_.name == cnfOutputDialogName).head
+    inputScrollPane.contents = newComponents.filter(_.name == expTextAreaName).head
+    Swing.onEDT(loadingLabel.visible = false)
     solutionOutputDialog.open()
     cnfOutputDialog.open()
 
   def importReaction(model: Model): Unit =
     val file: File = fileChooser.selectedFile
     val newComponents: Set[Component] = view(update(model, Import(file)))
-    // solutionOutputDialog.contents = newComponents.filter(_.name == solOutputDialogName).head
+    solutionOutputDialog.contents = newComponents.filter(_.name == solOutputDialogName).head
     cnfOutputDialog.contents = newComponents.filter(_.name == cnfOutputDialogName).head
     inputScrollPane.contents = newComponents.filter(_.name == expTextAreaName).head
-    // solutionOutputDialog.open()
+    Swing.onEDT(loadingLabel.visible = false)
+    solutionOutputDialog.open()
     cnfOutputDialog.open()
 
   def problemSolutionReaction(model: Model): Unit =
-    val p : ProblemChoice = problemComboBox.item match
+    val p: ProblemChoice = problemComboBox.item match
       case "N-Queens" => NQueens
       case "Graph Coloring" => GraphColoring
       case "Nurse Scheduling" => NurseScheduling
@@ -52,11 +56,9 @@ object Reactions:
     if p.equals(Nil) || parameter < 0 then println("ERRORE")
     // TODO POPUP ERRORE
 
-    val newComponents: Set[Component] = view(update(model, SolveProblem(p, parameter)))
-    solutionOutputDialog.contents = newComponents.filter(_.name == solOutputDialogName).head
-    cnfOutputDialog.contents = newComponents.filter(_.name == cnfOutputDialogName).head
-    solutionOutputDialog.open()
-    cnfOutputDialog.open()
+    showResults(view(update(model, SolveProblem(p, parameter))))
 
   def helpReaction(model: Model): Unit =
     helpDialog.open()
+
+  def showResults(newComponents: Set[Component]): Unit = ???

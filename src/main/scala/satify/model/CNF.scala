@@ -35,6 +35,6 @@ object CNF:
       var r = printAsFormal(flat)
         .replace("∧", "and")
         .replace("∨", "or")
-        .replace("¬", "not")
+        .replace("¬", "not ")
       if flat then r = r.replace("\n", " ")
       r

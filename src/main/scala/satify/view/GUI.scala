@@ -16,8 +16,6 @@ object GUI:
     border = Swing.EmptyBorder(margin)
     background = new Color(33, 33, 33, 33)
 
-  // input text area and problem combo box
-
   val inputTextArea: TextArea = createInputTextArea()
   val parameterInputText: TextField = createParameterInputText()
   var inputScrollPane = new ScrollPane(inputTextArea)
@@ -32,6 +30,8 @@ object GUI:
   val solutionOutputDialog: Dialog = createOutputDialog("Solution")
   val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
   val helpDialog: Dialog = createHelpDialog()
+  val loadingLabel : Label = createLabel("Solving...", 16)
+  loadingLabel.visible = false
 
   val fileChooser: FileChooser = createImportFileChooser
   val helpMenuItem: MenuItem = new MenuItem("Help"):
@@ -60,6 +60,8 @@ object GUI:
       contents += new FlowPanel():
         contents += solveButton
         contents += cnfButton
+      contents += new FlowPanel():
+        contents += loadingLabel
 
   private def createProblemsComponent(): Component =
     new FlowPanel():

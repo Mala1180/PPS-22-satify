@@ -45,4 +45,4 @@ object Update:
         val lines = s.getLines.toSeq
         s.close()
         val optCnf = parse(lines)
-        State(Expression.Symbol("NO EXP"), optCnf.getOrElse(Symbol(Variable("NO CNF FOUND"))))
+        State(Expression.Symbol("NO EXP"),optCnf.getOrElse(Symbol(Variable("NO CNF FOUND"))),  Solver().dpll(optCnf.getOrElse(Symbol(Variable("NO CNF FOUND")))))

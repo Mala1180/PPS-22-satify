@@ -36,14 +36,13 @@ object ComponentUtils:
       columns = 45
       border = Swing.EmptyBorder(margin)
 
-  def createParameterInputText() : TextField =
+  def createParameterInputText(): TextField =
     new TextField:
       name = parameterInputName
       text = ""
       columns = 5
       border = Swing.EmptyBorder(margin)
       maximumSize = new Dimension(100, 30)
-
 
   /** Creates a combo box for the problem selection
     * @param inputTextArea the text area to fill with the problem selected
@@ -91,8 +90,9 @@ object ComponentUtils:
     * @return the dialog
     */
   def createHelpDialog(): Dialog =
-    val helpBox = new BoxPanel(Orientation.Vertical):
-      contents += createLabel("Operators:", 20)
+    val helpBox = new BoxPanel(Orientation.Horizontal):
+      contents += new BoxPanel(Orientation.Vertical):
+        contents += createLabel("Operators:", 20)
         contents += createLabel("  - AND: and", 18)
         contents += createLabel("  - OR: or", 18)
         contents += createLabel("  - NOT: !", 18)
@@ -111,6 +111,24 @@ object ComponentUtils:
       size = new Dimension(windowSize.width / 3, windowSize.height / 4 * 2)
       centerOnScreen()
 
-  private def createLabel(txt: String, fontSize: Int) : Label =
+  /** Creates a dialog to show the error
+    * @return the dialog
+    */
+  def createErrorDialog(): Dialog =
+    val helpBox = new BoxPanel(Orientation.Vertical):
+      contents += createLabel("ERRORE", 20)
+    new Dialog:
+      contents = helpBox
+      modal = true
+      title = "Help"
+      size = new Dimension(windowSize.width / 6, windowSize.height / 4 * 4)
+      centerOnScreen()
+
+  /** Creates a label with the given text and font size
+    * @param txt text to show in the label
+    * @param fontSize font size
+    * @return the label
+    */
+  def createLabel(txt: String, fontSize: Int): Label =
     new Label(txt):
       font = Font(fontFamily, Font.ITALIC, fontSize)
