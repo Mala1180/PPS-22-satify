@@ -6,6 +6,7 @@ import satify.model.problems.ProblemChoice.*
 import satify.update.Message.{Convert, Import, Solve, SolveProblem}
 import satify.update.Update.update
 import satify.view.Constants.{cnfOutputDialogName, expTextAreaName, solOutputDialogName}
+import satify.view.ComponentUtils.createErrorDialog
 import satify.view.GUI.{
   cnfOutputDialog,
   fileChooser,
@@ -25,6 +26,7 @@ object Reactions:
   def cnfReaction(model: Model): Unit =
     val newComponents: Set[Component] = view(update(model, Convert(inputTextArea.text)))
     cnfOutputDialog.contents = newComponents.filter(_.name == cnfOutputDialogName).head
+    Swing.onEDT(loadingLabel.visible = false)
     cnfOutputDialog.open()
 
   def solutionReaction(model: Model): Unit =
@@ -47,16 +49,22 @@ object Reactions:
     cnfOutputDialog.open()
 
   def problemSolutionReaction(model: Model): Unit =
-    val p: ProblemChoice = problemComboBox.item match
-      case "N-Queens" => NQueens
-      case "Graph Coloring" => GraphColoring
-      case "Nurse Scheduling" => NurseScheduling
-
-    val parameter: Int = parameterInputText.text.toInt
-    if p.equals(Nil) || parameter < 0 then println("ERRORE")
-    // TODO POPUP ERRORE
-
-    showResults(view(update(model, SolveProblem(p, parameter))))
+    if !problemComboBox.item.equals("No selection") && !parameterInputText.text.equals("") && parameterInputText.text.forall(_.isDigit) then
+      val parameter: Int = parameterInputText.text.toInt
+      if parameter < 0 then createErrorDialog().open()
+      else
+        val p: ProblemChoice = problemComboBox.item match
+          case "N-Queens" => NQueens
+          case "Graph Coloring" => GraphColoring
+          case "Nurse Scheduling" => NurseScheduling
+        val newComponents: Set[Component] = view(update(model, SolveProblem(p, parameter)))
+        solutionOutputDialog.contents = newComponents.filter(_.name == solOutputDialogName).head
+        cnfOutputDialog.contents = newComponents.filter(_.name == cnfOutputDialogName).head
+        inputScrollPane.contents = newComponents.filter(_.name == expTextAreaName).head
+        Swing.onEDT(loadingLabel.visible = false)
+        solutionOutputDialog.open()
+        cnfOutputDialog.open()
+    else createErrorDialog().open()
 
   def helpReaction(model: Model): Unit =
     helpDialog.open()

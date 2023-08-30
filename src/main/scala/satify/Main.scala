@@ -19,7 +19,11 @@ object Main extends App with MVU:
       Swing.onEDT(loadingLabel.visible = true)
       new Thread(() => solutionReaction(model)).start()
     }
-    cnfButton.reactions += { case ButtonClicked(_) => cnfReaction(model) }
+    cnfButton.reactions += { case ButtonClicked(_) =>
+      Swing.onEDT(loadingLabel.visible = true)
+      new Thread(() => cnfReaction(model)).start()
+    }
+
     solveProblemButton.reactions += { case ButtonClicked(_) => problemSolutionReaction(model) }
 
     helpMenuItem.reactions += { case ButtonClicked(_) =>

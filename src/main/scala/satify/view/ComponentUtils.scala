@@ -91,6 +91,7 @@ object ComponentUtils:
     */
   def createHelpDialog(): Dialog =
     val helpBox = new BoxPanel(Orientation.Horizontal):
+      contents += Swing.HGlue
       contents += new BoxPanel(Orientation.Vertical):
         contents += createLabel("Operators:", 20)
         contents += createLabel("  - AND: and", 18)
@@ -104,6 +105,7 @@ object ComponentUtils:
         contents += createLabel("  - AT LEAST ONE: atLeastOne", 18)
         contents += createLabel("  - TRUE", 18)
         contents += createLabel("  - FALSE", 18)
+      contents += Swing.HGlue
     new Dialog:
       contents = helpBox
       modal = true
@@ -115,13 +117,16 @@ object ComponentUtils:
     * @return the dialog
     */
   def createErrorDialog(): Dialog =
-    val helpBox = new BoxPanel(Orientation.Vertical):
-      contents += createLabel("ERRORE", 20)
+    val errorBox = new BoxPanel(Orientation.Horizontal):
+      contents += Swing.HGlue
+      contents += new BoxPanel(Orientation.Vertical):
+        contents += createLabel("ERROR", 20)
+      contents += Swing.HGlue
     new Dialog:
-      contents = helpBox
+      contents = errorBox
       modal = true
-      title = "Help"
-      size = new Dimension(windowSize.width / 6, windowSize.height / 4 * 4)
+      title = "Error"
+      size = new Dimension(windowSize.width / 6, windowSize.height / 4)
       centerOnScreen()
 
   /** Creates a label with the given text and font size
