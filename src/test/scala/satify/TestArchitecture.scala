@@ -22,7 +22,7 @@ class TestArchitecture extends AnyFlatSpec with Matchers:
   val UpdatePackage: String = RootPackage + ".update"
   val ViewPackage: String = RootPackage + ".view"
 
-  val excludeInstrumented: ImportOption = (location: Location) => !location.contains("instrumented-classes")
+  val excludeInstrumented: ImportOption = (location: Location) => !location.contains("instrumented-jacoco-classes")
   val allClasses: JavaClasses = ClassFileImporter().withImportOption(excludeInstrumented).importPackages(RootPackage)
 
   "Architecture" should "not have cyclic dependencies" in {
