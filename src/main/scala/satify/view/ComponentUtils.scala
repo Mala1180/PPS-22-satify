@@ -36,13 +36,21 @@ object ComponentUtils:
       columns = 45
       border = Swing.EmptyBorder(margin)
 
+  def createParameterInputText() : TextField =
+    new TextField:
+      name = parameterInputName
+      text = ""
+      columns = 5
+      border = Swing.EmptyBorder(margin)
+      maximumSize = new Dimension(100, 30)
+
+
   /** Creates a combo box for the problem selection
     * @param inputTextArea the text area to fill with the problem selected
     * @return the combo box
     */
   def createProblemComboBox(inputTextArea: TextArea): ComboBox[String] =
-    new ComboBox(List("No selection", "N-Queens", "Graph Coloring", "Nurse Scheduling")):
-      selection.reactions += { case event.SelectionChanged(_) => inputTextArea.text = selection.item }
+    new ComboBox(List("No selection", "N-Queens", "Graph Coloring", "Nurse Scheduling"))
 
   /** Creates a button with the given text
     * @return the button
@@ -83,8 +91,26 @@ object ComponentUtils:
     * @return the dialog
     */
   def createHelpDialog(): Dialog =
+    val helpBox = new BoxPanel(Orientation.Vertical):
+      contents += createLabel("Operators:", 20)
+        contents += createLabel("  - AND: and", 18)
+        contents += createLabel("  - OR: or", 18)
+        contents += createLabel("  - NOT: !", 18)
+        contents += createLabel("  - XOR: xor", 18)
+        contents += createLabel("  - IMPLICATION: ->", 18)
+        contents += createLabel("  - EQUIVALENCE: <->", 18)
+        contents += createLabel("  - PARENTHESIS: ()", 18)
+        contents += createLabel("  - AT MOST ONE: atMostOne", 18)
+        contents += createLabel("  - AT LEAST ONE: atLeastOne", 18)
+        contents += createLabel("  - TRUE", 18)
+        contents += createLabel("  - FALSE", 18)
     new Dialog:
+      contents = helpBox
       modal = true
       title = "Help"
       size = new Dimension(windowSize.width / 3, windowSize.height / 4 * 2)
       centerOnScreen()
+
+  private def createLabel(txt: String, fontSize: Int) : Label =
+    new Label(txt):
+      font = Font(fontFamily, Font.ITALIC, fontSize)

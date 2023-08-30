@@ -23,7 +23,7 @@ object Utils:
           if flat then s"${left.printAsFormal(flat)} and ${right.printAsFormal(flat)}"
           else s"${left.printAsFormal(flat)} and\n${right.printAsFormal(flat)}"
         case Or(left, right) => s"${left.printAsFormal(flat)} or ${right.printAsFormal(flat)}"
-        case Not(branch) => s"not(${branch.printAsFormal(flat)})"
+        case Not(branch) => s"not ${branch.printAsFormal(flat)}"
 
     def printAsDSL(flat: Boolean = false): String =
       var r = printAsFormal(flat)

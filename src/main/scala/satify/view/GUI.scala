@@ -14,12 +14,14 @@ object GUI:
   private val logoLabel: Label = new Label:
     icon = logoIcon
     border = Swing.EmptyBorder(margin)
+    background = new Color(33, 33, 33, 33)
 
   // input text area and problem combo box
 
   val inputTextArea: TextArea = createInputTextArea()
+  val parameterInputText: TextField = createParameterInputText()
   var inputScrollPane = new ScrollPane(inputTextArea)
-  private val problemComboBox: ComboBox[String] = createProblemComboBox(inputTextArea)
+  val problemComboBox: ComboBox[String] = createProblemComboBox(inputTextArea)
 
   // solve and convert to cnf buttons
   val solveButton: Button = createButton("Solve", 100, 40)
@@ -69,8 +71,7 @@ object GUI:
         contents += new FlowPanel():
           contents += new Label("Parameter:"):
             font = headingFont
-        contents += new TextField():
-          maximumSize = new Dimension(100, 30)
+        contents += parameterInputText
         contents += new FlowPanel():
           contents += solveProblemButton
 

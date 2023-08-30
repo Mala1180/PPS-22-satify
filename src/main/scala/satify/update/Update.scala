@@ -3,11 +3,15 @@ package satify.update
 import satify.dsl.Reflection.reflect
 import satify.model.CNF.Symbol
 import satify.model.expression.Expression
+import satify.model.expression.Expression.Symbol as ExpSymbol
+import satify.model.problems.ProblemChoice.{GraphColoring, NQueens as NQueensChoice, NurseScheduling}
 import satify.model.{CNF, State, Variable}
 import satify.update.Message.*
 import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.tseitin
 import satify.update.parser.DimacsCNF.*
+import satify.model.problems.{NQueens, ProblemChoice}
+import satify.model.problems.NQueens.*
 
 import scala.io.Source
 
@@ -18,6 +22,16 @@ object Update:
       case Input(char) => model
       case Solve(input) =>
         val exp = reflect(input)
+        given CNFConverter with
+          def convert(exp: Expression): CNF = tseitin(exp)
+
+        State(exp, Solver().solve(exp))
+      case SolveProblem(problem, parameter) =>
+        var exp: Expression = ExpSymbol("NO EXP")
+        problem match
+          case NQueensChoice => exp = NQueens(parameter).exp
+          case GraphColoring => ???//GraphColoring(parameter).exp
+          case NurseScheduling => ???//NurseScheduling(parameter).exp
         given CNFConverter with
           def convert(exp: Expression): CNF = tseitin(exp)
 
