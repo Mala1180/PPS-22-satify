@@ -42,7 +42,7 @@ cucumber := {
       "io.cucumber.core.cli.Main"
     ),
     connectInput = false,
-    envVars = Map("K" -> "2049")
+    envVars = Map[String, String](),
   )
   Fork.java(opts, List())
 }
