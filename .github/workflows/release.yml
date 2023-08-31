@@ -1,4 +1,4 @@
-name: Create Release
+name: Satify Release
 
 on:
   pull_request:

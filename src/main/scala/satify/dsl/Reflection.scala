@@ -37,5 +37,5 @@ object Reflection:
         """import satify.model.expression.Expression
           |import satify.dsl.DSL.{*, given}
           |""".stripMargin
-      println(imports + code)
+      println(code)
       dotty.tools.repl.ScriptEngine().eval(imports + code).asInstanceOf[Expression]
