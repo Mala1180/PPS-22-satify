@@ -12,21 +12,20 @@ object View:
   def view(model: State): Set[Component] =
     import model.*
 
-    if expression.isEmpty && cnf.isDefined && solution.isEmpty then
-      Set(updateExpression(cnf.get.printAsFormal()))
+    if expression.isEmpty && cnf.isDefined && solution.isEmpty then Set(updateExpression(cnf.get.printAsFormal()))
     else updateExpression(expression) ++ updateCnf(cnf) ++ updateSolution(solution)
 
-  private def updateSolution(sol : Option[Solution]) : Set[Component] =
+  private def updateSolution(sol: Option[Solution]): Set[Component] =
     if sol.isDefined then
       val fp: FlowPanel = new FlowPanel():
-          name = solOutputDialogName
-          contents += new BoxPanel(Orientation.Vertical):
-            contents += new ScrollPane(createOutputTextArea(sol.get.print, 30, 35))
-            contents += createNextSection()
+        name = solOutputDialogName
+        contents += new BoxPanel(Orientation.Vertical):
+          contents += new ScrollPane(createOutputTextArea(sol.get.print, 30, 35))
+          contents += createNextSection()
       Set(fp)
     else Set()
 
-  private def updateCnf(cnf: Option[CNF]) : Set[Component] =
+  private def updateCnf(cnf: Option[CNF]): Set[Component] =
     if cnf.isDefined then
       val fp: FlowPanel = new FlowPanel():
         name = cnfOutputDialogName
@@ -34,11 +33,8 @@ object View:
       Set(fp)
     else Set()
 
-  private def updateExpression(exp: Option[Expression]) : Set[Component] =
-    val ta : TextArea = createInputTextArea(s"${if exp.isDefined then exp.get.printAsFormal(false) else ""}")
-    Set(ta)
+  private def updateExpression(exp: Option[Expression]): Set[Component] =
+    Set(createInputTextArea(s"${if exp.isDefined then exp.get.printAsFormal(false) else ""}"))
 
   private def updateExpression(exp: String): Component =
-    val txt = createInputTextArea(exp)
-    txt.name = expTextAreaName
-    txt
+    createInputTextArea(exp)
