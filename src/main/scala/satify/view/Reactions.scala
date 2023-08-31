@@ -28,7 +28,6 @@ object Reactions:
 
   def solutionReaction(model: Model): Unit =
     val input: String = inputScrollPane.contents.head.asInstanceOf[TextArea].text
-    println(view(update(model, Solve(input))))
     updateComponents(view(update(model, Solve(input))))
 
   def importReaction(model: Model): Unit =
