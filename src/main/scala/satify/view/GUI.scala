@@ -29,7 +29,7 @@ object GUI:
   val solutionOutputDialog: Dialog = createOutputDialog("Solution")
   val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
   val helpDialog: Dialog = createHelpDialog()
-  val loadingLabel: Label = createLabel("Solving...", 16)
+  val loadingLabel: Label = createLabel("Loading...", 16)
   loadingLabel.visible = false
 
   val fileChooser: FileChooser = createImportFileChooser
