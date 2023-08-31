@@ -60,6 +60,12 @@ object ComponentUtils:
     background = Color.green
     foreground = Color(200, 0, 0)
 
+  def createNextSection(): BoxPanel =
+    new BoxPanel(Orientation.Horizontal):
+      contents += Swing.HGlue
+      contents += createButton("Next", 100, 40)
+      contents += Swing.HGlue
+
   /** Creates a dialog to show the output
     * @return the dialog
     */
