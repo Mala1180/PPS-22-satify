@@ -11,7 +11,7 @@ class ExpressionTest extends AnyFlatSpec with Matchers:
 
   val exp: Expression = and(or(symbol("a"), symbol("b")), symbol("c"))
 
-  "An Expression" should "be buildable using a Tree" in {
+  "An Expression" should "have its respective Tree" in {
     exp.tree shouldBe
       BinaryBranch(And, BinaryBranch(Or, Leaf(Some(Symbol("a"))), Leaf(Some(Symbol("b")))), Leaf(Some(Symbol("c"))))
   }
