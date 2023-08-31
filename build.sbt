@@ -1,5 +1,3 @@
-import org.apache.commons.lang3.SystemUtils
-
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
 val languageVersion = "3.3.0"
@@ -40,7 +38,7 @@ cucumber := {
       (Test / fullClasspath).value
         .filterNot(_.data.toString.contains("instrumented"))
         .map(_.data)
-        .mkString(if (SystemUtils.IS_OS_WINDOWS) ";" else ":"),
+        .mkString(if (org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS) ";" else ":"),
       "io.cucumber.core.cli.Main"
     ),
     connectInput = false,
