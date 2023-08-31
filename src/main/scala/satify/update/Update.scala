@@ -21,6 +21,7 @@ object Update:
     message match
       case Input(char) => model
       case Solve(input) =>
+        println(input)
         val exp = reflect(input)
         given CNFConverter with
           def convert(exp: Expression): CNF = tseitin(exp)

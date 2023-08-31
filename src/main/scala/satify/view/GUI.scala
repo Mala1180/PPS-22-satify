@@ -14,12 +14,11 @@ object GUI:
   private val logoLabel: Label = new Label:
     icon = logoIcon
     border = Swing.EmptyBorder(margin)
-    background = new Color(33, 33, 33, 33)
 
-  val inputTextArea: TextArea = createInputTextArea()
+  var inputTextArea: TextArea = createInputTextArea()
   val parameterInputText: TextField = createParameterInputText()
   var inputScrollPane = new ScrollPane(inputTextArea)
-  val problemComboBox: ComboBox[String] = createProblemComboBox(inputTextArea)
+  val problemComboBox: ComboBox[String] = createProblemComboBox()
 
   // solve and convert to cnf buttons
   val solveButton: Button = createButton("Solve", 100, 40)

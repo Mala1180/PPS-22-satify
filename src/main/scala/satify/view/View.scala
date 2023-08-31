@@ -3,7 +3,7 @@ package satify.view
 import satify.model.{CNF, State}
 import satify.view.ComponentUtils.{createButton, createInputTextArea, createNextSection, createOutputTextArea}
 import satify.view.Constants.{cnfOutputDialogName, solOutputDialogName}
-import satify.view.GUI.loadingLabel
+import satify.view.GUI.{inputTextArea, loadingLabel}
 
 import scala.swing.*
 
@@ -24,6 +24,7 @@ object View:
         contents += createNextSection()
 
     val cnf: Option[CNF] = model.cnf
-    val expComponent: TextArea = createInputTextArea(s"${if cnf.isDefined then cnf.get.printAsDSL() else ""}")
+    //val exp: String = if cnf.isDefined then cnf.get.printAsDSL() else ""
+    val expComponent: TextArea = createInputTextArea(s"${if model.expression.isDefined then model.expression.get.printAsFormal(false) else ""}")
 
     Set(expComponent, cnfComponent, solutionComponent)

@@ -48,7 +48,7 @@ object ComponentUtils:
     * @param inputTextArea the text area to fill with the problem selected
     * @return the combo box
     */
-  def createProblemComboBox(inputTextArea: TextArea): ComboBox[String] =
+  def createProblemComboBox(): ComboBox[String] =
     new ComboBox(List("No selection", "N-Queens", "Graph Coloring", "Nurse Scheduling"))
 
   /** Creates a button with the given text

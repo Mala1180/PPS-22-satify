@@ -24,29 +24,15 @@ import scala.swing.{Component, Swing, TextArea}
 
 object Reactions:
   def cnfReaction(model: Model): Unit =
-    val newComponents: Set[Component] = view(update(model, Convert(inputTextArea.text)))
-    cnfOutputDialog.contents = newComponents.filter(_.name == cnfOutputDialogName).head
-    Swing.onEDT(loadingLabel.visible = false)
-    cnfOutputDialog.open()
+    updateComponents(view(update(model, Convert(inputTextArea.text))))
 
   def solutionReaction(model: Model): Unit =
-    val newComponents: Set[Component] = view(update(model, Solve(inputTextArea.text)))
-    solutionOutputDialog.contents = newComponents.filter(_.name == solOutputDialogName).head
-    cnfOutputDialog.contents = newComponents.filter(_.name == cnfOutputDialogName).head
-    inputScrollPane.contents = newComponents.filter(_.name == expTextAreaName).head
-    Swing.onEDT(loadingLabel.visible = false)
-    solutionOutputDialog.open()
-    cnfOutputDialog.open()
+    val input: String = inputScrollPane.contents.head.asInstanceOf[TextArea].text
+    updateComponents(view(update(model, Solve(input))))
 
   def importReaction(model: Model): Unit =
     val file: File = fileChooser.selectedFile
-    val newComponents: Set[Component] = view(update(model, Import(file)))
-    solutionOutputDialog.contents = newComponents.filter(_.name == solOutputDialogName).head
-    cnfOutputDialog.contents = newComponents.filter(_.name == cnfOutputDialogName).head
-    inputScrollPane.contents = newComponents.filter(_.name == expTextAreaName).head
-    Swing.onEDT(loadingLabel.visible = false)
-    solutionOutputDialog.open()
-    cnfOutputDialog.open()
+    updateComponents(view(update(model, Import(file))))
 
   def problemSolutionReaction(model: Model): Unit =
     if !problemComboBox.item.equals("No selection") && !parameterInputText.text.equals("") && parameterInputText.text
@@ -59,16 +45,16 @@ object Reactions:
           case "N-Queens" => NQueens
           case "Graph Coloring" => GraphColoring
           case "Nurse Scheduling" => NurseScheduling
-        val newComponents: Set[Component] = view(update(model, SolveProblem(p, parameter)))
-        solutionOutputDialog.contents = newComponents.filter(_.name == solOutputDialogName).head
-        cnfOutputDialog.contents = newComponents.filter(_.name == cnfOutputDialogName).head
-        inputScrollPane.contents = newComponents.filter(_.name == expTextAreaName).head
-        Swing.onEDT(loadingLabel.visible = false)
-        solutionOutputDialog.open()
-        cnfOutputDialog.open()
+        updateComponents(view(update(model, SolveProblem(p, parameter))))
     else createErrorDialog("Problem selection or parameter are not valid").open()
 
   def helpReaction(model: Model): Unit =
     helpDialog.open()
 
-  def showResults(newComponents: Set[Component]): Unit = ???
+  private def updateComponents(newComponents: Set[Component]): Unit =
+    solutionOutputDialog.contents = newComponents.filter(_.name == solOutputDialogName).head
+    cnfOutputDialog.contents = newComponents.filter(_.name == cnfOutputDialogName).head
+    inputScrollPane.contents = newComponents.filter(_.name == expTextAreaName).head
+    Swing.onEDT(loadingLabel.visible = false)
+    solutionOutputDialog.open()
+    cnfOutputDialog.open()
