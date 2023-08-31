@@ -4,11 +4,11 @@ import satify.dsl.Reflection.reflect
 import satify.model.CNF.Symbol
 import satify.model.expression.Expression
 import satify.model.expression.Expression.Symbol as ExpSymbol
-import satify.model.problems.ProblemChoice.{GraphColoring, NQueens as NQueensChoice, NurseScheduling}
+import satify.model.problems.ProblemChoice.{GraphColoring, NurseScheduling, NQueens as NQueensChoice}
 import satify.model.{CNF, State, Variable}
 import satify.update.Message.*
 import satify.update.converters.CNFConverter
-import satify.update.converters.TseitinTransformation.tseitin
+import satify.update.converters.TseitinTransformation.{convertToCNF, tseitin}
 import satify.update.parser.DimacsCNF.*
 import satify.model.problems.{NQueens, ProblemChoice}
 import satify.model.problems.NQueens.*
@@ -21,7 +21,6 @@ object Update:
     message match
       case Input(char) => model
       case Solve(input) =>
-        println(input)
         val exp = reflect(input)
         given CNFConverter with
           def convert(exp: Expression): CNF = tseitin(exp)
@@ -47,7 +46,5 @@ object Update:
         s.close()
         val optCnf = parse(lines)
         State(
-          Expression.Symbol("NO EXP"),
-          optCnf.getOrElse(Symbol(Variable("NO CNF FOUND"))),
-          Solver().dpll(optCnf.getOrElse(Symbol(Variable("NO CNF FOUND"))))
+          optCnf.getOrElse(Symbol(Variable("NO CNF FOUND")))
         )

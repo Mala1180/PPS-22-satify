@@ -28,6 +28,7 @@ object Reactions:
 
   def solutionReaction(model: Model): Unit =
     val input: String = inputScrollPane.contents.head.asInstanceOf[TextArea].text
+    println(view(update(model, Solve(input))))
     updateComponents(view(update(model, Solve(input))))
 
   def importReaction(model: Model): Unit =
@@ -52,9 +53,15 @@ object Reactions:
     helpDialog.open()
 
   private def updateComponents(newComponents: Set[Component]): Unit =
-    solutionOutputDialog.contents = newComponents.filter(_.name == solOutputDialogName).head
-    cnfOutputDialog.contents = newComponents.filter(_.name == cnfOutputDialogName).head
-    inputScrollPane.contents = newComponents.filter(_.name == expTextAreaName).head
+    newComponents.foreach(c => {
+      c.name match
+        case n if n == solOutputDialogName =>
+          solutionOutputDialog.contents = c
+          solutionOutputDialog.open()
+        case n if n == cnfOutputDialogName =>
+          cnfOutputDialog.contents = c
+          cnfOutputDialog.open()
+        case n if n == expTextAreaName =>
+          inputScrollPane.contents = c
+    })
     Swing.onEDT(loadingLabel.visible = false)
-    solutionOutputDialog.open()
-    cnfOutputDialog.open()
