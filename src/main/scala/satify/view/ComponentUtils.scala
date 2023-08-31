@@ -94,17 +94,21 @@ object ComponentUtils:
       contents += Swing.HGlue
       contents += new BoxPanel(Orientation.Vertical):
         contents += createLabel("Operators:", 20)
-        contents += createLabel("  - AND: and", 18)
-        contents += createLabel("  - OR: or", 18)
-        contents += createLabel("  - NOT: !", 18)
-        contents += createLabel("  - XOR: xor", 18)
-        contents += createLabel("  - IMPLICATION: ->", 18)
-        contents += createLabel("  - EQUIVALENCE: <->", 18)
-        contents += createLabel("  - PARENTHESIS: ()", 18)
-        contents += createLabel("  - AT MOST ONE: atMostOne", 18)
-        contents += createLabel("  - AT LEAST ONE: atLeastOne", 18)
-        contents += createLabel("  - TRUE", 18)
-        contents += createLabel("  - FALSE", 18)
+        contents += Swing.VStrut(10)
+        contents += createLabel("  - AND:              and | /\\ ", 18)
+        contents += createLabel("  - OR:                   or | \\/ ", 18)
+        contents += createLabel("  - NOT:               not | ! ", 18)
+        contents += createLabel("  - XOR:               xor | ^ ", 18)
+        contents += createLabel("  - IMPLICATION:  implies | -> ", 18)
+        contents += createLabel("  - DOUBLE IMPL.:        iff | <-> ", 18)
+        contents += Swing.VStrut(20)
+        contents += createLabel("Encodings:", 20)
+        contents += Swing.VStrut(10)
+        contents += createLabel("  - AT LEAST ONE:  atLeastOne(\"X1\", \"X2\", ...)", 18)
+        contents += createLabel("  - AT LEAST K:       atLeastK(k: Int)(\"X1\", \"X2\", ...)", 18)
+        contents += createLabel("  - AT MOST ONE:  atMostOne(\"X1\", \"X2\", ...)", 18)
+        contents += createLabel("  - AT MOST K:        atMostK(k: Int)(\"X1\", \"X2\", ...)", 18)
+        contents += createLabel("  - EXACTLY ONE:  exactlyOne(\"X1\", \"X2\", ...)", 18)
       contents += Swing.HGlue
     new Dialog:
       contents = helpBox
@@ -116,17 +120,24 @@ object ComponentUtils:
   /** Creates a dialog to show the error
     * @return the dialog
     */
-  def createErrorDialog(): Dialog =
-    val errorBox = new BoxPanel(Orientation.Horizontal):
-      contents += Swing.HGlue
-      contents += new BoxPanel(Orientation.Vertical):
-        contents += createLabel("ERROR", 20)
-      contents += Swing.HGlue
+  def createErrorDialog(description: String): Dialog =
+    val errorBox = new BoxPanel(Orientation.Vertical):
+      contents += Swing.VStrut(30)
+      contents += new BoxPanel(Orientation.Horizontal):
+        contents += Swing.HGlue
+        contents += createLabel("ERROR ", 20)
+        contents += Swing.HGlue
+      contents += Swing.VStrut(30)
+      contents += new BoxPanel(Orientation.Horizontal):
+        contents += Swing.HGlue
+        contents += createLabel(description, 18)
+        contents += Swing.HGlue
+      contents += Swing.VGlue
     new Dialog:
       contents = errorBox
       modal = true
       title = "Error"
-      size = new Dimension(windowSize.width / 6, windowSize.height / 4)
+      size = new Dimension(windowSize.width / 4, windowSize.height / 4)
       centerOnScreen()
 
   /** Creates a label with the given text and font size

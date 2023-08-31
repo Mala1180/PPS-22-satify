@@ -30,8 +30,8 @@ object Update:
         var exp: Expression = ExpSymbol("NO EXP")
         problem match
           case NQueensChoice => exp = NQueens(parameter).exp
-          case GraphColoring => ???//GraphColoring(parameter).exp
-          case NurseScheduling => ???//NurseScheduling(parameter).exp
+          case GraphColoring => ??? // GraphColoring(parameter).exp
+          case NurseScheduling => ??? // NurseScheduling(parameter).exp
         given CNFConverter with
           def convert(exp: Expression): CNF = tseitin(exp)
 
@@ -45,4 +45,8 @@ object Update:
         val lines = s.getLines.toSeq
         s.close()
         val optCnf = parse(lines)
-        State(Expression.Symbol("NO EXP"),optCnf.getOrElse(Symbol(Variable("NO CNF FOUND"))),  Solver().dpll(optCnf.getOrElse(Symbol(Variable("NO CNF FOUND")))))
+        State(
+          Expression.Symbol("NO EXP"),
+          optCnf.getOrElse(Symbol(Variable("NO CNF FOUND"))),
+          Solver().dpll(optCnf.getOrElse(Symbol(Variable("NO CNF FOUND"))))
+        )

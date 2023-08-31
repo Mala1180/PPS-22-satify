@@ -6,6 +6,7 @@ import satify.view.Constants.windowSize
 import satify.view.GUI.*
 import satify.view.Reactions.{cnfReaction, helpReaction, importReaction, problemSolutionReaction, solutionReaction}
 
+import java.util.concurrent.{ExecutorService, Executors}
 import scala.swing.event.ButtonClicked
 import scala.swing.{Dimension, FileChooser, MainFrame, Swing}
 
@@ -15,13 +16,12 @@ object Main extends App with MVU:
     title = "Satify SAT Solver"
 
     solveButton.reactions += { case ButtonClicked(_) =>
-      //loadingLabel.visible = true
       Swing.onEDT(loadingLabel.visible = true)
-      new Thread(() => solutionReaction(model)).start()
+      Executors.newSingleThreadExecutor().execute(() => solutionReaction(model))
     }
     cnfButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(loadingLabel.visible = true)
-      new Thread(() => cnfReaction(model)).start()
+      Executors.newSingleThreadExecutor().execute(() => cnfReaction(model))
     }
 
     solveProblemButton.reactions += { case ButtonClicked(_) => problemSolutionReaction(model) }
@@ -34,7 +34,7 @@ object Main extends App with MVU:
       val result = fileChooser.showOpenDialog(null)
       if result == FileChooser.Result.Approve then
         Swing.onEDT(loadingLabel.visible = true)
-        new Thread(() => importReaction(model)).start()
+        Executors.newSingleThreadExecutor().execute(() => importReaction(model))
     }
 
     contents = createBaseGUI()

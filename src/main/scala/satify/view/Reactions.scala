@@ -49,9 +49,11 @@ object Reactions:
     cnfOutputDialog.open()
 
   def problemSolutionReaction(model: Model): Unit =
-    if !problemComboBox.item.equals("No selection") && !parameterInputText.text.equals("") && parameterInputText.text.forall(_.isDigit) then
+    if !problemComboBox.item.equals("No selection") && !parameterInputText.text.equals("") && parameterInputText.text
+        .forall(_.isDigit)
+    then
       val parameter: Int = parameterInputText.text.toInt
-      if parameter < 0 then createErrorDialog().open()
+      if parameter < 0 then createErrorDialog("Parameter value is not valid").open()
       else
         val p: ProblemChoice = problemComboBox.item match
           case "N-Queens" => NQueens
@@ -64,7 +66,7 @@ object Reactions:
         Swing.onEDT(loadingLabel.visible = false)
         solutionOutputDialog.open()
         cnfOutputDialog.open()
-    else createErrorDialog().open()
+    else createErrorDialog("Problem selection or parameter are not valid").open()
 
   def helpReaction(model: Model): Unit =
     helpDialog.open()
