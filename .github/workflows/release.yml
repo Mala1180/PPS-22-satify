@@ -5,7 +5,7 @@ on:
     types:
       - closed
     branches:
-      - main
+      - test
 
 permissions:
   contents: write
@@ -30,7 +30,7 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
-          title: "Sprint 3 Release"
+          title: "Test Release"
           prerelease: true
           files: |
             target/scala-3.3.0/satify.jar
