@@ -41,4 +41,4 @@ import satify.update.parser.DimacsCNF
 //    println("NQueens 10x10")
 //    printNQueensFromDimacs(10, sol.assignment.get.parModel)
 //  }
-*/
+ */
