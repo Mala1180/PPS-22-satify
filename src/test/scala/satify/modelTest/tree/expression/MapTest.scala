@@ -1,4 +1,4 @@
-package satify.model.expression
+package satify.modelTest.expression
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

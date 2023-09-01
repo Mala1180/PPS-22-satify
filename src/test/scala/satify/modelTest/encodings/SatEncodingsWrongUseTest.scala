@@ -1,4 +1,4 @@
-package satify.model.encodings
+package satify.modelTest.encodings
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.{should, shouldBe}

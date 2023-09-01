@@ -1,4 +1,4 @@
-package satify.parser
+package satify.updateTest.parser
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

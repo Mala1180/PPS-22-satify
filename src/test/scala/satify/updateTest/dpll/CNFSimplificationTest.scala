@@ -1,4 +1,4 @@
-package satify.DPLLTest
+package satify.updateTest.dpll
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

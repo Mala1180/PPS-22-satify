@@ -1,4 +1,4 @@
-package satify.problems
+package satify.modelTest.problems
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

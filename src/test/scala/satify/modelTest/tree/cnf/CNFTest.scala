@@ -1,4 +1,4 @@
-package satify.model.tree.cnf
+package satify.modelTest.tree.cnf
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

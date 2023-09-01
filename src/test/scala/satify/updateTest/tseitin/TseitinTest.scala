@@ -1,4 +1,4 @@
-package satify.model.tseitin
+package satify.updateTest.tseitin
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

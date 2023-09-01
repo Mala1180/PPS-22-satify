@@ -1,4 +1,4 @@
-package satify.features
+package satify.updateTest.tseitin.features
 
 import io.cucumber.scala.{EN, ScalaDsl}
 import org.scalatest.matchers.should.Matchers.*
