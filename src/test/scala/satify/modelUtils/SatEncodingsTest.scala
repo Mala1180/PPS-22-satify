@@ -10,11 +10,16 @@ import satify.model.tree.expression.{And, Not, Or}
 class SatEncodingsTest extends AnyFlatSpec:
 
   """ atLeastOne("A", "B", "C")  """ should """ be equal to "A" or "B" or "C" """ in {
-    atLeastOne(expression.Symbol("A"), expression.Symbol("B"), expression.Symbol("C")) shouldBe Or(expression.Or(expression.Symbol("A"), expression.Symbol("B")), expression.Symbol("C"))
+    atLeastOne(expression.Symbol("A"), expression.Symbol("B"), expression.Symbol("C")) shouldBe Or(
+      expression.Or(expression.Symbol("A"), expression.Symbol("B")),
+      expression.Symbol("C")
+    )
   }
 
   """ atMostOne("A", "B") """ should """ be equal to (Not("A") or "ENC0") and (Not("B") or "ENC0") """ in {
-    atMostOne(expression.Symbol("A"), expression.Symbol("B")) shouldBe Not(And(expression.Symbol("A"), expression.Symbol("B")))
+    atMostOne(expression.Symbol("A"), expression.Symbol("B")) shouldBe Not(
+      And(expression.Symbol("A"), expression.Symbol("B"))
+    )
 //    atMostOne(Symbol("A"), Symbol("B")) shouldBe And(
 //      Or(Not(Symbol("A")), Symbol("ENC0")),
 //      Or(Not(Symbol("B")), Symbol("ENC0"))

@@ -30,8 +30,12 @@ class ExpressionTest extends AnyFlatSpec with Matchers:
       Expression(
         for t <- exp.tree
         yield t match
-          case t if t == expression.Symbol("c").tree => expression.And(expression.Symbol("c"), expression.Symbol("d")).tree
+          case t if t == expression.Symbol("c").tree =>
+            expression.And(expression.Symbol("c"), expression.Symbol("d")).tree
           case t => t
       )
-    mExp shouldBe And(expression.Or(expression.Symbol("a"), expression.Symbol("b")), expression.And(expression.Symbol("c"), expression.Symbol("d")))
+    mExp shouldBe And(
+      expression.Or(expression.Symbol("a"), expression.Symbol("b")),
+      expression.And(expression.Symbol("c"), expression.Symbol("d"))
+    )
   }

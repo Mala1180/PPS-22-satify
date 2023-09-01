@@ -17,7 +17,10 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
       (expression.Symbol("X1"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b")))),
       (
         expression.Symbol("X0"),
-        expression.Or(expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))), expression.Symbol("c"))
+        expression.Or(
+          expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))),
+          expression.Symbol("c")
+        )
       )
     )
   }
@@ -36,12 +39,18 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
 
   "In (c ∧ (a ∧ ¬b)) the subexp ¬b, (a ∧ ¬b) and (c ∧ (a ∧ ¬b))" should "be decomposed correctly" in {
     val exp: Expression =
-      expression.And(expression.Symbol("c"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))))
+      expression.And(
+        expression.Symbol("c"),
+        expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b")))
+      )
     val list = zipWithSymbol(exp)
     list should contain only (
       (
         expression.Symbol("X0"),
-        expression.And(expression.Symbol("c"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))))
+        expression.And(
+          expression.Symbol("c"),
+          expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b")))
+        )
       ),
       (expression.Symbol("X1"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b")))),
       (expression.Symbol("X2"), expression.Not(expression.Symbol("b")))
@@ -76,12 +85,16 @@ class SubexpressionsTest extends AnyFlatSpec with Matchers:
 
   "The exp: (c ∧ (a ∧ ¬b))" should "be decomposed correctly" in {
     val exp: Expression =
-      expression.And(expression.Symbol("c"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))))
+      expression.And(
+        expression.Symbol("c"),
+        expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b")))
+      )
     val result = zipWithSymbol(exp)
     val expected = List(
       (
         expression.Symbol("X0"),
-        expression.And(expression.Symbol("c"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))))
+        expression
+          .And(expression.Symbol("c"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))))
       ),
       (expression.Symbol("X1"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b")))),
       (expression.Symbol("X2"), expression.Not(expression.Symbol("b")))

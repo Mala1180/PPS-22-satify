@@ -10,20 +10,27 @@ import satify.model.tree.*
 class ReplaceTest extends AnyFlatSpec with Matchers:
 
   "In ((a ∧ ¬b) ∨ c) the exp ¬c" should "not be replaced and input exp returned" in {
-    val exp: Expression = Or(And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))), expression.Symbol("c"))
-    val result = map(exp, {
-      case Not(Symbol("c")) => Symbol("X0")
-      case e => e
-    })
+    val exp: Expression =
+      Or(And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))), expression.Symbol("c"))
+    val result = map(
+      exp,
+      {
+        case Not(Symbol("c")) => Symbol("X0")
+        case e => e
+      }
+    )
     result shouldBe exp
   }
 
   "In ((a ∧ ¬b) ∨ c) the exp (a ∧ b)" should "not be replaced and input exp returned" in {
     val exp: Expression = expression.Or(expression.And(Symbol("a"), expression.Not(Symbol("b"))), Symbol("c"))
-    val result = map(exp, {
-      case And(Symbol("a"), Symbol("b")) => Symbol("X0")
-      case e => e
-    })
+    val result = map(
+      exp,
+      {
+        case And(Symbol("a"), Symbol("b")) => Symbol("X0")
+        case e => e
+      }
+    )
     result shouldBe exp
   }
 
@@ -32,40 +39,52 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
       expression.Or(expression.And(Symbol("a"), expression.Not(Symbol("b"))), Symbol("c"))
     val expected: Expression =
       expression.Or(expression.And(Symbol("a"), Symbol("X0")), Symbol("c"))
-    val result = map(exp, {
-      case Not(Symbol("b")) => Symbol("X0")
-      case e => e
-    })
+    val result = map(
+      exp,
+      {
+        case Not(Symbol("b")) => Symbol("X0")
+        case e => e
+      }
+    )
     result shouldBe expected
   }
 
   "In ((a ∧ ¬b) ∨ c) the subexp (a ∧ ¬b)" should "be replaced with X0" in {
     val exp: Expression = expression.Or(expression.And(Symbol("a"), expression.Not(Symbol("b"))), Symbol("c"))
     val expected: Expression = expression.Or(Symbol("X0"), Symbol("c"))
-    val result = map(exp, {
-      case And(Symbol("a"), Not(Symbol("b"))) => Symbol("X0")
-      case e => e
-    })
+    val result = map(
+      exp,
+      {
+        case And(Symbol("a"), Not(Symbol("b"))) => Symbol("X0")
+        case e => e
+      }
+    )
     result shouldBe expected
   }
 
   "In ((a ∧ ¬b) ∨ c) the subexp ((a ∧ ¬b) ∨ c)" should "be replaced with X0" in {
     val exp: Expression = expression.Or(expression.And(Symbol("a"), expression.Not(Symbol("b"))), Symbol("c"))
     val expected: Expression = Symbol("X0")
-    val result = map(exp, {
-      case Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c")) => Symbol("X0")
-      case e => e
-    })
+    val result = map(
+      exp,
+      {
+        case Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c")) => Symbol("X0")
+        case e => e
+      }
+    )
     result shouldBe expected
   }
 
   "In ((¬b ∧ ¬b) ∨ ¬b) the subexp ¬b" should "be replaced with X0" in {
     val exp: Expression = Or(And(expression.Not(Symbol("b")), expression.Not(Symbol("b"))), expression.Not(Symbol("b")))
     val expected: Expression = expression.Or(expression.And(Symbol("X0"), Symbol("X0")), Symbol("X0"))
-    val result = map(exp, {
-      case Not(Symbol("b")) => Symbol("X0")
-      case e => e
-    })
+    val result = map(
+      exp,
+      {
+        case Not(Symbol("b")) => Symbol("X0")
+        case e => e
+      }
+    )
     result shouldBe expected
   }
 
@@ -73,35 +92,47 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
     val expression: Expression =
       tree.expression.Or(tree.expression.And(Symbol("a"), tree.expression.Not(Symbol("b"))), Symbol("c"))
     val exp1: Expression = tree.expression.Or(tree.expression.And(Symbol("a"), Symbol("X0")), Symbol("c"))
-    val res1 = map(expression, {
-      case Not(Symbol("b")) => Symbol("X0")
-      case e => e
-    })
+    val res1 = map(
+      expression,
+      {
+        case Not(Symbol("b")) => Symbol("X0")
+        case e => e
+      }
+    )
     res1 shouldBe exp1
     val exp2: Expression = tree.expression.Or(Symbol("X1"), Symbol("c"))
-    val res2 = map(exp1, {
-      case And(Symbol("a"), Symbol("X0")) => Symbol("X1")
-      case e => e
-    })
+    val res2 = map(
+      exp1,
+      {
+        case And(Symbol("a"), Symbol("X0")) => Symbol("X1")
+        case e => e
+      }
+    )
     res2 shouldBe exp2
   }
 
   "In ((¬b ∧ ¬b) ∨ ¬b) the subexp (¬b ∧ ¬b)" should "be replaced with X0" in {
     val exp: Expression = Or(And(expression.Not(Symbol("b")), expression.Not(Symbol("b"))), expression.Not(Symbol("b")))
     val expected: Expression = expression.Or(Symbol("X0"), expression.Not(Symbol("b")))
-    val result = map(exp, {
-      case And(Not(Symbol("b")), Not(Symbol("b"))) => Symbol("X0")
-      case e => e
-    })
+    val result = map(
+      exp,
+      {
+        case And(Not(Symbol("b")), Not(Symbol("b"))) => Symbol("X0")
+        case e => e
+      }
+    )
     result shouldBe expected
   }
 
   "In ((a ∧ ¬b) ∨ ¬b) the subexp ¬b" should "be replaced with X0" in {
     val exp: Expression = Or(expression.And(Symbol("a"), expression.Not(Symbol("b"))), expression.Not(Symbol("b")))
     val expected: Expression = expression.Or(expression.And(Symbol("a"), Symbol("X0")), Symbol("X0"))
-    val result = map(exp, {
-      case Not(Symbol("b")) => Symbol("X0")
-      case e => e
-    })
+    val result = map(
+      exp,
+      {
+        case Not(Symbol("b")) => Symbol("X0")
+        case e => e
+      }
+    )
     result shouldBe expected
   }

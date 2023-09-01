@@ -16,7 +16,13 @@ class CNFValidator extends AnyFlatSpec with Matchers:
   }
 
   "The exp a ∧ b ∧ c ∧ d ∧ e" should "be validated as CNF" in {
-    val exp: Expression = And(expression.Symbol("a"), expression.And(expression.Symbol("b"), expression.And(expression.Symbol("c"), expression.And(expression.Symbol("d"), expression.Symbol("e")))))
+    val exp: Expression = And(
+      expression.Symbol("a"),
+      expression.And(
+        expression.Symbol("b"),
+        expression.And(expression.Symbol("c"), expression.And(expression.Symbol("d"), expression.Symbol("e")))
+      )
+    )
     val result: Boolean = isCNF(exp)
     result shouldBe true
   }
