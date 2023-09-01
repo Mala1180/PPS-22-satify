@@ -13,3 +13,4 @@ object Constants:
   val parameterInputName = "parTextField"
   val cnfOutputDialogName = "cnfOutputDialog"
   val solOutputDialogName = "solOutputDialog"
+  val nextBtnName = "nextButton"

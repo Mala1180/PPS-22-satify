@@ -6,6 +6,7 @@ import java.awt.{Color, Font, Image, Toolkit}
 import java.net.{URI, URL}
 import javax.swing.ImageIcon
 import scala.swing.*
+import satify.view.GUI.nextSolutionButton
 
 object ComponentUtils:
 
@@ -45,7 +46,6 @@ object ComponentUtils:
       maximumSize = new Dimension(100, 30)
 
   /** Creates a combo box for the problem selection
-    * @param inputTextArea the text area to fill with the problem selected
     * @return the combo box
     */
   def createProblemComboBox(): ComboBox[String] =
@@ -63,7 +63,7 @@ object ComponentUtils:
   def createNextSection(): BoxPanel =
     new BoxPanel(Orientation.Horizontal):
       contents += Swing.HGlue
-      contents += createButton("Next", 100, 40)
+      contents += nextSolutionButton
       contents += Swing.HGlue
 
   /** Creates a dialog to show the output

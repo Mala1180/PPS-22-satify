@@ -11,3 +11,4 @@ enum Message:
   case SolveProblem(problem: ProblemChoice, parameter: Int)
   case Convert(input: String)
   case Import(file: File)
+  case NextSolution

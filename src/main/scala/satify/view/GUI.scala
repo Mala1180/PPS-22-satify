@@ -24,6 +24,7 @@ object GUI:
   val solveButton: Button = createButton("Solve", 100, 40)
   val solveProblemButton: Button = createButton("Solve", 100, 40)
   val cnfButton: Button = createButton("Convert to CNF", 170, 40)
+  val nextSolutionButton: Button = createButton("Next", 100, 40)
 
   // output dialogs
   val solutionOutputDialog: Dialog = createOutputDialog("Solution")

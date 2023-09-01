@@ -4,7 +4,7 @@ import satify.Architecture.MVU
 import satify.Main.model
 import satify.view.Constants.windowSize
 import satify.view.GUI.*
-import satify.view.Reactions.{cnfReaction, helpReaction, importReaction, problemSolutionReaction, solutionReaction}
+import satify.view.Reactions.{cnfReaction, helpReaction, importReaction, nextSolutionReaction, problemSolutionReaction, solutionReaction}
 
 import java.util.concurrent.{ExecutorService, Executors}
 import scala.swing.event.ButtonClicked
@@ -24,7 +24,12 @@ object Main extends App with MVU:
       Executors.newSingleThreadExecutor().execute(() => cnfReaction(model))
     }
 
-    solveProblemButton.reactions += { case ButtonClicked(_) => problemSolutionReaction(model) }
+    solveProblemButton.reactions += { case ButtonClicked(_) =>
+      Executors.newSingleThreadExecutor().execute(() => problemSolutionReaction(model))}
+
+    nextSolutionButton.reactions += { case ButtonClicked(_) =>
+      Executors.newSingleThreadExecutor().execute(() => nextSolutionReaction(model))
+    }
 
     helpMenuItem.reactions += { case ButtonClicked(_) =>
       helpReaction(model)

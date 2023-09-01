@@ -48,3 +48,8 @@ object Update:
         State(
           optCnf.getOrElse(Symbol(Variable("NO CNF FOUND")))
         )
+      case NextSolution =>
+        //model.solution.next()
+        println("Next button clicked, here i have to select next solution, same expression different assignment")
+        //in questo caso si aggiorna lo stato con la soluzione dopo quella corrente
+        State(model.expression.get, model.solution.get)
