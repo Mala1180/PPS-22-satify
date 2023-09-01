@@ -4,6 +4,7 @@ import io.cucumber.scala.{EN, ScalaDsl}
 import org.scalatest.matchers.should.Matchers.*
 import satify.dsl.Reflection.reflect
 import satify.model.tree.cnf.CNF
+import satify.model.tree.cnf.CNFUtils.printAsDSL
 import satify.model.tree.expression.Expression
 import satify.update.converters.TseitinTransformation.tseitin
 

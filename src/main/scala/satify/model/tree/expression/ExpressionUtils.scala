@@ -2,7 +2,7 @@ package satify.model.tree.expression
 
 import satify.model.tree.expression.{And, Expression, Not, Or, Symbol}
 
-object Utils:
+object ExpressionUtils:
 
   /** Generate a new Symbol starting from the given prefix.
     * @param prefix the prefix of the new Symbol.

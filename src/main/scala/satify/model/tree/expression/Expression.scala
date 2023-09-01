@@ -2,7 +2,7 @@ package satify.model.tree.expression
 
 import satify.model.tree.*
 import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree
-import Utils.symbolGenerator
+import ExpressionUtils.symbolGenerator
 import satify.model.tree.Value.{and, not, or, symbol}
 
 trait Expression:

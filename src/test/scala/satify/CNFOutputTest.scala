@@ -5,6 +5,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.shouldBe
 import satify.model.tree.cnf.*
 import satify.model.tree.cnf.CNF.*
+import satify.model.tree.cnf.CNFUtils.*
 
 class CNFOutputTest extends AnyFlatSpec with Matchers:
 
