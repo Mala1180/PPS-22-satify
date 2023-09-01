@@ -2,7 +2,9 @@ package satify.modelUtils
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.{should, shouldBe}
-import satify.model.expression.Expression.*
+import satify.model.tree.Expression.*
+import satify.model.tree.*
+import satify.model.tree.Encodings.*
 
 class SatEncodingsTest extends AnyFlatSpec:
 

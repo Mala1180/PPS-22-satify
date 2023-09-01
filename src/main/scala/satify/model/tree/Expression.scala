@@ -1,30 +1,49 @@
 package satify.model.tree
 
 import Value.*
+import TreeTraversableGiven.given_Traversable_Tree.zipWith
+import TreeTraversableGiven.given_Traversable_Tree
+import Utils.symbolGenerator
 
 trait Expression:
   val tree: Tree[Value]
+
+case class And(left: Expression, right: Expression) extends Expression:
+  val tree: BinaryBranch[Value] = BinaryBranch(and, left.tree, right.tree)
+
+case class Or(left: Expression, right: Expression) extends Expression:
+  val tree: BinaryBranch[Value] = BinaryBranch(or, left.tree, right.tree)
+
+case class Not(branch: Expression) extends Expression:
+  val tree: UnaryBranch[Value] = UnaryBranch(not, branch.tree)
+
+case class Symbol(s: String) extends Expression:
+  val tree: Leaf[Value] = Leaf(Some(symbol(s)))
 
 object Expression:
 
   def apply(tree: Tree[Value]): Expression = tree match
     case BinaryBranch(value, left, right) =>
       value match
-        case And => and(Expression(left), Expression(right))
-        case Or => or(Expression(left), Expression(right))
+        case Value.and => And(Expression(left), Expression(right))
+        case Value.or => Or(Expression(left), Expression(right))
     case UnaryBranch(value, branch) =>
       value match
-        case Not => not(Expression(branch))
-    case Leaf(Some(Symbol(s))) => symbol(s)
+        case Value.not => Not(Expression(branch))
+    case Leaf(Some(symbol(s))) => Symbol(s)
 
-case class and(left: Expression, right: Expression) extends Expression:
-  val tree: Tree[Value] = BinaryBranch(And, left.tree, right.tree)
+  def map(exp: Expression, f: Expression => Expression): Expression =
+    Expression(exp.tree.map(t => f(Expression(t)).tree))
 
-case class or(left: Expression, right: Expression) extends Expression:
-  val tree: Tree[Value] = BinaryBranch(Or, left.tree, right.tree)
+  def zipWith(exp: Expression)(f: () => Symbol): List[(Symbol, Expression)] =
+    exp.tree.zipWith(() => f().tree).map((l, t) => l match
+      case Leaf(Some(symbol(v))) => (Symbol(v), Expression(t)))
 
-case class not(branch: Expression) extends Expression:
-  val tree: Tree[Value] = UnaryBranch(Not, branch.tree)
+  def zipWithSymbol(exp: Expression): List[(Symbol, Expression)] =
+    zipWith(exp)(symbolGenerator("X"))
 
-case class symbol(s: String) extends Expression:
-  val tree: Tree[Value] = Leaf(Some(Symbol(s)))
+    //exp.tree.zipWith(symbolGenerator("X")).map((value, tree) => value match
+    //  case symbol(value) => (Symbol(value), Expression(tree))).toList
+
+  def subexpressions(exp: Expression): List[Expression] =
+    zipWithSymbol(exp).map(_._2)

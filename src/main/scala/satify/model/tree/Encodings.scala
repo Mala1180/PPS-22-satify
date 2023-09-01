@@ -1,7 +1,7 @@
-package satify.model.expression
+package satify.model.tree
 
-import satify.model.expression.Expression.{And, Not, Or, Symbol}
-import satify.model.expression.Utils.symbolGenerator
+import satify.model.tree.*
+import satify.model.tree.Utils.symbolGenerator
 
 object Encodings:
 

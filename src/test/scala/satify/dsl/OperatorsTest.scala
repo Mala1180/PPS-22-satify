@@ -2,7 +2,8 @@ package satify.dsl
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.shouldBe
-import satify.model.expression.Expression.*
+import satify.model.tree.{And, Not, Or, Symbol}
+import satify.dsl.Operators.*
 
 class OperatorsTest extends AnyFlatSpec:
 

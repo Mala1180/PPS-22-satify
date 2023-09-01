@@ -1,6 +1,6 @@
 package satify.update.converters
 
-import satify.model.expression.Expression
+import satify.model.tree.Expression
 import satify.model.{CNF, Variable}
 
 /** Functional interface for converting an expression into a CNF. */

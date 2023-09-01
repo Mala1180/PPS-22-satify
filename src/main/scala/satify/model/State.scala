@@ -1,13 +1,13 @@
 package satify.model
 
 import satify.model
-import satify.model.expression.Expression
+import satify.model.tree.Expression
 import satify.model.problems.Problem
 
 /** The immutable entity representing the application state (Model). */
 trait State:
   /** A general expression of boolean logic, it is the user input */
-  type Expression = satify.model.expression.Expression
+  type Expression = satify.model.tree.Expression
   val expression: Option[Expression] = None
 
   /** The input expression converted to Conjunctive Normal Form (CNF) */

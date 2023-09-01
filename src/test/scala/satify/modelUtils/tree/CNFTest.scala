@@ -13,16 +13,16 @@ class CNFTest extends AnyFlatSpec with Matchers:
 
   "A CNF expression" should "have its respective Tree" in {
     cnf.tree shouldBe
-      BinaryBranch(And, Leaf(Some(Symbol("a"))), BinaryBranch(And, Leaf(Some(Symbol("b"))), Leaf(Some(Symbol("c")))))
+      BinaryBranch(and, Leaf(Some(symbol("a"))), BinaryBranch(and, Leaf(Some(symbol("b"))), Leaf(Some(symbol("c")))))
   }
 
   "A CNF expression" should "be able to be converted from Tree[Value] instance" in {
     val oCnf = CNF(
-      BinaryBranch(And, Leaf(Some(Symbol("a"))), BinaryBranch(And, Leaf(Some(Symbol("b"))), Leaf(Some(Symbol("c")))))
+      BinaryBranch(and, Leaf(Some(symbol("a"))), BinaryBranch(and, Leaf(Some(symbol("b"))), Leaf(Some(symbol("c")))))
     )
     oCnf shouldBe Some(cnf)
     CNF(
-      BinaryBranch(And, BinaryBranch(And, Leaf(Some(Symbol("a"))), Leaf(Some(Symbol("b")))), Leaf(Some(Symbol("c"))))
+      BinaryBranch(and, BinaryBranch(and, Leaf(Some(symbol("a"))), Leaf(Some(symbol("b")))), Leaf(Some(symbol("c"))))
     ) shouldBe None
   }
 

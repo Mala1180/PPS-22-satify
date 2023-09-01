@@ -2,13 +2,13 @@ package satify.update
 
 import satify.dsl.Reflection.reflect
 import satify.model.CNF.Symbol
-import satify.model.expression.Expression
+import satify.model.tree.Expression
 import satify.model.{CNF, State, Variable}
 import satify.update.Message.*
 import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.tseitin
 import satify.update.parser.DimacsCNF.*
-
+import satify.model.tree.Symbol as ExpSymbol
 import scala.io.Source
 
 object Update:
@@ -31,4 +31,4 @@ object Update:
         val lines = s.getLines.toSeq
         s.close()
         val optCnf = parse(lines)
-        State(Expression.Symbol("NO EXP"), optCnf.getOrElse(Symbol(Variable("NO CNF FOUND"))))
+        State(ExpSymbol("NO EXP"), optCnf.getOrElse(Symbol(Variable("NO CNF FOUND"))))

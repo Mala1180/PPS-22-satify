@@ -1,7 +1,8 @@
 package satify.dsl
 
-import satify.model.expression.Expression
-import satify.model.expression.Expression.*
+import satify.model.tree.Expression
+import satify.model.tree.Symbol
+import satify.model.tree.Encodings.*
 
 object Encodings:
 

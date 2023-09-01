@@ -2,9 +2,10 @@ package satify.modelUtils
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.expression.Expression.*
+import satify.model.tree.Expression.*
 import satify.model.Variable
-import satify.model.expression.Expression
+import satify.model.tree.*
+import satify.model.tree.Expression
 
 class SubexpressionsTest extends AnyFlatSpec with Matchers:
 

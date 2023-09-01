@@ -3,7 +3,7 @@ package satify.problems
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.Result.*
-import satify.model.expression.Expression
+import satify.model.tree.Expression
 import satify.model.problems.NQueens
 import satify.model.problems.NQueens.{printNQueensFromDimacs, printNqueens}
 import satify.model.{CNF, Solution}

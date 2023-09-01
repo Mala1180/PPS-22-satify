@@ -1,13 +1,18 @@
 package satify.update.converters
 
-import satify.model.expression.Expression
+import satify.model.tree.Expression
+import satify.model.tree.Expression.zipWithSymbol
 import satify.model.{CNF, Literal, Variable}
+import satify.model.tree.{And, Not, Or, Symbol}
+import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree.*
+import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree
+import satify.model.tree.TraversableOps.*
+import satify.model.tree.Expression.map
 
 /** Object containing the Tseitin transformation algorithm. */
 object TseitinTransformation:
 
   import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
-  import satify.model.expression.Expression.{replace as replaceExp, *}
   import satify.model.Literal
 
   /** Applies the Tseitin transformation to the gt iven expression in order to convert it into CNF.
@@ -37,7 +42,11 @@ object TseitinTransformation:
     ): List[(Symbol, Expression)] =
       list match
         case Nil => Nil
-        case (lit, e) :: t if contains(e, subexp) => (lit, replaceExp(e, subexp, l)) :: replace(t, subexp, l)
+        case (lit, e) :: t if e.tree.contains(subexp.tree) =>
+          (lit, map(e, {
+            case tt if tt == subexp => l
+            case tt => tt
+          })) :: replace(t, subexp, l)
         case (lit, e) :: t => (lit, e) :: replace(t, subexp, l)
 
     def symbolSelector(list: List[(Symbol, Expression)]): List[(Symbol, Expression)] = list match
@@ -52,7 +61,7 @@ object TseitinTransformation:
     * @param exp a Symbol and the corresponding expression
     * @return a list of Symbol and expressions in CNF form for the given Symbol and expression
     */
-  def transform(exp: (Expression.Symbol, Expression)): List[(CNFSymbol, CNF)] =
+  def transform(exp: (Symbol, Expression)): List[(CNFSymbol, CNF)] =
     def expr(exp: Expression): Literal = exp match
       case Symbol(v) => CNFSymbol(Variable(v, None))
       case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v, None)))

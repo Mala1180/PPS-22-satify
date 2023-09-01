@@ -1,6 +1,6 @@
 package satify.model.expression
 
-enum Expression:
+/*enum Expression:
   case Symbol(value: String)
   case Not(branch: Expression)
   case And(right: Expression, left: Expression)
@@ -74,3 +74,4 @@ object Expression:
       case or @ Or(_, _) => replaceExp(or, subexp, s)
       case not @ Not(_) => replaceExp(not, subexp, s)
       case _ => exp
+*/

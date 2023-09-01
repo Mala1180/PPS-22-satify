@@ -15,10 +15,10 @@ case class Leaf[V](value: Option[V] = None) extends Tree[V]
 
 // Tree node's value
 enum Value:
-  case And
-  case Or
-  case Not
-  case Symbol(value: String)
+  case and
+  case or
+  case not
+  case symbol(value: String)
 
 trait Traversable[F[_]]:
 
@@ -83,7 +83,8 @@ object TreeTraversableGiven:
             val ret =
               if rev.length == 1 then
                 if value.isDefined then UnaryBranch(value.get, rev.head)
-                else rev.head
+                else
+                  rev.head
               else if rev.length == 2 then BinaryBranch(value.get, rev.head, rev(1))
               else Leaf(Some(value.get))
             tail match
@@ -111,8 +112,24 @@ object TreeTraversableGiven:
 
         t match
           case l @ Leaf(_) => f(l)
-          case b @ BinaryBranch(_, _, _) => step(List(Frame(None, Nil, List(b))))
+          case b @ BinaryBranch(v, _, _) => step(List(Frame(None, Nil, List(b))))
           case u @ UnaryBranch(_, _) => step(List(Frame(None, Nil, List(u))))
 
       def withFilter(f: Tree[A] => Boolean): Tree[A] =
         t.map(tree => if f(tree) then tree else Leaf())
+
+      def zipWith(f: () => Leaf[A]): List[(Leaf[A], Tree[A])] =
+
+        def subTree(tree: Tree[A], list: List[(Leaf[A], Tree[A])])(f: () => Leaf[A]): List[(Leaf[A], Tree[A])] = tree match
+          case Leaf(_) => List()
+          case e => (f(), tree) :: list ::: subBranch(e, list)(f)
+
+        def subBranch(tree: Tree[A], list: List[(Leaf[A], Tree[A])])(f: () => Leaf[A]): List[(Leaf[A], Tree[A])] = tree match
+          case BinaryBranch(_, left, right) => subTree(left, list)(f) ::: subTree(right, list)(f)
+          case UnaryBranch(_, branch) => subTree(branch, list)(f)
+          case _ => subTree(tree, list)(f)
+
+        t match
+          case Leaf(_) => List((f(), t))
+          case UnaryBranch(not, Leaf(Some(Symbol(_)))) => List((f(), t))
+          case _ => subTree(t, List())(f)

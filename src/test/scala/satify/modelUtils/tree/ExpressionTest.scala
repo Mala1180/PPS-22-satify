@@ -9,17 +9,17 @@ import satify.model.tree.*
 
 class ExpressionTest extends AnyFlatSpec with Matchers:
 
-  val exp: Expression = and(or(symbol("a"), symbol("b")), symbol("c"))
+  val exp: Expression = And(Or(Symbol("a"), Symbol("b")), Symbol("c"))
 
   "An Expression" should "have its respective Tree" in {
     exp.tree shouldBe
-      BinaryBranch(And, BinaryBranch(Or, Leaf(Some(Symbol("a"))), Leaf(Some(Symbol("b")))), Leaf(Some(Symbol("c"))))
+      BinaryBranch(and, BinaryBranch(or, Leaf(Some(symbol("a"))), Leaf(Some(symbol("b")))), Leaf(Some(symbol("c"))))
   }
 
   "Expression" should "be able to be converted from Tree[Value] instance" in {
     val exp1: Expression =
       Expression(
-        BinaryBranch(And, BinaryBranch(Or, Leaf(Some(Symbol("a"))), Leaf(Some(Symbol("b")))), Leaf(Some(Symbol("c"))))
+        BinaryBranch(and, BinaryBranch(or, Leaf(Some(symbol("a"))), Leaf(Some(symbol("b")))), Leaf(Some(symbol("c"))))
       )
     exp1 shouldBe exp
   }
@@ -29,8 +29,8 @@ class ExpressionTest extends AnyFlatSpec with Matchers:
       Expression(
         for t <- exp.tree
         yield t match
-          case t if t == symbol("c").tree => and(symbol("c"), symbol("d")).tree
+          case t if t == Symbol("c").tree => And(Symbol("c"), Symbol("d")).tree
           case t => t
       )
-    mExp shouldBe and(or(symbol("a"), symbol("b")), and(symbol("c"), symbol("d")))
+    mExp shouldBe And(Or(Symbol("a"), Symbol("b")), And(Symbol("c"), Symbol("d")))
   }
