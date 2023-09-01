@@ -1,0 +1,30 @@
+name: Generate changelog
+
+on:
+  pull_request:
+    types:
+      - created
+    branches:
+      - test
+
+  workflow_dispatch:
+
+
+jobs:
+  generate-changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Extract branch name
+        run: echo ${{ github.head_ref }}
+
+      - name: Update Changelog
+        uses: BobAnkh/auto-generate-changelog@v1.2.5
+        with:
+          BRANCH: ${{ github.head_ref }}
+          ACCESS_TOKEN: "${{ secrets.secrets.GITHUB_TOKEN }}"
+          TYPE: 'feat:Feature 🚀,fix:Bug Fixes 🐛,docs:Documentation 📚,refactor:Refactor 🛠️,perf :Performance Improvements 📈,
+                style:Style Improvements 💉,test:Tests 🧪,wip:Work in progress ⚙️,ci:Continuous Integration 🤖️,chore:Chores 🖋️,other:Other Changes'
