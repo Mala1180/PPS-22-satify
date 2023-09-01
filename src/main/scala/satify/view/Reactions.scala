@@ -24,17 +24,29 @@ import scala.swing.{Component, Swing, TextArea}
 
 object Reactions:
 
+  /** Reaction to the solve button
+    * @param model the current model to update
+    */
   def solutionReaction(model: Model): Unit =
     val input: String = inputScrollPane.contents.head.asInstanceOf[TextArea].text
     updateComponents(view(update(model, Solve(input))))
 
+  /** Reaction to the convert button
+    * @param model the current model to update
+    */
   def cnfReaction(model: Model): Unit =
     updateComponents(view(update(model, Convert(inputTextArea.text))))
 
+  /** Reaction to the import button
+    * @param model the current model to update
+    */
   def importReaction(model: Model): Unit =
     val file: File = fileChooser.selectedFile
     updateComponents(view(update(model, Import(file))))
 
+  /** Reaction to the problem selection, checking also parameter and selection
+    * @param model the current model to update
+    */
   def problemSolutionReaction(model: Model): Unit =
     if !problemComboBox.item.equals("No selection") && !parameterInputText.text.equals("") && parameterInputText.text
         .forall(_.isDigit)
@@ -49,13 +61,19 @@ object Reactions:
         updateComponents(view(update(model, SolveProblem(p, parameter))))
     else createErrorDialog("Problem selection or parameter are not valid").open()
 
+  /** Reaction to the next solution button
+    * @param model the current model to update to display next assignment
+    */
   def nextSolutionReaction(model: Model): Unit =
     updateComponents(view(update(model, NextSolution)))
 
-  def helpReaction(model: Model): Unit =
+  /** Reaction to the help button to show the help dialog */
+  def helpReaction(): Unit =
     helpDialog.open()
 
-  // utils
+  /** Update the GUI only with the specific components
+    * @param newComponents the new components to display
+    */
   private def updateComponents(newComponents: Set[Component]): Unit =
     newComponents.foreach(c => {
       c.name match

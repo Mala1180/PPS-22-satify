@@ -36,7 +36,7 @@ object Main extends App with MVU:
     }
 
     helpMenuItem.reactions += { case ButtonClicked(_) =>
-      helpReaction(model)
+      helpReaction()
     }
 
     importMenuItem.reactions += { case ButtonClicked(_) =>

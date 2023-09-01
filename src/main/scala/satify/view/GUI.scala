@@ -76,6 +76,9 @@ object GUI:
         contents += new FlowPanel():
           contents += solveProblemButton
 
+  /** Creates a file chooser for the import menu item.
+    * @return the file chooser
+    */
   private def createImportFileChooser: FileChooser = new FileChooser:
     title = "Import DIMACS formula"
     fileSelectionMode = FileChooser.SelectionMode.FilesOnly
