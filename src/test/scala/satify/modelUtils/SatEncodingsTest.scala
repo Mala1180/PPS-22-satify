@@ -4,7 +4,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.{should, shouldBe}
 import satify.model.tree.expression.Expression.*
 import satify.model.tree.*
-import satify.model.tree.Encodings.*
+import satify.model.tree.expression.Encodings.*
 import satify.model.tree.expression.{And, Not, Or}
 
 class SatEncodingsTest extends AnyFlatSpec:

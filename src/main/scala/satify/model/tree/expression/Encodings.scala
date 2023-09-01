@@ -1,4 +1,4 @@
-package satify.model.tree
+package satify.model.tree.expression
 
 import satify.model.tree.*
 import satify.model.tree.expression.ExpressionUtils.symbolGenerator

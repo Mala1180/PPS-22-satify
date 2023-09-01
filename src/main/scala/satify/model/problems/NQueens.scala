@@ -1,9 +1,9 @@
 package satify.model.problems
 
-import satify.model.tree.{expression}
+import satify.model.tree.expression
 import satify.model.dpll.OrderedSeq.{given_Ordering_Variable, seq}
 import satify.model.dpll.PartialModel
-import satify.model.tree.Encodings.{atLeastOne, atMostOne}
+import satify.model.tree.expression.Encodings.{atLeastOne, atMostOne}
 import satify.model.tree.cnf.Variable
 import satify.model.tree.expression.{And, Expression, Symbol}
 

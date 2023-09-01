@@ -42,10 +42,16 @@ object TseitinTransformation:
       list match
         case Nil => Nil
         case (lit, e) :: t if e.tree.contains(subexp.tree) =>
-          (lit, map(e, {
-            case tt if tt == subexp => l
-            case tt => tt
-          })) :: replace(t, subexp, l)
+          (
+            lit,
+            map(
+              e,
+              {
+                case tt if tt == subexp => l
+                case tt => tt
+              }
+            )
+          ) :: replace(t, subexp, l)
         case (lit, e) :: t => (lit, e) :: replace(t, subexp, l)
 
     def symbolSelector(list: List[(Symbol, Expression)]): List[(Symbol, Expression)] = list match

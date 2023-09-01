@@ -1,6 +1,6 @@
 package satify.dsl
 
-import satify.model.tree.Encodings.*
+import satify.model.tree.expression.Encodings.*
 import satify.model.tree.expression.{Expression, Symbol}
 
 object Encodings:

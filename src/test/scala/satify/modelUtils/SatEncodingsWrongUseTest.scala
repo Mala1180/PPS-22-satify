@@ -3,7 +3,7 @@ package satify.modelUtils
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.{should, shouldBe}
 import satify.model.tree.expression.Expression.*
-import satify.model.tree.Encodings.*
+import satify.model.tree.expression.Encodings.*
 import satify.model.tree.*
 
 class SatEncodingsWrongUseTest extends AnyFlatSpec:

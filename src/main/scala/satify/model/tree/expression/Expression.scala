@@ -36,13 +36,17 @@ object Expression:
     Expression(exp.tree.map(t => f(Expression(t)).tree))
 
   def zipWith(exp: Expression)(f: () => Symbol): List[(Symbol, Expression)] =
-    exp.tree.zipWith(() => f().tree).map((l, t) => l match
-      case Leaf(Some(symbol(v: String))) => (Symbol(v), Expression(t)))
+    exp.tree
+      .zipWith(() => f().tree)
+      .map((l, t) =>
+        l match
+          case Leaf(Some(symbol(v: String))) => (Symbol(v), Expression(t))
+      )
 
   def zipWithSymbol(exp: Expression): List[(Symbol, Expression)] =
     zipWith(exp)(symbolGenerator("X"))
 
-    //exp.tree.zipWith(symbolGenerator("X")).map((value, tree) => value match
+    // exp.tree.zipWith(symbolGenerator("X")).map((value, tree) => value match
     //  case symbol(value) => (Symbol(value), Expression(tree))).toList
 
   def subexpressions(exp: Expression): List[Expression] =
