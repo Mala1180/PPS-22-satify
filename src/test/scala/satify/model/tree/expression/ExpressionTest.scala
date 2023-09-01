@@ -1,12 +1,12 @@
-package satify.modelUtils.tree
+package satify.model.tree.expression
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.tree.Value.*
-import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree
 import satify.model.tree.TraversableOps.*
-import satify.model.tree.{expression, *}
+import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree
+import satify.model.tree.Value.*
 import satify.model.tree.expression.{And, Expression, Or}
+import satify.model.tree.*
 
 class ExpressionTest extends AnyFlatSpec with Matchers:
 

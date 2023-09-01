@@ -1,10 +1,10 @@
-package satify.modelUtils
+package satify.model.tree.expression
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.tree.*
-import satify.model.tree.expression.ExpressionUtils.*
 import satify.model.tree.cnf.Variable
+import satify.model.tree.expression.ExpressionUtils.*
 
 class ExpressionOutputTest extends AnyFlatSpec with Matchers:
 

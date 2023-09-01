@@ -1,12 +1,12 @@
-package satify.modelUtils.tree
+package satify.model.tree.cnf
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.tree.cnf.*
-import satify.model.tree.Value.*
-import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree
-import satify.model.tree.TraversableOps.*
 import satify.model.tree.*
+import satify.model.tree.TraversableOps.*
+import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree
+import satify.model.tree.Value.*
+import satify.model.tree.cnf.*
 
 class CNFTest extends AnyFlatSpec with Matchers:
 

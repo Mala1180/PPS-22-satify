@@ -1,25 +1,23 @@
-package satify.modelUtils
+package satify.model.tseitin
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.tree.cnf.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
-import satify.model.tree.cnf.Variable
-import satify.model.tree.expression.{And, Not, Or}
-import satify.model.tree.expression.Expression.*
-import satify.model.tree.{cnf, *}
+import satify.model.tree.cnf.{Variable, And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
+import satify.model.tree.expression.{And, Not, Or, Symbol}
+import satify.model.tree.*
 import satify.update.converters.TseitinTransformation.tseitin
 
 class TseitinTest extends AnyFlatSpec with Matchers:
 
   "The CNF form of b" should "remain b" in {
-    val exp = expression.Symbol("b")
+    val exp = Symbol("b")
     val result = tseitin(exp)
     val expected: cnf.CNF = CNFSymbol(Variable("b"))
     result shouldBe expected
   }
 
   "The CNF form of ¬b" should "be correctly generated" in {
-    val exp = Not(expression.Symbol("b"))
+    val exp = Not(Symbol("b"))
     val result = tseitin(exp)
     val expected: cnf.CNF = CNFAnd(
       CNFSymbol(Variable("X0")),
@@ -32,7 +30,7 @@ class TseitinTest extends AnyFlatSpec with Matchers:
   }
 
   "For exp (a ∨ b) only the '∨' transformation" should "be applied" in {
-    val exp = Or(expression.Symbol("a"), expression.Symbol("b"))
+    val exp = Or(Symbol("a"), Symbol("b"))
     val result = tseitin(exp)
     val expected: cnf.CNF = CNFAnd(
       CNFSymbol(Variable("X0")),
@@ -51,7 +49,7 @@ class TseitinTest extends AnyFlatSpec with Matchers:
   }
 
   "The CNF form of ((a ∧ ¬b) ∨ c)" should "be correctly generated" in {
-    val exp = expression.Or(And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))), expression.Symbol("c"))
+    val exp = Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val result = tseitin(exp)
     val expected = CNFAnd(
       CNFSymbol(Variable("X0")),
@@ -88,9 +86,9 @@ class TseitinTest extends AnyFlatSpec with Matchers:
   }
 
   "The CNF form of ((¬a ∨ (b ∧ c)) ∨ d)" should "be correctly generated" in {
-    val exp = expression.Or(
-      Or(expression.Not(expression.Symbol("a")), expression.And(expression.Symbol("b"), expression.Symbol("c"))),
-      expression.Symbol("d")
+    val exp = Or(
+      Or(Not(Symbol("a")), And(Symbol("b"), Symbol("c"))),
+      Symbol("d")
     )
     val result = tseitin(exp)
     val expected = CNFAnd(

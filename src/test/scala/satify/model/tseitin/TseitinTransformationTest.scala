@@ -1,18 +1,16 @@
-package satify.modelUtils
+package satify.model.tseitin
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.tree.cnf.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
-import satify.model.tree.cnf.Variable
 import satify.model.tree.*
-import satify.model.tree.expression.Expression.*
-import satify.model.tree.expression.{And, Expression, Not, Or}
+import satify.model.tree.cnf.{Variable, And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
+import satify.model.tree.expression.{And, Expression, Not, Or, Symbol}
 import satify.update.converters.TseitinTransformation.transform
 
 class TseitinTransformationTest extends AnyFlatSpec with Matchers:
 
   "The transformation of ¬b" should "return a list of CNF clauses relative to the ¬ operator" in {
-    val exp: (expression.Symbol, Expression) = (expression.Symbol("X0"), Not(expression.Symbol("b")))
+    val exp: (Symbol, Expression) = (Symbol("X0"), Not(Symbol("b")))
     val result: List[(CNFSymbol, cnf.CNF)] = transform(exp)
     val expected: List[(CNFSymbol, cnf.CNF)] = List(
       (
@@ -25,8 +23,8 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
   }
 
   "The transformation of (a ∧ b)" should "return a list of CNF clauses relative to the ∧ operator" in {
-    val exp: (expression.Symbol, Expression) =
-      (expression.Symbol("X0"), And(expression.Symbol("a"), expression.Symbol("b")))
+    val exp: (Symbol, Expression) =
+      (Symbol("X0"), And(Symbol("a"), Symbol("b")))
     val result: List[(CNFSymbol, cnf.CNF)] = transform(exp)
     val expected: List[(CNFSymbol, cnf.CNF)] = List(
       (
@@ -43,8 +41,8 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
   }
 
   "The transformation of (¬a ∧ b)" should "return a list of CNF clauses relative to the ∧ operator" in {
-    val exp: (expression.Symbol, Expression) =
-      (expression.Symbol("X0"), expression.And(expression.Not(expression.Symbol("a")), expression.Symbol("b")))
+    val exp: (Symbol, Expression) =
+      (Symbol("X0"), And(Not(Symbol("a")), Symbol("b")))
     val result: List[(CNFSymbol, cnf.CNF)] = transform(exp)
     val expected: List[(CNFSymbol, cnf.CNF)] = List(
       (
@@ -64,8 +62,8 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
   }
 
   "The transformation of (a ∧ ¬b)" should "return a list of CNF clauses relative to the ∧ operator" in {
-    val exp: (expression.Symbol, Expression) =
-      (expression.Symbol("X0"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))))
+    val exp: (Symbol, Expression) =
+      (Symbol("X0"), And(Symbol("a"), Not(Symbol("b"))))
     val result: List[(CNFSymbol, cnf.CNF)] = transform(exp)
     val expected: List[(CNFSymbol, cnf.CNF)] = List(
       (
@@ -85,8 +83,8 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
   }
 
   "The transformation of (¬a ∧ ¬b)" should "return a list of CNF clauses relative to the ∧ operator" in {
-    val exp: (expression.Symbol, Expression) =
-      (expression.Symbol("X0"), And(expression.Not(expression.Symbol("a")), expression.Not(expression.Symbol("b"))))
+    val exp: (Symbol, Expression) =
+      (Symbol("X0"), And(Not(Symbol("a")), Not(Symbol("b"))))
     val result: List[(CNFSymbol, cnf.CNF)] = transform(exp)
     val expected: List[(CNFSymbol, cnf.CNF)] = List(
       (
@@ -106,8 +104,8 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
   }
 
   "The transformation of (a ∨ b)" should "return a list of CNF clauses relative to the ∨ operator" in {
-    val exp: (expression.Symbol, Expression) =
-      (expression.Symbol("X0"), Or(expression.Symbol("a"), expression.Symbol("b")))
+    val exp: (Symbol, Expression) =
+      (Symbol("X0"), Or(Symbol("a"), Symbol("b")))
     val result: List[(CNFSymbol, cnf.CNF)] = transform(exp)
     val expected: List[(CNFSymbol, cnf.CNF)] = List(
       (
@@ -124,8 +122,8 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
   }
 
   "The transformation of (¬a ∨ b)" should "return a list of CNF clauses relative to the ∨ operator" in {
-    val exp: (expression.Symbol, Expression) =
-      (expression.Symbol("X0"), expression.Or(expression.Not(expression.Symbol("a")), expression.Symbol("b")))
+    val exp: (Symbol, Expression) =
+      (Symbol("X0"), Or(Not(Symbol("a")), Symbol("b")))
     val result: List[(CNFSymbol, cnf.CNF)] = transform(exp)
     val expected: List[(CNFSymbol, cnf.CNF)] = List(
       (
@@ -142,8 +140,8 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
   }
 
   "The transformation of (a ∨ ¬b)" should "return a list of CNF clauses relative to the ∨ operator" in {
-    val exp: (expression.Symbol, Expression) =
-      (expression.Symbol("X0"), expression.Or(expression.Symbol("a"), expression.Not(expression.Symbol("b"))))
+    val exp: (Symbol, Expression) =
+      (Symbol("X0"), Or(Symbol("a"), Not(Symbol("b"))))
     val result: List[(CNFSymbol, cnf.CNF)] = transform(exp)
     val expected: List[(CNFSymbol, cnf.CNF)] = List(
       (
@@ -160,8 +158,8 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
   }
 
   "The transformation of (¬a ∨ ¬b)" should "return a list of CNF clauses relative to the ∨ operator" in {
-    val exp: (expression.Symbol, Expression) =
-      (expression.Symbol("X0"), Or(expression.Not(expression.Symbol("a")), expression.Not(expression.Symbol("b"))))
+    val exp: (Symbol, Expression) =
+      (Symbol("X0"), Or(Not(Symbol("a")), Not(Symbol("b"))))
     val result: List[(CNFSymbol, cnf.CNF)] = transform(exp)
     val expected: List[(CNFSymbol, cnf.CNF)] = List(
       (
