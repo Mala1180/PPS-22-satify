@@ -1,5 +1,7 @@
 package satify.dsl
 
+import satify.model.tree.expression.{Expression, Symbol}
+
 object Reflection:
 
   private def getDSLKeywords: List[String] =

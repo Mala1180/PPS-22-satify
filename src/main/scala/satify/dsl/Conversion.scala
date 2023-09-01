@@ -1,5 +1,7 @@
 package satify.dsl
 
+import satify.model.tree.expression.Symbol
+
 object Conversion:
 
   given Conversion[String, Symbol] with

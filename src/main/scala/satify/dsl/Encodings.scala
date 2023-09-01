@@ -1,5 +1,8 @@
 package satify.dsl
 
+import satify.model.tree.expression.{Expression, Symbol}
+import satify.model.tree.expression.Encodings.*
+
 object Encodings:
 
   /** Converts a tuple to a list of [[Symbol]]
