@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/test/scala/satify/problemsTest/NQueensTest.scala
-package satify.problemsTest
-=======
 package satify.modelTest.problems
->>>>>>> 0435120:src/test/scala/satify/modelTest/problems/NQueensTest.scala
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

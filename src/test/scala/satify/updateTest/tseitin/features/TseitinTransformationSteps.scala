@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/test/scala/satify/featuresTest/TseitinTransformationSteps.scala
-package satify.featuresTest
-=======
 package satify.updateTest.tseitin.features
->>>>>>> 0435120:src/test/scala/satify/updateTest/tseitin/features/TseitinTransformationSteps.scala
 
 import io.cucumber.scala.{EN, ScalaDsl}
 import org.scalatest.matchers.should.Matchers.*

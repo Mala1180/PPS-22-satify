@@ -1,4 +1,8 @@
+<<<<<<< HEAD:src/test/scala/satify/parserTest/DimacsTest.scala
+package satify.parserTest
+=======
 package satify.updateTest.parser
+>>>>>>> 0435120:src/test/scala/satify/updateTest/parser/DimacsTest.scala
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
