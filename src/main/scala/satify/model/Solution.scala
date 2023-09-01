@@ -16,7 +16,7 @@ case class Assignment(parModel: PartialModel)
   * @param result The result of the SAT problem (SAT or UNSAT).
   * @param assignment The assignment of variables to values, if the problem is SAT.
   */
-case class Solution(result: Result, assignment: Option[Assignment] = None)
+case class Solution(result: Result, assignment: List[Assignment] = Nil)
 
 object Solution:
 
@@ -24,5 +24,5 @@ object Solution:
     def print: String =
       s"${solution.result}\n${
           if solution.assignment.isEmpty then ""
-          else solution.assignment.get.parModel.foldLeft("")((b, c) => b + c.name + ": " + c.value.get + "\n")
+          else solution.assignment.head.parModel.foldLeft("")((b, c) => b + c.name + ": " + c.value.get + "\n")
         }"

@@ -7,7 +7,17 @@ import satify.update.Message.{Convert, Import, NextSolution, Solve, SolveProblem
 import satify.update.Update.update
 import satify.view.Constants.{cnfOutputDialogName, expTextAreaName, solOutputDialogName}
 import satify.view.ComponentUtils.createErrorDialog
-import satify.view.GUI.{cnfOutputDialog, fileChooser, helpDialog, inputScrollPane, inputTextArea, loadingLabel, parameterInputText, problemComboBox, solutionOutputDialog}
+import satify.view.GUI.{
+  cnfOutputDialog,
+  fileChooser,
+  helpDialog,
+  inputScrollPane,
+  inputTextArea,
+  loadingLabel,
+  parameterInputText,
+  problemComboBox,
+  solutionOutputDialog
+}
 
 import java.io.File
 import scala.swing.{Component, Swing, TextArea}
@@ -40,15 +50,12 @@ object Reactions:
     else createErrorDialog("Problem selection or parameter are not valid").open()
 
   def nextSolutionReaction(model: Model): Unit =
-    //TODO TO REMOVE
-    println("next solution reaction")
     updateComponents(view(update(model, NextSolution)))
 
   def helpReaction(model: Model): Unit =
     helpDialog.open()
 
-
-  //utils
+  // utils
   private def updateComponents(newComponents: Set[Component]): Unit =
     newComponents.foreach(c => {
       c.name match

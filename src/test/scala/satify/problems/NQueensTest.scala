@@ -28,7 +28,7 @@ class NQueensTest extends AnyFlatSpec with Matchers:
     val sol = Solver().solve(NQueens(n).exp)
     sol should matchPattern { case Solution(SAT, _) => }
     println("NQueens 4x4")
-    printNqueens(n, sol.assignment.get.parModel)
+    // printNqueens(n, sol.assignment.get.parModel)
   }
 
 //  "NQueens 10x10" should "be SAT" in {

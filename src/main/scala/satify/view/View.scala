@@ -13,15 +13,15 @@ object View:
     import model.*
 
     if expression.isEmpty && cnf.isDefined && solution.isEmpty then Set(updateExpression(cnf.get.printAsFormal()))
-    else updateExpression(expression) ++ updateCnf(cnf) ++ updateSolution(solution)
+    else updateExpression(expression) ++ updateCnf(cnf) ++ updateSolution(model, solution)
 
-  private def updateSolution(sol: Option[Solution]): Set[Component] =
+  private def updateSolution(model: State, sol: Option[Solution]): Set[Component] =
     if sol.isDefined then
       val fp: FlowPanel = new FlowPanel():
         name = solOutputDialogName
         contents += new BoxPanel(Orientation.Vertical):
           contents += new ScrollPane(createOutputTextArea(sol.get.print, 30, 35))
-          contents += createNextSection()
+          contents += createNextSection(model)
       Set(fp)
     else Set()
 

@@ -36,7 +36,14 @@ object State:
     */
   def apply(exp: Expression, cnf: CNF): State = StateImpl(Some(exp), Some(cnf))
 
+  /** Creates a new application state with only the solution.
+    * @param sol the [[Solution]]
+    * @return a new [[State]] instance.
+    */
+  def apply(sol: Solution): State = StateImpl(None, None, Some(sol))
+
   /** Creates a new application state with only CNF.
+    *
     * @param cnf the [[CNF]]
     * @return a new [[State]] instance.
     */

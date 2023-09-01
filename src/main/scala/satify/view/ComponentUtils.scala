@@ -1,12 +1,16 @@
 package satify.view
 
+import satify.model.State
 import satify.view.Constants.*
 
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.{URI, URL}
 import javax.swing.ImageIcon
 import scala.swing.*
-import satify.view.GUI.nextSolutionButton
+import satify.view.Reactions.nextSolutionReaction
+
+import java.util.concurrent.Executors
+import scala.swing.event.ButtonClicked
 
 object ComponentUtils:
 
@@ -60,7 +64,11 @@ object ComponentUtils:
     background = Color.green
     foreground = Color(200, 0, 0)
 
-  def createNextSection(): BoxPanel =
+  def createNextSection(model: State): BoxPanel =
+    val nextSolutionButton = createButton("Next", 100, 40)
+    nextSolutionButton.reactions += { case ButtonClicked(_) =>
+      Executors.newSingleThreadExecutor().execute(() => nextSolutionReaction(model))
+    }
     new BoxPanel(Orientation.Horizontal):
       contents += Swing.HGlue
       contents += nextSolutionButton

@@ -32,7 +32,7 @@ object Solver:
     def dpll(cnf: CNF): Solution =
       val s = extractSolutions(cnf)
       s match
-        case _ if s.isEmpty => Solution(UNSAT, None)
-        case _ => Solution(SAT, Some(Assignment(s.head)))
+        case _ if s.isEmpty => Solution(UNSAT)
+        case _ => Solution(SAT, s.map(Assignment.apply).toList)
 
     def solve(exp: Expression)(using converter: CNFConverter): Solution = dpll(converter.convert(exp))

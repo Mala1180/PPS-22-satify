@@ -5,7 +5,7 @@ import satify.model.CNF.Symbol
 import satify.model.expression.Expression
 import satify.model.expression.Expression.Symbol as ExpSymbol
 import satify.model.problems.ProblemChoice.{GraphColoring, NurseScheduling, NQueens as NQueensChoice}
-import satify.model.{CNF, State, Variable}
+import satify.model.{Assignment, CNF, Solution, State, Variable}
 import satify.update.Message.*
 import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.{convertToCNF, tseitin}
@@ -46,10 +46,13 @@ object Update:
         s.close()
         val optCnf = parse(lines)
         State(
-          optCnf.getOrElse(Symbol(Variable("NO CNF FOUND")))
+          optCnf.getOrElse(Symbol(Variable("NO CNF")))
         )
       case NextSolution =>
-        //model.solution.next()
-        println("Next button clicked, here i have to select next solution, same expression different assignment")
-        //in questo caso si aggiorna lo stato con la soluzione dopo quella corrente
-        State(model.expression.get, model.solution.get)
+        State(
+          model.expression.get,
+          Solution(
+            model.solution.get.result,
+            model.solution.get.assignment.tail ::: List(model.solution.get.assignment.head)
+          )
+        )
