@@ -1,7 +1,7 @@
 package satify.update.dpll
 
 import satify.model.tree.cnf.Bool.{False, True}
-import satify.model.tree.cnf.CNF.{And, Not, Or, Symbol}
+import satify.model.tree.cnf.{And, Not, Or, Symbol}
 import satify.model.dpll.Constraint
 import satify.model.tree.cnf.{Bool, CNF, Variable}
 

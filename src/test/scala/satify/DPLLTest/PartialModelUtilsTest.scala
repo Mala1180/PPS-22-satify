@@ -3,7 +3,7 @@ package satify.DPLLTest
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.update.dpll.PartialModelUtils.*
-import satify.model.tree.cnf.CNF.*
+import satify.model.tree.cnf.*
 import satify.model.dpll.OrderedSeq.{seq, given_Ordering_Variable}
 import satify.model.dpll.{Constraint, Decision, PartialModel}
 import satify.model.tree.cnf.{CNF, Variable}

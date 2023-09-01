@@ -2,7 +2,7 @@ package satify.modelUtils.tree
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.tree
+import satify.model.tree.cnf.*
 import satify.model.tree.Value.*
 import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree
 import satify.model.tree.TraversableOps.*
@@ -10,20 +10,32 @@ import satify.model.tree.*
 
 class CNFTest extends AnyFlatSpec with Matchers:
 
-  val cnf: CNF = cnfAnd(cnfSymbol("a"), cnfAnd(cnfSymbol("b"), cnfSymbol("c")))
+  val cnf: CNF = And(Symbol(Variable("a")), And(Symbol(Variable("b")), Symbol(Variable("c"))))
 
   "A CNF expression" should "have its respective Tree" in {
     cnf.tree shouldBe
-      BinaryBranch(and, Leaf(Some(symbol("a"))), BinaryBranch(and, Leaf(Some(symbol("b"))), Leaf(Some(symbol("c")))))
+      BinaryBranch(
+        and,
+        Leaf(Some(symbol(Variable("a")))),
+        BinaryBranch(and, Leaf(Some(symbol(Variable("b")))), Leaf(Some(symbol(Variable("c")))))
+      )
   }
 
   "A CNF expression" should "be able to be converted from Tree[Value] instance" in {
     val oCnf = CNF(
-      BinaryBranch(and, Leaf(Some(symbol("a"))), BinaryBranch(and, Leaf(Some(symbol("b"))), Leaf(Some(symbol("c")))))
+      BinaryBranch(
+        and,
+        Leaf(Some(symbol(Variable("a")))),
+        BinaryBranch(and, Leaf(Some(symbol(Variable("b")))), Leaf(Some(symbol(Variable("c")))))
+      )
     )
     oCnf shouldBe Some(cnf)
     CNF(
-      BinaryBranch(and, BinaryBranch(and, Leaf(Some(symbol("a"))), Leaf(Some(symbol("b")))), Leaf(Some(symbol("c"))))
+      BinaryBranch(
+        and,
+        BinaryBranch(and, Leaf(Some(symbol(Variable("a")))), Leaf(Some(symbol(Variable("b"))))),
+        Leaf(Some(symbol(Variable("c"))))
+      )
     ) shouldBe None
   }
 
@@ -32,8 +44,10 @@ class CNFTest extends AnyFlatSpec with Matchers:
       CNF(
         for t <- cnf.tree
         yield t match
-          case t if t == cnfSymbol("c").tree => cnfOr(cnfSymbol("c"), cnfSymbol("d")).tree
+          case t if t == Symbol(Variable("c")).tree => Or(Symbol(Variable("c")), Symbol(Variable("d"))).tree
           case t => t
       )
-    mCnf shouldBe Some(cnfAnd(cnfSymbol("a"), cnfAnd(cnfSymbol("b"), cnfOr(cnfSymbol("c"), cnfSymbol("d")))))
+    mCnf shouldBe Some(
+      And(Symbol(Variable("a")), And(Symbol(Variable("b")), Or(Symbol(Variable("c")), Symbol(Variable("d")))))
+    )
   }

@@ -2,7 +2,7 @@ package satify.DPLLTest
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.tree.cnf.CNF.{And, Not, Or, Symbol}
+import satify.model.tree.cnf.{And, Not, Or, Symbol}
 import satify.model.tree.cnf.Bool.{False, True}
 import satify.model.dpll.Constraint
 import satify.model.tree.cnf.{CNF, Variable}

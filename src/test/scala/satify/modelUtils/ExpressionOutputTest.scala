@@ -2,8 +2,8 @@ package satify.modelUtils
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.tree.{cnf, *}
-import satify.model.tree.Utils.*
+import satify.model.tree.*
+import satify.model.tree.expression.Utils.*
 import satify.model.tree.cnf.Variable
 
 class ExpressionOutputTest extends AnyFlatSpec with Matchers:

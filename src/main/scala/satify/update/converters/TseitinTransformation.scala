@@ -11,7 +11,7 @@ import satify.model.tree.expression.Expression.map
 /** Object containing the Tseitin transformation algorithm. */
 object TseitinTransformation:
 
-  import satify.model.tree.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
+  import satify.model.tree.cnf.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
   import satify.model.tree.cnf.Literal
 
   /** Applies the Tseitin transformation to the gt iven expression in order to convert it into CNF.

@@ -1,7 +1,7 @@
 package satify.update.dpll
 
 import satify.model.tree.cnf.Bool.{False, True}
-import satify.model.tree.cnf.CNF.*
+import satify.model.tree.cnf.*
 import satify.model.dpll.Constraint
 import satify.model.tree.cnf.{CNF, Variable}
 

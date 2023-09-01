@@ -2,7 +2,7 @@ package satify.model.tree.expression
 
 import satify.model.tree.*
 import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree
-import satify.model.tree.Utils.symbolGenerator
+import Utils.symbolGenerator
 import satify.model.tree.Value.{and, not, or, symbol}
 
 trait Expression:
@@ -30,14 +30,14 @@ object Expression:
     case UnaryBranch(value, branch) =>
       value match
         case Value.not => Not(Expression(branch))
-    case Leaf(Some(symbol(s))) => Symbol(s)
+    case Leaf(Some(symbol(s: String))) => Symbol(s)
 
   def map(exp: Expression, f: Expression => Expression): Expression =
     Expression(exp.tree.map(t => f(Expression(t)).tree))
 
   def zipWith(exp: Expression)(f: () => Symbol): List[(Symbol, Expression)] =
     exp.tree.zipWith(() => f().tree).map((l, t) => l match
-      case Leaf(Some(symbol(v))) => (Symbol(v), Expression(t)))
+      case Leaf(Some(symbol(v: String))) => (Symbol(v), Expression(t)))
 
   def zipWithSymbol(exp: Expression): List[(Symbol, Expression)] =
     zipWith(exp)(symbolGenerator("X"))

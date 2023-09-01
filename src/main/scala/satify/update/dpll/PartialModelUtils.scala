@@ -1,12 +1,11 @@
 package satify.update.dpll
 
 import satify.model.tree.cnf.Bool.True
-import satify.model.tree.cnf.CNF.*
+import satify.model.tree.cnf.*
 import satify.model.dpll.OrderedSeq.given_Ordering_Variable
 import satify.model.dpll.OrderedSeq.*
 import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.tree.cnf.{CNF, Variable}
 
 object PartialModelUtils:
 

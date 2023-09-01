@@ -19,7 +19,7 @@ enum Value:
   case and
   case or
   case not
-  case symbol(value: String)
+  case symbol[A](value: A)
 
 trait Traversable[F[_]]:
 

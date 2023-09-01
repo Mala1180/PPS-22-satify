@@ -1,7 +1,7 @@
 package satify.update
 
 import satify.dsl.Reflection.reflect
-import satify.model.tree.cnf.CNF.Symbol
+import satify.model.tree.cnf.Symbol
 import satify.model.State
 import satify.model.tree.cnf.{CNF, Variable}
 import satify.update.Message.*

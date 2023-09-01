@@ -1,6 +1,5 @@
-package satify.model.tree
+package satify.model.tree.expression
 
-import Value.*
 import satify.model.tree.expression.{And, Expression, Not, Or, Symbol}
 
 object Utils:
