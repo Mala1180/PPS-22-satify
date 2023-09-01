@@ -4,11 +4,13 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.should
 import satify.model.dpll.DecisionTree.*
-import satify.model.dpll.OrderedSeq.*
+import satify.model.dpll.OrderedSeq.{given_Ordering_Variable, seq}
 import satify.model.dpll.{Decision, DecisionTree, PartialModel}
 import satify.update.dpll.CNFSimplification.*
 import satify.update.dpll.DPLL.*
 import satify.update.dpll.PartialModelUtils.*
+import satify.model.tree.cnf.{And, CNF, Not, Or, Symbol, Variable}
+import satify.model.tree.cnf.Bool.*
 
 class DPLLTest extends AnyFlatSpec with Matchers:
 

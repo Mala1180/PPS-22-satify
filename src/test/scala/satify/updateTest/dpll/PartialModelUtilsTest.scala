@@ -6,6 +6,8 @@ import satify.model.dpll.OrderedSeq.{given_Ordering_Variable, seq}
 import satify.model.dpll.{Constraint, Decision, PartialModel}
 import satify.update.dpll.DPLL.dpll
 import satify.update.dpll.PartialModelUtils.*
+import satify.model.tree.cnf.{CNF, Variable, And, Or, Not, Symbol}
+import satify.model.tree.cnf.Bool.*
 
 class PartialModelUtilsTest extends AnyFlatSpec with Matchers:
 

@@ -5,6 +5,8 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.dpll.Constraint
 import satify.update.dpll.CNFSimplification.simplifyCnf
 import satify.update.dpll.ConflictIdentification.isUnsat
+import satify.model.tree.cnf.{CNF, Variable, And, Or, Not, Symbol}
+import satify.model.tree.cnf.Bool.*
 
 class ConflictIdentificationTest extends AnyFlatSpec with Matchers:
 

@@ -2,6 +2,7 @@ package satify.dslTest
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.shouldBe
+import satify.model.tree.expression.Expression
 
 class ReflectionTest extends AnyFlatSpec:
 
