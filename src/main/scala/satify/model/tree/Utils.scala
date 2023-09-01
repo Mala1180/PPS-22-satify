@@ -1,7 +1,7 @@
 package satify.model.tree
 
-import satify.model.tree.{And, Not, Or, Symbol}
 import Value.*
+import satify.model.tree.expression.{And, Expression, Not, Or, Symbol}
 
 object Utils:
 

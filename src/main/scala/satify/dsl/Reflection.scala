@@ -1,7 +1,6 @@
 package satify.dsl
 
-import satify.model.tree.Expression
-import satify.model.tree.Symbol
+import satify.model.tree.expression.{Expression, Symbol}
 
 object Reflection:
 

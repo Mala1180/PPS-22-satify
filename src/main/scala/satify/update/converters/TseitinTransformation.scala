@@ -1,19 +1,18 @@
 package satify.update.converters
 
-import satify.model.tree.Expression
-import satify.model.tree.Expression.zipWithSymbol
-import satify.model.{CNF, Literal, Variable}
-import satify.model.tree.{And, Not, Or, Symbol}
+import satify.model.tree.expression.Expression.zipWithSymbol
 import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree.*
 import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree
 import satify.model.tree.TraversableOps.*
-import satify.model.tree.Expression.map
+import satify.model.tree.cnf.{CNF, Literal, Variable}
+import satify.model.tree.expression.{And, Expression, Not, Or, Symbol}
+import satify.model.tree.expression.Expression.map
 
 /** Object containing the Tseitin transformation algorithm. */
 object TseitinTransformation:
 
-  import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
-  import satify.model.Literal
+  import satify.model.tree.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
+  import satify.model.tree.cnf.Literal
 
   /** Applies the Tseitin transformation to the gt iven expression in order to convert it into CNF.
     * @param exp the expression to transform.

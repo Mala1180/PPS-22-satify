@@ -1,9 +1,10 @@
 package satify.update
 
-import satify.model.{Assignment, CNF, Solution, Variable}
+import satify.model.{Assignment, Solution}
 import satify.model.Result.*
 import satify.model.dpll.PartialModel
-import satify.model.tree.Expression
+import satify.model.tree.expression.Expression
+import satify.model.tree.cnf.{CNF, Variable}
 import satify.update.converters.CNFConverter
 import satify.update.dpll.DPLL.*
 

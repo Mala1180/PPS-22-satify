@@ -2,26 +2,26 @@ package satify.modelUtils
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
-import satify.model.tree.Expression
-import satify.model.tree.Expression.*
-import satify.model.tree.*
-import satify.model.{CNF, Variable}
+import satify.model.tree.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
+import satify.model.tree.cnf.Variable
+import satify.model.tree.{cnf, *}
+import satify.model.tree.expression.Expression.*
+import satify.model.tree.expression.{And, Expression, Not, Or}
 import satify.update.converters.TseitinTransformation.{convertToCNF, isCNF}
 
 class CNFConverter extends AnyFlatSpec with Matchers:
 
   "The exp a and b" should "be converted to CNF" in {
-    val exp: Expression = And(Symbol("a"), Symbol("b"))
-    val result: CNF = convertToCNF(exp)
-    val expected: CNF = CNFAnd(CNFSymbol(Variable("a")), CNFSymbol(Variable("b")))
+    val exp: Expression = And(expression.Symbol("a"), expression.Symbol("b"))
+    val result: cnf.CNF = convertToCNF(exp)
+    val expected: cnf.CNF = CNFAnd(CNFSymbol(Variable("a")), CNFSymbol(Variable("b")))
     result shouldBe expected
   }
 
   "The exp a and b and c and d and e" should "be converted to CNF" in {
-    val exp: Expression = And(Symbol("a"), And(Symbol("b"), And(Symbol("c"), And(Symbol("d"), Symbol("e")))))
-    val result: CNF = convertToCNF(exp)
-    val expected: CNF = CNFAnd(
+    val exp: Expression = expression.And(expression.Symbol("a"), expression.And(expression.Symbol("b"), expression.And(expression.Symbol("c"), expression.And(expression.Symbol("d"), expression.Symbol("e")))))
+    val result: cnf.CNF = convertToCNF(exp)
+    val expected: cnf.CNF = CNFAnd(
       CNFSymbol(Variable("a")),
       CNFAnd(
         CNFSymbol(Variable("b")),
@@ -40,34 +40,34 @@ class CNFConverter extends AnyFlatSpec with Matchers:
   "The exp" should "be converted to CNF" in {
     val exp = And(
       Or(
-        Or(Symbol("X1"), Symbol("d")),
-        Not(Symbol("X0"))
+        expression.Or(expression.Symbol("X1"), expression.Symbol("d")),
+        Not(expression.Symbol("X0"))
       ),
       And(
-        Or(Not(Symbol("X1")), Symbol("X0")),
+        expression.Or(expression.Not(expression.Symbol("X1")), expression.Symbol("X0")),
         And(
-          Or(Not(Symbol("d")), Symbol("X0")),
+          expression.Or(expression.Not(expression.Symbol("d")), expression.Symbol("X0")),
           And(
             Or(
-              Or(Symbol("X2"), Symbol("X3")),
-              Not(Symbol("X1"))
+              expression.Or(expression.Symbol("X2"), expression.Symbol("X3")),
+              expression.Not(expression.Symbol("X1"))
             ),
             And(
-              Or(Not(Symbol("X2")), Symbol("X1")),
+              expression.Or(expression.Not(expression.Symbol("X2")), expression.Symbol("X1")),
               And(
-                Or(Not(Symbol("X3")), Symbol("X1")),
+                expression.Or(expression.Not(expression.Symbol("X3")), expression.Symbol("X1")),
                 And(
-                  Or(Not(Symbol("a")), Not(Symbol("X2"))),
+                  Or(expression.Not(expression.Symbol("a")), expression.Not(expression.Symbol("X2"))),
                   And(
-                    Or(Symbol("a"), Symbol("X2")),
+                    expression.Or(expression.Symbol("a"), expression.Symbol("X2")),
                     And(
-                      Or(
-                        Or(Not(Symbol("b")), Not(Symbol("c"))),
-                        Symbol("X3")
+                      expression.Or(
+                        Or(expression.Not(expression.Symbol("b")), expression.Not(expression.Symbol("c"))),
+                        expression.Symbol("X3")
                       ),
                       And(
-                        Or(Symbol("b"), Not(Symbol("X3"))),
-                        Or(Symbol("c"), Not(Symbol("X3")))
+                        expression.Or(expression.Symbol("b"), expression.Not(expression.Symbol("X3"))),
+                        expression.Or(expression.Symbol("c"), expression.Not(expression.Symbol("X3")))
                       )
                     )
                   )
@@ -79,7 +79,7 @@ class CNFConverter extends AnyFlatSpec with Matchers:
       )
     )
 
-    val result: CNF = convertToCNF(exp)
+    val result: cnf.CNF = convertToCNF(exp)
     val expected = CNFAnd(
       CNFOr(
         CNFOr(CNFSymbol(Variable("X1")), CNFSymbol(Variable("d"))),

@@ -1,11 +1,11 @@
 package satify.model.problems
 
-import satify.model.Variable
-import satify.model.tree.Expression
-import satify.model.tree.{And, Symbol}
+import satify.model.tree.{expression}
 import satify.model.dpll.OrderedSeq.{given_Ordering_Variable, seq}
 import satify.model.dpll.PartialModel
 import satify.model.tree.Encodings.{atLeastOne, atMostOne}
+import satify.model.tree.cnf.Variable
+import satify.model.tree.expression.{And, Expression, Symbol}
 
 import scala.annotation.tailrec
 
@@ -20,11 +20,11 @@ case class NQueens(n: Int) extends Problem:
   private val rowColConstr =
     for i <- 0 until n
     yield And(
-      And(
+      expression.And(
         atLeastOne(variables(i): _*),
         atLeastOne(variables.map(row => row(i)): _*)
       ),
-      And(
+      expression.And(
         atMostOne(variables(i): _*),
         atMostOne(variables.map(row => row(i)): _*)
       )
@@ -42,11 +42,11 @@ case class NQueens(n: Int) extends Problem:
           variables(i + j)(n - 1 - j),
           variables(n - 1 - (i + j))(n - 1 - j)
         )
-      And(
+      expression.And(
         atMostOne(s.map((t, _, _, _) => t): _*),
-        And(
+        expression.And(
           atMostOne(s.map((_, t, _, _) => t): _*),
-          And(atMostOne(s.map((_, _, t, _) => t): _*), atMostOne(s.map((_, _, _, t) => t): _*))
+          expression.And(atMostOne(s.map((_, _, t, _) => t): _*), atMostOne(s.map((_, _, _, t) => t): _*))
         )
       )
 

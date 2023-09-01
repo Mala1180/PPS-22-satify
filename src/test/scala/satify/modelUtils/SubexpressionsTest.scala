@@ -2,198 +2,197 @@ package satify.modelUtils
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.tree.Expression.*
-import satify.model.Variable
+import satify.model.tree.expression.Expression.*
+import satify.model.tree.expression.{And, Expression, Not, Or}
 import satify.model.tree.*
-import satify.model.tree.Expression
 
 class SubexpressionsTest extends AnyFlatSpec with Matchers:
 
   "In ((a ∧ ¬b) ∨ c) the subexp ¬b" should "be decomposed correctly" in {
     val exp: Expression =
-      Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
+      Or(And(expression.Symbol("a"), Not(expression.Symbol("b"))), expression.Symbol("c"))
     val list = zipWithSymbol(exp)
     list should contain only (
-      (Symbol("X2"), Not(Symbol("b"))),
-      (Symbol("X1"), And(Symbol("a"), Not(Symbol("b")))),
+      (expression.Symbol("X2"), expression.Not(expression.Symbol("b"))),
+      (expression.Symbol("X1"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b")))),
       (
-        Symbol("X0"),
-        Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
+        expression.Symbol("X0"),
+        expression.Or(expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))), expression.Symbol("c"))
       )
     )
   }
 
   "In a the subexp a" should "be decomposed correctly" in {
-    val exp: Expression = Symbol("a")
+    val exp: Expression = expression.Symbol("a")
     val list = zipWithSymbol(exp)
-    list should contain only ((Symbol("X0"), Symbol("a")))
+    list should contain only ((expression.Symbol("X0"), expression.Symbol("a")))
   }
 
   "In ¬a the subexp ¬a" should "be decomposed correctly" in {
-    val exp: Expression = Not(Symbol("a"))
+    val exp: Expression = expression.Not(expression.Symbol("a"))
     val list = zipWithSymbol(exp)
-    list should contain only ((Symbol("X0"), Not(Symbol("a"))))
+    list should contain only ((expression.Symbol("X0"), expression.Not(expression.Symbol("a"))))
   }
 
   "In (c ∧ (a ∧ ¬b)) the subexp ¬b, (a ∧ ¬b) and (c ∧ (a ∧ ¬b))" should "be decomposed correctly" in {
     val exp: Expression =
-      And(Symbol("c"), And(Symbol("a"), Not(Symbol("b"))))
+      expression.And(expression.Symbol("c"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))))
     val list = zipWithSymbol(exp)
     list should contain only (
       (
-        Symbol("X0"),
-        And(Symbol("c"), And(Symbol("a"), Not(Symbol("b"))))
+        expression.Symbol("X0"),
+        expression.And(expression.Symbol("c"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))))
       ),
-      (Symbol("X1"), And(Symbol("a"), Not(Symbol("b")))),
-      (Symbol("X2"), Not(Symbol("b")))
+      (expression.Symbol("X1"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b")))),
+      (expression.Symbol("X2"), expression.Not(expression.Symbol("b")))
     )
   }
 
   "In (c ∧ a) the subexp (c ∧ a)" should "be decomposed correctly" in {
-    val exp: Expression = And(Symbol("c"), Symbol("a"))
+    val exp: Expression = expression.And(expression.Symbol("c"), expression.Symbol("a"))
     val list = zipWithSymbol(exp)
     list should contain only (
-      (Symbol("X0"), And(Symbol("c"), Symbol("a")))
+      (expression.Symbol("X0"), expression.And(expression.Symbol("c"), expression.Symbol("a")))
     )
   }
 
   "The exp: a" should "contain only the subexpression a" in {
-    val exp: Expression = Symbol("a")
+    val exp: Expression = expression.Symbol("a")
     val result = zipWithSymbol(exp)
     val expected = List(
-      (Symbol("X0"), Symbol("a"))
+      (expression.Symbol("X0"), expression.Symbol("a"))
     )
     result shouldBe expected
   }
 
   "The exp: ¬a" should "contain only the subexpression ¬a" in {
-    val exp: Expression = Not(Symbol("a"))
+    val exp: Expression = expression.Not(expression.Symbol("a"))
     val result = zipWithSymbol(exp)
     val expected = List(
-      (Symbol("X0"), Not(Symbol("a")))
+      (expression.Symbol("X0"), expression.Not(expression.Symbol("a")))
     )
     result shouldBe expected
   }
 
   "The exp: (c ∧ (a ∧ ¬b))" should "be decomposed correctly" in {
     val exp: Expression =
-      And(Symbol("c"), And(Symbol("a"), Not(Symbol("b"))))
+      expression.And(expression.Symbol("c"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))))
     val result = zipWithSymbol(exp)
     val expected = List(
       (
-        Symbol("X0"),
-        And(Symbol("c"), And(Symbol("a"), Not(Symbol("b"))))
+        expression.Symbol("X0"),
+        expression.And(expression.Symbol("c"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b"))))
       ),
-      (Symbol("X1"), And(Symbol("a"), Not(Symbol("b")))),
-      (Symbol("X2"), Not(Symbol("b")))
+      (expression.Symbol("X1"), expression.And(expression.Symbol("a"), expression.Not(expression.Symbol("b")))),
+      (expression.Symbol("X2"), expression.Not(expression.Symbol("b")))
     )
     result shouldBe expected
   }
 
   "The exp: (c ∧ a) contains only the subexp witch is equal to the exp itself and" should "be decomposed anyway" in {
-    val exp: Expression = And(Symbol("c"), Symbol("a"))
+    val exp: Expression = expression.And(expression.Symbol("c"), expression.Symbol("a"))
     val result = zipWithSymbol(exp)
     val expected = List(
-      (Symbol("X0"), And(Symbol("c"), Symbol("a")))
+      (expression.Symbol("X0"), expression.And(expression.Symbol("c"), expression.Symbol("a")))
     )
     result shouldBe expected
   }
 
   "In (¬(p ∧ q) ∨ (r ∨ s)) the subexp (r ∨ s), (p ∧ q) and ¬(p ∧ q)" should "be decomposed correctly" in {
     val exp: Expression = Or(
-      Not(And(Symbol("p"), Symbol("q"))),
-      Or(Symbol("r"), Symbol("s"))
+      Not(expression.And(expression.Symbol("p"), expression.Symbol("q"))),
+      expression.Or(expression.Symbol("r"), expression.Symbol("s"))
     )
     val result = zipWithSymbol(exp)
     val expected = List(
       (
-        Symbol("X0"),
+        expression.Symbol("X0"),
         Or(
-          Not(And(Symbol("p"), Symbol("q"))),
-          Or(Symbol("r"), Symbol("s"))
+          Not(expression.And(expression.Symbol("p"), expression.Symbol("q"))),
+          expression.Or(expression.Symbol("r"), expression.Symbol("s"))
         )
       ),
-      (Symbol("X1"), Not(And(Symbol("p"), Symbol("q")))),
-      (Symbol("X2"), And(Symbol("p"), Symbol("q"))),
-      (Symbol("X3"), Or(Symbol("r"), Symbol("s")))
+      (expression.Symbol("X1"), Not(expression.And(expression.Symbol("p"), expression.Symbol("q")))),
+      (expression.Symbol("X2"), expression.And(expression.Symbol("p"), expression.Symbol("q"))),
+      (expression.Symbol("X3"), expression.Or(expression.Symbol("r"), expression.Symbol("s")))
     )
     result shouldBe expected
   }
 
   "In ¬(a ∧ b) the subexp (a ∧ b) and ¬(a ∧ b)" should "be decomposed correctly" in {
-    val exp: Expression = Not(And(Symbol("a"), Symbol("b")))
+    val exp: Expression = Not(expression.And(expression.Symbol("a"), expression.Symbol("b")))
     val result = zipWithSymbol(exp)
     val expected = List(
-      (Symbol("X0"), Not(And(Symbol("a"), Symbol("b")))),
-      (Symbol("X1"), And(Symbol("a"), Symbol("b")))
+      (expression.Symbol("X0"), Not(expression.And(expression.Symbol("a"), expression.Symbol("b")))),
+      (expression.Symbol("X1"), expression.And(expression.Symbol("a"), expression.Symbol("b")))
     )
     result shouldBe expected
   }
 
   "The (¬(p ∧ q) ∨ (r ∨ s))" should "be decomposed in 4 subexpressions following the nesting level" in {
     val exp: Expression = Or(
-      Not(And(Symbol("p"), Symbol("q"))),
-      Or(Symbol("r"), Symbol("s"))
+      Not(expression.And(expression.Symbol("p"), expression.Symbol("q"))),
+      expression.Or(expression.Symbol("r"), expression.Symbol("s"))
     )
     val result = zipWithSymbol(exp)
     val expected = List(
       (
-        Symbol("X0"),
+        expression.Symbol("X0"),
         Or(
-          Not(And(Symbol("p"), Symbol("q"))),
-          Or(Symbol("r"), Symbol("s"))
+          Not(expression.And(expression.Symbol("p"), expression.Symbol("q"))),
+          expression.Or(expression.Symbol("r"), expression.Symbol("s"))
         )
       ),
-      (Symbol("X1"), Not(And(Symbol("p"), Symbol("q")))),
-      (Symbol("X2"), And(Symbol("p"), Symbol("q"))),
-      (Symbol("X3"), Or(Symbol("r"), Symbol("s")))
+      (expression.Symbol("X1"), Not(expression.And(expression.Symbol("p"), expression.Symbol("q")))),
+      (expression.Symbol("X2"), expression.And(expression.Symbol("p"), expression.Symbol("q"))),
+      (expression.Symbol("X3"), expression.Or(expression.Symbol("r"), expression.Symbol("s")))
     )
     result shouldBe expected
   }
 
   "The exp: ¬(a ∧ b)" should "be decomposed correctly in 2 subexpression: the input one and the one inside the ¬ operator" in {
-    val exp: Expression = Not(And(Symbol("a"), Symbol("b")))
+    val exp: Expression = Not(expression.And(expression.Symbol("a"), expression.Symbol("b")))
     val result = zipWithSymbol(exp)
     val expected = List(
-      (Symbol("X0"), Not(And(Symbol("a"), Symbol("b")))),
-      (Symbol("X1"), And(Symbol("a"), Symbol("b")))
+      (expression.Symbol("X0"), Not(expression.And(expression.Symbol("a"), expression.Symbol("b")))),
+      (expression.Symbol("X1"), expression.And(expression.Symbol("a"), expression.Symbol("b")))
     )
     result shouldBe expected
   }
 
   "((a ∨ (b ∧ c)) ∧ d) ∧ (s ∨ t)" should "be decomposed in 5 subexpressions following the nesting level" in {
     val exp: Expression = And(
-      And(
-        Or(Symbol("a"), And(Symbol("b"), Symbol("c"))),
-        Symbol("d")
+      expression.And(
+        expression.Or(expression.Symbol("a"), expression.And(expression.Symbol("b"), expression.Symbol("c"))),
+        expression.Symbol("d")
       ),
-      Or(Symbol("s"), Symbol("t"))
+      expression.Or(expression.Symbol("s"), expression.Symbol("t"))
     )
     val result = zipWithSymbol(exp)
     val expected = List(
       (
-        Symbol("X0"),
+        expression.Symbol("X0"),
         And(
-          And(
-            Or(Symbol("a"), And(Symbol("b"), Symbol("c"))),
-            Symbol("d")
+          expression.And(
+            expression.Or(expression.Symbol("a"), expression.And(expression.Symbol("b"), expression.Symbol("c"))),
+            expression.Symbol("d")
           ),
-          Or(Symbol("s"), Symbol("t"))
+          expression.Or(expression.Symbol("s"), expression.Symbol("t"))
         )
       ),
       (
-        Symbol("X1"),
-        And(
-          Or(Symbol("a"), And(Symbol("b"), Symbol("c"))),
-          Symbol("d")
+        expression.Symbol("X1"),
+        expression.And(
+          expression.Or(expression.Symbol("a"), expression.And(expression.Symbol("b"), expression.Symbol("c"))),
+          expression.Symbol("d")
         )
       ),
       (
-        Symbol("X2"),
-        Or(Symbol("a"), And(Symbol("b"), Symbol("c")))
+        expression.Symbol("X2"),
+        expression.Or(expression.Symbol("a"), expression.And(expression.Symbol("b"), expression.Symbol("c")))
       ),
-      (Symbol("X3"), And(Symbol("b"), Symbol("c"))),
-      (Symbol("X4"), Or(Symbol("s"), Symbol("t")))
+      (expression.Symbol("X3"), expression.And(expression.Symbol("b"), expression.Symbol("c"))),
+      (expression.Symbol("X4"), expression.Or(expression.Symbol("s"), expression.Symbol("t")))
     )
     result shouldBe expected
   }

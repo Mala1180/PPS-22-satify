@@ -1,6 +1,7 @@
 package satify.view
 
-import satify.model.{CNF, State}
+import satify.model.{State}
+import satify.model.tree.cnf.CNF
 import satify.view.ComponentUtils.{createInputTextArea, createOutputTextArea}
 import satify.view.Constants.{cnfOutputDialogName, solOutputDialogName}
 

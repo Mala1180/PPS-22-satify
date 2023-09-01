@@ -1,9 +1,9 @@
-package satify.model.tree
+package satify.model.tree.expression
 
-import Value.*
-import TreeTraversableGiven.given_Traversable_Tree.zipWith
-import TreeTraversableGiven.given_Traversable_Tree
-import Utils.symbolGenerator
+import satify.model.tree.*
+import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree
+import satify.model.tree.Utils.symbolGenerator
+import satify.model.tree.Value.{and, not, or, symbol}
 
 trait Expression:
   val tree: Tree[Value]

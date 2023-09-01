@@ -1,6 +1,7 @@
 package satify.model
 
 import satify.model.dpll.PartialModel
+import satify.model.tree.cnf.Variable
 
 /** Sum Type representing the two possible results of SAT problem. */
 enum Result:

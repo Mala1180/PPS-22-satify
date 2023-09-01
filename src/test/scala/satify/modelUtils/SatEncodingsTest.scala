@@ -2,18 +2,19 @@ package satify.modelUtils
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.{should, shouldBe}
-import satify.model.tree.Expression.*
+import satify.model.tree.expression.Expression.*
 import satify.model.tree.*
 import satify.model.tree.Encodings.*
+import satify.model.tree.expression.{And, Not, Or}
 
 class SatEncodingsTest extends AnyFlatSpec:
 
   """ atLeastOne("A", "B", "C")  """ should """ be equal to "A" or "B" or "C" """ in {
-    atLeastOne(Symbol("A"), Symbol("B"), Symbol("C")) shouldBe Or(Or(Symbol("A"), Symbol("B")), Symbol("C"))
+    atLeastOne(expression.Symbol("A"), expression.Symbol("B"), expression.Symbol("C")) shouldBe Or(expression.Or(expression.Symbol("A"), expression.Symbol("B")), expression.Symbol("C"))
   }
 
   """ atMostOne("A", "B") """ should """ be equal to (Not("A") or "ENC0") and (Not("B") or "ENC0") """ in {
-    atMostOne(Symbol("A"), Symbol("B")) shouldBe Not(And(Symbol("A"), Symbol("B")))
+    atMostOne(expression.Symbol("A"), expression.Symbol("B")) shouldBe Not(And(expression.Symbol("A"), expression.Symbol("B")))
 //    atMostOne(Symbol("A"), Symbol("B")) shouldBe And(
 //      Or(Not(Symbol("A")), Symbol("ENC0")),
 //      Or(Not(Symbol("B")), Symbol("ENC0"))
@@ -21,9 +22,9 @@ class SatEncodingsTest extends AnyFlatSpec:
   }
 
   """ exactlyOne("A", "B") """ should """ be equal to atMostOne("A", "B") and atLeastOne("A", "B") """ in {
-    exactlyOne(Symbol("A"), Symbol("B")) shouldBe And(
-      atLeastOne(Symbol("A"), Symbol("B")),
-      atMostOne(Symbol("A"), Symbol("B"))
+    exactlyOne(expression.Symbol("A"), expression.Symbol("B")) shouldBe And(
+      atLeastOne(expression.Symbol("A"), expression.Symbol("B")),
+      atMostOne(expression.Symbol("A"), expression.Symbol("B"))
     )
   }
 

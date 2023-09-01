@@ -1,7 +1,7 @@
-package satify.model
+package satify.model.tree.cnf
 
 /** An enum representing a Conjunction Normal Form (CNF) expression. */
-import satify.model.CNF.*
+import satify.model.tree.cnf.CNF.*
 
 case class Variable(name: String, value: Option[Boolean] = None)
 

@@ -3,10 +3,11 @@ package satify.problems
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.Result.*
-import satify.model.tree.Expression
 import satify.model.problems.NQueens
 import satify.model.problems.NQueens.{printNQueensFromDimacs, printNqueens}
-import satify.model.{CNF, Solution}
+import satify.model.Solution
+import satify.model.tree.cnf.CNF
+import satify.model.tree.expression.Expression
 import satify.update.Solver
 import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.tseitin

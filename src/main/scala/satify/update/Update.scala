@@ -1,14 +1,14 @@
 package satify.update
 
 import satify.dsl.Reflection.reflect
-import satify.model.CNF.Symbol
-import satify.model.tree.Expression
-import satify.model.{CNF, State, Variable}
+import satify.model.tree.cnf.CNF.Symbol
+import satify.model.State
+import satify.model.tree.cnf.{CNF, Variable}
 import satify.update.Message.*
 import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.tseitin
 import satify.update.parser.DimacsCNF.*
-import satify.model.tree.Symbol as ExpSymbol
+import satify.model.tree.expression.{Expression, Symbol as ExpSymbol}
 import scala.io.Source
 
 object Update:

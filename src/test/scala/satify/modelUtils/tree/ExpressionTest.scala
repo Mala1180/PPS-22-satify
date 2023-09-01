@@ -5,11 +5,12 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.tree.Value.*
 import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree
 import satify.model.tree.TraversableOps.*
-import satify.model.tree.*
+import satify.model.tree.{expression, *}
+import satify.model.tree.expression.{And, Expression, Or}
 
 class ExpressionTest extends AnyFlatSpec with Matchers:
 
-  val exp: Expression = And(Or(Symbol("a"), Symbol("b")), Symbol("c"))
+  val exp: Expression = And(Or(expression.Symbol("a"), expression.Symbol("b")), expression.Symbol("c"))
 
   "An Expression" should "have its respective Tree" in {
     exp.tree shouldBe
@@ -18,7 +19,7 @@ class ExpressionTest extends AnyFlatSpec with Matchers:
 
   "Expression" should "be able to be converted from Tree[Value] instance" in {
     val exp1: Expression =
-      Expression(
+      expression.Expression(
         BinaryBranch(and, BinaryBranch(or, Leaf(Some(symbol("a"))), Leaf(Some(symbol("b")))), Leaf(Some(symbol("c"))))
       )
     exp1 shouldBe exp
@@ -29,8 +30,8 @@ class ExpressionTest extends AnyFlatSpec with Matchers:
       Expression(
         for t <- exp.tree
         yield t match
-          case t if t == Symbol("c").tree => And(Symbol("c"), Symbol("d")).tree
+          case t if t == expression.Symbol("c").tree => expression.And(expression.Symbol("c"), expression.Symbol("d")).tree
           case t => t
       )
-    mExp shouldBe And(Or(Symbol("a"), Symbol("b")), And(Symbol("c"), Symbol("d")))
+    mExp shouldBe And(expression.Or(expression.Symbol("a"), expression.Symbol("b")), expression.And(expression.Symbol("c"), expression.Symbol("d")))
   }

@@ -1,6 +1,7 @@
 package satify.model.tree
 
 import Value.*
+import satify.model.tree.expression.Symbol
 
 type literal = cnfSymbol | cnfNot
 

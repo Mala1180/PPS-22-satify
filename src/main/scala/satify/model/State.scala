@@ -1,17 +1,19 @@
 package satify.model
 
 import satify.model
-import satify.model.tree.Expression
+import satify.model.tree.expression.Expression
 import satify.model.problems.Problem
+import satify.model.tree.cnf.CNF
+import satify.model.tree.expression.Expression
 
 /** The immutable entity representing the application state (Model). */
 trait State:
   /** A general expression of boolean logic, it is the user input */
-  type Expression = satify.model.tree.Expression
+  type Expression = tree.expression.Expression
   val expression: Option[Expression] = None
 
   /** The input expression converted to Conjunctive Normal Form (CNF) */
-  type CNF = satify.model.CNF
+  type CNF = tree.cnf.CNF
   val cnf: Option[CNF] = None
 
   /** An entity containing the solution of the problem (SAT or UNSAT, optional Assignment), it is the output of DPLL */

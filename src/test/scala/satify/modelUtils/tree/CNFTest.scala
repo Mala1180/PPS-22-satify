@@ -2,6 +2,7 @@ package satify.modelUtils.tree
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import satify.model.tree
 import satify.model.tree.Value.*
 import satify.model.tree.TreeTraversableGiven.given_Traversable_Tree
 import satify.model.tree.TraversableOps.*

@@ -1,6 +1,6 @@
 package satify.dsl
 
-import satify.model.tree.{Expression, And, Or, Not, Symbol}
+import satify.model.tree.expression.{And, Expression, Not, Or, Symbol}
 
 import scala.annotation.targetName
 

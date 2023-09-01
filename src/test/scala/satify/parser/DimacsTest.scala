@@ -2,11 +2,12 @@ package satify.parser
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.CNF.*
+import satify.model.tree.cnf.CNF.*
 import satify.update.parser.DimacsCNF
 
 import scala.io.Source
 import satify.model.*
+import satify.model.tree.cnf.Variable
 
 import scala.util.Using
 

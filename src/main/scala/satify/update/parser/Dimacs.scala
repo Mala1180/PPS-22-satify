@@ -1,7 +1,7 @@
 package satify.update.parser
 
-import satify.model.CNF.*
-import satify.model.{CNF, Literal, Variable}
+import satify.model.tree.cnf.CNF.*
+import satify.model.tree.cnf.{CNF, Variable, Literal}
 
 import java.io.{File, PrintWriter}
 import scala.io.Source

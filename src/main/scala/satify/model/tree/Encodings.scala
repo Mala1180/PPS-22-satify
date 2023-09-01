@@ -2,13 +2,14 @@ package satify.model.tree
 
 import satify.model.tree.*
 import satify.model.tree.Utils.symbolGenerator
+import satify.model.tree.expression.{And, Expression, Not, Or}
 
 object Encodings:
 
-  private def requireVariables(vars: Seq[Symbol], minimum: Int, method: String): Unit =
+  private def requireVariables(vars: Seq[expression.Symbol], minimum: Int, method: String): Unit =
     require(vars.length >= minimum, s"$method encoding requires at least two variables")
 
-  private def removeDuplicates(vars: Seq[Symbol]): Seq[Symbol] = vars.distinct
+  private def removeDuplicates(vars: Seq[expression.Symbol]): Seq[expression.Symbol] = vars.distinct
 
   /** Encodes the constraint that at least one of the given variables is true.
     * It is implemented concatenating the expressions with the OR operator.
@@ -16,8 +17,8 @@ object Encodings:
     * @param variables the input variables
     * @return the [[satify.model.Expression]] that encodes the constraint
     */
-  def atLeastOne(variables: Symbol*): Expression =
-    val vars: Seq[Symbol] = removeDuplicates(variables)
+  def atLeastOne(variables: expression.Symbol*): Expression =
+    val vars: Seq[expression.Symbol] = removeDuplicates(variables)
     requireVariables(vars, 2, "atLeastOne")
     vars.reduceLeft(Or(_, _))
 
@@ -27,7 +28,7 @@ object Encodings:
     * @param variables the input variables
     * @return the [[satify.model.Expression]] that encodes the constraint
     */
-  def atMostOne(variables: Symbol*): Expression =
+  def atMostOne(variables: expression.Symbol*): Expression =
     val vars = removeDuplicates(variables)
     requireVariables(vars, 2, "atMostOne")
 //    val generator: () => Symbol = symbolGenerator("ENC")
@@ -44,15 +45,15 @@ object Encodings:
       j <- vars.indices
       if i < j
     yield Not(And(vars(i), vars(j)))
-    clauses.reduceLeft(And(_, _))
+    clauses.reduceLeft(expression.And(_, _))
 
   /** Encodes the constraint that exactly one of the given variables is true.
     *
     * @param variables the input variables
     * @return the [[satify.model.Expression]] that encodes the constraint
     */
-  def exactlyOne(variables: Symbol*): Expression =
-    val vars: Seq[Symbol] = removeDuplicates(variables)
+  def exactlyOne(variables: expression.Symbol*): Expression =
+    val vars: Seq[expression.Symbol] = removeDuplicates(variables)
     requireVariables(vars, 2, "exactlyOne")
     And(atLeastOne(vars: _*), atMostOne(vars: _*))
 
@@ -63,12 +64,12 @@ object Encodings:
     * @param variables the input variables
     * @return the [[satify.model.Expression]] that encodes the constraint
     */
-  def atMostK(k: Int)(variables: Symbol*): Expression =
-    val vars: Seq[Symbol] = removeDuplicates(variables)
+  def atMostK(k: Int)(variables: expression.Symbol*): Expression =
+    val vars: Seq[expression.Symbol] = removeDuplicates(variables)
     requireVariables(vars, 2, "atMostK")
     require(k <= vars.length, "atMostK encoding requires k <= n")
 
-    Symbol("TODO")
+    expression.Symbol("TODO")
 
   /** Encodes the constraint that at least k of the given variables are true.
     * It is implemented using the pairwise encoding that produces O(n&#94;2) clauses.
@@ -77,12 +78,12 @@ object Encodings:
     * @param variables the input variables
     * @return the [[satify.model.Expression]] that encodes the constraint
     */
-  def atLeastK(k: Int)(variables: Symbol*): Expression =
-    val vars: Seq[Symbol] = removeDuplicates(variables)
+  def atLeastK(k: Int)(variables: expression.Symbol*): Expression =
+    val vars: Seq[expression.Symbol] = removeDuplicates(variables)
     requireVariables(vars, 2, "atLeastK")
     require(k <= vars.length, "atLeastK encoding requires k <= n")
 
-    def combinations(vars: Seq[Symbol], k: Int): Seq[Seq[Expression]] =
+    def combinations(vars: Seq[expression.Symbol], k: Int): Seq[Seq[Expression]] =
       if (k == 0) Seq(Seq())
       else if (k == 1) vars.map(Seq(_))
       else
@@ -93,7 +94,7 @@ object Encodings:
 
     combinations(vars, k).map(_.reduceLeft(And(_, _))).reduceLeft(Or(_, _))
 
-  extension (expressions: Seq[Symbol])
+  extension (expressions: Seq[expression.Symbol])
 
     /** Calls [[atMostOne]] if k is 1, [[atMostK]] otherwise.
       * @see [[atMostOne]] and [[atMostK]]

@@ -2,12 +2,12 @@ package satify.dsl
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.shouldBe
-import satify.model.tree.Expression
+import satify.model.tree.expression.Expression
 
 class ReflectionTest extends AnyFlatSpec:
 
   import satify.dsl.Reflection.*
-  import satify.model.tree.Expression.*
+  import Expression.*
 
   """processInput""" should """add "" to all variables, excluding operators""" in {
     processInput("a or not(B) and c") shouldBe """"a" or not("B") and "c""""
