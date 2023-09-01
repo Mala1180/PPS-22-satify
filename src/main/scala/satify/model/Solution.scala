@@ -22,7 +22,10 @@ object Solution:
 
   extension (solution: Solution)
     def print: String =
-      s"${solution.result}\n${
+      s"${solution.result}: ${
+          if solution.assignment.size > 1 then solution.assignment.size + " Solutions"
+          else solution.assignment.size + " Solution"
+        }  \n${
           if solution.assignment.isEmpty then ""
           else solution.assignment.head.parModel.foldLeft("")((b, c) => b + c.name + ": " + c.value.get + "\n")
         }"

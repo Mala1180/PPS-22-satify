@@ -82,7 +82,7 @@ object ComponentUtils:
       modal = true
       title = dialogTitle
       // size of the main frame based on the screen size
-      size = new Dimension(windowSize.width / 3, windowSize.height / 4 * 2)
+      size = new Dimension(windowSize.width / 3, windowSize.height / 3 * 2)
       centerOnScreen()
 
   /** Creates a text area for the output

@@ -12,7 +12,7 @@ object View:
   def view(model: State): Set[Component] =
     import model.*
 
-    if expression.isEmpty && cnf.isDefined && solution.isEmpty then Set(updateExpression(cnf.get.printAsFormal()))
+    if expression.isEmpty && cnf.isDefined && solution.isEmpty then Set(updateExpression(cnf.get.printAsDSL()))
     else updateExpression(expression) ++ updateCnf(cnf) ++ updateSolution(model, solution)
 
   private def updateSolution(model: State, sol: Option[Solution]): Set[Component] =
