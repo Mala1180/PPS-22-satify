@@ -43,7 +43,7 @@ object GUI:
       contents += new MenuBar():
         contents += helpMenuItem
         contents += importMenuItem
-      contents += new FlowPanel():
+      contents += new BoxPanel(Orientation.Horizontal):
         contents += logoLabel
       contents += new TabbedPane:
         pages += new Page("Input", createInputComponent())
