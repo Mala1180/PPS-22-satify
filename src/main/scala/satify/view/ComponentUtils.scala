@@ -107,22 +107,22 @@ object ComponentUtils:
     val helpBox = new BoxPanel(Orientation.Horizontal):
       contents += Swing.HGlue
       contents += new BoxPanel(Orientation.Vertical):
-        contents += createLabel("Operators:", 20)
+        contents += createLabel("Operators:", 20, Font.BOLD)
         contents += Swing.VStrut(10)
-        contents += createLabel("  - AND:              and | /\\ ", 18)
-        contents += createLabel("  - OR:                   or | \\/ ", 18)
-        contents += createLabel("  - NOT:               not | ! ", 18)
-        contents += createLabel("  - XOR:               xor | ^ ", 18)
-        contents += createLabel("  - IMPLICATION:  implies | -> ", 18)
-        contents += createLabel("  - DOUBLE IMPL.:        iff | <-> ", 18)
+        contents += createLabel("  - AND:                and | /\\ ", 18)
+        contents += createLabel("  - OR:                     or | \\/ ", 18)
+        contents += createLabel("  - NOT:                 not | ! ", 18)
+        contents += createLabel("  - XOR:                 xor | ^ ", 18)
+        contents += createLabel("  - IMPLICATION:      implies | -> ", 18)
+        contents += createLabel("  - DOUBLE IMPL.:     iff | <-> ", 18)
         contents += Swing.VStrut(20)
-        contents += createLabel("Encodings:", 20)
+        contents += createLabel("Encodings:", 20, Font.BOLD)
         contents += Swing.VStrut(10)
-        contents += createLabel("  - AT LEAST ONE:  atLeastOne(\"X1\", \"X2\", ...)", 18)
-        contents += createLabel("  - AT LEAST K:       atLeastK(k: Int)(\"X1\", \"X2\", ...)", 18)
-        contents += createLabel("  - AT MOST ONE:  atMostOne(\"X1\", \"X2\", ...)", 18)
-        contents += createLabel("  - AT MOST K:        atMostK(k: Int)(\"X1\", \"X2\", ...)", 18)
-        contents += createLabel("  - EXACTLY ONE:  exactlyOne(\"X1\", \"X2\", ...)", 18)
+        contents += createLabel("  - AT LEAST ONE:  (X1, X2, ...) atLeast 1", 18)
+        contents += createLabel("  - AT LEAST K:        (X1, X2, ...) atLeast three", 18)
+        contents += createLabel("  - AT MOST ONE:   (X1, X2, ...) atMost one", 18)
+        contents += createLabel("  - AT MOST K:         (X1, X2, ...) atMost 3", 18)
+        contents += createLabel("  - EXACTLY ONE:   (X1, X2, ...) exactlyOne", 18)
       contents += Swing.HGlue
     new Dialog:
       contents = helpBox
@@ -159,6 +159,6 @@ object ComponentUtils:
     * @param fontSize font size
     * @return the label
     */
-  def createLabel(txt: String, fontSize: Int): Label =
+  def createLabel(txt: String, fontSize: Int, fontStyle: Int = Font.PLAIN): Label =
     new Label(txt):
-      font = Font(fontFamily, Font.ITALIC, fontSize)
+      font = Font(fontFamily, fontStyle, fontSize)
