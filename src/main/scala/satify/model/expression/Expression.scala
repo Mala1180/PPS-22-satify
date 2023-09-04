@@ -38,7 +38,6 @@ object Expression:
     * @return a list of the subexpressions found in the given expression zipped with the Symbol.
     */
   def zipWithSymbol(exp: Expression): List[(Symbol, Expression)] =
-    // TODO: introduction of a common name for the symbols
     zipWith(exp)(symbolGenerator("TSTN"))
 
   /** Search for subexpressions in the given expression.

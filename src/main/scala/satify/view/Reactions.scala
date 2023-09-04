@@ -28,8 +28,7 @@ object Reactions:
     * @param model the current model to update
     */
   def solutionReaction(model: Model): Unit =
-    val input: String = inputScrollPane.contents.head.asInstanceOf[TextArea].text
-    updateComponents(view(update(model, Solve(input))))
+    updateComponents(view(update(model, Solve(inputTextArea.text))))
 
   /** Reaction to the convert button
     * @param model the current model to update
@@ -75,15 +74,17 @@ object Reactions:
     * @param newComponents the new components to display
     */
   private def updateComponents(newComponents: Set[Component]): Unit =
-    newComponents.foreach(c => {
-      c.name match
-        case n if n == solOutputDialogName =>
-          solutionOutputDialog.contents = c
-          solutionOutputDialog.open()
-        case n if n == cnfOutputDialogName =>
-          cnfOutputDialog.contents = c
-          cnfOutputDialog.open()
-        case n if n == expTextAreaName =>
-          inputScrollPane.contents = c
-    })
-    Swing.onEDT(loadingLabel.visible = false)
+    Swing.onEDT {
+      newComponents.foreach(c => {
+        c.name match
+          case n if n == solOutputDialogName =>
+            solutionOutputDialog.contents = c
+            solutionOutputDialog.open()
+          case n if n == cnfOutputDialogName =>
+            cnfOutputDialog.contents = c
+            cnfOutputDialog.open()
+          case n if n == expTextAreaName =>
+            inputScrollPane.contents = c
+      })
+      loadingLabel.visible = false
+    }

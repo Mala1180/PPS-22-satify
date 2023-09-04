@@ -1,7 +1,7 @@
 package satify.view
 
 import satify.view.ComponentUtils.*
-import satify.view.Constants.{headingFont, logoPath, margin, windowSize}
+import satify.view.Constants.{headingFont, logoPath, margin, windowSize, expTextAreaName}
 
 import javax.swing.filechooser.FileNameExtensionFilter
 import javax.swing.{ImageIcon, JFileChooser}
@@ -9,23 +9,19 @@ import scala.swing.*
 import scala.swing.TabbedPane.Page
 
 object GUI:
-  // logo and logo label
   private val logoIcon: ImageIcon = createImage(logoPath, 5)
   private val logoLabel: Label = new Label:
     icon = logoIcon
     border = Swing.EmptyBorder(margin)
 
-  var inputTextArea: TextArea = createInputTextArea()
   val parameterInputText: TextField = createParameterInputText()
-  var inputScrollPane = new ScrollPane(inputTextArea)
+  val inputScrollPane = new ScrollPane(createInputTextArea())
   val problemComboBox: ComboBox[String] = createProblemComboBox()
 
-  // solve and convert to cnf buttons
   val solveButton: Button = createButton("Solve", 100, 40)
   val solveProblemButton: Button = createButton("Solve", 100, 40)
   val cnfButton: Button = createButton("Convert to CNF", 170, 40)
 
-  // output dialogs
   val solutionOutputDialog: Dialog = createOutputDialog("Solution")
   val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
   val helpDialog: Dialog = createHelpDialog()
@@ -37,6 +33,11 @@ object GUI:
     maximumSize = new Dimension(50, 200)
   val importMenuItem: MenuItem = new MenuItem("Import"):
     maximumSize = new Dimension(1000, 200)
+
+  def inputTextArea: TextArea = inputScrollPane.contents
+    .filter(c => c.isInstanceOf[TextArea] && c.name == expTextAreaName)
+    .head
+    .asInstanceOf[TextArea]
 
   def createBaseGUI(): BoxPanel =
     new BoxPanel(Orientation.Vertical):
