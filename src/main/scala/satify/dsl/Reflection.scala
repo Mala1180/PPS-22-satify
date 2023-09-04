@@ -1,9 +1,13 @@
 package satify.dsl
 
+import satify.dsl.Reflection.getDSLKeywords
 import satify.model.expression.Expression
 import satify.model.expression.Expression.Symbol
 
 object Reflection:
+
+  private val excludedWords = getDSLKeywords.mkString("|")
+  private val regexPattern = s"""((?!$excludedWords\\b)\\b(?![0-9]+\\b)\\w+)"""
 
   private def getDSLKeywords: List[String] =
     val operators = classOf[Operators.type].getMethods.map(_.getName).toList
@@ -18,10 +22,10 @@ object Reflection:
     */
   def processInput(input: String): String =
     // TODO: link these operators to the ones in the DSL
-    val excludedWords = getDSLKeywords.mkString("|")
     // regExp to match all words that are not operators
-    val regexPattern = s"""((?!$excludedWords\\b)\\b[A-Z|a-z]+)"""
-    input.replaceAll(regexPattern, "\"$1\"")
+    input
+      .replaceAll(regexPattern, "\"$1\"")
+      .replaceAll("\n", " ")
 
   /** Reflects the input to the REPL returning an Expression
     * @param input the input to evaluate
@@ -29,7 +33,7 @@ object Reflection:
     * @throws IllegalArgumentException if the input is malformed
     */
   def reflect(input: String): Expression =
-    if input.matches("""\b[A-Z|a-z]+\b""") then Symbol(input)
+    if input.matches(regexPattern) then Symbol(input)
     else
       val code: String = input match
         case "" => throw new IllegalArgumentException("Empty input")

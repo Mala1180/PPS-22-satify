@@ -12,18 +12,27 @@ object Encodings:
   private def tupleToSymbols(tuple: Tuple): List[Symbol] =
     tuple.productIterator.toList.map(_.toString).map(Symbol.apply)
 
-  extension (expressions: Tuple)
+  extension (expressions: Seq[Symbol])
 
     /** Calls [[atMostOne]] if k is 1, [[atMostK]] otherwise.
       * @see [[atMostOne]] and [[atMostK]]
+      * @return the [[Expression]] that represents the constraint
       */
     def atMost(k: Int): Expression = k match
-      case 1 => atMostOne(tupleToSymbols(expressions): _*)
-      case _ => atMostK(k)(tupleToSymbols(expressions): _*)
+      case 1 => atMostOne(expressions: _*)
+      case _ => atMostK(k)(expressions: _*)
 
     /** Calls [[atLeastOne]] if k is 1, [[atLeastK]] otherwise.
       * @see [[atLeastOne]] and [[atLeastK]]
+      * @return the [[Expression]] that represents the constraint
       */
     def atLeast(k: Int): Expression = k match
-      case 1 => atLeastOne(tupleToSymbols(expressions): _*)
-      case _ => atLeastK(k)(tupleToSymbols(expressions): _*)
+      case 1 => atLeastOne(expressions: _*)
+      case _ => atLeastK(k)(expressions: _*)
+
+    /** Calls [[Expression.exactlyOne]]
+      *  @see [[Expression.exactlyOne]]
+      * @return the [[Expression]] that represents the constraint
+      */
+    def exactlyOne: Expression = Expression.exactlyOne(expressions: _*)
+    // TODO to test

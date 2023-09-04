@@ -42,7 +42,7 @@ cucumber := {
       "io.cucumber.core.cli.Main"
     ),
     connectInput = false,
-    envVars = Map[String, String](),
+    envVars = Map[String, String]()
   )
-  Fork.java(opts, List())
+  if (Fork.java(opts, List()) != 0) throw new Exception("Cucumber tests failed")
 }
