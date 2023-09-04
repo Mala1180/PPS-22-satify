@@ -4,3 +4,8 @@ import satify.model.expression.Expression
 
 trait Problem:
   val exp: Expression
+
+enum ProblemChoice:
+  case GraphColoring
+  case NQueens
+  case NurseScheduling

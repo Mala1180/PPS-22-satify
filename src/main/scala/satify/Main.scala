@@ -4,22 +4,46 @@ import satify.Architecture.MVU
 import satify.Main.model
 import satify.view.Constants.windowSize
 import satify.view.GUI.*
-import satify.view.Reactions.{cnfReaction, importReaction, solutionReaction}
+import satify.view.Reactions.{
+  cnfReaction,
+  helpReaction,
+  importReaction,
+  nextSolutionReaction,
+  problemSolutionReaction,
+  solutionReaction
+}
 
+import java.util.concurrent.{ExecutorService, Executors}
 import scala.swing.event.ButtonClicked
-import scala.swing.{Dimension, FileChooser, MainFrame}
+import scala.swing.{Dimension, FileChooser, MainFrame, Swing}
 
 /** Entry point of the application. */
 object Main extends App with MVU:
   new MainFrame:
     title = "Satify SAT Solver"
 
-    solveButton.reactions += { case ButtonClicked(_) => solutionReaction(model) }
-    cnfButton.reactions += { case ButtonClicked(_) => cnfReaction(model) }
+    solveButton.reactions += { case ButtonClicked(_) =>
+      Swing.onEDT(loadingLabel.visible = true)
+      Executors.newSingleThreadExecutor().execute(() => solutionReaction(model))
+    }
+    cnfButton.reactions += { case ButtonClicked(_) =>
+      Swing.onEDT(loadingLabel.visible = true)
+      Executors.newSingleThreadExecutor().execute(() => cnfReaction(model))
+    }
+
+    solveProblemButton.reactions += { case ButtonClicked(_) =>
+      Executors.newSingleThreadExecutor().execute(() => problemSolutionReaction(model))
+    }
+
+    helpMenuItem.reactions += { case ButtonClicked(_) =>
+      helpReaction()
+    }
 
     importMenuItem.reactions += { case ButtonClicked(_) =>
       val result = fileChooser.showOpenDialog(null)
-      if result == FileChooser.Result.Approve then importReaction(model)
+      if result == FileChooser.Result.Approve then
+        Swing.onEDT(loadingLabel.visible = true)
+        Executors.newSingleThreadExecutor().execute(() => importReaction(model))
     }
 
     contents = createBaseGUI()

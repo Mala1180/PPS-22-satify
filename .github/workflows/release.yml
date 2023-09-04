@@ -29,8 +29,16 @@ jobs:
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          title: "Sprint 3 Release"
+          automatic_release_tag: "v0.3.0"
+          title: "Test Release"
           prerelease: true
           files: |
             target/scala-3.3.0/satify.jar
+
+      - name: Update Changelog
+        uses: BobAnkh/auto-generate-changelog@v1.2.5
+        with:
+          BRANCH: ${{ github.head_ref }}
+          ACCESS_TOKEN: "${{ secrets.TOKEN }}"
+          TYPE: 'feat:Feature 🚀,fix:Bug Fixes 🐛,docs:Documentation 📚,refactor:Refactor 🛠️,perf :Performance Improvements 📈,
+                style:Style Improvements 💉,test:Tests 🧪,wip:Work in progress ⚙️,ci:Continuous Integration 🤖️,chore:Chores 🖋️,other:Other Changes'
