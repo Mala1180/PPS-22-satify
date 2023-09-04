@@ -51,6 +51,7 @@ object TseitinTransformation:
   /** Transform the Symbol and the corresponding expression to CNF form
     * @param exp a Symbol and the corresponding expression
     * @return a list of Symbol and expressions in CNF form for the given Symbol and expression
+    * @throws IllegalArgumentException if the expression is not a subexpression
     */
   def transform(exp: (Expression.Symbol, Expression)): List[(CNFSymbol, CNF)] =
     def expr(exp: Expression): Literal = exp match
