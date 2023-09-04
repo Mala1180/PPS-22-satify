@@ -97,7 +97,10 @@ class TseitinTest extends AnyFlatSpec with Matchers:
           CNFAnd(
             CNFOr(CNFNot(CNFSymbol(Variable("d"))), CNFSymbol(Variable("TSTN0"))),
             CNFAnd(
-              CNFOr(CNFOr(CNFSymbol(Variable("TSTN2")), CNFSymbol(Variable("TSTN3"))), CNFNot(CNFSymbol(Variable("TSTN1")))),
+              CNFOr(
+                CNFOr(CNFSymbol(Variable("TSTN2")), CNFSymbol(Variable("TSTN3"))),
+                CNFNot(CNFSymbol(Variable("TSTN1")))
+              ),
               CNFAnd(
                 CNFOr(CNFNot(CNFSymbol(Variable("TSTN2"))), CNFSymbol(Variable("TSTN1"))),
                 CNFAnd(

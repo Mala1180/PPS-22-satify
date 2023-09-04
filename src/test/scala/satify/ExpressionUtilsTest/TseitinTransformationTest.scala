@@ -12,7 +12,7 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
 
   "The transformation of ¬(a ∨ b)" should "throw an exception" in {
     val exp: (Symbol, Expression) = (Symbol("TSTN0"), Not(Or(Symbol("a"), Symbol("b"))))
-    the [IllegalArgumentException] thrownBy transform(exp) should have message "Expression is not a Symbol or a Not"
+    the[IllegalArgumentException] thrownBy transform(exp) should have message "Expression is not a Symbol or a Not"
   }
 
   "The transformation of ((a ∨ c) ∨ (b ∨ d))" should "throw an exception" in {

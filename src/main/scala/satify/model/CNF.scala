@@ -19,7 +19,7 @@ enum CNF:
 
 object CNF:
   extension (cnf: CNF)
-/*    def printAsFormal(flat: Boolean = false): String =
+    /*    def printAsFormal(flat: Boolean = false): String =
       cnf match
         case Symbol(value) =>
           value match
