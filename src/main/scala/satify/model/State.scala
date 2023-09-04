@@ -1,6 +1,7 @@
 package satify.model
 
 import satify.model
+import satify.model.errors.Error
 import satify.model.expression.Expression
 import satify.model.problems.Problem
 
@@ -25,12 +26,23 @@ trait State:
   type Problem = problems.Problem
   val problem: Option[Problem] = None
 
+  /** Error representation */
+  type Error = errors.Error
+  val error: Option[Error] = None
+
 /** Factory for [[State]] instances. */
 object State:
   /** Creates a new empty application state.
     * @return a new [[State]] instance.
     */
   def apply(): State = StateImpl()
+
+  /** Creates a new application state containing only the the input and the occurred error.
+    * @param input the input string
+    * @param error the [[Error]]
+    * @return a new [[State]] instance.
+    */
+  def apply(input: String, error: Error): State = StateImpl(Some(input), None, None, None, None, Some(error))
 
   /** Creates a new application state with input expression and its CNF.
     * @param exp the input [[Expression]]
@@ -68,5 +80,6 @@ object State:
       override val expression: Option[Expression] = None,
       override val cnf: Option[CNF] = None,
       override val solution: Option[Solution] = None,
-      override val problem: Option[Problem] = None
+      override val problem: Option[Problem] = None,
+      override val error: Option[Error] = None
   ) extends State
