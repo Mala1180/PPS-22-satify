@@ -1,26 +1,45 @@
 package satify.view
 
-import satify.model.{CNF, State}
-import satify.view.ComponentUtils.{createInputTextArea, createOutputTextArea}
+import satify.model.{CNF, Solution, State}
+import satify.view.ComponentUtils.{createInputTextArea, createNextSection, createOutputTextArea}
 import satify.view.Constants.{cnfOutputDialogName, solOutputDialogName}
 
 import scala.swing.*
 
 object View:
   def view(model: State): Set[Component] =
-    val cnfComponent: FlowPanel = new FlowPanel():
-      name = cnfOutputDialogName
-      var result: String = "No CNF"
-      if model.cnf.isDefined then result = model.cnf.get.printAsFormal()
-      contents += new ScrollPane(createOutputTextArea(result, 30, 35))
+    import model.*
+    updateExpression(input.get) ++ updateCnf(cnf) ++ updateSolution(model, solution)
 
-    val solutionComponent: FlowPanel = new FlowPanel():
-      name = solOutputDialogName
-      var result: String = "No Solution"
-      if model.solution.isDefined then result = model.solution.get.print
-      contents += new ScrollPane(createOutputTextArea(result, 30, 35))
+  /** Update the solution components
+    * @param model the current state
+    * @param sol the solution to show
+    * @return
+    */
+  private def updateSolution(model: State, sol: Option[Solution]): Set[Component] =
+    if sol.isDefined then
+      val fp: FlowPanel = new FlowPanel():
+        name = solOutputDialogName
+        contents += new BoxPanel(Orientation.Vertical):
+          contents += new ScrollPane(createOutputTextArea(sol.get.print, 30, 35))
+          contents += createNextSection(model)
+      Set(fp)
+    else Set()
 
-    val cnf: Option[CNF] = model.cnf
-    val expComponent: TextArea = createInputTextArea(s"${if cnf.isDefined then cnf.get.printAsDSL() else ""}")
+  /** Update the CNF text area
+    * @param cnf the CNF to show in new components
+    * @return a set of components to add to the GUI
+    */
+  private def updateCnf(cnf: Option[CNF]): Set[Component] =
+    if cnf.isDefined then
+      val fp: FlowPanel = new FlowPanel():
+        name = cnfOutputDialogName
+        contents += new ScrollPane(createOutputTextArea(cnf.get.printAsFormal(), 30, 35))
+      Set(fp)
+    else Set()
 
-    Set(expComponent, cnfComponent, solutionComponent)
+  /** Update the expression text area
+    * @param exp the component to show
+    * @return a set of components to add to the GUI
+    */
+  private def updateExpression(exp: String): Set[Component] = Set(createInputTextArea(exp))

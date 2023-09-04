@@ -26,6 +26,7 @@ object Reflection:
   /** Reflects the input to the REPL returning an Expression
     * @param input the input to evaluate
     * @return the [[Expression]]
+    * @throws IllegalArgumentException if the input is malformed
     */
   def reflect(input: String): Expression =
     if input.matches("""\b[A-Z|a-z]+\b""") then Symbol(input)
@@ -38,4 +39,5 @@ object Reflection:
           |import satify.dsl.DSL.{*, given}
           |""".stripMargin
       println(code)
-      dotty.tools.repl.ScriptEngine().eval(imports + code).asInstanceOf[Expression]
+      try dotty.tools.repl.ScriptEngine().eval(imports + code).asInstanceOf[Expression]
+      catch case e: Exception => throw new IllegalArgumentException(e.getMessage)
