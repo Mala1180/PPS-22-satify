@@ -38,6 +38,6 @@ object Reflection:
         """import satify.model.expression.Expression
           |import satify.dsl.DSL.{*, given}
           |""".stripMargin
-      println(imports + code)
+      println(code)
       try dotty.tools.repl.ScriptEngine().eval(imports + code).asInstanceOf[Expression]
       catch case e: Exception => throw new IllegalArgumentException(e.getMessage)

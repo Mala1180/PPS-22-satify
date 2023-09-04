@@ -1,11 +1,11 @@
-name: Create Release
+name: Satify Release
 
 on:
   pull_request:
     types:
       - closed
     branches:
-      - test
+      - main
 
 permissions:
   contents: write
@@ -30,7 +30,7 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
-          title: "Sprint 3 Release (${{ github.ref_name }})"
+          title: "Sprint 3 Release"
           prerelease: true
           files: |
             target/scala-3.3.0/satify.jar
