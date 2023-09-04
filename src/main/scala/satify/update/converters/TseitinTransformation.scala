@@ -20,7 +20,7 @@ object TseitinTransformation:
     var transformedExp = transformations.map(_._2)
     if transformedExp.size == 1 then transformedExp.head
     else
-      transformedExp = transformedExp.prepended(CNFSymbol(Variable("X0")))
+      transformedExp = transformedExp.prepended(CNFSymbol(Variable("TSTN0")))
       transformedExp.reduceRight((s1, s2) =>
         CNFAnd(s1.asInstanceOf[CNFOr | Literal], s2.asInstanceOf[CNFAnd | CNFOr | Literal])
       )
@@ -56,14 +56,14 @@ object TseitinTransformation:
     def expr(exp: Expression): Literal = exp match
       case Symbol(v) => CNFSymbol(Variable(v, None))
       case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v, None)))
-      case _ => throw new Exception("Expression is not a Symbol or a Not Symbol")
+      case _ => throw new IllegalArgumentException("Expression is not a Symbol or a Not")
     def symbol(exp: Expression): CNFSymbol = exp match
       case Symbol(v) => CNFSymbol(Variable(v, None))
-      case _ => throw new Exception("Expression is not a Symbol")
+      case _ => throw new IllegalArgumentException("Expression is not a Symbol or a Not")
     def not(exp: Expression): Literal = exp match
       case Not(Symbol(v)) => CNFSymbol(Variable(v, None))
       case Symbol(v) => CNFNot(CNFSymbol(Variable(v, None)))
-      case _ => throw new Exception("Expression is not a Symbol or a Not Symbol")
+      case _ => throw new IllegalArgumentException("Expression is not a Symbol or a Not")
 
     exp match
       case (s @ Symbol(v), Not(lit)) =>

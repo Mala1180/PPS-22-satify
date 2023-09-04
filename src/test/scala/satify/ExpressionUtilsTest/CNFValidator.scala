@@ -9,6 +9,12 @@ import satify.update.converters.TseitinTransformation.isCNF
 
 class CNFValidator extends AnyFlatSpec with Matchers:
 
+  "The transformation of ¬(a ∨ b)" should "throw an exception" in {
+    val exp: Expression = Not(Or(Symbol("a"), Symbol("b")))
+    val result: Boolean = isCNF(exp)
+    result shouldBe false
+  }
+
   "The symbol a" should "be validated as CNF" in {
     val exp: Expression = Symbol("a")
     val result: Boolean = isCNF(exp)
@@ -32,34 +38,34 @@ class CNFValidator extends AnyFlatSpec with Matchers:
   "The exp ((a ∧ ¬b) ∨ c)" should "be validated as CNF" in {
     val exp = And(
       Or(
-        Or(Symbol("X1"), Symbol("d")),
-        Not(Symbol("X0"))
+        Or(Symbol("TSTN1"), Symbol("d")),
+        Not(Symbol("TSTN0"))
       ),
       And(
-        Or(Not(Symbol("X1")), Symbol("X0")),
+        Or(Not(Symbol("TSTN1")), Symbol("TSTN0")),
         And(
-          Or(Not(Symbol("d")), Symbol("X0")),
+          Or(Not(Symbol("d")), Symbol("TSTN0")),
           And(
             Or(
-              Or(Symbol("X2"), Symbol("X3")),
-              Not(Symbol("X1"))
+              Or(Symbol("TSTN2"), Symbol("TSTN3")),
+              Not(Symbol("TSTN1"))
             ),
             And(
-              Or(Not(Symbol("X2")), Symbol("X1")),
+              Or(Not(Symbol("TSTN2")), Symbol("TSTN1")),
               And(
-                Or(Not(Symbol("X3")), Symbol("X1")),
+                Or(Not(Symbol("TSTN3")), Symbol("TSTN1")),
                 And(
-                  Or(Not(Symbol("a")), Not(Symbol("X2"))),
+                  Or(Not(Symbol("a")), Not(Symbol("TSTN2"))),
                   And(
-                    Or(Symbol("a"), Symbol("X2")),
+                    Or(Symbol("a"), Symbol("TSTN2")),
                     And(
                       Or(
                         Or(Not(Symbol("b")), Not(Symbol("c"))),
-                        Symbol("X3")
+                        Symbol("TSTN3")
                       ),
                       And(
-                        Or(Symbol("b"), Not(Symbol("X3"))),
-                        Or(Symbol("c"), Not(Symbol("X3")))
+                        Or(Symbol("b"), Not(Symbol("TSTN3"))),
+                        Or(Symbol("c"), Not(Symbol("TSTN3")))
                       )
                     )
                   )

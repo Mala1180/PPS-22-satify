@@ -20,10 +20,10 @@ class TseitinTest extends AnyFlatSpec with Matchers:
     val exp = Not(Symbol("b"))
     val result = tseitin(exp)
     val expected: CNF = CNFAnd(
-      CNFSymbol(Variable("X0")),
+      CNFSymbol(Variable("TSTN0")),
       CNFAnd(
-        CNFOr(CNFNot(CNFSymbol(Variable("b"))), CNFNot(CNFSymbol(Variable("X0")))),
-        CNFOr(CNFSymbol(Variable("b")), CNFSymbol(Variable("X0")))
+        CNFOr(CNFNot(CNFSymbol(Variable("b"))), CNFNot(CNFSymbol(Variable("TSTN0")))),
+        CNFOr(CNFSymbol(Variable("b")), CNFSymbol(Variable("TSTN0")))
       )
     )
     result shouldBe expected
@@ -33,15 +33,15 @@ class TseitinTest extends AnyFlatSpec with Matchers:
     val exp = Or(Symbol("a"), Symbol("b"))
     val result = tseitin(exp)
     val expected: CNF = CNFAnd(
-      CNFSymbol(Variable("X0")),
+      CNFSymbol(Variable("TSTN0")),
       CNFAnd(
         CNFOr(
           CNFOr(CNFSymbol(Variable("a")), CNFSymbol(Variable("b"))),
-          CNFNot(CNFSymbol(Variable("X0")))
+          CNFNot(CNFSymbol(Variable("TSTN0")))
         ),
         CNFAnd(
-          CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFSymbol(Variable("X0"))),
-          CNFOr(CNFNot(CNFSymbol(Variable("b"))), CNFSymbol(Variable("X0")))
+          CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFSymbol(Variable("TSTN0"))),
+          CNFOr(CNFNot(CNFSymbol(Variable("b"))), CNFSymbol(Variable("TSTN0")))
         )
       )
     )
@@ -52,28 +52,28 @@ class TseitinTest extends AnyFlatSpec with Matchers:
     val exp = Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val result = tseitin(exp)
     val expected = CNFAnd(
-      CNFSymbol(Variable("X0")),
+      CNFSymbol(Variable("TSTN0")),
       CNFAnd(
         CNFOr(
-          CNFOr(CNFSymbol(Variable("X1")), CNFSymbol(Variable("c"))),
-          CNFNot(CNFSymbol(Variable("X0")))
+          CNFOr(CNFSymbol(Variable("TSTN1")), CNFSymbol(Variable("c"))),
+          CNFNot(CNFSymbol(Variable("TSTN0")))
         ),
         CNFAnd(
-          CNFOr(CNFNot(CNFSymbol(Variable("X1"))), CNFSymbol(Variable("X0"))),
+          CNFOr(CNFNot(CNFSymbol(Variable("TSTN1"))), CNFSymbol(Variable("TSTN0"))),
           CNFAnd(
-            CNFOr(CNFNot(CNFSymbol(Variable("c"))), CNFSymbol(Variable("X0"))),
+            CNFOr(CNFNot(CNFSymbol(Variable("c"))), CNFSymbol(Variable("TSTN0"))),
             CNFAnd(
               CNFOr(
-                CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFNot(CNFSymbol(Variable("X2")))),
-                CNFSymbol(Variable("X1"))
+                CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFNot(CNFSymbol(Variable("TSTN2")))),
+                CNFSymbol(Variable("TSTN1"))
               ),
               CNFAnd(
-                CNFOr(CNFSymbol(Variable("a")), CNFNot(CNFSymbol(Variable("X1")))),
+                CNFOr(CNFSymbol(Variable("a")), CNFNot(CNFSymbol(Variable("TSTN1")))),
                 CNFAnd(
-                  CNFOr(CNFSymbol(Variable("X2")), CNFNot(CNFSymbol(Variable("X1")))),
+                  CNFOr(CNFSymbol(Variable("TSTN2")), CNFNot(CNFSymbol(Variable("TSTN1")))),
                   CNFAnd(
-                    CNFOr(CNFNot(CNFSymbol(Variable("b"))), CNFNot(CNFSymbol(Variable("X2")))),
-                    CNFOr(CNFSymbol(Variable("b")), CNFSymbol(Variable("X2")))
+                    CNFOr(CNFNot(CNFSymbol(Variable("b"))), CNFNot(CNFSymbol(Variable("TSTN2")))),
+                    CNFOr(CNFSymbol(Variable("b")), CNFSymbol(Variable("TSTN2")))
                   )
                 )
               )
@@ -89,31 +89,31 @@ class TseitinTest extends AnyFlatSpec with Matchers:
     val exp = Or(Or(Not(Symbol("a")), And(Symbol("b"), Symbol("c"))), Symbol("d"))
     val result = tseitin(exp)
     val expected = CNFAnd(
-      CNFSymbol(Variable("X0")),
+      CNFSymbol(Variable("TSTN0")),
       CNFAnd(
-        CNFOr(CNFOr(CNFSymbol(Variable("X1")), CNFSymbol(Variable("d"))), CNFNot(CNFSymbol(Variable("X0")))),
+        CNFOr(CNFOr(CNFSymbol(Variable("TSTN1")), CNFSymbol(Variable("d"))), CNFNot(CNFSymbol(Variable("TSTN0")))),
         CNFAnd(
-          CNFOr(CNFNot(CNFSymbol(Variable("X1"))), CNFSymbol(Variable("X0"))),
+          CNFOr(CNFNot(CNFSymbol(Variable("TSTN1"))), CNFSymbol(Variable("TSTN0"))),
           CNFAnd(
-            CNFOr(CNFNot(CNFSymbol(Variable("d"))), CNFSymbol(Variable("X0"))),
+            CNFOr(CNFNot(CNFSymbol(Variable("d"))), CNFSymbol(Variable("TSTN0"))),
             CNFAnd(
-              CNFOr(CNFOr(CNFSymbol(Variable("X2")), CNFSymbol(Variable("X3"))), CNFNot(CNFSymbol(Variable("X1")))),
+              CNFOr(CNFOr(CNFSymbol(Variable("TSTN2")), CNFSymbol(Variable("TSTN3"))), CNFNot(CNFSymbol(Variable("TSTN1")))),
               CNFAnd(
-                CNFOr(CNFNot(CNFSymbol(Variable("X2"))), CNFSymbol(Variable("X1"))),
+                CNFOr(CNFNot(CNFSymbol(Variable("TSTN2"))), CNFSymbol(Variable("TSTN1"))),
                 CNFAnd(
-                  CNFOr(CNFNot(CNFSymbol(Variable("X3"))), CNFSymbol(Variable("X1"))),
+                  CNFOr(CNFNot(CNFSymbol(Variable("TSTN3"))), CNFSymbol(Variable("TSTN1"))),
                   CNFAnd(
-                    CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFNot(CNFSymbol(Variable("X2")))),
+                    CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFNot(CNFSymbol(Variable("TSTN2")))),
                     CNFAnd(
-                      CNFOr(CNFSymbol(Variable("a")), CNFSymbol(Variable("X2"))),
+                      CNFOr(CNFSymbol(Variable("a")), CNFSymbol(Variable("TSTN2"))),
                       CNFAnd(
                         CNFOr(
                           CNFOr(CNFNot(CNFSymbol(Variable("b"))), CNFNot(CNFSymbol(Variable("c")))),
-                          CNFSymbol(Variable("X3"))
+                          CNFSymbol(Variable("TSTN3"))
                         ),
                         CNFAnd(
-                          CNFOr(CNFSymbol(Variable("b")), CNFNot(CNFSymbol(Variable("X3")))),
-                          CNFOr(CNFSymbol(Variable("c")), CNFNot(CNFSymbol(Variable("X3"))))
+                          CNFOr(CNFSymbol(Variable("b")), CNFNot(CNFSymbol(Variable("TSTN3")))),
+                          CNFOr(CNFSymbol(Variable("c")), CNFNot(CNFSymbol(Variable("TSTN3"))))
                         )
                       )
                     )

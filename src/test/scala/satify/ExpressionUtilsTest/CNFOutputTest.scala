@@ -37,8 +37,8 @@ class CNFOutputTest extends AnyFlatSpec with Matchers:
     val exp: CNF =
       And(Or(Symbol(Variable("a")), Not(Symbol(Variable("b")))), Symbol(Variable("c")))
     val fRes: String = exp.printAsDSL(true)
-    val fExp = "a and not(b) or c"
+    val fExp = "a or not(b) and c"
     val nfRes: String = exp.printAsDSL()
-    val nfExp = "a and\nnot(b) or c"
+    val nfExp = "a or not(b) and\nc"
     List(fRes, nfRes) shouldBe List(fExp, nfExp)
   }

@@ -39,7 +39,7 @@ object Expression:
     */
   def zipWithSymbol(exp: Expression): List[(Symbol, Expression)] =
     // TODO: introduction of a common name for the symbols
-    zipWith(exp)(symbolGenerator("X"))
+    zipWith(exp)(symbolGenerator("TSTN"))
 
   /** Search for subexpressions in the given expression.
     * @param exp the expression.
