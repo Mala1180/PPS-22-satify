@@ -6,6 +6,9 @@ import satify.model.problems.Problem
 
 /** The immutable entity representing the application state (Model). */
 trait State:
+  /** String representation of user input. */
+  val input: Option[String] = None
+
   /** A general expression of boolean logic, it is the user input */
   type Expression = satify.model.expression.Expression
   val expression: Option[Expression] = None
@@ -34,20 +37,20 @@ object State:
     * @param cnf the [[CNF]]
     * @return a new [[State]] instance.
     */
-  def apply(exp: Expression, cnf: CNF): State = StateImpl(Some(exp), Some(cnf))
+  def apply(input: String, exp: Expression, cnf: CNF): State = StateImpl(Some(input), Some(exp), Some(cnf))
 
   /** Creates a new application state with only the solution.
     * @param sol the [[Solution]]
     * @return a new [[State]] instance.
     */
-  def apply(sol: Solution): State = StateImpl(None, None, Some(sol))
+  def apply(sol: Solution): State = StateImpl(None, None, None, Some(sol))
 
   /** Creates a new application state with only CNF.
     *
     * @param cnf the [[CNF]]
     * @return a new [[State]] instance.
     */
-  def apply(cnf: CNF): State = StateImpl(None, Some(cnf))
+  def apply(input: String, cnf: CNF): State = StateImpl(Some(input), None, Some(cnf))
 
   /** Creates a new application state with the input expression and the solution.
     *
@@ -55,7 +58,7 @@ object State:
     * @param sol the [[Solution]]
     * @return a new [[State]] instance.
     */
-  def apply(exp: Expression, sol: Solution): State = StateImpl(Some(exp), None, Some(sol))
+  def apply(input: String, exp: Expression, sol: Solution): State = StateImpl(Some(input), Some(exp), None, Some(sol))
 
   /** Creates a new application state with the input expression, its CNF and the solution.
     * @param exp the input [[Expression]]
@@ -63,7 +66,8 @@ object State:
     * @param sol the [[Solution]]
     * @return a new [[State]] instance.
     */
-  def apply(exp: Expression, cnf: CNF, sol: Solution): State = StateImpl(Some(exp), Some(cnf), Some(sol))
+  def apply(input: String, exp: Expression, cnf: CNF, sol: Solution): State =
+    StateImpl(Some(input), Some(exp), Some(cnf), Some(sol))
 
   /** Creates a new application state with an input problem, its CNF, and its solution.
     * @param cnf the [[CNF]]
@@ -72,9 +76,10 @@ object State:
     * @return a new [[State]] instance.
     */
   def apply(cnf: CNF, sol: Solution, problem: Problem): State =
-    StateImpl(None, Some(cnf), Some(sol), Some(problem))
+    StateImpl(None, None, Some(cnf), Some(sol), Some(problem))
 
   private case class StateImpl(
+      override val input: Option[String] = None,
       override val expression: Option[Expression] = None,
       override val cnf: Option[CNF] = None,
       override val solution: Option[Solution] = None,

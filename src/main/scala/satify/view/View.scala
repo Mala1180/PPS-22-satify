@@ -1,18 +1,15 @@
 package satify.view
 
-import satify.model.expression.Expression
 import satify.model.{CNF, Solution, State}
-import satify.view.ComponentUtils.{createButton, createInputTextArea, createNextSection, createOutputTextArea}
-import satify.view.Constants.{cnfOutputDialogName, expTextAreaName, solOutputDialogName}
-import satify.view.GUI.{inputTextArea, loadingLabel}
+import satify.view.ComponentUtils.{createInputTextArea, createNextSection, createOutputTextArea}
+import satify.view.Constants.{cnfOutputDialogName, solOutputDialogName}
 
 import scala.swing.*
 
 object View:
   def view(model: State): Set[Component] =
     import model.*
-    if expression.isEmpty && cnf.isDefined && solution.isEmpty then Set(updateExpression(cnf.get.printAsDSL()))
-    else updateExpression(expression) ++ updateCnf(cnf) ++ updateSolution(model, solution)
+    updateExpression(input.get) ++ updateCnf(cnf) ++ updateSolution(model, solution)
 
   /** Update the solution components
     * @param model the current state
@@ -42,15 +39,7 @@ object View:
     else Set()
 
   /** Update the expression text area
-    * @param exp the expression to show in new components
+    * @param exp the component to show
     * @return a set of components to add to the GUI
     */
-  private def updateExpression(exp: Option[Expression]): Set[Component] =
-    Set(createInputTextArea(s"${if exp.isDefined then exp.get.printAsFormal(false) else ""}"))
-
-  /** Update the expression text area
-    * @param exp the component to show
-    * @return
-    */
-  private def updateExpression(exp: String): Component =
-    createInputTextArea(exp)
+  private def updateExpression(exp: String): Set[Component] = Set(createInputTextArea(exp))
