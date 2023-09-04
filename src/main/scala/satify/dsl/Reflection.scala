@@ -7,7 +7,7 @@ import satify.model.expression.Expression.Symbol
 object Reflection:
 
   private val excludedWords = getDSLKeywords.mkString("|")
-  private val regexPattern = s"""((?!$excludedWords\\b)\\b[A-Z|a-z|_|1-9]+)"""
+  private val regexPattern = s"""((?!$excludedWords\\b)\\b(?![0-9]+\\b)\\w+)"""
 
   private def getDSLKeywords: List[String] =
     val operators = classOf[Operators.type].getMethods.map(_.getName).toList

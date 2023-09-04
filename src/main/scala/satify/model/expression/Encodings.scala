@@ -12,7 +12,6 @@ object Encodings:
 
   /** Encodes the constraint that at least one of the given variables is true.
     * It is implemented concatenating the expressions with the OR operator.
-    *
     * @param variables the input variables
     * @return the [[satify.model.Expression]] that encodes the constraint
     */
@@ -23,7 +22,6 @@ object Encodings:
 
   /** Encodes the constraint that at most one of the given variables is true.
     * It uses the sequential encoding that produces 3n − 4 clauses (O(n) complexity).
-    *
     * @param variables the input variables
     * @return the [[satify.model.Expression]] that encodes the constraint
     */
@@ -47,7 +45,6 @@ object Encodings:
     clauses.reduceLeft(And(_, _))
 
   /** Encodes the constraint that exactly one of the given variables is true.
-    *
     * @param variables the input variables
     * @return the [[satify.model.Expression]] that encodes the constraint
     */
@@ -58,7 +55,6 @@ object Encodings:
 
   /** Encodes the constraint that at most k of the given variables are true.
     * It is implemented using sequential encoding that produces 2nk + n − 3k − 1 clauses (O(n) complexity).
-    *
     * @param k         the number of variables that must be true
     * @param variables the input variables
     * @return the [[satify.model.Expression]] that encodes the constraint
@@ -72,7 +68,6 @@ object Encodings:
 
   /** Encodes the constraint that at least k of the given variables are true.
     * It is implemented using the pairwise encoding that produces O(n&#94;2) clauses.
-    *
     * @param k         the number of variables that must be true
     * @param variables the input variables
     * @return the [[satify.model.Expression]] that encodes the constraint
@@ -92,19 +87,3 @@ object Encodings:
         yield vars(i) +: subCombination
 
     combinations(vars, k).map(_.reduceLeft(And(_, _))).reduceLeft(Or(_, _))
-
-  extension (expressions: Seq[Symbol])
-
-    /** Calls [[atMostOne]] if k is 1, [[atMostK]] otherwise.
-      * @see [[atMostOne]] and [[atMostK]]
-      */
-    def atMost(k: Int): Expression = k match
-      case 1 => atMostOne(expressions: _*)
-      case _ => atMostK(k)(expressions: _*)
-
-    /** Calls [[atLeastOne]] if k is 1, [[atLeastK]] otherwise.
-      * @see [[atLeastOne]] and [[atLeastK]]
-      */
-    def atLeast(k: Int): Expression = k match
-      case 1 => atLeastOne(expressions: _*)
-      case _ => atLeastK(k)(expressions: _*)
