@@ -17,7 +17,7 @@ object View:
   /** Update the solution components
     * @param model the current state
     * @param sol the solution to show
-    * @return
+    * @return a set of components to add to the GUI
     */
   private def updateSolution(model: State, sol: Option[Solution]): Set[Component] =
     if sol.isDefined then
