@@ -16,17 +16,17 @@ object Utils:
       s
 
   extension (exp: Expression)
-    def printAsFormal(flat: Boolean = false): String =
+    def printAsDSL(flat: Boolean = false): String =
       exp match
         case Symbol(value) => value
         case And(left, right) =>
-          if flat then s"${left.printAsFormal(flat)} and ${right.printAsFormal(flat)}"
-          else s"${left.printAsFormal(flat)} and\n${right.printAsFormal(flat)}"
-        case Or(left, right) => s"${left.printAsFormal(flat)} or ${right.printAsFormal(flat)}"
-        case Not(branch) => s"not(${branch.printAsFormal(flat)})"
+          if flat then s"${left.printAsDSL(flat)} and ${right.printAsDSL(flat)}"
+          else s"${left.printAsDSL(flat)} and\n${right.printAsDSL(flat)}"
+        case Or(left, right) => s"${left.printAsDSL(flat)} or ${right.printAsDSL(flat)}"
+        case Not(branch) => s"not(${branch.printAsDSL(flat)})"
 
-    def printAsDSL(flat: Boolean = false): String =
-      var r = printAsFormal(flat)
+    def printAsFormal(flat: Boolean = false): String =
+      var r = printAsDSL(flat)
         .replace("and", "∧")
         .replace("or", "∨")
         .replace("not", "¬")
