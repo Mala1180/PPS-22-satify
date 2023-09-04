@@ -3,6 +3,8 @@ package satify.update
 import satify.dsl.Reflection.reflect
 import satify.model.*
 import satify.model.CNF.Symbol
+import satify.model.errors.Error
+import satify.model.errors.Error.InvalidInput
 import satify.model.expression.Expression
 import satify.model.problems.NQueens.*
 import satify.model.problems.ProblemChoice.{GraphColoring, NurseScheduling, NQueens as NQueensChoice}
@@ -20,9 +22,13 @@ object Update:
     message match
       case Input(char) => model
       case Solve(input) =>
-        val exp = reflect(input)
-        given CNFConverter = exp => tseitin(exp)
-        State(input, exp, Solver().solve(exp))
+        try
+          val exp = reflect(input)
+          given CNFConverter = exp => tseitin(exp)
+          State(input, exp, Solver().solve(exp))
+        catch
+          case e: Exception =>
+            State(input, InvalidInput)
       case SolveProblem(problem, parameter) =>
         val exp: Expression = problem match
           case NQueensChoice => NQueens(parameter).exp

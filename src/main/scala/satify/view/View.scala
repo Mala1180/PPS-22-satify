@@ -1,7 +1,9 @@
 package satify.view
 
+import satify.model.errors.Error
+import satify.model.errors.Error.*
 import satify.model.{CNF, Solution, State}
-import satify.view.ComponentUtils.{createInputTextArea, createNextSection, createOutputTextArea}
+import satify.view.ComponentUtils.{createErrorDialog, createInputTextArea, createNextSection, createOutputTextArea}
 import satify.view.Constants.{cnfOutputDialogName, solOutputDialogName}
 
 import scala.swing.*
@@ -9,7 +11,8 @@ import scala.swing.*
 object View:
   def view(model: State): Set[Component] =
     import model.*
-    updateExpression(input.get) ++ updateCnf(cnf) ++ updateSolution(model, solution)
+    if error.isDefined then updateError(error.get, input.get)
+    else updateExpression(input.get) ++ updateCnf(cnf) ++ updateSolution(model, solution)
 
   /** Update the solution components
     * @param model the current state
@@ -39,7 +42,20 @@ object View:
     else Set()
 
   /** Update the expression text area
-    * @param exp the component to show
+    * @param exp the exp to show in new component
     * @return a set of components to add to the GUI
     */
   private def updateExpression(exp: String): Set[Component] = Set(createInputTextArea(exp))
+
+  /** Update the error and show it in a dialog
+    *  @param error the error to show in a popup dialog
+    * @param input the input to show in new component
+    * @return a set of components to add to the GUI
+    */
+  private def updateError(error: Error, input: String): Set[Component] =
+    var errorDialog: Dialog = null
+    error match
+      case InvalidInput => errorDialog = createErrorDialog("Invalid input")
+      case Unknown => errorDialog = createErrorDialog("Unknown error")
+    errorDialog.open()
+    Set(createInputTextArea(input))
