@@ -2,9 +2,9 @@ package satify.ExpressionUtilsTest
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.expression.Expression.*
 import satify.model.Variable
 import satify.model.expression.Expression
+import satify.model.expression.Expression.*
 
 class ReplaceTest extends AnyFlatSpec with Matchers:
 

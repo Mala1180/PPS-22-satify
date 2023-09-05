@@ -3,19 +3,15 @@ package satify.problems
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.Result.*
-import satify.model.expression.Expression
+import satify.model.Solution
 import satify.model.problems.NQueens
-import satify.model.problems.NQueens.{printNQueensFromDimacs, printNqueens}
-import satify.model.{CNF, Solution}
 import satify.update.Solver
-import satify.update.converters.CNFConverter
+import satify.update.converters.Converter
 import satify.update.converters.TseitinTransformation.tseitin
-import satify.update.parser.DimacsCNF
 
 class NQueensTest extends AnyFlatSpec with Matchers:
 
-  given CNFConverter with
-    def convert(exp: Expression): CNF = tseitin(exp)
+  given Converter = exp => tseitin(exp)
 
   "NQueens 3x3" should "be UNSAT" in {
     val n = 3

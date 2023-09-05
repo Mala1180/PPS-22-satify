@@ -3,18 +3,19 @@ package satify.DPLLTest
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.should
-import satify.model.{CNF, Variable}
-import satify.model.dpll.DecisionTree.*
-import satify.model.CNF.*
 import satify.model.Bool.{False, True}
-import satify.update.dpll.CNFSimplification.*
-import satify.update.dpll.PartialModelUtils.*
-import satify.model.dpll.OrderedSeq.given_Ordering_Variable
+import satify.model.CNF.*
+import satify.model.dpll.DecisionTree.*
 import satify.model.dpll.OrderedSeq.*
 import satify.model.dpll.{Decision, DecisionTree, PartialModel}
+import satify.model.{CNF, Variable}
+import satify.update.dpll.CNFSimplification.*
 import satify.update.dpll.DPLL.*
+import satify.update.dpll.PartialModelUtils.*
 
 class DPLLTest extends AnyFlatSpec with Matchers:
+
+  import satify.model.dpll.OrderedSeq.given_Ordering_Variable
 
   val varA: Variable = Variable("a")
   val varB: Variable = Variable("b")

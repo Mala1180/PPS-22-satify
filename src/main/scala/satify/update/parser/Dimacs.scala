@@ -3,7 +3,6 @@ package satify.update.parser
 import satify.model.CNF.*
 import satify.model.{CNF, Literal, Variable}
 
-import java.io.{File, PrintWriter}
 import scala.io.Source
 
 /** Read/write objects in DIMACS format. */
