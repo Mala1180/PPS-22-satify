@@ -12,9 +12,11 @@ import scala.annotation.tailrec
 case class NQueens(n: Int) extends Problem:
 
   private val variables: Seq[Seq[Symbol]] =
-    for i <- 0 until n
-    yield for j <- 0 until n
-    yield Symbol(s"x_${i}_$j")
+    if n < 0 then throw new IllegalArgumentException("n must be positive")
+    else
+      for i <- 0 until n
+      yield for j <- 0 until n
+      yield Symbol(s"x_${i}_$j")
 
   // At least one on each row and column
   private val rowColConstr =
@@ -32,6 +34,7 @@ case class NQueens(n: Int) extends Problem:
 
   // Diagonal constraints
   private val diagConstr =
+    if n < 0 then throw new IllegalArgumentException("n must be positive")
     for i <- 0 until (n - 1)
     yield
       val s: Seq[(Symbol, Symbol, Symbol, Symbol)] =
