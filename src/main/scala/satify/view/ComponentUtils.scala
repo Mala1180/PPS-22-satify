@@ -2,14 +2,13 @@ package satify.view
 
 import satify.model.State
 import satify.view.Constants.*
-
-import java.awt.{Color, Font, Image, Toolkit}
-import java.net.{URI, URL}
-import javax.swing.ImageIcon
-import scala.swing.*
 import satify.view.Reactions.nextSolutionReaction
 
+import java.awt.{Color, Font, Image, Toolkit}
+import java.net.URL
 import java.util.concurrent.Executors
+import javax.swing.ImageIcon
+import scala.swing.*
 import scala.swing.event.ButtonClicked
 
 object ComponentUtils:
@@ -58,11 +57,10 @@ object ComponentUtils:
   /** Creates a button with the given text
     * @return the button
     */
-  def createButton(text: String, width: Int, height: Int): Button = new Button(text):
+  def createButton(text: String, width: Int, height: Int, color: Color = Color.black): Button = new Button(text):
     font = Font(fontFamily, Font.ITALIC, 20)
     preferredSize = new Dimension(width, height)
-    background = Color.green
-    foreground = Color(200, 0, 0)
+    foreground = color
 
   def createNextSection(model: State): BoxPanel =
     val nextSolutionButton = createButton("Next", 100, 40)

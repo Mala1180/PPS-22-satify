@@ -7,9 +7,8 @@ import satify.model.Bool.{False, True}
 import satify.model.CNF.*
 import satify.model.dpll.DecisionTree.*
 import satify.model.dpll.OrderedSeq.*
-import satify.model.dpll.{Decision, DecisionTree, PartialModel}
+import satify.model.dpll.{Decision, DecisionTree}
 import satify.model.{CNF, Variable}
-import satify.update.solver.dpll.CNFSimplification.*
 import satify.update.solver.dpll.DPLL.*
 import satify.update.solver.dpll.PartialModelUtils.*
 

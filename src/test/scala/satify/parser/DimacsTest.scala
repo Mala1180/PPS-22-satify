@@ -2,12 +2,11 @@ package satify.parser
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+import satify.model.*
 import satify.model.CNF.*
 import satify.update.parser.DimacsCNF
 
 import scala.io.Source
-import satify.model.*
-
 import scala.util.Using
 
 class DimacsTest extends AnyFlatSpec with Matchers {

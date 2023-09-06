@@ -6,7 +6,7 @@ import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CN
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.{CNF, Variable}
-import satify.update.converters.TseitinTransformation.{convertToCNF, isCNF}
+import satify.update.converters.TseitinTransformation.convertToCNF
 
 class CNFConverter extends AnyFlatSpec with Matchers:
 

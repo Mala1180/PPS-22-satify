@@ -1,5 +1,7 @@
 # Methodology
 
+---
+
 ## SCRUM
 
 The methodology adopted during the application development has been **AGILE**.

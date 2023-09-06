@@ -1,8 +1,9 @@
 package satify.view
 
 import satify.view.ComponentUtils.*
-import satify.view.Constants.{headingFont, logoPath, margin, windowSize, expTextAreaName}
+import satify.view.Constants.{expTextAreaName, headingFont, logoPath, margin, windowSize}
 
+import java.awt.Color
 import javax.swing.filechooser.FileNameExtensionFilter
 import javax.swing.{ImageIcon, JFileChooser}
 import scala.swing.*
@@ -18,9 +19,9 @@ object GUI:
   val inputScrollPane = new ScrollPane(createInputTextArea())
   val problemComboBox: ComboBox[String] = createProblemComboBox()
 
-  val solveButton: Button = createButton("Solve", 100, 40)
-  val solveProblemButton: Button = createButton("Solve", 100, 40)
-  val cnfButton: Button = createButton("Convert to CNF", 170, 40)
+  val solveButton: Button = createButton("Solve", 100, 40, Color(170, 30, 60))
+  val solveProblemButton: Button = createButton("Solve", 100, 40, Color(170, 30, 60))
+  val cnfButton: Button = createButton("Convert to CNF", 170, 40, Color(50, 50, 150))
 
   val solutionOutputDialog: Dialog = createOutputDialog("Solution")
   val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
@@ -76,6 +77,8 @@ object GUI:
         contents += parameterInputText
         contents += new FlowPanel():
           contents += solveProblemButton
+        contents += new FlowPanel():
+          contents += loadingLabel
 
   /** Creates a file chooser for the import menu item.
     * @return the file chooser
@@ -85,3 +88,21 @@ object GUI:
     fileSelectionMode = FileChooser.SelectionMode.FilesOnly
     fileFilter = new FileNameExtensionFilter("Text files", "txt")
     multiSelectionEnabled = false
+
+  /** Disable all GUI interactions when the solving or converting process starts. */
+  def disableInteractions(): Unit =
+    loadingLabel.visible = true
+    inputTextArea.enabled = false
+    solveButton.enabled = false
+    solveProblemButton.enabled = false
+    cnfButton.enabled = false
+    importMenuItem.enabled = false
+
+  /** Disable all GUI interactions when the solving or converting process finish or crash. */
+  def enableInteractions(): Unit =
+    loadingLabel.visible = false
+    inputTextArea.enabled = true
+    solveButton.enabled = true
+    solveProblemButton.enabled = true
+    cnfButton.enabled = true
+    importMenuItem.enabled = true

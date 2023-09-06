@@ -4,7 +4,6 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
-import satify.model.{CNF, Variable}
 
 class ExpressionOutputTest extends AnyFlatSpec with Matchers:
 

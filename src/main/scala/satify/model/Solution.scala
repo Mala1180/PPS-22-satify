@@ -8,7 +8,7 @@ enum Result:
   case UNSAT
 
 /** Represents a list of [[Variable]] assigned to a value.
-  * @param list The list of [[Variable]].
+  * @param parModel the list of variables.
   */
 case class Assignment(parModel: PartialModel)
 

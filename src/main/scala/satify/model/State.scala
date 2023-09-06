@@ -15,7 +15,7 @@ trait State:
   type Expression = satify.model.expression.Expression
   val expression: Option[Expression] = None
 
-  /** The input expression converted to Conjunctive Normal Form (CNF) */
+  /** An entity representing an [[Expression]] converted to Conjunctive Normal Form (CNF) */
   type CNF = satify.model.CNF
   val cnf: Option[CNF] = None
 

@@ -1,6 +1,6 @@
 package satify.model.dpll
 
-import satify.model.{CNF, Variable}
+import satify.model.CNF
 import satify.model.dpll.PartialModel
 
 /** Decision is a node of DecisionTree.

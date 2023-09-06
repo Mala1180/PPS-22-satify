@@ -2,7 +2,6 @@ package satify.update.solver.dpll
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.Bool.{False, True}
 import satify.model.CNF.{And, Not, Or, Symbol}
 import satify.model.dpll.Constraint
 import satify.model.{CNF, Variable}

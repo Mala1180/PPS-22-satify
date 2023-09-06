@@ -1,5 +1,7 @@
 # Architectural design
 
+---
+
 The software to realize had to exploit the functional programming paradigm, this is the reason why
 we chose to use the **MVU** (Model-View-Update) architectural pattern: it fits well with this paradigm.
 
@@ -15,7 +17,8 @@ is replaced every time a new Update is triggered.
 ## View
 
 The View provides the GUI updates for the application, relying on the state of the application (Model).
-It is a simple function that takes in input a Model and returns a set of graphic components, without causing any side effect and updating the GUI only where it's needed.
+It is a simple function that takes in input a Model and returns a set of graphic components, without causing any side
+effect and updating the GUI only where it's needed.
 
 ## Update
 

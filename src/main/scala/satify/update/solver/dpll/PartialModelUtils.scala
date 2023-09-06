@@ -11,6 +11,8 @@ private object PartialModelUtils:
 
   import satify.model.dpll.OrderedSeq.given_Ordering_Variable
 
+  import satify.model.dpll.OrderedSeq.given_Ordering_Variable
+
   /** Extract a PartialModel from an expression in CNF.
     *
     * @param cnf where to extract a Model

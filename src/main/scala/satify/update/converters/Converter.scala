@@ -7,6 +7,7 @@ import satify.update.converters.TseitinTransformation.tseitin
 
 /** Functional interface for converting an expression into a CNF. */
 trait Converter:
+
   /** Converts an expression into a CNF.
     * @param exp the expression to convert.
     * @return the CNF expression.
