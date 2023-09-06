@@ -1,25 +1,21 @@
 # Implementation
 
-<<<<<<< HEAD
 In this section, every group member describes the personal work done for the realization of the project.
-=======
----
 
-In this section every group member describes the work done for the realization of the project.
->>>>>>> develop
+---
 
 ## Luca Fabri
 
 ### DPLL algorithm
 
-My first task was deeply understand the DPLL algorithm. Initially I spent some time understending how it works in an
-high level view:
+My first task was deeply understand the DPLL algorithm. Initially, I spent some time understending how it works in an
+high-level view:
 
 - The DPLL algorithm builds a tree of decisions, where each node is a boolean assignment to a variable;
 - For each decision, a partial model (e.g. a partial assignment of the variables) is memorized, togheter with the
   updated expression;
 - If after an assignment a clause of the expression gives a conflict (e.g. is evaluated false) the entire expression is
-  unsat. In this case the tree is backtracked to the previous decision, in order to let the algorithm to branch on
+  unsat. In this case, the tree is backtracked to the previous decision, in order to let the algorithm to branch on
   another assignment/variable.
 
 The variable to be assigned at a decision branch is chose:
@@ -64,7 +60,6 @@ The expression in CNF is simplified according to the specific logical operator:
         - Literal `A` in positive form. Constraint `A = True`:
 
           <p align=center>
-<<<<<<< HEAD
             <img src='./img/umOr1.svg' height="150" align="center">
           </p>
 
@@ -84,36 +79,11 @@ The expression in CNF is simplified according to the specific logical operator:
 
        <p align=center>
         <img src='./img/umOr4.svg' height="200" align="center">
-=======
-            <img src='./img/umOr1.svg' height="150" -aligned="center">
-          </p>
-
-           <p align=center>
-            <img src='./img/umOr2.svg' height="200" -aligned="center">
-          </p>
-
-    - A more complex CNF expression. Constraint `A = True`: 
-
-       <p align=center>
-        <img src='./img/umOr3.svg' height="200" align="center">
->>>>>>> develop
       </p>
 
 - When a Literal in an ```Or``` branch is set to ```False``` s.t. `V = False` or `Not(V) = False` the CNF must be
   simplified substituting the `Or` with the other branch.
 
-<<<<<<< HEAD
-=======
-    - Simplify the `Or` only when the variable occurs inside its sub-CNF. Constraint `B = False`: 
-
-       <p align=center>
-        <img src='./img/umOr4.svg' height="200" align="center">
-      </p>
-
-- When a Literal in an ```Or``` branch is set to ```False``` s.t. `V = False` or `Not(V) = False` the CNF must be
-  simplified substituting the `Or` with the other branch.
-
->>>>>>> develop
   Examples:
     - Literal `A` in positive form. Constraint `A = False`:
       <p align=center>
@@ -132,22 +102,12 @@ The expression in CNF is simplified according to the specific logical operator:
 
         - Constraint `B = True`:
           <p align=center>
-<<<<<<< HEAD
             <img src='./img/And1.svg' height="150" align="center">
           </p>
 
         - A more complex example. Constraint `A = True`:
           <p align=center>
             <img src='./img/And2.svg' height="200" align="center">
-=======
-            <img src='./img/And1.svg' height="150" -aligned="center">
-          </p>
-
-
-        - A more complex example. Constraint `A = True`:
-          <p align=center>
-            <img src='./img/And2.svg' height="200" -aligned="center">
->>>>>>> develop
           </p>
 
 ## Mattia Matteini
@@ -181,8 +141,6 @@ but it wasn't really clear how the entities it was supposed to contain should ha
 So I started writing a trait of concepts called `State` (referring to the state of the application),
 which was containing the main model entities unimplemented.
 
-
-
 ## Alberto Paganelli
 
 My first task was to analyze in depth the Tseitin transformation algorithm and before the implementation defining the
@@ -191,22 +149,14 @@ After the definition of a data structure I started to define the algorithm's pha
 
 The first defined data structure was the Enumeration `Expression` that represents the expression of the formula in the
 enumeration form.
-Looking to the algoritm's phases I started writing some utils method for the `Expression` object that can be used from
+Looking to the algoritmh's phases I started writing some utils method for the `Expression` object that can be used from
 all.
-<<<<<<< HEAD
-In particular to zip the subexpressions with new variables I made use of generic type to make the code more reusable.
-
-After the definition of these methods, where I have made great use of Pattern Matching, it was possible to start
-implementing the algorithm's phases.
-
-=======
 
 In particular to zip the subexpressions with new variables I made use of generic type to make the code more reusable.
 
 After the definition of these methods, where I have made great use of Pattern Matching, it was possible to start
 implementing the algorithm's phases.
 
->>>>>>> develop
 The idea was to use the functional programming, so I defined the `Tseitin` object as a singleton object that contains
 the algorithm's phases and exposing only the `tseitin` method that is the entry point of the algorithm.
 
@@ -229,46 +179,49 @@ The Tseitin transformation follows these steps:
 
 1. Assign a unique identifier to each subformula in the original formula.
 2. Replace each subformula with an auxiliary variable representing its truth value.
-<p align=center>
-(a ∧ (b ∨ c)) -> (¬c ∧ d)<br>
-TSTN4 <--> ¬c<br>
-TSTN3 <--> b ∨ c<br>
-TSTN2 <--> TSTN4 ∧ d<br>
-TSTN1 <--> a ∧ TSTN3<br>
-TSTN0 <--> TSTN1 --> TSTN2
-</p>
+
+    <p align=center>
+        (a ∧ (b ∨ c)) -> (¬c ∧ d)<br>
+        TSTN4 <--> ¬c<br>
+        TSTN3 <--> b ∨ c<br>
+        TSTN2 <--> TSTN4 ∧ d<br>
+        TSTN1 <--> a ∧ TSTN3<br>
+        TSTN0 <--> TSTN1 --> TSTN2
+    </p>
+   
 3. Express the truth conditions of the subformulas in CNF using the auxiliary variables and standard logical
    connectives (AND, OR, NOT) following the transformations listed in the table below.
-<table>
-    <thead> 
-        <tr>
-            <th>Operator</th>
-            <th>Circuit</th>
-            <th>Expression</th>
-            <th>Converted</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><b>AND</b></td>
-            <td><img src="img/AndCircuit.svg" alt="And Circuit"></td>
-            <td>X = A ∧ B</td>
-            <td>(¬A ∨ ¬B ∨ X) ∧ (A ∨ ¬X) ∧ (B ∨ ¬X)</td>
-        </tr>
-        <tr>
-            <td><b>OR</b></td>
-            <td><img src="img/OrCircuit.svg" alt="Or Circuit"></td>
-            <td>X = A ∨ B</td>
-            <td>(A ∨ B ∨ ¬X) ∧ (¬A ∨ X) ∧ (¬B ∨ X)</td>
-        </tr>
-        <tr>
-            <td><b>NOT</b></td>
-            <td><img src="img/NotCircuit.svg" alt="Not Circuit"></td>
-            <td>X = ¬A</td>
-            <td>(¬A ∨ ¬X) ∧ (A ∨ X)</td>
-        </tr>
-    </tbody>
-</table>
+
+    <table>
+        <thead> 
+            <tr>
+                <th>Operator</th>
+                <th>Circuit</th>
+                <th>Expression</th>
+                <th>Converted</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><b>AND</b></td>
+                <td><img src="img/AndCircuit.svg" alt="And Circuit"></td>
+                <td>X = A ∧ B</td>
+                <td>(¬A ∨ ¬B ∨ X) ∧ (A ∨ ¬X) ∧ (B ∨ ¬X)</td>
+            </tr>
+            <tr>
+                <td><b>OR</b></td>
+                <td><img src="img/OrCircuit.svg" alt="Or Circuit"></td>
+                <td>X = A ∨ B</td>
+                <td>(A ∨ B ∨ ¬X) ∧ (¬A ∨ X) ∧ (¬B ∨ X)</td>
+            </tr>
+            <tr>
+                <td><b>NOT</b></td>
+                <td><img src="img/NotCircuit.svg" alt="Not Circuit"></td>
+                <td>X = ¬A</td>
+                <td>(¬A ∨ ¬X) ∧ (A ∨ X)</td>
+            </tr>
+        </tbody>
+    </table>
 
 4. Combine the representations of the subformulas to obtain the CNF representation of the entire formula.
 
