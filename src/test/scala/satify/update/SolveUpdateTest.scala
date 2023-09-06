@@ -6,7 +6,6 @@ import satify.model.State
 import satify.update.Update.update
 import satify.update.Message.Solve
 
-
 class SolveUpdateTest extends AnyFlatSpec with Matchers:
 
   val currentState: State = State()
