@@ -16,15 +16,16 @@ object Main extends App with MVU:
     title = "Satify SAT Solver"
 
     solveButton.reactions += { case ButtonClicked(_) =>
-      Swing.onEDT(loadingLabel.visible = true)
+      Swing.onEDT(disableInteractions())
       Executors.newSingleThreadExecutor().execute(() => solutionReaction(model))
     }
     cnfButton.reactions += { case ButtonClicked(_) =>
-      Swing.onEDT(loadingLabel.visible = true)
+      Swing.onEDT(disableInteractions())
       Executors.newSingleThreadExecutor().execute(() => cnfReaction(model))
     }
 
     solveProblemButton.reactions += { case ButtonClicked(_) =>
+      Swing.onEDT(disableInteractions())
       Executors.newSingleThreadExecutor().execute(() => problemSolutionReaction(model))
     }
 
@@ -35,7 +36,7 @@ object Main extends App with MVU:
     importMenuItem.reactions += { case ButtonClicked(_) =>
       val result = fileChooser.showOpenDialog(null)
       if result == FileChooser.Result.Approve then
-        Swing.onEDT(loadingLabel.visible = true)
+        Swing.onEDT(disableInteractions())
         Executors.newSingleThreadExecutor().execute(() => importReaction(model))
     }
 

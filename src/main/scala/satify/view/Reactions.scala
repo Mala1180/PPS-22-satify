@@ -76,5 +76,5 @@ object Reactions:
           case n if n == expTextAreaName =>
             inputScrollPane.contents = c
       })
-      loadingLabel.visible = false
+      enableInteractions()
     }
