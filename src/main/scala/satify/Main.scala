@@ -32,6 +32,7 @@ object Main extends App with MVU:
     }
 
     solveProblemButton.reactions += { case ButtonClicked(_) =>
+      Swing.onEDT(loadingLabel.visible = true)
       Executors.newSingleThreadExecutor().execute(() => problemSolutionReaction(model))
     }
 

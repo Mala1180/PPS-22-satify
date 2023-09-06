@@ -76,6 +76,8 @@ object GUI:
         contents += parameterInputText
         contents += new FlowPanel():
           contents += solveProblemButton
+        contents += new FlowPanel():
+          contents += loadingLabel
 
   /** Creates a file chooser for the import menu item.
     * @return the file chooser
