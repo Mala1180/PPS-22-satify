@@ -1,4 +1,4 @@
-package satify.update.dpll
+package satify.update.solver.dpll
 
 import satify.model
 import satify.model.Bool.{False, True}
@@ -7,15 +7,15 @@ import satify.model.dpll.DecisionTree.*
 import satify.model.dpll.OrderedSeq.{given_Ordering_Variable, seq}
 import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
 import satify.model.{CNF, Variable}
-import satify.update.dpll.CNFSimplification.*
-import satify.update.dpll.ConflictIdentification.isUnsat
-import satify.update.dpll.PartialModelUtils.*
+import CNFSimplification.*
+import ConflictIdentification.isUnsat
+import PartialModelUtils.*
 
 import scala.annotation.tailrec
 import scala.language.postfixOps
 import scala.util.Random
 
-object DPLL:
+private[solver] object DPLL:
 
   private val rnd = Random(42)
 

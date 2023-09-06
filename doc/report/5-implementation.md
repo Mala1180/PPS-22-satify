@@ -1,6 +1,6 @@
 # Implementation
 
-In this section every group member describes the work done for the realization of the project.
+In this section, every group member describes the personal work done for the realization of the project.
 
 ## Luca Fabri
 
@@ -50,27 +50,27 @@ The expression in CNF is simplified according to the specific logical operator:
     - Literal `A` in positive form. Constraint `A = True`:
 
       <p align=center>
-        <img src='./img/umOr1.svg' height="150" -aligned="center">
+        <img src='./img/umOr1.svg' height="150" align="center">
       </p>
   
     - Literal `B` is negated. Constraint `B = False` to set the literal `True`:
 
        <p align=center>
-        <img src='./img/umOr2.svg' height="200" -aligned="center">
+        <img src='./img/umOr2.svg' height="200" align="center">
       </p>
 
 
     - A more complex CNF expression. Constraint `A = True`: 
 
        <p align=center>
-        <img src='./img/umOr3.svg' height="200" -aligned="center">
+        <img src='./img/umOr3.svg' height="200" align="center">
       </p>
 
 
     - Simplify the `Or` only when the variable occurs inside its sub-CNF. Constraint `B = False`: 
 
        <p align=center>
-        <img src='./img/umOr4.svg' height="200" -aligned="center">
+        <img src='./img/umOr4.svg' height="200" align="center">
       </p>
 
   - When a Literal in an ```Or``` branch is set to ```False``` s.t. `V = False` or `Not(V) = False` the CNF must be simplified substituting the `Or` with the other branch.
@@ -78,12 +78,12 @@ The expression in CNF is simplified according to the specific logical operator:
     Examples:
     - Literal `A` in positive form. Constraint `A = False`:
       <p align=center>
-        <img src='./img/cOr1.svg' height="150" -aligned="center">
+        <img src='./img/cOr1.svg' height="150" align="center">
       </p>
 
     - A more complex example. Constraint `A = False`:
       <p align=center>
-        <img src='./img/cOr2.svg' height="200" -aligned="center">
+        <img src='./img/cOr2.svg' height="200" align="center">
       </p>
 
 - `And`
@@ -93,12 +93,12 @@ The expression in CNF is simplified according to the specific logical operator:
 
       - Constraint `B = True`:
         <p align=center>
-          <img src='./img/And1.svg' height="150" -aligned="center">
+          <img src='./img/And1.svg' height="150" align="center">
         </p>
 
       - A more complex example. Constraint `A = True`:
         <p align=center>
-          <img src='./img/And2.svg' height="200" -aligned="center">
+          <img src='./img/And2.svg' height="200" align="center">
         </p>
 
     

@@ -2,7 +2,7 @@ package satify.DPLLTest
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.update.dpll.CNFSimplification.*
+import satify.update.solver.dpll.CNFSimplification.*
 import satify.model.{CNF, Variable}
 import satify.model.CNF.*
 import satify.model.Bool.{False, True}

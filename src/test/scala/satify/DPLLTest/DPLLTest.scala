@@ -7,12 +7,12 @@ import satify.model.{CNF, Variable}
 import satify.model.dpll.DecisionTree.*
 import satify.model.CNF.*
 import satify.model.Bool.{False, True}
-import satify.update.dpll.CNFSimplification.*
-import satify.update.dpll.PartialModelUtils.*
+import satify.update.solver.dpll.CNFSimplification.*
+import satify.update.solver.dpll.PartialModelUtils.*
 import satify.model.dpll.OrderedSeq.given_Ordering_Variable
 import satify.model.dpll.OrderedSeq.*
 import satify.model.dpll.{Decision, DecisionTree, PartialModel}
-import satify.update.dpll.DPLL.*
+import satify.update.solver.dpll.DPLL.*
 
 class DPLLTest extends AnyFlatSpec with Matchers:
 

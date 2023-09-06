@@ -1,11 +1,11 @@
-package satify.update.dpll
+package satify.update.solver.dpll
 
 import satify.model.Bool.{False, True}
 import satify.model.CNF.*
 import satify.model.dpll.Constraint
 import satify.model.{CNF, Variable}
 
-object CNFSimplification:
+private object CNFSimplification:
 
   /** Simplify the CNF applying the constraint given as parameter.
     * @param cnf expression in CNF

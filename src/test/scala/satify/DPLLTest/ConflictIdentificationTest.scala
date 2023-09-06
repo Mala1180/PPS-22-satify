@@ -6,8 +6,8 @@ import satify.model.{CNF, Variable}
 import satify.model.CNF.{And, Not, Or, Symbol}
 import satify.model.Bool.{False, True}
 import satify.model.dpll.Constraint
-import satify.update.dpll.ConflictIdentification.isUnsat
-import satify.update.dpll.CNFSimplification.simplifyCnf
+import satify.update.solver.dpll.ConflictIdentification.isUnsat
+import satify.update.solver.dpll.CNFSimplification.simplifyCnf
 
 class ConflictIdentificationTest extends AnyFlatSpec with Matchers:
 
