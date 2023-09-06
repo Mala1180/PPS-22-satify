@@ -149,8 +149,8 @@ After the definition of a data structure I started to define the algorithm's pha
 
 The first defined data structure was the Enumeration `Expression` that represents the expression of the formula in the
 enumeration form.
-Looking to the algoritm's phases I started writing some utils method for the `Expression` object that can be used from
-all.
+Looking to the algoritm's phases I started writing some utils method for the `Expression` object that can be used from all.
+
 In particular to zip the subexpressions with new variables I made use of generic type to make the code more reusable.
 
 After the definition of these methods, where I have made great use of Pattern Matching, it was possible to start
@@ -163,7 +163,7 @@ I followed the TDD approach for the core of the algorithm and for the utils meth
 
 ## Tseitin Algorithm
 
-The Tseitin algorithm is a method for converting a formula in propositional logic into a CNF formula.
+The Tseitin algorithm converts a formula in propositional logic into a CNF formula.
 
 CNF is a specific form of representing logical formulas as a conjunction of clauses, where each clause is a disjunction
 of literals (variables or their negations).
@@ -178,13 +178,52 @@ The Tseitin transformation follows these steps:
 
 1. Assign a unique identifier to each subformula in the original formula.
 2. Replace each subformula with an auxiliary variable representing its truth value.
+<p align=center>
+(a ∧ (b ∨ c)) -> (¬c ∧ d)<br>
+TSTN4 <--> ¬c<br>
+TSTN3 <--> b ∨ c<br>
+TSTN2 <--> TSTN4 ∧ d<br>
+TSTN1 <--> a ∧ TSTN3<br>
+TSTN0 <--> TSTN1 --> TSTN2
+</p>
 3. Express the truth conditions of the subformulas in CNF using the auxiliary variables and standard logical
-   connectives (AND, OR, NOT).
-4. Combine the CNF representations of the subformulas to obtain the CNF representation of the entire formula.
+   connectives (AND, OR, NOT) following the transformations listed in the table below.
+<table>
+    <thead> 
+        <tr>
+            <th>Operator</th>
+            <th>Circuit</th>
+            <th>Expression</th>
+            <th>Converted</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>AND</b></td>
+            <td><img src="img/AndCircuit.svg" alt="And Circuit"></td>
+            <td>X = A ∧ B</td>
+            <td>(¬A ∨ ¬B ∨ X) ∧ (A ∨ ¬X) ∧ (B ∨ ¬X)</td>
+        </tr>
+        <tr>
+            <td><b>OR</b></td>
+            <td><img src="img/OrCircuit.svg" alt="Or Circuit"></td>
+            <td>X = A ∨ B</td>
+            <td>(A ∨ B ∨ ¬X) ∧ (¬A ∨ X) ∧ (¬B ∨ X)</td>
+        </tr>
+        <tr>
+            <td><b>NOT</b></td>
+            <td><img src="img/NotCircuit.svg" alt="Not Circuit"></td>
+            <td>X = ¬A</td>
+            <td>(¬A ∨ ¬X) ∧ (A ∨ X)</td>
+        </tr>
+    </tbody>
+</table>
 
-The resulting CNF formula is equi-satisfiable with the original formula, meaning they have the same set of satisfying
+4. Combine the representations of the subformulas to obtain the CNF representation of the entire formula.
+
+The resulting formula is equi-satisfiable with the original formula, meaning they have the same set of satisfying
 assignments. This transformation enables the use of various CNF-based algorithms and tools to analyze and reason about
-the original logical formula efficiently
+the original logical formula efficiently.
 
 
 ---
