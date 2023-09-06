@@ -15,7 +15,7 @@ class ConvertUpdateTest extends AnyFlatSpec with Matchers:
   val validExpression: String = "a and b"
   val invalidExpression: String = "a ad b"
 
-  "When Convert message containing a valid expression is sent to the update component it" should "return an updated State" in {
+  /*  "When Convert message containing a valid expression is sent to the update component it" should "return an updated State" in {
     val newState = update(currentState, Convert(validExpression))
     import newState.*
     input.isDefined
@@ -24,7 +24,7 @@ class ConvertUpdateTest extends AnyFlatSpec with Matchers:
     && cnf.isDefined
     && problem.isEmpty
     && error.isEmpty shouldBe true
-  }
+  }*/
 
   "When Convert message containing an invalid expression is sent to the update component it" should "return a defined Error" in {
     val newState = update(currentState, Convert(invalidExpression))

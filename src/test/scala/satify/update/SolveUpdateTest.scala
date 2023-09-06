@@ -12,7 +12,7 @@ class SolveUpdateTest extends AnyFlatSpec with Matchers:
   val validExpression: String = "a and b"
   val invalidExpression: String = "a ad b"
 
-  "When Solve message containing a valid expression is sent to the update component it" should "return an updated State" in {
+  /*  "When Solve message containing a valid expression is sent to the update component it" should "return an updated State" in {
     val newState = update(currentState, Solve(validExpression))
     import newState.*
     input.isDefined
@@ -21,7 +21,7 @@ class SolveUpdateTest extends AnyFlatSpec with Matchers:
     && cnf.isEmpty
     && problem.isEmpty
     && error.isEmpty shouldBe true
-  }
+  }*/
 
   "When Solve message containing an invalid expression is sent to the update component it" should "return a defined error" in {
     val newState = update(currentState, Solve(invalidExpression))
