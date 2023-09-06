@@ -7,6 +7,7 @@ import satify.model.problems.Problem
 
 /** The immutable entity representing the application state (Model). */
 trait State:
+
   /** String representation of user input. */
   val input: Option[String] = None
 
@@ -32,6 +33,7 @@ trait State:
 
 /** Factory for [[State]] instances. */
 object State:
+
   /** Creates a new empty application state.
     * @return a new [[State]] instance.
     */
@@ -52,14 +54,12 @@ object State:
   def apply(input: String, exp: Expression, cnf: CNF): State = StateImpl(Some(input), Some(exp), Some(cnf))
 
   /** Creates a new application state with only CNF.
-    *
     * @param cnf the [[CNF]]
     * @return a new [[State]] instance.
     */
   def apply(input: String, cnf: CNF): State = StateImpl(Some(input), None, Some(cnf))
 
   /** Creates a new application state with the input expression and the solution.
-    *
     * @param exp the input [[Expression]]
     * @param sol the [[Solution]]
     * @return a new [[State]] instance.
