@@ -87,3 +87,21 @@ object GUI:
     fileSelectionMode = FileChooser.SelectionMode.FilesOnly
     fileFilter = new FileNameExtensionFilter("Text files", "txt")
     multiSelectionEnabled = false
+
+  /** Disable all GUI interactions when the solving or converting process starts. */
+  def disableInteractions(): Unit =
+    loadingLabel.visible = true
+    inputTextArea.enabled = false
+    solveButton.enabled = false
+    solveProblemButton.enabled = false
+    cnfButton.enabled = false
+    importMenuItem.enabled = false
+
+  /** Disable all GUI interactions when the solving or converting process finish or crash. */
+  def enableInteractions(): Unit =
+    loadingLabel.visible = false
+    inputTextArea.enabled = true
+    solveButton.enabled = true
+    solveProblemButton.enabled = true
+    cnfButton.enabled = true
+    importMenuItem.enabled = true
