@@ -1,10 +1,9 @@
 package satify.update.dpll
 
 import satify.model
-import satify.model.Bool.{False, True}
+import satify.model.Bool.False
 import satify.model.CNF.*
 import satify.model.dpll.DecisionTree.*
-import satify.model.dpll.OrderedSeq.{given_Ordering_Variable, seq}
 import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
 import satify.model.{CNF, Variable}
 import satify.update.dpll.CNFSimplification.*

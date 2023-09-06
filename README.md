@@ -26,7 +26,7 @@ To correctly run Satify, you need at least these versions of the following depen
 
 - Scala 3.3.0 (currently LTS)
 - SBT 1.9.1
-- Java 17 (currently LTS)
+- JDK 17 (currently LTS)
 
 ## Usage
 

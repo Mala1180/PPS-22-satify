@@ -1,5 +1,7 @@
 # Implementation
 
+---
+
 In this section every group member describes the work done for the realization of the project.
 
 ## Luca Fabri
@@ -29,36 +31,41 @@ branch. In the literature exist a bunch of more heuristics and optimizations.
 
 ### Decision tree implementation
 
-Once I understood the problem, I implemented the decision tree data structure that will be used by the DPLL algorithm to find the possible assignments.
+Once I understood the problem, I implemented the decision tree data structure that will be used by the DPLL algorithm to
+find the possible assignments.
 
-```DecisionTree``` is a binary tree where each node implicitly represent the decision and the state of the algorithm e.g. the current ```PartialModel``` and ```CNF```.
-In order to exploit at most the functional programming paradigm they've been implemented using case classes and ```Enum```(s) with the ultimate goal of facilitating the use of match cases.
+```DecisionTree``` is a binary tree where each node implicitly represent the decision and the state of the algorithm
+e.g. the current ```PartialModel``` and ```CNF```.
+In order to exploit at most the functional programming paradigm they've been implemented using case classes
+and ```Enum```(s) with the ultimate goal of facilitating the use of match cases.
 
-Before implementing all DPLL subparts individually, I tested the data structure implementing an exhaustive search of all the possible assignments to the partial model.
+Before implementing all DPLL subparts individually, I tested the data structure implementing an exhaustive search of all
+the possible assignments to the partial model.
 
 ### CNF simplification
 
-The simplification of the expression in Cunjuntive-Normal-Form is very important to determine if the formula is SAT under the current partial model.
+The simplification of the expression in Cunjuntive-Normal-Form is very important to determine if the formula is SAT
+under the current partial model.
 
-In fact, if the CNF expression is completely simplified s.t. it is equal to a ```True``` constant, it can be asserted that it is SAT.
+In fact, if the CNF expression is completely simplified s.t. it is equal to a ```True``` constant, it can be asserted
+that it is SAT.
 
 The expression in CNF is simplified according to the specific logical operator:
+
 - ```Or```
-    - When a Literal inside an ```Or``` is set to ```True``` s.t. `V = true` or `Not(V) = True` then the CNF must be simplified on the uppermost `Or` of a sequence of consecutive `Or`s.
+    - When a Literal inside an ```Or``` is set to ```True``` s.t. `V = true` or `Not(V) = True` then the CNF must be
+      simplified on the uppermost `Or` of a sequence of consecutive `Or`s.
 
       Examples:
         - Literal `A` in positive form. Constraint `A = True`:
 
           <p align=center>
-            <img src='./img/umOr1.svg' height="150" align="center">
+            <img src='./img/umOr1.svg' height="150" -aligned="center">
           </p>
-
-        - Literal `B` is negated. Constraint `B = False` to set the literal `True`:
 
            <p align=center>
-            <img src='./img/umOr2.svg' height="200" align="center">
+            <img src='./img/umOr2.svg' height="200" -aligned="center">
           </p>
-
 
     - A more complex CNF expression. Constraint `A = True`: 
 
@@ -73,7 +80,8 @@ The expression in CNF is simplified according to the specific logical operator:
         <img src='./img/umOr4.svg' height="200" align="center">
       </p>
 
-- When a Literal in an ```Or``` branch is set to ```False``` s.t. `V = False` or `Not(V) = False` the CNF must be simplified substituting the `Or` with the other branch.
+- When a Literal in an ```Or``` branch is set to ```False``` s.t. `V = False` or `Not(V) = False` the CNF must be
+  simplified substituting the `Or` with the other branch.
 
   Examples:
     - Literal `A` in positive form. Constraint `A = False`:
@@ -93,23 +101,21 @@ The expression in CNF is simplified according to the specific logical operator:
 
         - Constraint `B = True`:
           <p align=center>
-            <img src='./img/And1.svg' height="150" align="center">
+            <img src='./img/And1.svg' height="150" -aligned="center">
           </p>
+
 
         - A more complex example. Constraint `A = True`:
           <p align=center>
-            <img src='./img/And2.svg' height="200" align="center">
+            <img src='./img/And2.svg' height="200" -aligned="center">
           </p>
-
-
-
 
 ## Mattia Matteini
 
 Initially I dedicated myself to the preparation of the repository and
 to the DevOps tasks, so I set up Continuous Integration, SBT, ScalaTest and ScalaFMT.
 
-After that I was involved in the design and implementation of the software architecture (MVU).
+After that, I was involved in the design and implementation of the software architecture (MVU).
 I decided to use the Cake Pattern despite there aren't too many dependencies in MVU, to still give robustness,
 substitutability and flexibility.
 
@@ -125,19 +131,24 @@ object Main extends App with MVU
 
 ## Alberto Paganelli
 
-My first task was to analyze in depth the Tseitin transformation algorithm and before the implementation defining the data structures collaborating with the team.
+My first task was to analyze in depth the Tseitin transformation algorithm and before the implementation defining the
+data structures collaborating with the team.
 After the definition of a data structure I started to define the algorithm's phases.
 
-The first defined data structure was the Enumeration `Expression` that represents the expression of the formula in the enumeration form.
-Looking to the algoritm's phases I started writing some utils method for the `Expression` object that can be used from all.
+The first defined data structure was the Enumeration `Expression` that represents the expression of the formula in the
+enumeration form.
+Looking to the algoritm's phases I started writing some utils method for the `Expression` object that can be used from
+all.
+
 In particular to zip the subexpressions with new variables I made use of generic type to make the code more reusable.
 
-After the definition of these methods, where I have made great use of Pattern Matching, it was possible to start implementing the algorithm's phases.
+After the definition of these methods, where I have made great use of Pattern Matching, it was possible to start
+implementing the algorithm's phases.
 
-The idea was to use the functional programming, so I defined the `Tseitin` object as a singleton object that contains the algorithm's phases and exposing only the `tseitin` method that is the entry point of the algorithm.
+The idea was to use the functional programming, so I defined the `Tseitin` object as a singleton object that contains
+the algorithm's phases and exposing only the `tseitin` method that is the entry point of the algorithm.
 
 I followed the TDD approach for the core of the algorithm and for the utils methods.
-
 
 ## Tseitin Algorithm
 

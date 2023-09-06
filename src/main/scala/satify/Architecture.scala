@@ -2,7 +2,7 @@ package satify
 
 import satify.model.State
 import satify.update.{Message, Update}
-import satify.view.{GUI, View}
+import satify.view.View
 
 import scala.swing.Component
 

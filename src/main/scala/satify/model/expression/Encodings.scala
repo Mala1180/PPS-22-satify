@@ -1,7 +1,6 @@
 package satify.model.expression
 
 import satify.model.expression.Expression.{And, Not, Or, Symbol}
-import satify.model.expression.Utils.symbolGenerator
 
 object Encodings:
 
