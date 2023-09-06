@@ -2,9 +2,8 @@ package satify.update.converters
 
 import satify.model.CNF
 import satify.model.expression.Expression
-import satify.update.converters.TseitinTransformation.tseitin
 import satify.update.converters.ConverterType.*
-
+import satify.update.converters.TseitinTransformation.tseitin
 
 /** Functional interface for converting an expression into a CNF. */
 trait Converter:

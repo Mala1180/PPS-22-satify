@@ -19,7 +19,7 @@ import satify.update.solver.SolverType.*
 import scala.io.Source
 
 object Update:
-  
+
   def update(model: State, message: Message): State =
     message match
       case Input(char) => model
@@ -29,7 +29,7 @@ object Update:
           val sol: Solution = Solver(DPLL).solve(exp)
           State(input, exp, sol)
         catch
-          case e: Exception =>
+          case _: Exception =>
             State(input, InvalidInput)
       case SolveProblem(problem, parameter) =>
         val exp: Expression = problem match

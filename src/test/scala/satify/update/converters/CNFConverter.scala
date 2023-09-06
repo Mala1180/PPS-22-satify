@@ -1,4 +1,4 @@
-package satify.ExpressionUtilsTest
+package satify.update.converters
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -8,7 +8,7 @@ import satify.model.expression.Expression.*
 import satify.model.{CNF, Variable}
 import satify.update.converters.TseitinTransformation.{convertToCNF, isCNF}
 
-class Converter extends AnyFlatSpec with Matchers:
+class CNFConverter extends AnyFlatSpec with Matchers:
 
   "The exp a and b" should "be converted to CNF" in {
     val exp: Expression = And(Symbol("a"), Symbol("b"))
