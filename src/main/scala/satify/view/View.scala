@@ -11,8 +11,8 @@ import scala.swing.*
 object View:
   def view(model: State): Set[Component] =
     import model.*
-    if error.isDefined then updateError(error.get, input.get)
-    else updateExpression(input.get) ++ updateCnf(cnf) ++ updateSolution(model, solution)
+    if error.isDefined then updateError(error.get, input.getOrElse(""))
+    else updateExpression(input.getOrElse("")) ++ updateCnf(cnf) ++ updateSolution(model, solution)
 
   /** Update the solution components
     * @param model the current state
