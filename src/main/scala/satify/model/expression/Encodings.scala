@@ -1,9 +1,12 @@
 package satify.model.expression
 
 import satify.model.expression.Expression.{And, Not, Or, Symbol}
-import satify.model.expression.Utils.symbolGenerator
+import satify.model.expression.Utils.{symbolGenerator, symbolProducer}
 
 object Encodings:
+
+  private def symbolGenerator(prefix: String): () => Symbol = symbolProducer(prefix)
+  private val encVarProducer: () => Symbol = symbolGenerator("ENC")
 
   private def requireVariables(vars: Seq[Symbol], minimum: Int, method: String): Unit =
     require(vars.length >= minimum, s"$method encoding requires at least two variables")
@@ -28,21 +31,20 @@ object Encodings:
   def atMostOne(variables: Symbol*): Expression =
     val vars = removeDuplicates(variables)
     requireVariables(vars, 2, "atMostOne")
-//    val generator: () => Symbol = symbolGenerator("ENC")
-//    // removing duplicates
-//    // generate new n - 1 variables
-//    val newVars = (1 until vars.length).map(_ => generator()).toList
-//    val startingClauses = And(Or(Not(vars.head), newVars.head), Or(Not(vars.last), newVars.last))
-//    val middleClauses = for (x, i) <- vars.zipWithIndex if i > 0 && i < vars.length - 1
-//    yield And(And(Or(Not(x), newVars(i)), Or(Not(newVars(i - 1)), newVars(i))), Or(Not(x), Not(newVars(i - 1))))
-//    middleClauses.foldLeft(startingClauses)(And(_, _))
+    // removing duplicates
+    // generate new n - 1 variables
+    val newVars = (1 until vars.length).map(_ => encVarProducer()).toList
+    val startingClauses = And(Or(Not(vars.head), newVars.head), Or(Not(vars.last), newVars.last))
+    val middleClauses = for (x, i) <- vars.zipWithIndex if i > 0 && i < vars.length - 1
+    yield And(And(Or(Not(x), newVars(i)), Or(Not(newVars(i - 1)), newVars(i))), Or(Not(x), Not(newVars(i - 1))))
+    middleClauses.foldLeft(startingClauses)(And(_, _))
     // for each combinations of 2 variables, generate a clause that says that at least one of them is false
-    val clauses = for
-      i <- vars.indices
-      j <- vars.indices
-      if i < j
-    yield Not(And(vars(i), vars(j)))
-    clauses.reduceLeft(And(_, _))
+//    val clauses = for
+//      i <- vars.indices
+//      j <- vars.indices
+//      if i < j
+//    yield Not(And(vars(i), vars(j)))
+//    clauses.reduceLeft(And(_, _))
 
   /** Encodes the constraint that exactly one of the given variables is true.
     * @param variables the input variables

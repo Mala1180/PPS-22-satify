@@ -6,6 +6,7 @@ import satify.model.expression.Expression.{And, Symbol}
 import satify.model.dpll.OrderedSeq.{given_Ordering_Variable, seq}
 import satify.model.dpll.PartialModel
 import satify.model.expression.Encodings.{atLeastOne, atMostOne}
+import satify.model.expression.Utils.symbolGenerator
 
 import scala.annotation.tailrec
 
