@@ -1,4 +1,4 @@
-package satify.DPLLTest
+package satify.update.solver.dpll
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -6,8 +6,8 @@ import satify.model.CNF.*
 import satify.model.dpll.OrderedSeq.{given_Ordering_Variable, seq}
 import satify.model.dpll.{Constraint, Decision, PartialModel}
 import satify.model.{CNF, Variable}
-import satify.update.dpll.DPLL.dpll
-import satify.update.dpll.PartialModelUtils.*
+import satify.update.solver.dpll.DPLL.dpll
+import satify.update.solver.dpll.PartialModelUtils.*
 
 class PartialModelUtilsTest extends AnyFlatSpec with Matchers:
 

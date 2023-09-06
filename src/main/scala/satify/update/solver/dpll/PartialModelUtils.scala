@@ -1,4 +1,4 @@
-package satify.update.dpll
+package satify.update.solver.dpll
 
 import satify.model.Bool.True
 import satify.model.CNF.*
@@ -7,7 +7,9 @@ import satify.model.dpll.OrderedSeq.*
 import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
 import satify.model.{CNF, Variable}
 
-object PartialModelUtils:
+private object PartialModelUtils:
+
+  import satify.model.dpll.OrderedSeq.given_Ordering_Variable
 
   import satify.model.dpll.OrderedSeq.given_Ordering_Variable
 

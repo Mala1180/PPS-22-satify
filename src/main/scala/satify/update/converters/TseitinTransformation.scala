@@ -4,7 +4,7 @@ import satify.model.expression.Expression
 import satify.model.{CNF, Variable}
 
 /** Object containing the Tseitin transformation algorithm. */
-object TseitinTransformation:
+private[converters] object TseitinTransformation:
 
   import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
   import satify.model.Literal

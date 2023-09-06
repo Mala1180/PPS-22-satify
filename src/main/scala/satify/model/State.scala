@@ -7,6 +7,7 @@ import satify.model.problems.Problem
 
 /** The immutable entity representing the application state (Model). */
 trait State:
+
   /** String representation of user input. */
   val input: Option[String] = None
 
@@ -32,6 +33,7 @@ trait State:
 
 /** Factory for [[State]] instances. */
 object State:
+
   /** Creates a new empty application state.
     * @return a new [[State]] instance.
     */

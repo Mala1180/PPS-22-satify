@@ -1,13 +1,12 @@
-package satify.DPLLTest
+package satify.update.solver.dpll
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.Bool.{False, True}
 import satify.model.CNF.{And, Not, Or, Symbol}
 import satify.model.dpll.Constraint
 import satify.model.{CNF, Variable}
-import satify.update.dpll.CNFSimplification.simplifyCnf
-import satify.update.dpll.ConflictIdentification.isUnsat
+import satify.update.solver.dpll.CNFSimplification.simplifyCnf
+import satify.update.solver.dpll.ConflictIdentification.isUnsat
 
 class ConflictIdentificationTest extends AnyFlatSpec with Matchers:
 
