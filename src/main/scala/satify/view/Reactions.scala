@@ -9,6 +9,7 @@ import satify.view.Constants.{cnfOutputDialogName, expTextAreaName, solOutputDia
 import satify.view.ComponentUtils.createErrorDialog
 import satify.view.GUI.{
   cnfOutputDialog,
+  enableInteractions,
   fileChooser,
   helpDialog,
   inputScrollPane,
@@ -86,5 +87,5 @@ object Reactions:
           case n if n == expTextAreaName =>
             inputScrollPane.contents = c
       })
-      loadingLabel.visible = false
+      enableInteractions()
     }
