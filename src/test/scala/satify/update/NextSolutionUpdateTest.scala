@@ -1,11 +1,10 @@
-package satify.model.update
+package satify.update
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.State
 import satify.update.Message.*
 import satify.update.Update.update
-import satify.view.GUI.inputTextArea
 
 class NextSolutionUpdateTest extends AnyFlatSpec with Matchers:
 

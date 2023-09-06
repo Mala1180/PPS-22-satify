@@ -1,4 +1,4 @@
-package satify.model.update
+package satify.update
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -46,4 +46,5 @@ class SolveProblemUpdateTest extends AnyFlatSpec with Matchers:
       && cnf.isEmpty
       && problem.isEmpty
       && error.isDefined shouldBe true
-  }*/
+  }
+*/
