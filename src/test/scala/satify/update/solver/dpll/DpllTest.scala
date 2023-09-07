@@ -41,3 +41,55 @@ class DpllTest extends AnyFlatSpec with Matchers:
       )
     ) shouldBe Set.empty
   }
+
+  "DPLL" should "do unit propagation when there's only a Variable inside a clause and it is in positive form" in {
+    val cnf: CNF = And(Symbol(varA), And(Symbol(varB), Or(Symbol(varB), Symbol(varC))))
+    dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
+      Branch(
+        Decision(
+          seq(varA, varB, varC),
+          And(Symbol(varA), And(Symbol(varB), Or(Symbol(varB), Symbol(varC))))
+        ),
+        Branch(
+          Decision(seq(Variable("a", Some(true)), varB, varC), And(Symbol(varB), Or(Symbol(varB), Symbol(varC)))),
+          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(true)), varC), Symbol(True))),
+          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(false)), varC), Symbol(False)))
+        ),
+        Leaf(Decision(seq(Variable("a", Some(false)), varB, varC), Symbol(False)))
+      )
+  }
+
+  "DPLL" should "do unit propagation when there's only a Variable inside a clause and it is in negative form" in {
+    val cnf: CNF = And(Not(Symbol(varA)), Or(Symbol(varA), Symbol(varB)))
+    dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
+      Branch(
+        Decision(
+          seq(varA, varB),
+          And(Not(Symbol(varA)), Or(Symbol(varA), Symbol(varB)))
+        ),
+        Branch(
+          Decision(seq(Variable("a", Some(false)), varB), Symbol(varB)),
+          Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(true))), Symbol(True))),
+          Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(false))), Symbol(False)))
+        ),
+        Leaf(Decision(seq(Variable("a", Some(true)), varB), Symbol(False)))
+      )
+  }
+
+  /*"DPLL" should "do pure Literals elimination" in {
+    val cnf: CNF = And(Or(Not(Symbol(varA)), Not(Symbol(varB))), Or(Not(Symbol(varA)), Symbol(varB)))
+    println(dpll(Decision(extractModelFromCnf(cnf), cnf)))
+    dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
+      Branch(
+        Decision(
+          seq(varA, varB),
+          And(Or(Not(Symbol(varA)), Not(Symbol(varB))), Or(Not(Symbol(varA)), Symbol(varB)))
+        ),
+        Branch(
+          Decision(seq(Variable("a", Some(false)), varB), Symbol(varB)),
+          Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(true))), Symbol(True))),
+          Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(false))), Symbol(False)))
+        ),
+        Leaf(Decision(seq(Variable("a", Some(true)), varB), Symbol(False)))
+      )
+  }*/
