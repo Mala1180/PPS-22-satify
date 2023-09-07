@@ -21,4 +21,8 @@ private object ConflictIdentification:
     cnf match
       case Not(Symbol(_: Variable)) | Symbol(_: Variable) | Not(Symbol(False)) | Symbol(True) | Or(_, _) => false
       case Not(Symbol(True)) | Symbol(False) => true
-      case And(left, right) => f(left, f(right, isUnsat(left) | isUnsat(right)))
+      case And(left, right) => f(left, f(right,
+        if isUnsat(left) then true
+        else if isUnsat(right) then true
+        else false
+      ))
