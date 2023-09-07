@@ -1,4 +1,4 @@
-package satify.update.solver.dpll
+/*package satify.update.solver.dpll
 
 import satify.model
 import satify.model.Bool.False
@@ -159,3 +159,4 @@ private[solver] object DPLL:
       for pmSet <- extractSolutionsFromDT(dpll(Decision(extractModelFromCnf(cnf), cnf)))
       yield explodeSolutions(pmSet)
     s.flatten
+*/

@@ -1,4 +1,4 @@
-package satify.update.solver.dpll
+/*package satify.update.solver.dpll
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -95,3 +95,4 @@ class DPLLTest extends AnyFlatSpec with Matchers:
       )
     ) shouldBe Set.empty
   }
+*/
