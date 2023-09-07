@@ -39,3 +39,7 @@ class SatEncodingsTest extends AnyFlatSpec:
       )
     )
   }
+
+  """ atMost(2)("A", "B", "C") """ should """ be equal to  """ in {
+    atMostK(2)(Symbol("A"), Symbol("B"), Symbol("C"))
+  }

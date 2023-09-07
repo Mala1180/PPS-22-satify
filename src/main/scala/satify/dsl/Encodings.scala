@@ -5,12 +5,12 @@ import satify.model.expression.Expression.*
 
 object Encodings:
 
-  /** Converts a tuple to a list of [[Symbol]]
-    * @param tuple the input [[Tuple]]
-    * @return the list of [[Symbol]]
-    */
-  private def tupleToSymbols(tuple: Tuple): List[Symbol] =
-    tuple.productIterator.toList.map(_.toString).map(Symbol.apply)
+//  /** Converts a tuple to a list of [[Symbol]]
+//    * @param tuple the input [[Tuple]]
+//    * @return the list of [[Symbol]]
+//    */
+//  private def tupleToSymbols(tuple: Tuple): List[Symbol] =
+//    tuple.productIterator.toList.map(_.toString).map(Symbol.apply)
 
   extension (expressions: Seq[Symbol])
 
@@ -18,9 +18,7 @@ object Encodings:
       * @see [[atMostOne]] and [[atMostK]]
       * @return the [[Expression]] that represents the constraint
       */
-    def atMost(k: Int): Expression = k match
-      case 1 => atMostOne(expressions: _*)
-      case _ => atMostK(k)(expressions: _*)
+    def atMost(k: Int): Expression = atMostK(k)(expressions: _*)
 
     /** Calls [[atLeastOne]] if k is 1, [[atLeastK]] otherwise.
       * @see [[atLeastOne]] and [[atLeastK]]

@@ -26,9 +26,9 @@ object Utils:
       exp match
         case Symbol(value) => value
         case And(left, right) =>
-          if flat then s"${left.printAsDSL(flat)} and ${right.printAsDSL(flat)}"
-          else s"${left.printAsDSL(flat)} and\n${right.printAsDSL(flat)}"
-        case Or(left, right) => s"${left.printAsDSL(flat)} or ${right.printAsDSL(flat)}"
+          if flat then s"(${left.printAsDSL(flat)} and ${right.printAsDSL(flat)})"
+          else s"(${left.printAsDSL(flat)} and\n${right.printAsDSL(flat)})"
+        case Or(left, right) => s"(${left.printAsDSL(flat)} or ${right.printAsDSL(flat)})"
         case Not(branch) => s"not(${branch.printAsDSL(flat)})"
 
     def printAsFormal(flat: Boolean = false): String =
