@@ -10,13 +10,19 @@ import CNFSimplification.*
 import ConflictIdentification.isUnsat
 import PartialModelUtils.*
 
+import java.util.concurrent.Executors
+import scala.concurrent.Future
 import scala.annotation.tailrec
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, ExecutionContext}
 import scala.language.postfixOps
 import scala.util.Random
 
 private[solver] object DPLL:
 
   private val rnd = Random(42)
+  private val executorService = Executors.newFixedThreadPool(100000)
+  private val ec = ExecutionContext.fromExecutor(executorService)
 
   /** DPLL (Davis-Putnam-Logemann-Loveland) algorithm.
     * @param dec Decision to apply
@@ -29,8 +35,13 @@ private[solver] object DPLL:
       * @param constr Constraint to apply
       * @return updated DecisionTree with the new Decision
       */
-    def decide(dec: Decision, constr: Constraint): DecisionTree = dec match
-      case Decision(parModel, cnf) => dpll(Decision(updateParModel(parModel, constr), simplifyCnf(cnf, constr)))
+    def decide(dec: Decision, constr: Constraint): Future[DecisionTree] =
+      dec match
+        case Decision(parModel, cnf) =>
+          Future {
+            println(Thread.currentThread().getName)
+            dpll(Decision(updateParModel(parModel, constr), simplifyCnf(cnf, constr)))
+          }(ec)
 
     /** Branch on a unit literal.
       * @param dec the previous Decision
@@ -43,7 +54,7 @@ private[solver] object DPLL:
             Some(
               Branch(
                 dec,
-                decide(dec, c),
+                Await.result(decide(dec, c), Duration.Inf),
                 Leaf(Decision(updateParModel(parModel, Constraint(name, !value)), Symbol(False)))
               )
             )
@@ -56,7 +67,13 @@ private[solver] object DPLL:
     def pureLiteralEliminationDecision(dec: Decision): Option[Branch] =
       pureLiteralElimination(dec) match
         case Some(c @ Constraint(name, value)) =>
-          Some(Branch(dec, decide(dec, c), decide(dec, Constraint(name, !value))))
+          Some(
+            Branch(
+              dec,
+              Await.result(decide(dec, c), Duration.Inf),
+              Await.result(decide(dec, Constraint(name, !value)), Duration.Inf)
+            )
+          )
         case None => None
 
     /** Branch the decision tree by choosing a random variable among the available ones and by
@@ -72,7 +89,11 @@ private[solver] object DPLL:
             val v = rnd.nextBoolean()
             unVars(rnd.between(0, unVars.size)) match
               case Variable(name, _) =>
-                Branch(dec, decide(dec, Constraint(name, v)), decide(dec, Constraint(name, !v)))
+                Branch(
+                  dec,
+                  Await.result(decide(dec, Constraint(name, v)), Duration.Inf),
+                  Await.result(decide(dec, Constraint(name, !v)), Duration.Inf)
+                )
           else Leaf(dec)
 
     dec match
