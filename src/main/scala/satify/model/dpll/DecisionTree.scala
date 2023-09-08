@@ -4,8 +4,8 @@ import satify.model.CNF
 import satify.model.dpll.PartialModel
 
 /** Decision is a node of DecisionTree.
-  * @param pm The current state of the PartialModel with varName's PartialVariable constrained.
-  * @param cnf Updated Cnf after the decision.
+  * @param pm PartialModel.
+  * @param cnf CNF expression.
   */
 case class Decision(pm: PartialModel, cnf: CNF)
 
