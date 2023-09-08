@@ -16,17 +16,27 @@ private[converters] object TseitinTransformation:
     * @return the CNF expression.
     */
   def tseitin(exp: Expression): CNF =
-    var transformations: List[(CNFSymbol, CNF)] = List()
+    var transformations: List[CNF] = List()
     symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
-    var transformedExp = transformations.map(_._2)
-    if transformedExp.size == 1 then transformedExp.head
+    concat(transformations)
+
+  // TODO TO ADD TESTS
+  /** Concat all subexpression in And to obtain a valid CNF expression.
+    *
+    * @param subexpressions the subexpressions to concat.
+    * @return the CNF expression.
+    */
+  private def concat(subexpressions: List[CNF]): CNF =
+    if subexpressions.size == 1 then subexpressions.head
     else
-      transformedExp = transformedExp.prepended(CNFSymbol(Variable("TSTN0")))
-      transformedExp.reduceRight((s1, s2) =>
+      var concatenated = subexpressions
+      concatenated = concatenated.prepended(CNFSymbol(Variable("TSTN0")))
+      concatenated.reduceRight((s1, s2) =>
         CNFAnd(s1.asInstanceOf[CNFOr | Literal], s2.asInstanceOf[CNFAnd | CNFOr | Literal])
       )
 
   /** Substitute Symbols of nested subexpressions in all others expressions
+    *
     * @param exp the expression where to substitute Symbols
     * @return the decomposed expression in subexpressions with Symbols correctly substituted.
     */
@@ -61,42 +71,41 @@ private[converters] object TseitinTransformation:
   }
 
   /** Transform the Symbol and the corresponding expression to CNF form
+    *
     * @param exp a Symbol and the corresponding expression
     * @return a list of Symbol and expressions in CNF form for the given Symbol and expression
     * @throws IllegalArgumentException if the expression is not a subexpression
     */
-  def transform(exp: (Expression.Symbol, Expression)): List[(CNFSymbol, CNF)] =
+  def transform(exp: (Expression.Symbol, Expression)): List[CNF] =
     def expr(exp: Expression): Literal = exp match
       case Symbol(v) => CNFSymbol(Variable(v, None))
       case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v, None)))
-      case _ => throw new IllegalArgumentException("Expression is not a Symbol or a Not")
+      case _ => throw new IllegalArgumentException("Expression is not a literal")
     def symbol(exp: Expression): CNFSymbol = exp match
       case Symbol(v) => CNFSymbol(Variable(v, None))
-      case _ => throw new IllegalArgumentException("Expression is not a Symbol or a Not")
+      case _ => throw new IllegalArgumentException("Expression is not a literal")
     def not(exp: Expression): Literal = exp match
       case Not(Symbol(v)) => CNFSymbol(Variable(v, None))
       case Symbol(v) => CNFNot(CNFSymbol(Variable(v, None)))
-      case _ => throw new IllegalArgumentException("Expression is not a Symbol or a Not")
+      case _ =>
+        throw new IllegalArgumentException("Expression is not a literal")
 
-    exp match
-      case (s @ Symbol(v), Not(lit)) =>
-        List(
-          (symbol(Symbol(v)), CNFOr(not(lit), not(Symbol(v)))),
-          (symbol(Symbol(v)), CNFOr(symbol(lit), symbol(Symbol(v))))
-        )
-      case (s @ Symbol(v), And(e1, e2)) =>
-        List(
-          (symbol(s), CNFOr(CNFOr(not(e1), not(e2)), symbol(s))),
-          (symbol(s), CNFOr(expr(e1), not(s))),
-          (symbol(s), CNFOr(expr(e2), not(s)))
-        )
-      case (s @ Symbol(v), Or(e1, e2)) =>
-        List(
-          (symbol(s), CNFOr(CNFOr(expr(e1), expr(e2)), not(s))),
-          (symbol(s), CNFOr(not(e1), symbol(s))),
-          (symbol(s), CNFOr(not(e2), symbol(s)))
-        )
-      case (s @ Symbol(v), ss @ Symbol(vv)) => List((symbol(s), symbol(ss)))
+    val (s, e) = exp
+    val sym = symbol(s)
+
+    e match
+      case Not(lit) =>
+        CNFOr(not(lit), CNFNot(sym)) ::
+          CNFOr(symbol(lit), sym) :: Nil
+      case And(e1, e2) =>
+        CNFOr(CNFOr(not(e1), not(e2)), sym) ::
+          CNFOr(expr(e1), CNFNot(sym)) ::
+          CNFOr(expr(e2), CNFNot(sym)) :: Nil
+      case Or(e1, e2) =>
+        CNFOr(CNFOr(expr(e1), expr(e2)), CNFNot(sym)) ::
+          CNFOr(not(e1), sym) ::
+          CNFOr(not(e2), sym) :: Nil
+      case ssym @ Symbol(_) => List(symbol(ssym))
 
   /** Method to check if an expression is in CNF form and can be converted to CNF form.
     * @param expression The expression to check.
