@@ -5,10 +5,10 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
 import satify.model.cnf.{CNF, Variable}
 import satify.model.dpll.Constraint
-import satify.update.solver.dpll.CNFSimplification.simplifyCnf
-import satify.update.solver.dpll.ConflictIdentification.isUnsat
+import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
+import satify.update.solver.dpll.cnf.CNFSat.isUnsat
 
-class ConflictIdentificationTest extends AnyFlatSpec with Matchers:
+class CNFSatTest extends AnyFlatSpec with Matchers:
 
   val varA: Variable = Variable("a")
   val varB: Variable = Variable("b")
