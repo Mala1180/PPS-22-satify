@@ -112,8 +112,12 @@ The expression in CNF is simplified according to the specific logical operator:
 
 ## Mattia Matteini
 
+### Setup
+
 Initially I dedicated myself to the preparation of the repository and
 to the DevOps tasks, so I set up Continuous Integration, SBT, ScalaTest and ScalaFMT.
+
+### Architecture
 
 After that, I was involved in the design and implementation of the software architecture (MVU).
 I decided to use the Cake Pattern despite there aren't too many dependencies in MVU, to still give robustness,
@@ -129,6 +133,8 @@ trait MVU extends ModelComponent with ViewComponent with UpdateComponent
 object Main extends App with MVU
 ```
 
+### Abstract Modelling
+
 Initially I implemented the components making use of _Abstract Modelling_,
 because at the start of the project I didn't know yet how
 Model, View and Update should have been concretely implemented.
@@ -139,13 +145,19 @@ I adopted _Abstract Modelling_ approach also when I started to implement the Mod
 In fact, I knew that the Model had to be an immutable data structure,
 but it wasn't really clear how the entities it was supposed to contain should have been implemented.
 So I started writing a trait of concepts called `State` (referring to the state of the application),
-which was containing the main model entities unimplemented.
+which was containing the unimplemented main model entities.
+
+[//]: # (### Solver)
+
+[//]: # (One of the main entities is the `Solver`, it is implemented as a trait containing the `solve` method )
+
+[//]: # (overloaded in order to perform also the conversion to CNF using the `Converter`, if the input is not in CNF.)
 
 ## Alberto Paganelli
 
 My first task was to analyze in depth the Tseitin transformation algorithm and before the implementation defining the
 data structures collaborating with the team.
-After the definition of a data structure I started to define the algorithm's phases.
+After the definition of a data structure, I started to define the algorithm's phases.
 
 The first defined data structure was the Enumeration `Expression` that represents the expression of the formula in the
 enumeration form.
@@ -182,13 +194,13 @@ The Tseitin transformation follows these steps:
 
     <p align=center>
         (a ∧ (b ∨ c)) -> (¬c ∧ d)<br>
-        TSTN4 <--> ¬c<br>
-        TSTN3 <--> b ∨ c<br>
-        TSTN2 <--> TSTN4 ∧ d<br>
-        TSTN1 <--> a ∧ TSTN3<br>
-        TSTN0 <--> TSTN1 --> TSTN2
+        TSTN4 <–> ¬c<br>
+        TSTN3 <–> b ∨ c<br>
+        TSTN2 <–> TSTN4 ∧ d<br>
+        TSTN1 <–> a ∧ TSTN3<br>
+        TSTN0 <–> TSTN1 –> TSTN2
     </p>
-   
+
 3. Express the truth conditions of the subformulas in CNF using the auxiliary variables and standard logical
    connectives (AND, OR, NOT) following the transformations listed in the table below.
 
