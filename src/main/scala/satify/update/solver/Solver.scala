@@ -8,8 +8,7 @@ import satify.update.converters.{Converter, ConverterType}
 import satify.update.solver.SolverType.*
 import satify.update.solver.dpll.DPLL.extractSolutions
 
-/** Functional interface providing a method to solve the SAT problem.
-  *
+/** Entity providing the methods to solve the SAT problem.
   * @see [[satify.update.solver.DPLL]]
   */
 trait Solver:
@@ -26,6 +25,10 @@ trait Solver:
     */
   def solve(exp: Expression): Solution
 
+  protected def memoize(f: CNF => Solution): CNF => Solution =
+    new collection.mutable.HashMap[CNF, Solution]():
+      override def apply(key: CNF): Solution = getOrElseUpdate(key, f(key))
+
 /** Factory for [[Solver]] instances. */
 object Solver:
 
@@ -40,10 +43,11 @@ object Solver:
 
   /** Private implementation of [[Solver]] */
   private case class DpllAlgorithm(converter: Converter) extends Solver:
-    override def solve(cnf: CNF): Solution =
+    override def solve(cnf: CNF): Solution = memoize(cnf =>
       val s = extractSolutions(cnf)
       s match
         case _ if s.isEmpty => Solution(UNSAT)
         case _ => Solution(SAT, s.map(Assignment.apply).toList)
+    )(cnf)
 
     override def solve(exp: Expression): Solution = solve(converter.convert(exp))
