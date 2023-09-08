@@ -38,7 +38,7 @@ object Update:
             case GraphColoring => ??? // GraphColoring(parameter).exp
             case NurseScheduling => ??? // NurseScheduling(parameter).exp
           val cnf: CNF = Converter(Tseitin).convert(exp)
-          State(cnf, Solver().solve(exp), NQueens(parameter))
+          State(cnf, Solver(DPLL).solve(exp), NQueens(parameter))
         catch
           case e: Exception =>
             State(InvalidInput)
