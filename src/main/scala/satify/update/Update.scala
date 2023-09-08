@@ -57,11 +57,15 @@ object Update:
     * @return a state with the input, expression, and solution if no exception is thrown, otherwise a state with the input and the occurred error
     */
   private def solveUpdate(input: String): State =
-    safeUpdate(() =>
-      val exp = reflect(input)
-      val sol: Solution = Solver(DPLL).solve(exp)
-      State(input, exp, sol),
-      InvalidInput, Some(input))
+    safeUpdate(
+      () =>
+        val exp = reflect(input)
+        val sol: Solution = Solver(DPLL).solve(exp)
+        State(input, exp, sol)
+      ,
+      InvalidInput,
+      Some(input)
+    )
 
   /** Update function to react to the SolveProblem message. This function will attempt to solve the problem and return a state.
     * @param problem problem to solve.
@@ -69,39 +73,49 @@ object Update:
     * @return a state with the cnf and solution if no exception is thrown, otherwise a state with the error.
     */
   private def problemUpdate(problem: ProblemChoice, parameter: Int): State =
-    safeUpdate(() =>
-      val exp: Expression = problem match
-        case NQueensChoice => NQueens(parameter).exp
-        case GraphColoring => ??? // GraphColoring(parameter).exp
-        case NurseScheduling => ??? // NurseScheduling(parameter).exp
-      val cnf: CNF = Converter(Tseitin).convert(exp)
-      State(cnf, Solver(DPLL).solve(exp), NQueens(parameter)),
-      InvalidInput)
+    safeUpdate(
+      () =>
+        val exp: Expression = problem match
+          case NQueensChoice => NQueens(parameter).exp
+          case GraphColoring => ??? // GraphColoring(parameter).exp
+          case NurseScheduling => ??? // NurseScheduling(parameter).exp
+        val cnf: CNF = Converter(Tseitin).convert(exp)
+        State(cnf, Solver(DPLL).solve(exp), NQueens(parameter))
+      ,
+      InvalidInput
+    )
 
   /** Update function to react to the Convert message. This function will attempt to convert the input and return a state.
     * @param input input to convert.
     * @return a state with the input, expression, and cnf if no exception is thrown, otherwise a state with the input and the occurred error
     */
   private def converterUpdate(input: String): State =
-    safeUpdate(() =>
-      val exp = reflect(input)
-      val cnf: CNF = Converter(Tseitin).convert(exp)
-      State(input, exp, cnf),
-      InvalidInput, Some(input))
+    safeUpdate(
+      () =>
+        val exp = reflect(input)
+        val cnf: CNF = Converter(Tseitin).convert(exp)
+        State(input, exp, cnf)
+      ,
+      InvalidInput,
+      Some(input)
+    )
 
   /** Update function to react to the Import message. This function will attempt to import the file and return a state.
     * @param file file to import.
     * @return a state with the input and cnf if no exception is thrown, otherwise a state with the error.
     */
   private def importUpdate(file: File): State =
-    safeUpdate(() =>
-      val s: Source = Source.fromFile(file)
-      val lines = s.getLines.toSeq
-      s.close()
-      val cnf: CNF = parse(lines).getOrElse(Symbol(Variable("NO CNF")))
-      val input = cnf.printAsDSL()
-      State(input, cnf),
-      InvalidImport)
+    safeUpdate(
+      () =>
+        val s: Source = Source.fromFile(file)
+        val lines = s.getLines.toSeq
+        s.close()
+        val cnf: CNF = parse(lines).getOrElse(Symbol(Variable("NO CNF")))
+        val input = cnf.printAsDSL()
+        State(input, cnf)
+      ,
+      InvalidImport
+    )
 
   /** Update function to react to the NextSolution message. This function will attempt to find the next solution and return a state.
     * @param model current state.
@@ -109,20 +123,27 @@ object Update:
     */
   private def nextSolutionUpdate(model: State): State =
     if model.problem.isDefined then
-      safeUpdate (() =>
-      State(Solution(
-        model.solution.get.result,
-        model.solution.get.assignment.tail ::: List(model.solution.get.assignment.head)
-      ), model.problem.get),
-      EmptySolution)
+      safeUpdate(
+        () =>
+          State(
+            Solution(
+              model.solution.get.result,
+              model.solution.get.assignment.tail ::: List(model.solution.get.assignment.head)
+            ),
+            model.problem.get
+          ),
+        EmptySolution
+      )
     else
-      safeUpdate(() =>
-        State(
-          model.input.get,
-          model.expression.get,
-          Solution(
-            model.solution.get.result,
-            model.solution.get.assignment.tail ::: List(model.solution.get.assignment.head)
-          )
-        ),
-        EmptySolution)
+      safeUpdate(
+        () =>
+          State(
+            model.input.get,
+            model.expression.get,
+            Solution(
+              model.solution.get.result,
+              model.solution.get.assignment.tail ::: List(model.solution.get.assignment.head)
+            )
+          ),
+        EmptySolution
+      )

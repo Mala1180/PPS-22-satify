@@ -82,11 +82,11 @@ object State:
     StateImpl(None, None, Some(cnf), Some(sol), Some(problem))
 
   /** Creates a new application state with an input problem and its solution.
-   * @param sol     the [[Solution]]
-   * @param problem the [[Problem]] selected
-   * @param show the string to show in the view representing the problem. For example, the game board for n-queens.
-   * @return a new [[State]] instance.
-   */
+    * @param sol     the [[Solution]]
+    * @param problem the [[Problem]] selected
+    * @param show the string to show in the view representing the problem. For example, the game board for n-queens.
+    * @return a new [[State]] instance.
+    */
   def apply(sol: Solution, problem: Problem, show: String = ""): State =
     StateImpl(None, None, None, Some(sol), Some(problem))
 
