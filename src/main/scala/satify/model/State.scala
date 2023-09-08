@@ -39,7 +39,13 @@ object State:
     */
   def apply(): State = StateImpl()
 
-  /** Creates a new application state containing only the the input and the occurred error.
+  /** Creates a new application state containing only the occurred error.
+    * @param error the [[Error]]
+    * @return a new [[State]] instance.
+    */
+  def apply(error: Error): State = StateImpl(None, None, None, None, None, Some(error))
+
+  /** Creates a new application state containing only the input and the occurred error.
     * @param input the input string
     * @param error the [[Error]]
     * @return a new [[State]] instance.

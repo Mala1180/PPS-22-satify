@@ -4,7 +4,7 @@ import satify.dsl.Reflection.reflect
 import satify.model.*
 import satify.model.CNF.Symbol
 import satify.model.errors.Error
-import satify.model.errors.Error.InvalidInput
+import satify.model.errors.Error.*
 import satify.model.expression.Expression
 import satify.model.problems.NQueens.*
 import satify.model.problems.ProblemChoice.{GraphColoring, NurseScheduling, NQueens as NQueensChoice}
@@ -32,30 +32,45 @@ object Update:
           case _: Exception =>
             State(input, InvalidInput)
       case SolveProblem(problem, parameter) =>
-        val exp: Expression = problem match
-          case NQueensChoice => NQueens(parameter).exp
-          case GraphColoring => ??? // GraphColoring(parameter).exp
-          case NurseScheduling => ??? // NurseScheduling(parameter).exp
-        val cnf: CNF = Converter(Tseitin).convert(exp)
-        State(cnf, Solver(DPLL).solve(cnf), NQueens(parameter))
+        try
+          val exp: Expression = problem match
+            case NQueensChoice => NQueens(parameter).exp
+            case GraphColoring => ??? // GraphColoring(parameter).exp
+            case NurseScheduling => ??? // NurseScheduling(parameter).exp
+          val cnf: CNF = Converter(Tseitin).convert(exp)
+          State(cnf, Solver(DPLL).solve(exp), NQueens(parameter))
+        catch
+          case e: Exception =>
+            State(InvalidInput)
       case Convert(input) =>
-        val exp = reflect(input)
-        val cnf: CNF = Converter(Tseitin).convert(exp)
-        Solver(DPLL).solve(cnf)
-        State(input, exp, cnf)
+        try
+          val exp = reflect(input)
+          val cnf: CNF = Converter(Tseitin).convert(exp)
+          State(input, exp, cnf)
+        catch
+          case e: Exception =>
+            State(input, InvalidInput)
       case Import(file) =>
-        val s: Source = Source.fromFile(file)
-        val lines = s.getLines.toSeq
-        s.close()
-        val cnf: CNF = parse(lines).getOrElse(Symbol(Variable("NO CNF")))
-        val input = cnf.printAsDSL()
-        State(input, cnf)
+        try
+          val s: Source = Source.fromFile(file)
+          val lines = s.getLines.toSeq
+          s.close()
+          val cnf: CNF = parse(lines).getOrElse(Symbol(Variable("NO CNF")))
+          val input = cnf.printAsDSL()
+          State(input, cnf)
+        catch
+          case e: Exception =>
+            State(InvalidImport)
       case NextSolution =>
-        State(
-          model.input.get,
-          model.expression.get,
-          Solution(
-            model.solution.get.result,
-            model.solution.get.assignment.tail ::: List(model.solution.get.assignment.head)
+        try
+          State(
+            model.input.get,
+            model.expression.get,
+            Solution(
+              model.solution.get.result,
+              model.solution.get.assignment.tail ::: List(model.solution.get.assignment.head)
+            )
           )
-        )
+        catch
+          case e: Exception =>
+            State(EmptySolution)
