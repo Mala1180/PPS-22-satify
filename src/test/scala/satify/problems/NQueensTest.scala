@@ -5,6 +5,7 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.Result.*
 import satify.model.Solution
 import satify.model.problems.NQueens
+import satify.model.problems.NQueens.printNqueens
 import satify.update.solver.SolverType.DPLL
 import satify.update.solver.{Solver, SolverType}
 
@@ -21,7 +22,7 @@ class NQueensTest extends AnyFlatSpec with Matchers:
     val sol = Solver(DPLL).solve(NQueens(n).exp)
     sol should matchPattern { case Solution(SAT, _) => }
     println("NQueens 4x4")
-    // printNqueens(n, sol.assignment.get.parModel)
+    printNqueens(n, sol.assignment.head.parModel)
   }
 
 //  "NQueens 10x10" should "be SAT" in {

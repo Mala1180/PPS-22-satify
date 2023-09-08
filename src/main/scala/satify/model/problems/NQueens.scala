@@ -8,14 +8,9 @@ import satify.model.expression.Expression
 import satify.model.expression.Expression.{And, Symbol}
 
 import scala.annotation.tailrec
-import scala.swing.{BoxPanel, Component, FlowPanel}
+import scala.swing.{Component, FlowPanel}
 
 case class NQueens(n: Int) extends Problem:
-
-  override val constraints: Set[(String, Expression)] = Set()
-
-  override def toString: String = super.toString
-  override def getVisualization: Component = new FlowPanel()
 
   private val variables: Seq[Seq[Symbol]] =
     if n < 0 then throw new IllegalArgumentException("n must be positive")
@@ -24,42 +19,53 @@ case class NQueens(n: Int) extends Problem:
       yield for j <- 0 until n
       yield Symbol(s"x_${i}_$j")
 
-  // At least one on each row and column
-  private val rowColConstr =
-    for i <- 0 until n
-    yield And(
-      And(
+  private val atLeastOneQueen: (String, Expression) =
+    val atLeastConstraints =
+      for i <- 0 until n
+      yield And(
         atLeastOne(variables(i): _*),
         atLeastOne(variables.map(row => row(i)): _*)
-      ),
-      And(
+      )
+    ("At least one queen on each row and column", atLeastConstraints.reduceLeft(And(_, _)))
+
+  // At least one on each row and column
+  private val atMostOneQueen: (String, Expression) =
+    val atMostConstraints =
+      for i <- 0 until n
+      yield And(
         atMostOne(variables(i): _*),
         atMostOne(variables.map(row => row(i)): _*)
       )
-    )
+    ("At most one queen on each row and column", atMostConstraints.reduceLeft(And(_, _)))
 
   // Diagonal constraints
-  private val diagConstr =
+  private val diagConstr: (String, Expression) =
     if n < 0 then throw new IllegalArgumentException("n must be positive")
-    for i <- 0 until (n - 1)
-    yield
-      val s: Seq[(Symbol, Symbol, Symbol, Symbol)] =
-        for j <- 0 until (n - i)
-        yield (
-          variables(i + j)(j),
-          variables(n - 1 - (i + j))(j),
-          variables(i + j)(n - 1 - j),
-          variables(n - 1 - (i + j))(n - 1 - j)
-        )
-      And(
-        atMostOne(s.map((t, _, _, _) => t): _*),
+    val clauses =
+      for i <- 0 until (n - 1)
+      yield
+        val s: Seq[(Symbol, Symbol, Symbol, Symbol)] =
+          for j <- 0 until (n - i)
+          yield (
+            variables(i + j)(j),
+            variables(n - 1 - (i + j))(j),
+            variables(i + j)(n - 1 - j),
+            variables(n - 1 - (i + j))(n - 1 - j)
+          )
         And(
-          atMostOne(s.map((_, t, _, _) => t): _*),
-          And(atMostOne(s.map((_, _, t, _) => t): _*), atMostOne(s.map((_, _, _, t) => t): _*))
+          atMostOne(s.map((t, _, _, _) => t): _*),
+          And(
+            atMostOne(s.map((_, t, _, _) => t): _*),
+            And(atMostOne(s.map((_, _, t, _) => t): _*), atMostOne(s.map((_, _, _, t) => t): _*))
+          )
         )
-      )
+    ("At most one queen in each diagonal", clauses.reduceLeft(And(_, _)))
 
-  val exp: Expression = buildAnd(rowColConstr ++ diagConstr: _*)
+  override val constraints: Set[(String, Expression)] = Set(atLeastOneQueen, atMostOneQueen, diagConstr)
+  override val exp: Expression = constraints.map(_._2).reduceLeft(And(_, _))
+  override def toString: String =
+    ??? // variables.map(_.map(_ => if c.value.isDefined then if c.value.get then s" ♕ " else " · "
+  override def getVisualization: Component = new FlowPanel()
 
 object NQueens:
   def printNQueensFromDimacs(n: Int, pm: PartialModel): Unit =
@@ -78,11 +84,6 @@ object NQueens:
     val firstN = pm.take(n)
     if firstN.nonEmpty then
       println(
-        firstN.foldLeft("")((p, c) =>
-          p + (if c.value.isDefined then if c.value.get then s" ♕ " else " · "
-               else " ")
-        )
+        firstN.foldLeft("")((p, c) => p + (if c.value.isDefined then if c.value.get then s" ♕ " else " · " else " "))
       )
       printNqueens(n, pm.drop(n))
-
-def buildAnd(exp: Expression*): Expression = exp.reduceLeft(And(_, _))
