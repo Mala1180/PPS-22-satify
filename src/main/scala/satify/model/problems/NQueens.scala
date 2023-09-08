@@ -9,7 +9,8 @@ import satify.model.expression.Expression.{And, Symbol}
 
 import scala.annotation.tailrec
 
-case class NQueens(n: Int) extends Problem:
+case class   def toString: String
+NQueens(n: Int) extends Problem:
 
   private val variables: Seq[Seq[Symbol]] =
     if n < 0 then throw new IllegalArgumentException("n must be positive")

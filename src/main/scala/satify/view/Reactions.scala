@@ -1,8 +1,7 @@
 package satify.view
 
 import satify.Main.{Model, view}
-import satify.model.problems.ProblemChoice
-import satify.model.problems.ProblemChoice.*
+import satify.model.problems.{NQueens, Problem}
 import satify.update.Message.*
 import satify.update.Update.update
 import satify.view.ComponentUtils.createErrorDialog
@@ -43,18 +42,18 @@ object Reactions:
       val parameter: Int = parameterInputText.text.toInt
       if parameter < 0 then createErrorDialog("Parameter value is not valid").open()
       else
-        val p: ProblemChoice = problemComboBox.item match
-          case "N-Queens" => NQueens
-          case "Graph Coloring" => GraphColoring
-          case "Nurse Scheduling" => NurseScheduling
-        updateComponents(view(update(model, SolveProblem(p, parameter))))
+        val p: Problem = problemComboBox.item match
+          case "N-Queens" => NQueens(parameter)
+          case "Graph Coloring" => NQueens(parameter)
+          case "Nurse Scheduling" => NQueens(parameter)
+        updateComponents(view(update(model, SolveProblem(p))))
     else createErrorDialog("Problem selection or parameter are not valid").open()
 
   /** Reaction to the next solution button
     * @param model the current model to update to display next assignment
     */
   def nextSolutionReaction(model: Model): Unit =
-    updateComponents(view(update(model, NextSolution)))
+    updateComponents(view(update(model, NextSolution())))
 
   /** Reaction to the help button to show the help dialog */
   def helpReaction(): Unit =

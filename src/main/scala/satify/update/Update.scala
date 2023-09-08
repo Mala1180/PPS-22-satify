@@ -7,8 +7,7 @@ import satify.model.errors.Error
 import satify.model.errors.Error.*
 import satify.model.expression.Expression
 import satify.model.problems.NQueens.*
-import satify.model.problems.ProblemChoice.{GraphColoring, NurseScheduling, NQueens as NQueensChoice}
-import satify.model.problems.{NQueens, ProblemChoice}
+import satify.model.problems.NQueens
 import satify.update.Message.*
 import satify.update.converters.Converter
 import satify.update.converters.ConverterType.*
@@ -31,14 +30,15 @@ object Update:
         catch
           case _: Exception =>
             State(input, InvalidInput)
-      case SolveProblem(problem, parameter) =>
+      case SolveProblem(problem) =>
         try
-          val exp: Expression = problem match
-            case NQueensChoice => NQueens(parameter).exp
-            case GraphColoring => ??? // GraphColoring(parameter).exp
-            case NurseScheduling => ??? // NurseScheduling(parameter).exp
+//          val exp: Expression = problem match
+//            case NQueens => NQueens(parameter).exp
+//            case GraphColoring => ??? // GraphColoring(parameter).exp
+//            case NurseScheduling => ??? // NurseScheduling(parameter).exp
+          val exp: Expression = problem.exp
           val cnf: CNF = Converter(Tseitin).convert(exp)
-          State(cnf, Solver(DPLL).solve(exp), NQueens(parameter))
+          State(cnf, Solver(DPLL).solve(exp), problem)
         catch
           case e: Exception =>
             State(InvalidInput)
@@ -61,7 +61,7 @@ object Update:
         catch
           case e: Exception =>
             State(InvalidImport)
-      case NextSolution =>
+      case NextSolution() =>
         try
           State(
             model.input.get,

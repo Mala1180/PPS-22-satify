@@ -27,7 +27,7 @@ class NextSolutionUpdateTest extends AnyFlatSpec with Matchers:
   }*/
 
   "When NextSolution message is sent but no solution are present it" should "return an Error" in {
-    val newState = update(State(), NextSolution)
+    val newState = update(State(), NextSolution())
     import newState.*
     input.isEmpty
     && expression.isEmpty
