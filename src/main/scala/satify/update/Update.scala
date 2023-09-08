@@ -10,9 +10,11 @@ import satify.model.problems.NQueens.*
 import satify.model.problems.ProblemChoice.{GraphColoring, NurseScheduling, NQueens as NQueensChoice}
 import satify.model.problems.{NQueens, ProblemChoice}
 import satify.update.Message.*
-import satify.update.converters.CNFConverter
-import satify.update.converters.TseitinTransformation.tseitin
+import satify.update.converters.Converter
+import satify.update.converters.ConverterType.*
 import satify.update.parser.DimacsCNF.*
+import satify.update.solver.Solver
+import satify.update.solver.SolverType.*
 
 import scala.io.Source
 
@@ -24,10 +26,10 @@ object Update:
       case Solve(input) =>
         try
           val exp = reflect(input)
-          given CNFConverter = exp => tseitin(exp)
-          State(input, exp, Solver().solve(exp))
+          val sol: Solution = Solver(DPLL).solve(exp)
+          State(input, exp, sol)
         catch
-          case e: Exception =>
+          case _: Exception =>
             State(input, InvalidInput)
       case SolveProblem(problem, parameter) =>
         try
@@ -35,8 +37,7 @@ object Update:
             case NQueensChoice => NQueens(parameter).exp
             case GraphColoring => ??? // GraphColoring(parameter).exp
             case NurseScheduling => ??? // NurseScheduling(parameter).exp
-          given CNFConverter = exp => tseitin(exp)
-          val cnf: CNF = summon[CNFConverter].convert(exp)
+          val cnf: CNF = Converter(Tseitin).convert(exp)
           State(cnf, Solver().solve(exp), NQueens(parameter))
         catch
           case e: Exception =>
@@ -44,8 +45,7 @@ object Update:
       case Convert(input) =>
         try
           val exp = reflect(input)
-          given CNFConverter = exp => tseitin(exp)
-          val cnf: CNF = summon[CNFConverter].convert(exp)
+          val cnf: CNF = Converter(Tseitin).convert(exp)
           State(input, exp, cnf)
         catch
           case e: Exception =>

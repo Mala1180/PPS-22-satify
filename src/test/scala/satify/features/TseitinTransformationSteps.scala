@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers.*
 import satify.dsl.Reflection.reflect
 import satify.model.CNF
 import satify.model.expression.Expression
-import satify.update.converters.TseitinTransformation.tseitin
+import satify.update.converters.{Converter, ConverterType}
 
 class TseitinTransformationSteps extends ScalaDsl with EN:
 
@@ -13,7 +13,7 @@ class TseitinTransformationSteps extends ScalaDsl with EN:
   var cnf: CNF = _
 
   Given("the expression {string}")((strExp: String) => exp = reflect(strExp))
-  When("I convert it to CNF Form")(() => cnf = tseitin(exp))
+  When("I convert it to CNF Form")(() => cnf = Converter(ConverterType.Tseitin).convert(exp))
   Then("I should obtain the CNF {string}") { (expected: String) =>
     cnf.printAsDSL(true) shouldBe expected
   }

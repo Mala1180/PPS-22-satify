@@ -3,24 +3,14 @@ package satify.view
 import satify.Main.{Model, view}
 import satify.model.problems.ProblemChoice
 import satify.model.problems.ProblemChoice.*
-import satify.update.Message.{Convert, Import, NextSolution, Solve, SolveProblem}
+import satify.update.Message.*
 import satify.update.Update.update
-import satify.view.Constants.{cnfOutputDialogName, expTextAreaName, solOutputDialogName}
 import satify.view.ComponentUtils.createErrorDialog
-import satify.view.GUI.{
-  cnfOutputDialog,
-  fileChooser,
-  helpDialog,
-  inputScrollPane,
-  inputTextArea,
-  loadingLabel,
-  parameterInputText,
-  problemComboBox,
-  solutionOutputDialog
-}
+import satify.view.Constants.{cnfOutputDialogName, expTextAreaName, solOutputDialogName}
+import satify.view.GUI.*
 
 import java.io.File
-import scala.swing.{Component, Swing, TextArea}
+import scala.swing.{Component, Swing}
 
 object Reactions:
 
@@ -86,5 +76,5 @@ object Reactions:
           case n if n == expTextAreaName =>
             inputScrollPane.contents = c
       })
-      loadingLabel.visible = false
+      enableInteractions()
     }

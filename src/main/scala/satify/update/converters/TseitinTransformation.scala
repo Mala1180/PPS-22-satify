@@ -2,9 +2,10 @@ package satify.update.converters
 
 import satify.model.expression.Expression
 import satify.model.{CNF, Variable}
+import scala.annotation.tailrec
 
 /** Object containing the Tseitin transformation algorithm. */
-object TseitinTransformation:
+private[converters] object TseitinTransformation:
 
   import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
   import satify.model.Literal
@@ -29,24 +30,35 @@ object TseitinTransformation:
     * @param exp the expression where to substitute Symbols
     * @return the decomposed expression in subexpressions with Symbols correctly substituted.
     */
-  def symbolsReplace(exp: Expression): List[(Symbol, Expression)] =
+  def symbolsReplace(exp: Expression): List[(Symbol, Expression)] = {
+    @tailrec
     def replace(
         list: List[(Symbol, Expression)],
         subexp: Expression,
-        l: Symbol
+        l: Symbol,
+        acc: List[(Symbol, Expression)]
     ): List[(Symbol, Expression)] =
-      list match
-        case Nil => Nil
-        case (lit, e) :: t if contains(e, subexp) => (lit, replaceExp(e, subexp, l)) :: replace(t, subexp, l)
-        case (lit, e) :: t => (lit, e) :: replace(t, subexp, l)
+      list match {
+        case Nil => acc.reverse
+        case (lit, e) :: t if contains(e, subexp) =>
+          replace(t, subexp, l, (lit, replaceExp(e, subexp, l)) :: acc)
+        case (lit, e) :: t => replace(t, subexp, l, (lit, e) :: acc)
+      }
 
-    def symbolSelector(list: List[(Symbol, Expression)]): List[(Symbol, Expression)] = list match
-      case Nil => Nil
-      case (l, e) :: tail => (l, e) :: symbolSelector(replace(tail, e, l))
+    @tailrec
+    def symbolSelector(
+        list: List[(Symbol, Expression)],
+        acc: List[(Symbol, Expression)]
+    ): List[(Symbol, Expression)] =
+      list match {
+        case Nil => acc.reverse
+        case (l, e) :: tail => symbolSelector(replace(tail, e, l, Nil), (l, e) :: acc)
+      }
 
     val zipped = zipWithSymbol(exp)
-    if zipped.size == 1 then zipped
-    else symbolSelector(zipWithSymbol(exp).reverse)
+    if (zipped.size == 1) zipped
+    else symbolSelector(zipped.reverse, Nil)
+  }
 
   /** Transform the Symbol and the corresponding expression to CNF form
     * @param exp a Symbol and the corresponding expression

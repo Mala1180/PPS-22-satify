@@ -1,6 +1,5 @@
 package satify.dsl
 
-import satify.dsl.Reflection.getDSLKeywords
 import satify.model.expression.Expression
 import satify.model.expression.Expression.Symbol
 
