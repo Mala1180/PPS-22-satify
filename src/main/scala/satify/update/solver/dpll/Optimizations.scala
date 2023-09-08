@@ -15,7 +15,7 @@ object Optimizations:
     case Discordant
     case Missing
 
-  def uProp(cnf: CNF): Option[Constraint] =
+  def unitPropagation(cnf: CNF): Option[Constraint] =
 
     val f: (CNF, Option[Constraint]) => Option[Constraint] =
       (cnf, d) =>
@@ -27,13 +27,13 @@ object Optimizations:
     f(
       cnf,
       cnf match
-        case And(left, right) => f(left, f(right, uProp(right)))
+        case And(left, right) => f(left, f(right, unitPropagation(right)))
         case Or(_, _) => None
         case _ => None
     )
 
   @tailrec
-  def pureLit(dec: Decision): Option[Constraint] =
+  def pureLiteralIdentification(dec: Decision): Option[Constraint] =
 
     def find(name: String, cnf: CNF): PureLitSearch =
 
@@ -61,5 +61,5 @@ object Optimizations:
           case Variable(name, None) +: tail =>
             find(name, cnf) match
               case Concordant(c) => Some(c)
-              case _ => pureLit(Decision(tail, cnf))
-          case Variable(_, _) +: tail => pureLit(Decision(tail, cnf))
+              case _ => pureLiteralIdentification(Decision(tail, cnf))
+          case Variable(_, _) +: tail => pureLiteralIdentification(Decision(tail, cnf))

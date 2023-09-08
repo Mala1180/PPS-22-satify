@@ -7,7 +7,7 @@ import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
-import satify.update.solver.dpll.Optimizations.{pureLit, uProp}
+import satify.update.solver.dpll.Optimizations.{pureLiteralIdentification, unitPropagation}
 import satify.update.solver.dpll.utils.PartialModelUtils.*
 
 import java.util.concurrent.Executors
@@ -36,20 +36,20 @@ object Dpll:
       case Frame(d, done, x :: xs) :: tail =>
         if isUnsat(d.cnf) || isSat(d.cnf) then step(Frame(d, Nil, Nil) :: tail)
         else step(Frame(x, Nil, decide(x)) :: Frame(d, done, xs) :: tail)
-      case Nil => throw new Error("Shouldn't happen")
+      case Nil => throw new Error("Stack should never be empty")
 
     step(List(Frame(dec, Nil, decide(dec))))
 
   private def decide(d: Decision): List[Decision] = d match
     case Decision(_, cnf) =>
-      uProp(cnf) match
-        case Some(c) => uPropDec(d, c)
+      unitPropagation(cnf) match
+        case Some(c) => unitPropagationDecision(d, c)
         case _ =>
-          pureLit(d) match
-            case Some(c) => pureLitDec(d, c)
-            case _ => rndDec(d)
+          pureLiteralIdentification(d) match
+            case Some(c) => pureLiteralEliminationDecision(d, c)
+            case _ => randomDecision(d)
 
-  private def rndDec(d: Decision): List[Decision] = d match
+  private def randomDecision(d: Decision): List[Decision] = d match
     case Decision(pm, cnf) =>
       val fv = filterUnconstrVars(pm)
       if fv.nonEmpty then
@@ -62,7 +62,7 @@ object Dpll:
             )
       else Nil
 
-  private def uPropDec(d: Decision, c: Constraint): List[Decision] =
+  private def unitPropagationDecision(d: Decision, c: Constraint): List[Decision] =
     d match
       case Decision(pm, cnf) =>
         List(
@@ -70,7 +70,7 @@ object Dpll:
           Decision(updateParModel(pm, Constraint(c.name, !c.value)), Symbol(False))
         )
 
-  private def pureLitDec(d: Decision, c: Constraint): List[Decision] =
+  private def pureLiteralEliminationDecision(d: Decision, c: Constraint): List[Decision] =
     d match
       case Decision(pm, cnf) =>
         List(
