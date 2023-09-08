@@ -46,7 +46,7 @@ object Update:
     * @param input optional input to return if an exception is thrown. For example, if the input is invalid, return the input.
     * @return a state with the error and input if an exception is thrown, otherwise the state returned by f.
     */
-  private def safeUpdate(f: () => State)(error: Error)(input: Option[String] = None): State =
+  private def safeUpdate(f: () => State, error: Error, input: Option[String] = None): State =
     try f()
     catch
       case _: Exception =>
@@ -60,8 +60,8 @@ object Update:
     safeUpdate(() =>
       val exp = reflect(input)
       val sol: Solution = Solver(DPLL).solve(exp)
-      State(input, exp, sol)
-    )(InvalidInput)(Some(input))
+      State(input, exp, sol),
+      InvalidInput, Some(input))
 
   /** Update function to react to the SolveProblem message. This function will attempt to solve the problem and return a state.
     * @param problem problem to solve.
@@ -75,8 +75,8 @@ object Update:
         case GraphColoring => ??? // GraphColoring(parameter).exp
         case NurseScheduling => ??? // NurseScheduling(parameter).exp
       val cnf: CNF = Converter(Tseitin).convert(exp)
-      State(cnf, Solver(DPLL).solve(exp), NQueens(parameter))
-    )(InvalidInput)(None)
+      State(cnf, Solver(DPLL).solve(exp), NQueens(parameter)),
+      InvalidInput)
 
   /** Update function to react to the Convert message. This function will attempt to convert the input and return a state.
     * @param input input to convert.
@@ -86,8 +86,8 @@ object Update:
     safeUpdate(() =>
       val exp = reflect(input)
       val cnf: CNF = Converter(Tseitin).convert(exp)
-      State(input, exp, cnf)
-    )(InvalidInput)(Some(input))
+      State(input, exp, cnf),
+      InvalidInput, Some(input))
 
   /** Update function to react to the Import message. This function will attempt to import the file and return a state.
     * @param file file to import.
@@ -100,21 +100,29 @@ object Update:
       s.close()
       val cnf: CNF = parse(lines).getOrElse(Symbol(Variable("NO CNF")))
       val input = cnf.printAsDSL()
-      State(input, cnf)
-    )(InvalidImport)(None)
+      State(input, cnf),
+      InvalidImport)
 
   /** Update function to react to the NextSolution message. This function will attempt to find the next solution and return a state.
     * @param model current state.
     * @return a state with the input, expression, and solution if no exception is thrown, otherwise a state with the error.
     */
   private def nextSolutionUpdate(model: State): State =
-    safeUpdate(() =>
-      State(
-        model.input.get,
-        model.expression.get,
-        Solution(
-          model.solution.get.result,
-          model.solution.get.assignment.tail ::: List(model.solution.get.assignment.head)
-        )
-      )
-    )(EmptySolution)(None)
+    if model.problem.isDefined then
+      safeUpdate (() =>
+      State(Solution(
+        model.solution.get.result,
+        model.solution.get.assignment.tail ::: List(model.solution.get.assignment.head)
+      ), model.problem.get),
+      EmptySolution)
+    else
+      safeUpdate(() =>
+        State(
+          model.input.get,
+          model.expression.get,
+          Solution(
+            model.solution.get.result,
+            model.solution.get.assignment.tail ::: List(model.solution.get.assignment.head)
+          )
+        ),
+        EmptySolution)
