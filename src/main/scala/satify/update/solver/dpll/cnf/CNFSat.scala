@@ -1,10 +1,10 @@
-package satify.update.solver.dpll
+package satify.update.solver.dpll.cnf
 
 import satify.model.Bool.{False, True}
 import satify.model.CNF.{And, Not, Or, Symbol}
 import satify.model.{Bool, CNF, Variable}
 
-private object ConflictIdentification:
+object CNFSat:
 
   /** Check if CNF is UNSAT.
     * @param cnf to be checked.

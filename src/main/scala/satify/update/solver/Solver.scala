@@ -6,7 +6,7 @@ import satify.model.{Assignment, CNF, Solution}
 import satify.update.converters.ConverterType.*
 import satify.update.converters.{Converter, ConverterType}
 import satify.update.solver.SolverType.*
-import satify.update.solver.dpll.DpllUtils.extractSolutions
+import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
 
 /** Functional interface providing a method to solve the SAT problem.
   *

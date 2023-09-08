@@ -6,7 +6,7 @@ import satify.model.Bool.{False, True}
 import satify.model.CNF.*
 import satify.model.dpll.Constraint
 import satify.model.{CNF, Variable}
-import satify.update.solver.dpll.CNFSimplification.*
+import satify.update.solver.dpll.cnf.CNFSimplification.*
 
 class CNFSimplificationTest extends AnyFlatSpec with Matchers:
 

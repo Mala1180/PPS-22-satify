@@ -5,10 +5,10 @@ import satify.model.CNF.{And, Not, Or, Symbol}
 import satify.model.{CNF, Variable}
 import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.update.solver.dpll.CNFSimplification.simplifyCnf
-import satify.update.solver.dpll.ConflictIdentification.{isSat, isUnsat}
+import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
+import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.Optimizations.{pureLit, uProp}
-import satify.update.solver.dpll.PartialModelUtils.*
+import satify.update.solver.dpll.utils.PartialModelUtils.*
 
 import java.util.concurrent.Executors
 import scala.annotation.tailrec

@@ -10,8 +10,8 @@ import satify.model.dpll.OrderedSeq.*
 import satify.model.dpll.{Decision, DecisionTree}
 import satify.model.{CNF, Variable}
 import satify.update.solver.dpll.Dpll.*
-import satify.update.solver.dpll.DpllUtils.extractSolutions
-import satify.update.solver.dpll.PartialModelUtils.*
+import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
+import satify.update.solver.dpll.utils.PartialModelUtils.*
 
 class DpllTest extends AnyFlatSpec with Matchers:
 
