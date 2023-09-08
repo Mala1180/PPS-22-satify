@@ -1,10 +1,10 @@
-package satify.update.solver.dpll
+package satify.update.solver.dpll.cnf
 
 import satify.model.Bool.{False, True}
 import satify.model.CNF.{And, Not, Or, Symbol}
 import satify.model.{Bool, CNF, Variable}
 
-private object ConflictIdentification:
+object CNFSat:
 
   /** Check if CNF is UNSAT.
     * @param cnf to be checked.
@@ -21,4 +21,17 @@ private object ConflictIdentification:
     cnf match
       case Not(Symbol(_: Variable)) | Symbol(_: Variable) | Not(Symbol(False)) | Symbol(True) | Or(_, _) => false
       case Not(Symbol(True)) | Symbol(False) => true
-      case And(left, right) => f(left, f(right, isUnsat(left) | isUnsat(right)))
+      case And(left, right) =>
+        f(
+          left,
+          f(
+            right,
+            if isUnsat(left) then true
+            else if isUnsat(right) then true
+            else false
+          )
+        )
+
+  def isSat(cnf: CNF): Boolean = cnf match
+    case Symbol(True) => true
+    case _ => false
