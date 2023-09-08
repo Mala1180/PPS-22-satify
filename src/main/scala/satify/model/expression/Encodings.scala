@@ -4,7 +4,7 @@ import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CN
 import satify.model.Result.*
 import satify.model.expression.Expression.*
 import satify.model.expression.Utils.symbolProducer
-import satify.model.{CNF, Literal, Variable}
+import satify.model.{Assignment, CNF, Literal, Variable}
 import satify.update.Solver
 import satify.update.converters.CNFConverter
 import satify.update.converters.TseitinTransformation.{convertToCNF, tseitin}
@@ -65,7 +65,21 @@ object Encodings:
     * @param variables the input variables
     * @return the [[satify.model.Expression]] that encodes the constraint
     */
-  def atMostOne(variables: Symbol*): Expression = atMostK(1)(variables: _*)
+  def atMostOne(variables: Symbol*): Expression =
+    // removing duplicates
+    val vars = removeDuplicates(variables)
+    requireVariables(vars, 2, "atMostOne")
+    // for each combinations of 2 variables, generate a clause that says that at least one of them is false
+    val clauses = for
+      i <- vars.indices
+      j <- vars.indices
+      if i < j
+    yield Not(And(vars(i), vars(j)))
+    val c = clauses.reduceLeft(And(_, _))
+    val v: Symbol = encVarProducer()
+    println(v)
+    And(c, v)
+//    atMostK(1)(variables: _*)
 
   /** Encodes the constraint that at most k of the given variables are true. <br>
     * It is implemented using sequential encoding that produces 2nk + 2n − 3k + 1 clauses (O(n) complexity). <br>
@@ -120,12 +134,13 @@ object Encodings:
     // (¬xi ∨ ¬si−1,k) for 1 < i < n
     val clauses6: Seq[Expression] = for i <- 1 until n yield Or(Not(X(i)), Not(S(i - 1).last))
     val all: Seq[Expression] = clauses1 ++ clauses2 ++ clauses3 ++ clauses4 ++ clauses5 ++ clauses6
+    all.zipWithIndex.foreach((c, i) => println(i.toString + "   " + c.toString))
     val allClauses: Expression = all.reduceRight(And(_, _))
     allClauses
 
 @main def test1(): Unit =
   import Encodings.atMostK
-  val exp: Expression = atMostK(2)(Symbol("x1"), Symbol("x2"), Symbol("x3"), Symbol("x4"))
+  val exp: Expression = atMostK(3)(Symbol("x1"), Symbol("x2"), Symbol("x3"), Symbol("x4"))
   println(exp)
   println(exp.printAsDSL(false))
   val cnf = convertToCNF(exp)
@@ -133,5 +148,6 @@ object Encodings:
   val sol = Solver().dpll(cnf)
 //  given CNFConverter = exp => tseitin(exp)
 //  val sol = Solver().solve(exp)
-  println(sol)
   println(sol.assignment.length)
+  // filter from assignment of solve the variable that starts with ENC os TSTN
+  println(sol.assignment)
