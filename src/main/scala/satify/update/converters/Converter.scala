@@ -7,7 +7,7 @@ import satify.update.converters.TseitinTransformation.tseitin
 
 import scala.collection.mutable
 
-/** Functional interface for converting an expression into a CNF. */
+/** Interface for converting an expression into a CNF. */
 trait Converter:
 
   /** Converts an expression into a CNF.
