@@ -118,19 +118,19 @@ object Update:
     )
 
   /** Update function to react to the NextSolution message. This function will attempt to find the next solution and return a state.
-    * @param model current state.
+    * @param currentState current state.
     * @return a state with the input, expression, and solution if no exception is thrown, otherwise a state with the error.
     */
-  private def nextSolutionUpdate(model: State): State =
-    if model.problem.isDefined then
+  private def nextSolutionUpdate(currentState: State): State =
+    if currentState.problem.isDefined then
       safeUpdate(
         () =>
           State(
             Solution(
-              model.solution.get.result,
-              model.solution.get.assignment.tail ::: List(model.solution.get.assignment.head)
+              currentState.solution.get.result,
+              currentState.solution.get.assignment.tail ::: List(currentState.solution.get.assignment.head)
             ),
-            model.problem.get
+            currentState.problem.get
           ),
         EmptySolution
       )
@@ -138,11 +138,11 @@ object Update:
       safeUpdate(
         () =>
           State(
-            model.input.get,
-            model.expression.get,
+            currentState.input.get,
+            currentState.expression.get,
             Solution(
-              model.solution.get.result,
-              model.solution.get.assignment.tail ::: List(model.solution.get.assignment.head)
+              currentState.solution.get.result,
+              currentState.solution.get.assignment.tail ::: List(currentState.solution.get.assignment.head)
             )
           ),
         EmptySolution
