@@ -9,8 +9,8 @@ import scala.collection.immutable.{AbstractSeq, LinearSeq}
 
 object Optimizations:
 
-  import LitSearch.*
-  enum LitSearch:
+  import PureLitSearch.*
+  private enum PureLitSearch:
     case Concordant(c: Constraint)
     case Discordant
     case Missing
@@ -35,9 +35,9 @@ object Optimizations:
   @tailrec
   def pureLit(dec: Decision): Option[Constraint] =
 
-    def find(name: String, cnf: CNF): LitSearch =
+    def find(name: String, cnf: CNF): PureLitSearch =
 
-      val f: (String, CNF, CNF) => LitSearch = (n, left, right) =>
+      val f: (String, CNF, CNF) => PureLitSearch = (n, left, right) =>
         find(n, left) match
           case Concordant(cLeft) =>
             find(n, right) match
