@@ -2,14 +2,16 @@ package satify.view
 
 import satify.model.State
 import satify.view.Constants.*
+import satify.view.GUI.problemParameterPanel
 import satify.view.Reactions.nextSolutionReaction
 
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.URL
 import java.util.concurrent.Executors
 import javax.swing.ImageIcon
+import javax.swing.plaf.basic.ComboPopup
 import scala.swing.*
-import scala.swing.event.ButtonClicked
+import scala.swing.event.{ButtonClicked, SelectionChanged}
 
 object ComponentUtils:
 
@@ -52,7 +54,36 @@ object ComponentUtils:
     * @return the combo box
     */
   def createProblemComboBox(): ComboBox[String] =
-    new ComboBox(List("No selection", "N-Queens", "Graph Coloring", "Nurse Scheduling"))
+    new ComboBox(List("No selection", "N-Queens", "Graph Coloring", "Nurse Scheduling")):
+      listenTo(selection)
+      reactions += { case SelectionChanged(_) =>
+        println(s"Selected item: ${this.item}")
+        val parameters: Set[Component] = this.item match
+          case "N-Queens" => Set(createTextArea("nQueens", 20, 20))
+          case "Graph Coloring" =>
+            Set(createTextArea("nodes", 40, 40), createTextArea("edged", 40, 40), createTextArea("colors", 20, 20))
+          case "Nurse Scheduling" =>
+            Set(createTextArea("nurses", 20, 20), createTextArea("days", 20, 20), createTextArea("shifts", 20, 20))
+
+        problemParameterPanel.contents.clear()
+        problemParameterPanel.contents ++ parameters
+        problemParameterPanel.revalidate()
+        problemParameterPanel.repaint()
+      }
+
+  /** Creates a text area for the given parameter
+    * @param parameter the name of the parameter
+    * @param r rows of the text area
+    * @param c columns of the text area
+    * @return the text area
+    */
+  private def createTextArea(parameter: String, r: Int, c: Int): TextArea =
+    new TextArea:
+      name = parameter
+      text = ""
+      rows = r
+      columns = c
+      border = Swing.EmptyBorder(margin)
 
   /** Creates a button with the given text
     * @return the button

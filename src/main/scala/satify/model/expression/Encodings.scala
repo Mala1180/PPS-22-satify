@@ -82,9 +82,9 @@ object Encodings:
           if (combination.contains(variable)) variable // Include the variable as is in the AND expression.
           else Not(variable) // Negate the variable in the AND expression.
         )
-        And(andExpressions.reduceRight(Or(_,_)), Symbol("True")) // OR the AND expressions.
+        And(andExpressions.reduceRight(Or(_, _)), Symbol("True")) // OR the AND expressions.
       )
-      orExpressions.reduceRight(Or(_,_)) // OR all the OR expressions.
+      orExpressions.reduceRight(Or(_, _)) // OR all the OR expressions.
 
   /** Encodes the constraint that at least k of the given variables are true.
     * It is implemented using the pairwise encoding that produces O(n&#94;2) clauses.

@@ -36,10 +36,10 @@ object Reactions:
     * @param model the current model to update
     */
   def problemSolutionReaction(model: Model): Unit =
-    if !problemComboBox.item.equals("No selection") && !parameterInputText.text.equals("") && parameterInputText.text
+    if !problemComboBox.item.equals("No selection") && !nQueensInput.text.equals("") && nQueensInput.text
         .forall(_.isDigit)
     then
-      val parameter: Int = parameterInputText.text.toInt
+      val parameter: Int = nQueensInput.text.toInt
       if parameter < 0 then createErrorDialog("Parameter value is not valid").open()
       else
         val p: Problem = problemComboBox.item match

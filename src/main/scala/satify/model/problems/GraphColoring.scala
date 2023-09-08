@@ -6,11 +6,12 @@ import scala.swing.{Component, FlowPanel}
 
 case class GraphColoring(edges: List[(String, String)], nodes: List[String], colors: Int) extends Problem:
 
-  private val variables: Seq[Seq[Symbol]] = nodes.indices.map(i => (0 until colors).map(j => Symbol(s"v${i}_$j")))
+  val variables: Seq[Seq[Symbol]] =
+    for i <- nodes.indices yield for j <- 0 until colors yield Symbol(s"${nodes(i)}_c$j")
 
-  private val vertexHasExactlyOneColor: (String, Expression) =
+  private val nodeHasExactlyOneColor: (String, Expression) =
     val constraints = for i <- nodes.indices yield exactlyOne(variables(i): _*)
-    ("Each vertex has exactly one color", constraints.reduceLeft(And(_, _)))
+    ("Each node has exactly one color", constraints.reduceLeft(And(_, _)))
 
   private val linkedNodesHasDifferentColor: (String, Expression) =
     val constraints =
@@ -20,7 +21,7 @@ case class GraphColoring(edges: List[(String, String)], nodes: List[String], col
       yield Or(Not(variables(nodes.indexOf(i))(k)), Not(variables(nodes.indexOf(j))(k)))
     ("Each edge must have different colors in its vertices", constraints.reduceLeft(And(_, _)))
 
-  override val constraints: Set[(String, Expression)] = Set(vertexHasExactlyOneColor, linkedNodesHasDifferentColor)
+  override val constraints: Set[(String, Expression)] = Set(nodeHasExactlyOneColor, linkedNodesHasDifferentColor)
   override val exp: Expression = constraints.map(_._2).reduceLeft(And(_, _))
   override def getVisualization: Component = new FlowPanel()
   override def toString: String =
@@ -32,7 +33,8 @@ case class GraphColoring(edges: List[(String, String)], nodes: List[String], col
     sb.toString
 
 @main def test(): Unit =
-  val nodes = "node1" :: "node2" :: "node3" :: "node4" :: "node5" :: "node6" :: Nil
-  val edges = (nodes.head, nodes.last) :: (nodes.head, nodes(1)) :: (nodes.head, nodes(2)) :: Nil
-  val prob = GraphColoring(edges, nodes, 3)
+  val nodes = "node1" :: "node2" :: Nil
+  val edges = (nodes.head, nodes.last) :: Nil
+  val prob = GraphColoring(edges, nodes, 2)
   println(prob.exp.printAsDSL(false))
+  println(prob.variables.head)
