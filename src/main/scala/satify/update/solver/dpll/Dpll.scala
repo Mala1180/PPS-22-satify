@@ -40,7 +40,7 @@ object Dpll:
 
     step(List(Frame(dec, Nil, decide(dec))))
 
-  def decide(d: Decision): List[Decision] = d match
+  private def decide(d: Decision): List[Decision] = d match
     case Decision(_, cnf) =>
       uProp(cnf) match
         case Some(c) => uPropDec(d, c)
@@ -49,7 +49,7 @@ object Dpll:
             case Some(c) => pureLitDec(d, c)
             case _ => rndDec(d)
 
-  def rndDec(d: Decision): List[Decision] = d match
+  private def rndDec(d: Decision): List[Decision] = d match
     case Decision(pm, cnf) =>
       val fv = filterUnconstrVars(pm)
       if fv.nonEmpty then
@@ -62,7 +62,7 @@ object Dpll:
             )
       else Nil
 
-  def uPropDec(d: Decision, c: Constraint): List[Decision] =
+  private def uPropDec(d: Decision, c: Constraint): List[Decision] =
     d match
       case Decision(pm, cnf) =>
         List(
@@ -70,7 +70,7 @@ object Dpll:
           Decision(updateParModel(pm, Constraint(c.name, !c.value)), Symbol(False))
         )
 
-  def pureLitDec(d: Decision, c: Constraint): List[Decision] =
+  private def pureLitDec(d: Decision, c: Constraint): List[Decision] =
     d match
       case Decision(pm, cnf) =>
         List(

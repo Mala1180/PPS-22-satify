@@ -25,16 +25,16 @@ private[solver] object DPLL:
   private val ec = ExecutionContext.fromExecutor(executorService)
 
   /** DPLL (Davis-Putnam-Logemann-Loveland) algorithm.
-    * @param dec Decision to apply
-    * @return built DecisionTree from dec
-    */
+ * @param dec Decision to apply
+ * @return built DecisionTree from dec
+ */
   def dpll(dec: Decision): DecisionTree =
 
     /** Recursively call dpll applying the given constraint.
-      * @param dec the previous Decision
-      * @param constr Constraint to apply
-      * @return updated DecisionTree with the new Decision
-      */
+ * @param dec the previous Decision
+ * @param constr Constraint to apply
+ * @return updated DecisionTree with the new Decision
+ */
     def decide(dec: Decision, constr: Constraint): Future[DecisionTree] =
       dec match
         case Decision(parModel, cnf) =>
@@ -44,9 +44,9 @@ private[solver] object DPLL:
           }(ec)
 
     /** Branch on a unit literal.
-      * @param dec the previous Decision
-      * @return an Option containing a Branch if there's a unit literal, None otherwise.
-      */
+ * @param dec the previous Decision
+ * @return an Option containing a Branch if there's a unit literal, None otherwise.
+ */
     def unitPropDecision(dec: Decision): Option[Branch] = dec match
       case Decision(parModel, cnf) =>
         unitPropagation(cnf) match
@@ -61,9 +61,9 @@ private[solver] object DPLL:
           case None => None
 
     /** Branch on the pure literal branch first.
-      * @param dec the previous Decision.
-      * @return an Option containing a Branch if there's a pure literal, None otherwise.
-      */
+ * @param dec the previous Decision.
+ * @return an Option containing a Branch if there's a pure literal, None otherwise.
+ */
     def pureLiteralEliminationDecision(dec: Decision): Option[Branch] =
       pureLiteralElimination(dec) match
         case Some(c @ Constraint(name, value)) =>
@@ -77,10 +77,10 @@ private[solver] object DPLL:
         case None => None
 
     /** Branch the decision tree by choosing a random variable among the available ones and by
-      * applying a random constraint.
-      * @param dec the previous Decision
-      * @return updated DecisionTree with the random Decision.
-      */
+ * applying a random constraint.
+ * @param dec the previous Decision
+ * @return updated DecisionTree with the random Decision.
+ */
     def randomDecision(dec: Decision): DecisionTree =
       dec match
         case Decision(_, cnf) =>
@@ -108,9 +108,9 @@ private[solver] object DPLL:
                 case None => randomDecision(dec)
 
   /** Apply unit propagation.
-    * @param cnf where to search for a unit literal
-    * @return an Option containing a Constraint if a unit literal is present, None otherwise.
-    */
+ * @param cnf where to search for a unit literal
+ * @return an Option containing a Constraint if a unit literal is present, None otherwise.
+ */
   private def unitPropagation(cnf: CNF): Option[Constraint] =
     val f: (CNF, Option[Constraint]) => Option[Constraint] = (cnf, d) =>
       cnf match
@@ -127,9 +127,9 @@ private[solver] object DPLL:
     )
 
   /** Eliminate a pure literal.
-    * @param dec previous Decision
-    * @return an Option containing a Constraint if a pure literal is present, None otherwise.
-    */
+ * @param dec previous Decision
+ * @return an Option containing a Constraint if a pure literal is present, None otherwise.
+ */
   @tailrec
   private def pureLiteralElimination(dec: Decision): Option[Constraint] =
 
@@ -159,4 +159,4 @@ private[solver] object DPLL:
       for pmSet <- extractSolutionsFromDT(dpll(Decision(extractModelFromCnf(cnf), cnf)))
       yield explodeSolutions(pmSet)
     s.flatten
-*/
+ */
