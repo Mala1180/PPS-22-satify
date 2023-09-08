@@ -26,3 +26,7 @@ private object ConflictIdentification:
         else if isUnsat(right) then true
         else false
       ))
+      
+  def isSat(cnf: CNF): Boolean = cnf match
+    case Symbol(True) => true
+    case _ => false
