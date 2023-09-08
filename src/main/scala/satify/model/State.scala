@@ -81,6 +81,14 @@ object State:
   def apply(cnf: CNF, sol: Solution, problem: Problem): State =
     StateImpl(None, None, Some(cnf), Some(sol), Some(problem))
 
+  /** Creates a new application state with an input problem and its solution.
+    * @param sol     the [[Solution]]
+    * @param problem the [[Problem]] selected
+    * @return a new [[State]] instance.
+    */
+  def apply(sol: Solution, problem: Problem): State =
+    StateImpl(None, None, None, Some(sol), Some(problem))
+
   private case class StateImpl(
       override val input: Option[String] = None,
       override val expression: Option[Expression] = None,
