@@ -1,6 +1,6 @@
 package satify.model.problems
 
-import satify.model.Variable
+import satify.model.cnf.Variable
 import satify.model.dpll.OrderedSeq.{given_Ordering_Variable, seq}
 import satify.model.dpll.PartialModel
 import satify.model.expression.Encodings.{atLeastOne, atMostOne}

@@ -2,9 +2,9 @@ package satify.update.solver.dpll
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.CNF.{And, Not, Or, Symbol}
+import satify.model.cnf.CNF.{And, Not, Or, Symbol}
+import satify.model.cnf.{CNF, Variable}
 import satify.model.dpll.Constraint
-import satify.model.{CNF, Variable}
 import satify.update.solver.dpll.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.ConflictIdentification.isUnsat
 

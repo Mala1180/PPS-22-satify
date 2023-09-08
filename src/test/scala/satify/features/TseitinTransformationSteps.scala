@@ -3,7 +3,7 @@ package satify.features
 import io.cucumber.scala.{EN, ScalaDsl}
 import org.scalatest.matchers.should.Matchers.*
 import satify.dsl.Reflection.reflect
-import satify.model.CNF
+import satify.model.cnf.CNF
 import satify.model.expression.Expression
 import satify.update.converters.{Converter, ConverterType}
 

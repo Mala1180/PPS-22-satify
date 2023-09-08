@@ -1,14 +1,14 @@
 package satify.update.solver.dpll
 
 import satify.model
-import satify.model.Bool.False
-import satify.model.CNF.*
+import satify.model.cnf.Bool.False
+import satify.model.cnf.CNF.*
 import satify.model.dpll.DecisionTree.*
 import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
-import satify.model.{CNF, Variable}
 import CNFSimplification.*
 import ConflictIdentification.isUnsat
 import PartialModelUtils.*
+import satify.model.cnf.{CNF, Variable}
 
 import scala.annotation.tailrec
 import scala.language.postfixOps

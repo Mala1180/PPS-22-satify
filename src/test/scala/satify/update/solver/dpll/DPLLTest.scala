@@ -3,12 +3,12 @@ package satify.update.solver.dpll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.should
-import satify.model.Bool.{False, True}
-import satify.model.CNF.*
+import satify.model.cnf.Bool.{False, True}
+import satify.model.cnf.CNF.*
+import satify.model.cnf.{CNF, Variable}
 import satify.model.dpll.DecisionTree.*
 import satify.model.dpll.OrderedSeq.*
 import satify.model.dpll.{Decision, DecisionTree}
-import satify.model.{CNF, Variable}
 import satify.update.solver.dpll.DPLL.*
 import satify.update.solver.dpll.PartialModelUtils.*
 

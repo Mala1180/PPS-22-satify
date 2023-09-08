@@ -1,11 +1,11 @@
 package satify.update.solver.dpll
 
-import satify.model.Bool.True
-import satify.model.CNF.*
+import satify.model.cnf.Bool.True
+import satify.model.cnf.CNF.*
+import satify.model.cnf.{CNF, Variable}
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.dpll.OrderedSeq.*
 import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
-import satify.model.{CNF, Variable}
 
 private object PartialModelUtils:
 

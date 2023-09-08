@@ -1,5 +1,6 @@
 package satify.model
 
+import satify.model.cnf.Variable
 import satify.model.dpll.PartialModel
 
 /** Sum Type representing the two possible results of SAT problem. */

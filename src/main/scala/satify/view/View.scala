@@ -1,8 +1,9 @@
 package satify.view
 
+import satify.model.cnf.CNF
 import satify.model.errors.Error
 import satify.model.errors.Error.*
-import satify.model.{CNF, Solution, State}
+import satify.model.{Solution, State}
 import satify.view.ComponentUtils.{createErrorDialog, createInputTextArea, createNextSection, createOutputTextArea}
 import satify.view.Constants.{cnfOutputDialogName, solOutputDialogName}
 
