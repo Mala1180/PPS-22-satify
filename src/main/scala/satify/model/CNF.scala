@@ -3,8 +3,6 @@ package satify.model
 /** An enum representing a Conjunction Normal Form (CNF) expression. */
 import satify.model.CNF.*
 
-case class Variable(name: String, value: Option[Boolean] = None)
-
 enum Bool:
   case True
   case False
@@ -12,7 +10,7 @@ enum Bool:
 type Literal = Symbol | Not
 
 enum CNF:
-  case Symbol(value: Variable | Bool)
+  case Symbol(value: String | Bool)
   case And(left: Or | Literal, right: And | Or | Literal)
   case Or(left: Or | Literal, right: Or | Literal)
   case Not(branch: Symbol)
@@ -21,10 +19,7 @@ object CNF:
   extension (cnf: CNF)
     def printAsDSL(flat: Boolean = false): String =
       cnf match
-        case Symbol(value) =>
-          value match
-            case Variable(name, v) => name
-            case v => v.toString
+        case Symbol(name) => name.toString
         case And(left, right) =>
           if flat then s"${left.printAsDSL(flat)} and ${right.printAsDSL(flat)}"
           else s"${left.printAsDSL(flat)} and\n${right.printAsDSL(flat)}"

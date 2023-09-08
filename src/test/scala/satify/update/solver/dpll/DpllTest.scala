@@ -7,8 +7,8 @@ import satify.model.Bool.{False, True}
 import satify.model.CNF.*
 import satify.model.dpll.DecisionTree.*
 import satify.model.dpll.OrderedSeq.*
-import satify.model.dpll.{Decision, DecisionTree}
-import satify.model.{CNF, Variable}
+import satify.model.dpll.{Decision, DecisionTree, Variable}
+import satify.model.CNF
 import satify.update.solver.dpll.Dpll.*
 import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
 import satify.update.solver.dpll.utils.PartialModelUtils.*
@@ -17,67 +17,67 @@ class DpllTest extends AnyFlatSpec with Matchers:
 
   import satify.model.dpll.OrderedSeq.given_Ordering_Variable
 
-  val varA: Variable = Variable("a")
-  val varB: Variable = Variable("b")
-  val varC: Variable = Variable("c")
+  val sA: Symbol = Symbol("a")
+  val sB: Symbol = Symbol("b")
+  val sC: Symbol = Symbol("c")
 
-  val cnf: CNF = And(Symbol(varA), Symbol(varB))
+  val cnf: CNF = And(sA, sB)
 
   "DPLL" should "be SAT" in {
     extractSolutions(cnf).size should be > 0
-    extractSolutions(And(Symbol(varA), Or(Symbol(varB), Symbol(varC)))).size should be > 0
+    extractSolutions(And(sA, Or(sB, sC))).size should be > 0
   }
 
   "DPLL" should "be UNSAT" in {
-    extractSolutions(And(Symbol(varA), Not(Symbol(varA)))) shouldBe Set.empty
-    extractSolutions(And(Symbol(varA), And(Or(Symbol(varB), Symbol(varC)), Not(Symbol(varA))))) shouldBe Set.empty
+    extractSolutions(And(sA, Not(sA))) shouldBe Set.empty
+    extractSolutions(And(sA, And(Or(sB, sC), Not(sA)))) shouldBe Set.empty
     extractSolutions(
       And(
-        Or(Symbol(varA), Symbol(varB)),
+        Or(sA, sB),
         And(
-          Or(Not(Symbol(varA)), Symbol(varB)),
-          And(Or(Symbol(varA), Not(Symbol(varB))), Or(Not(Symbol(varA)), Not(Symbol(varB))))
+          Or(Not(sA), sB),
+          And(Or(sA, Not(sB)), Or(Not(sA), Not(sB)))
         )
       )
     ) shouldBe Set.empty
   }
 
   "DPLL" should "do unit propagation when there's only a Variable inside a clause and it is in positive form" in {
-    val cnf: CNF = And(Symbol(varA), And(Symbol(varB), Or(Symbol(varB), Symbol(varC))))
+    val cnf: CNF = And(sA, And(sB, Or(sB, sC)))
     dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
       Branch(
-        Decision(seq(varA, varB, varC), cnf),
+        Decision(seq(Variable("a"), Variable("b"), Variable("c")), cnf),
         Branch(
-          Decision(seq(Variable("a", Some(true)), varB, varC), And(Symbol(varB), Or(Symbol(varB), Symbol(varC)))),
-          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(true)), varC), Symbol(True))),
-          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(false)), varC), Symbol(False)))
+          Decision(seq(Variable("a", Some(true)), Variable("b"), Variable("c")), And(sB, Or(sB, sC))),
+          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c")), Symbol(True))),
+          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c")), Symbol(False)))
         ),
-        Leaf(Decision(seq(Variable("a", Some(false)), varB, varC), Symbol(False)))
+        Leaf(Decision(seq(Variable("a", Some(false)), Variable("b"), Variable("c")), Symbol(False)))
       )
   }
 
   "DPLL" should "do unit propagation when there's only a Variable inside a clause and it is in negative form" in {
-    val cnf: CNF = And(Not(Symbol(varA)), Or(Symbol(varA), Symbol(varB)))
+    val cnf: CNF = And(Not(sA), Or(sA, sB))
     dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
       Branch(
-        Decision(seq(varA, varB), cnf),
+        Decision(seq(Variable("a"), Variable("b")), cnf),
         Branch(
-          Decision(seq(Variable("a", Some(false)), varB), Symbol(varB)),
+          Decision(seq(Variable("a", Some(false)), Variable("b")), sB),
           Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(true))), Symbol(True))),
           Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(false))), Symbol(False)))
         ),
-        Leaf(Decision(seq(Variable("a", Some(true)), varB), Symbol(False)))
+        Leaf(Decision(seq(Variable("a", Some(true)), Variable("b")), Symbol(False)))
       )
   }
 
   "DPLL" should "do pure literals elimination when the Literal appears only in negative form" in {
-    val cnf: CNF = And(Or(Not(Symbol(varA)), Not(Symbol(varB))), Or(Not(Symbol(varA)), Symbol(varB)))
+    val cnf: CNF = And(Or(Not(sA), Not(sB)), Or(Not(sA), sB))
     dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
       Branch(
-        Decision(seq(varA, varB), cnf),
-        Leaf(Decision(seq(Variable("a", Some(false)), varB), Symbol(True))),
+        Decision(seq(Variable("a"), Variable("b")), cnf),
+        Leaf(Decision(seq(Variable("a", Some(false)), Variable("b")), Symbol(True))),
         Branch(
-          Decision(seq(Variable("a", Some(true)), varB), And(Not(Symbol(varB)), Symbol(varB))),
+          Decision(seq(Variable("a", Some(true)), Variable("b")), And(Not(sB), sB)),
           Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(false))), Symbol(False))),
           Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(true))), Symbol(False)))
         )
@@ -87,17 +87,17 @@ class DpllTest extends AnyFlatSpec with Matchers:
   "DPLL" should "do pure literals elimination when the Literal appears only in positive form" in {
     val cnf: CNF =
       And(
-        Or(Or(Symbol(varA), Not(Symbol(varB))), Symbol(varB)),
-        And(Or(Symbol(varB), Symbol(varC)), Or(Symbol(varA), Not(Symbol(varB))))
+        Or(Or(sA, Not(sB)), sB),
+        And(Or(sB, sC), Or(sA, Not(sB)))
       )
     dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
       Branch(
-        Decision(seq(varA, varB, varC), cnf),
+        Decision(seq(Variable("a"), Variable("b"), Variable("c")), cnf),
         Branch(
-          Decision(seq(Variable("a", Some(true)), varB, varC), Or(Symbol(varB), Symbol(varC))),
-          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(true)), varC), Symbol(True))),
+          Decision(seq(Variable("a", Some(true)), Variable("b"), Variable("c")), Or(sB, sC)),
+          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c")), Symbol(True))),
           Branch(
-            Decision(seq(Variable("a", Some(true)), Variable("b", Some(false)), varC), Symbol(varC)),
+            Decision(seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c")), sC),
             Leaf(
               Decision(
                 seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true))),
@@ -114,11 +114,11 @@ class DpllTest extends AnyFlatSpec with Matchers:
         ),
         Branch(
           Decision(
-            seq(Variable("a", Some(false)), varB, varC),
-            And(Or(Not(Symbol(varB)), Symbol(varB)), And(Or(Symbol(varB), Symbol(varC)), Not(Symbol(varB))))
+            seq(Variable("a", Some(false)), Variable("b"), Variable("c")),
+            And(Or(Not(sB), sB), And(Or(sB, sC), Not(sB)))
           ),
           Branch(
-            Decision(seq(Variable("a", Some(false)), Variable("b", Some(false)), varC), Symbol(varC)),
+            Decision(seq(Variable("a", Some(false)), Variable("b", Some(false)), Variable("c")), sC),
             Leaf(
               Decision(
                 seq(Variable("a", Some(false)), Variable("b", Some(false)), Variable("c", Some(true))),
@@ -132,7 +132,7 @@ class DpllTest extends AnyFlatSpec with Matchers:
               )
             )
           ),
-          Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(true)), varC), Symbol(False)))
+          Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(true)), Variable("c")), Symbol(False)))
         )
       )
   }

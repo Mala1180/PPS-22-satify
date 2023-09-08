@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.CNF.{Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
-import satify.model.{CNF, Variable}
+import satify.model.CNF
 import satify.update.converters.TseitinTransformation.transform
 
 class TseitinTransformationTest extends AnyFlatSpec with Matchers:
@@ -24,8 +24,8 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val exp: (Symbol, Expression) = (Symbol("TSTN0"), Not(Symbol("b")))
     val result: List[CNF] = transform(exp)
     val expected: List[CNF] = List(
-      CNFOr(CNFNot(CNFSymbol(Variable("b"))), CNFNot(CNFSymbol(Variable("TSTN0")))),
-      CNFOr(CNFSymbol(Variable("b")), CNFSymbol(Variable("TSTN0")))
+      CNFOr(CNFNot(CNFSymbol("b")), CNFNot(CNFSymbol("TSTN0"))),
+      CNFOr(CNFSymbol("b"), CNFSymbol("TSTN0"))
     )
     result shouldBe expected
   }
@@ -35,11 +35,11 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val result: List[CNF] = transform(exp)
     val expected: List[CNF] = List(
       CNFOr(
-        CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFNot(CNFSymbol(Variable("b")))),
-        CNFSymbol(Variable("TSTN0"))
+        CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("b"))),
+        CNFSymbol("TSTN0")
       ),
-      CNFOr(CNFSymbol(Variable("a")), CNFNot(CNFSymbol(Variable("TSTN0")))),
-      CNFOr(CNFSymbol(Variable("b")), CNFNot(CNFSymbol(Variable("TSTN0"))))
+      CNFOr(CNFSymbol("a"), CNFNot(CNFSymbol("TSTN0"))),
+      CNFOr(CNFSymbol("b"), CNFNot(CNFSymbol("TSTN0")))
     )
     result shouldBe expected
   }
@@ -49,11 +49,11 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val result: List[CNF] = transform(exp)
     val expected: List[CNF] = List(
       CNFOr(
-        CNFOr(CNFSymbol(Variable("a")), CNFNot(CNFSymbol(Variable("b")))),
-        CNFSymbol(Variable("TSTN0"))
+        CNFOr(CNFSymbol("a"), CNFNot(CNFSymbol("b"))),
+        CNFSymbol("TSTN0")
       ),
-      CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFNot(CNFSymbol(Variable("TSTN0")))),
-      CNFOr(CNFSymbol(Variable("b")), CNFNot(CNFSymbol(Variable("TSTN0"))))
+      CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("TSTN0"))),
+      CNFOr(CNFSymbol("b"), CNFNot(CNFSymbol("TSTN0")))
     )
     result shouldBe expected
   }
@@ -63,11 +63,11 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val result: List[CNF] = transform(exp)
     val expected: List[CNF] = List(
       CNFOr(
-        CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFSymbol(Variable("b"))),
-        CNFSymbol(Variable("TSTN0"))
+        CNFOr(CNFNot(CNFSymbol("a")), CNFSymbol("b")),
+        CNFSymbol("TSTN0")
       ),
-      CNFOr(CNFSymbol(Variable("a")), CNFNot(CNFSymbol(Variable("TSTN0")))),
-      CNFOr(CNFNot(CNFSymbol(Variable("b"))), CNFNot(CNFSymbol(Variable("TSTN0"))))
+      CNFOr(CNFSymbol("a"), CNFNot(CNFSymbol("TSTN0"))),
+      CNFOr(CNFNot(CNFSymbol("b")), CNFNot(CNFSymbol("TSTN0")))
     )
     result shouldBe expected
   }
@@ -76,9 +76,9 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val exp: (Symbol, Expression) = (Symbol("TSTN0"), And(Not(Symbol("a")), Not(Symbol("b"))))
     val result: List[CNF] = transform(exp)
     val expected: List[CNF] = List(
-      CNFOr(CNFOr(CNFSymbol(Variable("a")), CNFSymbol(Variable("b"))), CNFSymbol(Variable("TSTN0"))),
-      CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFNot(CNFSymbol(Variable("TSTN0")))),
-      CNFOr(CNFNot(CNFSymbol(Variable("b"))), CNFNot(CNFSymbol(Variable("TSTN0"))))
+      CNFOr(CNFOr(CNFSymbol("a"), CNFSymbol("b")), CNFSymbol("TSTN0")),
+      CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("TSTN0"))),
+      CNFOr(CNFNot(CNFSymbol("b")), CNFNot(CNFSymbol("TSTN0")))
     )
     result shouldBe expected
   }
@@ -88,11 +88,11 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val result: List[CNF] = transform(exp)
     val expected: List[CNF] = List(
       CNFOr(
-        CNFOr(CNFSymbol(Variable("a")), CNFSymbol(Variable("b"))),
-        CNFNot(CNFSymbol(Variable("TSTN0")))
+        CNFOr(CNFSymbol("a"), CNFSymbol("b")),
+        CNFNot(CNFSymbol("TSTN0"))
       ),
-      CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFSymbol(Variable("TSTN0"))),
-      CNFOr(CNFNot(CNFSymbol(Variable("b"))), CNFSymbol(Variable("TSTN0")))
+      CNFOr(CNFNot(CNFSymbol("a")), CNFSymbol("TSTN0")),
+      CNFOr(CNFNot(CNFSymbol("b")), CNFSymbol("TSTN0"))
     )
     result shouldBe expected
   }
@@ -102,11 +102,11 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val result: List[CNF] = transform(exp)
     val expected: List[CNF] = List(
       CNFOr(
-        CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFSymbol(Variable("b"))),
-        CNFNot(CNFSymbol(Variable("TSTN0")))
+        CNFOr(CNFNot(CNFSymbol("a")), CNFSymbol("b")),
+        CNFNot(CNFSymbol("TSTN0"))
       ),
-      CNFOr(CNFSymbol(Variable("a")), CNFSymbol(Variable("TSTN0"))),
-      CNFOr(CNFNot(CNFSymbol(Variable("b"))), CNFSymbol(Variable("TSTN0")))
+      CNFOr(CNFSymbol("a"), CNFSymbol("TSTN0")),
+      CNFOr(CNFNot(CNFSymbol("b")), CNFSymbol("TSTN0"))
     )
     result shouldBe expected
   }
@@ -116,11 +116,11 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val result: List[CNF] = transform(exp)
     val expected: List[CNF] = List(
       CNFOr(
-        CNFOr(CNFSymbol(Variable("a")), CNFNot(CNFSymbol(Variable("b")))),
-        CNFNot(CNFSymbol(Variable("TSTN0")))
+        CNFOr(CNFSymbol("a"), CNFNot(CNFSymbol("b"))),
+        CNFNot(CNFSymbol("TSTN0"))
       ),
-      CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFSymbol(Variable("TSTN0"))),
-      CNFOr(CNFSymbol(Variable("b")), CNFSymbol(Variable("TSTN0")))
+      CNFOr(CNFNot(CNFSymbol("a")), CNFSymbol("TSTN0")),
+      CNFOr(CNFSymbol("b"), CNFSymbol("TSTN0"))
     )
     result shouldBe expected
   }
@@ -130,11 +130,11 @@ class TseitinTransformationTest extends AnyFlatSpec with Matchers:
     val result: List[CNF] = transform(exp)
     val expected: List[CNF] = List(
       CNFOr(
-        CNFOr(CNFNot(CNFSymbol(Variable("a"))), CNFNot(CNFSymbol(Variable("b")))),
-        CNFNot(CNFSymbol(Variable("TSTN0")))
+        CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("b"))),
+        CNFNot(CNFSymbol("TSTN0"))
       ),
-      CNFOr(CNFSymbol(Variable("a")), CNFSymbol(Variable("TSTN0"))),
-      CNFOr(CNFSymbol(Variable("b")), CNFSymbol(Variable("TSTN0")))
+      CNFOr(CNFSymbol("a"), CNFSymbol("TSTN0")),
+      CNFOr(CNFSymbol("b"), CNFSymbol("TSTN0"))
     )
     result shouldBe expected
   }

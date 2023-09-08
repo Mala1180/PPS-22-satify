@@ -2,7 +2,7 @@ package satify.update.parser
 
 import satify.model.CNF.*
 import satify.model.expression.Expression
-import satify.model.{CNF, Literal, Variable}
+import satify.model.{CNF, Literal}
 
 import scala.io.Source
 
@@ -65,8 +65,8 @@ object DimacsCNF extends Dimacs[CNF]:
         .map(s =>
           val flatIdx = math.abs(s.toInt)
           val literal: Literal = s.toInt match
-            case _ if s.toInt > 0 => Symbol(Variable(f"x_$flatIdx"))
-            case _ => Not(Symbol(Variable(f"x_$flatIdx")))
+            case _ if s.toInt > 0 => Symbol(f"x_$flatIdx")
+            case _ => Not(Symbol(f"x_$flatIdx"))
           literal
         )
         .toSeq
@@ -84,8 +84,8 @@ object DimacsCNF extends Dimacs[CNF]:
       case None => buildOrCNF(literals.tail, Some(literals.head))
       case Some(prev) =>
         literals match
-          case head +: Seq() => Or(prev, head)
-          case head +: tail => buildOrCNF(tail, Some(Or(prev, head)))
+          case head +: Seq() => Or(head, prev)
+          case head +: tail => buildOrCNF(tail, Some(Or(head, prev)))
 
   private def buildAndCNF(literals: Seq[Or | Literal], p: Option[And | Or | Literal] = None): And | Or | Literal =
     p match

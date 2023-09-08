@@ -1,7 +1,7 @@
 package satify.update.converters
 
 import satify.model.expression.Expression
-import satify.model.{CNF, Variable}
+import satify.model.CNF
 import scala.annotation.tailrec
 
 /** Object containing the Tseitin transformation algorithm. */
@@ -30,7 +30,7 @@ private[converters] object TseitinTransformation:
     if subexpressions.size == 1 then subexpressions.head
     else
       var concatenated = subexpressions
-      concatenated = concatenated.prepended(CNFSymbol(Variable("TSTN0")))
+      concatenated = concatenated.prepended(CNFSymbol("TSTN0"))
       concatenated.reduceRight((s1, s2) =>
         CNFAnd(s1.asInstanceOf[CNFOr | Literal], s2.asInstanceOf[CNFAnd | CNFOr | Literal])
       )
@@ -78,15 +78,15 @@ private[converters] object TseitinTransformation:
     */
   def transform(exp: (Expression.Symbol, Expression)): List[CNF] =
     def expr(exp: Expression): Literal = exp match
-      case Symbol(v) => CNFSymbol(Variable(v, None))
-      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v, None)))
+      case Symbol(v) => CNFSymbol(v)
+      case Not(Symbol(v)) => CNFNot(CNFSymbol(v))
       case _ => throw new IllegalArgumentException("Expression is not a literal")
     def symbol(exp: Expression): CNFSymbol = exp match
-      case Symbol(v) => CNFSymbol(Variable(v, None))
+      case Symbol(v) => CNFSymbol(v)
       case _ => throw new IllegalArgumentException("Expression is not a literal")
     def not(exp: Expression): Literal = exp match
-      case Not(Symbol(v)) => CNFSymbol(Variable(v, None))
-      case Symbol(v) => CNFNot(CNFSymbol(Variable(v, None)))
+      case Not(Symbol(v)) => CNFSymbol(v)
+      case Symbol(v) => CNFNot(CNFSymbol(v))
       case _ =>
         throw new IllegalArgumentException("Expression is not a literal")
 
@@ -133,18 +133,18 @@ private[converters] object TseitinTransformation:
   def convertToCNF(expression: Expression): CNF =
     def convL(exp: Expression): CNFOr | Literal = exp match
       case Or(l, r) => CNFOr(convL(l), convL(r))
-      case Symbol(v) => CNFSymbol(Variable(v))
-      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
+      case Symbol(v) => CNFSymbol(v)
+      case Not(Symbol(v)) => CNFNot(CNFSymbol(v))
       case _ => throw new Exception("Expression is not convertible to CNF form")
     def convR(exp: Expression): CNFAnd | CNFOr | Literal = exp match
       case And(l, r) => CNFAnd(convL(l), convR(r))
       case Or(l, r) => CNFOr(convL(l), convL(r))
-      case Symbol(v) => CNFSymbol(Variable(v))
-      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
+      case Symbol(v) => CNFSymbol(v)
+      case Not(Symbol(v)) => CNFNot(CNFSymbol(v))
       case _ => throw new Exception("Expression is not convertible to CNF form")
     expression match
-      case Symbol(v) => CNFSymbol(Variable(v))
-      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
+      case Symbol(v) => CNFSymbol(v)
+      case Not(Symbol(v)) => CNFNot(CNFSymbol(v))
       case And(l, r) => CNFAnd(convL(l), convR(r))
       case Or(l, r) => CNFOr(convL(l), convL(r))
       case _ => throw new Exception("Expression is not convertible to CNF form")
