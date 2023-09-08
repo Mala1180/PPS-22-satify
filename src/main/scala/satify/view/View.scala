@@ -56,6 +56,9 @@ object View:
     var errorDialog: Dialog = null
     error match
       case InvalidInput => errorDialog = createErrorDialog("Invalid input")
-      case Unknown => errorDialog = createErrorDialog("Unknown error")
+      case InvalidImport =>
+        errorDialog = createErrorDialog("Import error, select a txt file containing a valid DIMACS CNF")
+      case EmptySolution => errorDialog = createErrorDialog("Empty solution, no next assignment to show")
+      case Unknown => errorDialog = createErrorDialog("Unknown error occurred")
     errorDialog.open()
     Set(createInputTextArea(input))
