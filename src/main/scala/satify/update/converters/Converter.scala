@@ -5,7 +5,9 @@ import satify.model.expression.Expression
 import satify.update.converters.ConverterType.*
 import satify.update.converters.TseitinTransformation.tseitin
 
-/** Functional interface for converting an expression into a CNF. */
+import scala.collection.mutable
+
+/** Interface for converting an expression into a CNF. */
 trait Converter:
 
   /** Converts an expression into a CNF.
@@ -13,6 +15,15 @@ trait Converter:
     * @return the CNF expression.
     */
   def convert(exp: Expression): CNF
+
+  /** Memoize a function f: Expression => CNF to avoid recomputing the same CNF for the same expression.
+    * @param f the function to memoize.
+    * @return
+    */
+  protected def memoize(f: Expression => CNF): Expression => CNF =
+    new mutable.HashMap[Expression, CNF]() {
+      override def apply(key: Expression): CNF = getOrElseUpdate(key, f(key))
+    }
 
 /** Factory for [[Converter]] instances. */
 object Converter:
@@ -26,4 +37,5 @@ object Converter:
 
   /** Private implementation of [[Converter]] */
   private case class TseitinConverter() extends Converter:
-    override def convert(exp: Expression): CNF = tseitin(exp)
+
+    override def convert(exp: Expression): CNF = memoize(tseitin)(exp)
