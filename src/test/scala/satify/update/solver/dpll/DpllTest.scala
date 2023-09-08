@@ -46,10 +46,7 @@ class DpllTest extends AnyFlatSpec with Matchers:
     val cnf: CNF = And(Symbol(varA), And(Symbol(varB), Or(Symbol(varB), Symbol(varC))))
     dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
       Branch(
-        Decision(
-          seq(varA, varB, varC),
-          And(Symbol(varA), And(Symbol(varB), Or(Symbol(varB), Symbol(varC))))
-        ),
+        Decision(seq(varA, varB, varC), cnf),
         Branch(
           Decision(seq(Variable("a", Some(true)), varB, varC), And(Symbol(varB), Or(Symbol(varB), Symbol(varC)))),
           Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(true)), varC), Symbol(True))),
@@ -63,10 +60,7 @@ class DpllTest extends AnyFlatSpec with Matchers:
     val cnf: CNF = And(Not(Symbol(varA)), Or(Symbol(varA), Symbol(varB)))
     dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
       Branch(
-        Decision(
-          seq(varA, varB),
-          And(Not(Symbol(varA)), Or(Symbol(varA), Symbol(varB)))
-        ),
+        Decision(seq(varA, varB), cnf),
         Branch(
           Decision(seq(Variable("a", Some(false)), varB), Symbol(varB)),
           Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(true))), Symbol(True))),
@@ -76,20 +70,69 @@ class DpllTest extends AnyFlatSpec with Matchers:
       )
   }
 
-  /*"DPLL" should "do pure Literals elimination" in {
+  "DPLL" should "do pure literals elimination when the Literal appears only in negative form" in {
     val cnf: CNF = And(Or(Not(Symbol(varA)), Not(Symbol(varB))), Or(Not(Symbol(varA)), Symbol(varB)))
-    println(dpll(Decision(extractModelFromCnf(cnf), cnf)))
     dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
       Branch(
-        Decision(
-          seq(varA, varB),
-          And(Or(Not(Symbol(varA)), Not(Symbol(varB))), Or(Not(Symbol(varA)), Symbol(varB)))
+        Decision(seq(varA, varB), cnf),
+        Leaf(Decision(seq(Variable("a", Some(false)), varB), Symbol(True))),
+        Branch(
+          Decision(seq(Variable("a", Some(true)), varB), And(Not(Symbol(varB)), Symbol(varB))),
+          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(false))), Symbol(False))),
+          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(true))), Symbol(False)))
+        )
+      )
+  }
+
+  "DPLL" should "do pure literals elimination when the Literal appears only in positive form" in {
+    val cnf: CNF =
+      And(
+        Or(Or(Symbol(varA), Not(Symbol(varB))), Symbol(varB)),
+        And(Or(Symbol(varB), Symbol(varC)), Or(Symbol(varA), Not(Symbol(varB))))
+      )
+    dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
+      Branch(
+        Decision(seq(varA, varB, varC), cnf),
+        Branch(
+          Decision(seq(Variable("a", Some(true)), varB, varC), Or(Symbol(varB), Symbol(varC))),
+          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(true)), varC), Symbol(True))),
+          Branch(
+            Decision(seq(Variable("a", Some(true)), Variable("b", Some(false)), varC), Symbol(varC)),
+            Leaf(
+              Decision(
+                seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true))),
+                Symbol(True)
+              )
+            ),
+            Leaf(
+              Decision(
+                seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(false))),
+                Symbol(False)
+              )
+            )
+          )
         ),
         Branch(
-          Decision(seq(Variable("a", Some(false)), varB), Symbol(varB)),
-          Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(true))), Symbol(True))),
-          Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(false))), Symbol(False)))
-        ),
-        Leaf(Decision(seq(Variable("a", Some(true)), varB), Symbol(False)))
+          Decision(
+            seq(Variable("a", Some(false)), varB, varC),
+            And(Or(Not(Symbol(varB)), Symbol(varB)), And(Or(Symbol(varB), Symbol(varC)), Not(Symbol(varB))))
+          ),
+          Branch(
+            Decision(seq(Variable("a", Some(false)), Variable("b", Some(false)), varC), Symbol(varC)),
+            Leaf(
+              Decision(
+                seq(Variable("a", Some(false)), Variable("b", Some(false)), Variable("c", Some(true))),
+                Symbol(True)
+              )
+            ),
+            Leaf(
+              Decision(
+                seq(Variable("a", Some(false)), Variable("b", Some(false)), Variable("c", Some(false))),
+                Symbol(False)
+              )
+            )
+          ),
+          Leaf(Decision(seq(Variable("a", Some(false)), Variable("b", Some(true)), varC), Symbol(False)))
+        )
       )
-  }*/
+  }
