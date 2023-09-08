@@ -6,8 +6,6 @@ import satify.model.expression.Expression.*
 
 class SatEncodingsWrongUseTest extends AnyFlatSpec:
 
-  import satify.dsl.DSL.{*, given}
-
   """ atLeastOne("A")  """ should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
       atLeastOne(Symbol("A"))
@@ -40,6 +38,6 @@ class SatEncodingsWrongUseTest extends AnyFlatSpec:
 
   """ atMostK(4)("A", "B", "C") """ should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
-      atMostK(4)("A", "B", "C")
+      atMostK(4)(Symbol("A"), Symbol("B"), Symbol("C"))
     }
   }
