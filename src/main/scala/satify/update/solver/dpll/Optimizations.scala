@@ -11,9 +11,7 @@ object Optimizations:
 
   import PureLitSearch.*
 
-  /**
-   * Enum to search pure literals inside a CNF expression.
-   */
+  /** Enum to search pure literals inside a CNF expression. */
   private enum PureLitSearch:
     case Concordant(c: Constraint)
     case Discordant
