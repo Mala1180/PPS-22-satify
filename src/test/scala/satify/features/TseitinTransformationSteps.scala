@@ -7,13 +7,17 @@ import satify.model.CNF
 import satify.model.expression.Expression
 import satify.update.converters.{Converter, ConverterType}
 
-class TseitinTransformationSteps extends ScalaDsl with EN:
+object TseitinTransformationSteps extends ScalaDsl with EN:
 
-  var exp: Expression = _
-  var cnf: CNF = _
+  import ReflectionSteps.*
+  var cnf: Option[CNF] = None
 
-  Given("the expression {string}")((strExp: String) => exp = reflect(strExp))
-  When("I convert it to CNF Form")(() => cnf = Converter(ConverterType.Tseitin).convert(exp))
+  And("converted to CNF Form")(() =>
+    try cnf = Some(Converter(ConverterType.Tseitin).convert(expression.get))
+    catch case e: IllegalArgumentException => error = IllegalArgumentException(e.getMessage)
+  )
+  And("no CNF has to be generated")(() => cnf.isEmpty shouldBe true)
+
   Then("I should obtain the CNF {string}") { (expected: String) =>
-    cnf.printAsDSL(true) shouldBe expected
+    cnf.get.printAsDSL(true) shouldBe expected
   }
