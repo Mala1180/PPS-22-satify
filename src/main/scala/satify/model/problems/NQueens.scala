@@ -8,9 +8,14 @@ import satify.model.expression.Expression
 import satify.model.expression.Expression.{And, Symbol}
 
 import scala.annotation.tailrec
+import scala.swing.{BoxPanel, Component, FlowPanel}
 
-case class   def toString: String
-NQueens(n: Int) extends Problem:
+case class NQueens(n: Int) extends Problem:
+
+  override val constraints: Set[(String, Expression)] = Set()
+
+  override def toString: String = super.toString
+  override def getVisualization: Component = new FlowPanel()
 
   private val variables: Seq[Seq[Symbol]] =
     if n < 0 then throw new IllegalArgumentException("n must be positive")
