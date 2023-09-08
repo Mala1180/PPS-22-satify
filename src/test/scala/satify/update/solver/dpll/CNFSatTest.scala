@@ -9,7 +9,7 @@ import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.cnf.CNFSat.isUnsat
 
 class CNFSatTest extends AnyFlatSpec with Matchers:
-  
+
   val sA: Symbol = Symbol("a")
   val sB: Symbol = Symbol("b")
   val sC: Symbol = Symbol("c")

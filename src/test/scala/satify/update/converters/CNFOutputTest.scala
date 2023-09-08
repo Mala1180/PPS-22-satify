@@ -3,7 +3,7 @@ package satify.update.converters
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.CNF.*
-import satify.model.{CNF}
+import satify.model.CNF
 
 class CNFOutputTest extends AnyFlatSpec with Matchers:
 

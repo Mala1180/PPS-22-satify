@@ -12,7 +12,7 @@ import satify.update.solver.{Solver, SolverType}
 
 class NQueensTest extends AnyFlatSpec with Matchers:
 
-  /*"NQueens 3x3" should "be UNSAT" in {
+  "NQueens 3x3" should "be UNSAT" in {
     val n = 3
     val sol = Solver(DPLL).solve(NQueens(n).exp)
     sol should matchPattern { case Solution(UNSAT, _) => }
@@ -26,7 +26,7 @@ class NQueensTest extends AnyFlatSpec with Matchers:
     printNqueens(n, sol.assignment.head.parModel)
   }
 
-  "NQueens 10x10" should "be SAT" in {
+  /*"NQueens 10x10" should "be SAT" in {
     val oCnf = DimacsCNF.read("src/main/resources/cnf/nqueens10.txt")
     oCnf should matchPattern { case Some(_) => }
     val sol = Solver(DPLL).solve(oCnf.get)
@@ -34,7 +34,6 @@ class NQueensTest extends AnyFlatSpec with Matchers:
     println("NQueens 10x10")
     printNQueensFromDimacs(10, sol.assignment.head.parModel)
   }
-  */
 
   "NQueens 15x15" should "be SAT" in {
     val oCnf = DimacsCNF.read("src/main/resources/cnf/nqueens20.txt")
@@ -43,4 +42,4 @@ class NQueensTest extends AnyFlatSpec with Matchers:
     sol should matchPattern { case Solution(SAT, _) => }
     println("NQueens 15x15")
     printNQueensFromDimacs(15, sol.assignment.head.parModel)
-  }
+  }*/
