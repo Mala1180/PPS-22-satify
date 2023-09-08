@@ -10,12 +10,20 @@ import scala.collection.immutable.{AbstractSeq, LinearSeq}
 object Optimizations:
 
   import PureLitSearch.*
+
+  /**
+   * Enum to search pure literals inside a CNF expression.
+   */
   private enum PureLitSearch:
     case Concordant(c: Constraint)
     case Discordant
     case Missing
 
-  def unitPropagation(cnf: CNF): Option[Constraint] =
+  /** Identify unit literals.
+    * @param cnf expression in Conjunctive Normal Form.
+    * @return eventual Constraint to be applied to a unit literal.
+    */
+  def unitLiteralIdentification(cnf: CNF): Option[Constraint] =
 
     val f: (CNF, Option[Constraint]) => Option[Constraint] =
       (cnf, d) =>
@@ -27,11 +35,15 @@ object Optimizations:
     f(
       cnf,
       cnf match
-        case And(left, right) => f(left, f(right, unitPropagation(right)))
+        case And(left, right) => f(left, f(right, unitLiteralIdentification(right)))
         case Or(_, _) => None
         case _ => None
     )
 
+  /** Identify pure literals
+    * @param dec previous decision
+    * @return eventual Constraint to be applied to a pure literal.
+    */
   @tailrec
   def pureLiteralIdentification(dec: Decision): Option[Constraint] =
 
