@@ -1,6 +1,7 @@
 package satify.update.parser
 
 import satify.model.CNF.*
+import satify.model.expression.Expression
 import satify.model.{CNF, Literal, Variable}
 
 import scala.io.Source
@@ -41,7 +42,7 @@ object DimacsCNF extends Dimacs[CNF]:
       case Nil => None
       case Header(_, _) +: clauses =>
         val or = clauses.map(parseOr)
-        if or.forall(o => o.isDefined) then buildAndCNF(or.map(o => o.get))
+        if or.nonEmpty then Some(buildAndCNF(or))
         else None
       case _ => None
 
@@ -56,19 +57,12 @@ object DimacsCNF extends Dimacs[CNF]:
   }
    */
 
-  private def parseOr(clause: String): Option[Or | Literal] =
+  private def parseOr(clause: String): Or | Literal =
     buildOrCNF(
       clause
         .split(" ")
         .dropRight(1)
         .map(s =>
-          /*val flatIdx = s.toInt
-          val row: Int = math.abs(flatIdx) / n
-          val col: Int =  math.abs(flatIdx) % n
-          flatIdx match
-            case _ if flatIdx >= 0 =>  Symbol(Variable(f"x_${row}_$col"))
-            case _ => Not(Symbol(Variable(f"x_${row}_$col")))
-           */
           val flatIdx = math.abs(s.toInt)
           val literal: Literal = s.toInt match
             case _ if s.toInt > 0 => Symbol(Variable(f"x_$flatIdx"))
@@ -78,18 +72,25 @@ object DimacsCNF extends Dimacs[CNF]:
         .toSeq
     )
 
-  private def buildOrCNF(cnf: Seq[Literal]): Option[Or | Literal] = cnf match
-    case Nil => None
-    case head +: Nil => Some(head)
-    case head +: tail =>
-      buildOrCNF(tail) match
-        case Some(value) => Some(Or(head, value))
-        case None => Some(head)
+  /*private def buildOrCNF(cnf: Seq[Literal]): Or | Literal =
+    cnf.tail.foldLeft[Or | Literal](cnf.head)((p, c) => Or(c, p))
 
-  private def buildAndCNF(cnf: Seq[Or | Literal]): Option[And | Or | Literal] = cnf match
-    case Nil => None
-    case head +: Nil => Some(head)
-    case head +: tail =>
-      buildAndCNF(tail) match
-        case Some(value) => Some(And(head, value))
-        case None => Some(head)
+  private def buildAndCNF(cnf: Seq[Or | Literal]): And | Or | Literal =
+    cnf.tail.foldLeft[And | Or | Literal](cnf.head)((p, c) => And(c, p))
+   */
+
+  private def buildOrCNF(literals: Seq[Literal], p: Option[Or | Literal] = None): Or | Literal =
+    p match
+      case None => buildOrCNF(literals.tail, Some(literals.head))
+      case Some(prev) =>
+        literals match
+          case head +: Seq() => Or(prev, head)
+          case head +: tail => buildOrCNF(tail, Some(Or(prev, head)))
+
+  private def buildAndCNF(literals: Seq[Or | Literal], p: Option[And | Or | Literal] = None): And | Or | Literal =
+    p match
+      case None => buildAndCNF(literals.tail, Some(literals.head))
+      case Some(prev) =>
+        literals match
+          case head +: Seq() => And(head, prev)
+          case head +: tail => buildAndCNF(tail, Some(And(head, prev)))

@@ -53,7 +53,7 @@ case class NQueens(n: Int) extends Problem:
         )
       )
 
-  val exp: Expression = buildAnd(rowColConstr ++ diagConstr: _*)
+  val exp: Expression = (rowColConstr ++ diagConstr).reduceLeft(And(_, _))
 
 object NQueens:
   def printNQueensFromDimacs(n: Int, pm: PartialModel): Unit =
@@ -78,5 +78,3 @@ object NQueens:
         )
       )
       printNqueens(n, pm.drop(n))
-
-def buildAnd(exp: Expression*): Expression = exp.reduceLeft(And(_, _))
