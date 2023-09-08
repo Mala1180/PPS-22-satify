@@ -52,18 +52,39 @@ object Encodings:
     requireVariables(vars, 2, "exactlyOne")
     And(atLeastOne(vars: _*), atMostOne(vars: _*))
 
-  /** Encodes the constraint that at most k of the given variables are true.
-    * It is implemented using sequential encoding that produces 2nk + n − 3k − 1 clauses (O(n) complexity).
-    * @param k         the number of variables that must be true
-    * @param variables the input variables
-    * @return the [[satify.model.Expression]] that encodes the constraint
-    */
+//  /** Encodes the constraint that at most k of the given variables are true.
+//    * It is implemented using sequential encoding that produces 2nk + n − 3k − 1 clauses (O(n) complexity).
+//    * @param k         the number of variables that must be true
+//    * @param variables the input variables
+//    * @return the [[satify.model.Expression]] that encodes the constraint
+//    */
+//  def atMostK(k: Int)(variables: Symbol*): Expression =
+//    val vars: Seq[Symbol] = removeDuplicates(variables)
+//    requireVariables(vars, 2, "atMostK")
+//    require(k <= vars.length, "atMostK encoding requires k <= n")
+//
+//    Symbol("TODO")
+
   def atMostK(k: Int)(variables: Symbol*): Expression =
     val vars: Seq[Symbol] = removeDuplicates(variables)
-    requireVariables(vars, 2, "atMostK")
     require(k <= vars.length, "atMostK encoding requires k <= n")
-
-    Symbol("TODO")
+    require(k >= 0, "atMostK encoding requires k >= 0")
+    requireVariables(vars, 2, "atMostK")
+    if (k >= vars.length)
+      // If k is greater than or equal to the number of variables,
+      // return a constant representing True, since all variables can be true.
+      Symbol("True")
+    else
+      // Generate combinations of variables and create OR expressions for each combination.
+      val combinations = vars.combinations(k)
+      val orExpressions = combinations.map(combination =>
+        val andExpressions = vars.map(variable =>
+          if (combination.contains(variable)) variable // Include the variable as is in the AND expression.
+          else Not(variable) // Negate the variable in the AND expression.
+        )
+        And(andExpressions.reduceRight(Or(_,_)), Symbol("True")) // OR the AND expressions.
+      )
+      orExpressions.reduceRight(Or(_,_)) // OR all the OR expressions.
 
   /** Encodes the constraint that at least k of the given variables are true.
     * It is implemented using the pairwise encoding that produces O(n&#94;2) clauses.

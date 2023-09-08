@@ -10,7 +10,7 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     for n <- 0 until nurses
     yield for d <- 0 until days
     yield for s <- 0 until shifts
-    yield Symbol(s"n$n-d$d-s$s")
+    yield Symbol(s"n${n}_d${d}_s$s")
 
   private val oneNursePerShift: (String, Expression) =
     val constraints =
@@ -61,3 +61,4 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
 @main def testNurse(): Unit =
   val prob = NurseScheduling(3, 2, 2)
   println(prob.s())
+  println(prob.exp.printAsDSL(false))
