@@ -41,7 +41,7 @@ object DpllOneSol:
     case Branch(d, left, right) =>
       resume(left) match
         case (ldt, SAT) if ldt != left => (Branch(d, ldt, right), SAT)
-        //case (ldt, SAT) if ldt == left =>
+        // case (ldt, SAT) if ldt == left =>
         case (ldt, lres) =>
           resume(right) match
             case (rdt, rres) => (Branch(d, ldt, rdt), if lres == SAT then SAT else rres)

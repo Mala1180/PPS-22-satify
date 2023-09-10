@@ -9,6 +9,6 @@ object DpllUtils:
 
   def extractSolutions(cnf: CNF): Set[PartialModel] =
     val s =
-      for pmSet <- extractSolutionsFromDT(dpll(Decision(extractModelFromCnf(cnf), cnf)))
+      for pmSet <- extractSolutionsFromDT(dpll(cnf))
       yield explodeSolutions(pmSet)
     s.flatten

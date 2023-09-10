@@ -5,9 +5,11 @@ import satify.model.CNF.{And, Not, Or, Symbol}
 import satify.model.{CNF, Variable}
 import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
+import satify.update.solver.dpll.Dpll.dpll
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.Optimizations.{pureLiteralIdentification, unitLiteralIdentification}
+import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
 import satify.update.solver.dpll.utils.PartialModelUtils.*
 
 import java.util.concurrent.Executors
@@ -17,6 +19,8 @@ import scala.util.Random
 object Dpll:
 
   private val rnd = Random(64)
+
+  def dpll(cnf: CNF): DecisionTree = dpll(Decision(extractModelFromCnf(cnf), cnf))
 
   /** Main DPLL algorithm.
     * @param dec first decision
@@ -39,6 +43,7 @@ object Dpll:
             step(Frame(tn, ret :: td, tt) :: more)
       case Frame(d, done, x :: xs) :: tail =>
         if isUnsat(d.cnf) || isSat(d.cnf) then step(Frame(d, Nil, Nil) :: tail)
+        // else if isSat(d.cnf) then step(List(Frame(d, Nil, Nil)))
         else step(Frame(x, Nil, decide(x)) :: Frame(d, done, xs) :: tail)
       case Nil => throw new Error("Stack should never be empty")
 

@@ -58,7 +58,7 @@ class DpllOneSolTest extends AnyFlatSpec with Matchers:
     val secDt = resume(firstDt match
       case (dt, _) => dt
     )
-    
+
     secDt shouldBe (Branch(
       Decision(
         seq(varA, varB, varC),
