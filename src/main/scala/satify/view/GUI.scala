@@ -75,7 +75,9 @@ object GUI:
         contents += new FlowPanel():
           contents += new Label("Parameter:"):
             font = headingFont
-        contents += problemParameterPanel
+        contents += new BoxPanel(Orientation.Vertical):
+          contents += problemParameterPanel
+            font = headingFont
         contents += new FlowPanel():
           contents += solveProblemButton
         contents += new FlowPanel():

@@ -2,7 +2,7 @@ package satify.view
 
 import satify.model.State
 import satify.view.Constants.*
-import satify.view.GUI.problemParameterPanel
+import satify.view.GUI.{problemComboBox, problemParameterPanel}
 import satify.view.Reactions.nextSolutionReaction
 
 import java.awt.{Color, Font, Image, Toolkit}
@@ -56,34 +56,45 @@ object ComponentUtils:
   def createProblemComboBox(): ComboBox[String] =
     new ComboBox(List("No selection", "N-Queens", "Graph Coloring", "Nurse Scheduling")):
       listenTo(selection)
+      maximumSize = new Dimension(200, 30)
       reactions += { case SelectionChanged(_) =>
-        println(s"Selected item: ${this.item}")
         val parameters: Set[Component] = this.item match
-          case "N-Queens" => Set(createTextArea("nQueens", 20, 20))
+          case "N-Queens" => Set(createLabelledTextArea("N. queens","nQueens", 1, 10))
           case "Graph Coloring" =>
-            Set(createTextArea("nodes", 40, 40), createTextArea("edged", 40, 40), createTextArea("colors", 20, 20))
+            Set(
+              createLabelledTextArea("N. nodes","nodes", 1, 10),
+              createLabelledTextArea("N. edge","edged", 1, 10),
+              createLabelledTextArea("N. colors","colors", 1, 10)
+            )
           case "Nurse Scheduling" =>
-            Set(createTextArea("nurses", 20, 20), createTextArea("days", 20, 20), createTextArea("shifts", 20, 20))
-
+            Set(
+              createLabelledTextArea("N. nurses","nurses", 1, 10),
+              createLabelledTextArea("Days","days", 1, 10),
+              createLabelledTextArea("Shifts","shifts", 1, 10)
+            )
+          case _ => Set()
         problemParameterPanel.contents.clear()
-        problemParameterPanel.contents ++ parameters
+        problemParameterPanel.contents.appendAll(parameters)
         problemParameterPanel.revalidate()
-        problemParameterPanel.repaint()
       }
 
-  /** Creates a text area for the given parameter
+  /** Creates a text area with a label, name, rows and columns
+    * @param label the text of the label
     * @param parameter the name of the parameter
     * @param r rows of the text area
     * @param c columns of the text area
     * @return the text area
     */
-  private def createTextArea(parameter: String, r: Int, c: Int): TextArea =
-    new TextArea:
-      name = parameter
-      text = ""
-      rows = r
-      columns = c
-      border = Swing.EmptyBorder(margin)
+  def createLabelledTextArea(label: String, parameter: String, r: Int, c: Int): BoxPanel =
+    new BoxPanel(Orientation.Vertical):
+      contents += createLabel(label, 15)
+      contents += new TextArea:
+        name = parameter
+        text = ""
+        rows = r
+        columns = c
+        maximumSize = new Dimension(200, 30)
+        border = Swing.EmptyBorder(margin)
 
   /** Creates a button with the given text
     * @return the button
