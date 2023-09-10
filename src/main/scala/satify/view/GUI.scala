@@ -16,7 +16,6 @@ object GUI:
     border = Swing.EmptyBorder(margin)
 
   val problemParameterPanel: FlowPanel = new FlowPanel()
-  val nQueensInput: TextField = createParameterInputText()
   val inputScrollPane = new ScrollPane(createInputTextArea())
   val problemComboBox: ComboBox[String] = createProblemComboBox()
 
@@ -77,7 +76,7 @@ object GUI:
             font = headingFont
         contents += new BoxPanel(Orientation.Vertical):
           contents += problemParameterPanel
-            font = headingFont
+          font = headingFont
         contents += new FlowPanel():
           contents += solveProblemButton
         contents += new FlowPanel():

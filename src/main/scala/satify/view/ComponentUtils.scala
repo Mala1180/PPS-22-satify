@@ -11,7 +11,7 @@ import java.util.concurrent.Executors
 import javax.swing.ImageIcon
 import javax.swing.plaf.basic.ComboPopup
 import scala.swing.*
-import scala.swing.event.{ButtonClicked, SelectionChanged}
+import scala.swing.event.{ButtonClicked, FocusGained, SelectionChanged}
 
 object ComponentUtils:
 
@@ -59,18 +59,18 @@ object ComponentUtils:
       maximumSize = new Dimension(200, 30)
       reactions += { case SelectionChanged(_) =>
         val parameters: Set[Component] = this.item match
-          case "N-Queens" => Set(createLabelledTextArea("N. queens","nQueens", 1, 10))
+          case "N-Queens" => Set(createLabelledTextArea("N. queens", nqQueens, 1, 10))
           case "Graph Coloring" =>
             Set(
-              createLabelledTextArea("N. nodes","nodes", 1, 10),
-              createLabelledTextArea("N. edge","edged", 1, 10),
-              createLabelledTextArea("N. colors","colors", 1, 10)
+              createLabelledTextArea("N. nodes", gcNodes, 1, 10),
+              createLabelledTextArea("N. edge", gcEdges, 1, 10),
+              createLabelledTextArea("N. colors", gcColors, 1, 10)
             )
           case "Nurse Scheduling" =>
             Set(
-              createLabelledTextArea("N. nurses","nurses", 1, 10),
-              createLabelledTextArea("Days","days", 1, 10),
-              createLabelledTextArea("Shifts","shifts", 1, 10)
+              createLabelledTextArea("N. nurses", nsNurses, 1, 10),
+              createLabelledTextArea("Days", nsDays, 1, 10),
+              createLabelledTextArea("Shifts", nsShifts, 1, 10)
             )
           case _ => Set()
         problemParameterPanel.contents.clear()
@@ -79,22 +79,28 @@ object ComponentUtils:
       }
 
   /** Creates a text area with a label, name, rows and columns
-    * @param label the text of the label
+    * @param placeholder the text of the label
     * @param parameter the name of the parameter
     * @param r rows of the text area
     * @param c columns of the text area
     * @return the text area
     */
-  def createLabelledTextArea(label: String, parameter: String, r: Int, c: Int): BoxPanel =
-    new BoxPanel(Orientation.Vertical):
-      contents += createLabel(label, 15)
-      contents += new TextArea:
-        name = parameter
+  def createLabelledTextArea(placeholder: String, parameter: String, r: Int, c: Int): TextArea =
+    new TextArea:
+      listenTo(this)
+      name = parameter
+      text = placeholder
+      rows = r
+      columns = c
+      maximumSize = new Dimension(200, 30)
+      border = Swing.EmptyBorder(margin)
+      foreground = Color.GRAY
+      font = Font(fontFamily, Font.ITALIC, 15)
+      reactions += { case FocusGained(_, _, _) =>
+        foreground = Color.BLACK
+        font = Font(fontFamily, Font.PLAIN, 15)
         text = ""
-        rows = r
-        columns = c
-        maximumSize = new Dimension(200, 30)
-        border = Swing.EmptyBorder(margin)
+      }
 
   /** Creates a button with the given text
     * @return the button
