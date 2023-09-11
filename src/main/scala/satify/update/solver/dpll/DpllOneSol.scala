@@ -1,22 +1,17 @@
 package satify.update.solver.dpll
 
-import satify.model.Bool.True
-import satify.model.CNF.*
-import satify.model.{CNF, Result, Solution, Variable}
+import satify.model.Result
+import satify.model.cnf.Bool.True
+import satify.model.cnf.CNF.*
+import satify.model.cnf.CNF
 import satify.model.Result.*
-import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
+import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel, Variable}
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.DpllOneSol.{dpll, resume}
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
-import satify.update.solver.dpll.utils.PartialModelUtils.{
-  explodeSolutions,
-  extractModelFromCnf,
-  extractSolutionsFromDT,
-  filterUnconstrVars,
-  updateParModel
-}
+import satify.update.solver.dpll.utils.PartialModelUtils.*
 
 import scala.annotation.tailrec
 import scala.util.Random

@@ -1,8 +1,9 @@
 package satify.view
 
+import satify.model.cnf.CNF
 import satify.model.errors.Error
 import satify.model.errors.Error.*
-import satify.model.{CNF, Solution, State}
+import satify.model.{Solution, State}
 import satify.view.ComponentUtils.{createErrorDialog, createInputTextArea, createNextSection, createOutputTextArea}
 import satify.view.Constants.{cnfOutputDialogName, solOutputDialogName}
 
@@ -56,6 +57,9 @@ object View:
     var errorDialog: Dialog = null
     error match
       case InvalidInput => errorDialog = createErrorDialog("Invalid input")
-      case Unknown => errorDialog = createErrorDialog("Unknown error")
+      case InvalidImport =>
+        errorDialog = createErrorDialog("Import error, select a txt file containing a valid DIMACS CNF")
+      case EmptySolution => errorDialog = createErrorDialog("Empty solution, no next assignment to show")
+      case Unknown => errorDialog = createErrorDialog("Unknown error occurred")
     errorDialog.open()
     Set(createInputTextArea(input))

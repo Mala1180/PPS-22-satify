@@ -2,7 +2,8 @@ package satify.update
 
 import satify.dsl.Reflection.reflect
 import satify.model.*
-import satify.model.CNF.Symbol
+import satify.model.cnf.CNF.Symbol
+import satify.model.cnf.CNF
 import satify.model.errors.Error
 import satify.model.errors.Error.*
 import satify.model.expression.Expression
@@ -110,7 +111,7 @@ object Update:
         val s: Source = Source.fromFile(file)
         val lines = s.getLines.toSeq
         s.close()
-        val cnf: CNF = parse(lines).getOrElse(Symbol(Variable("NO CNF")))
+        val cnf: CNF = parse(lines).getOrElse(Symbol("NO CNF"))
         val input = cnf.printAsDSL()
         State(input, cnf)
       ,

@@ -1,9 +1,10 @@
 package satify.update.solver
 
 import satify.model.Result.*
+import satify.model.cnf.CNF
 import satify.model.dpll.{DecisionTree, PartialModel}
 import satify.model.expression.Expression
-import satify.model.{Assignment, CNF, Solution}
+import satify.model.{Assignment, Solution}
 import satify.update.converters.ConverterType.*
 import satify.update.converters.{Converter, ConverterType}
 import satify.update.solver.SolverType.*

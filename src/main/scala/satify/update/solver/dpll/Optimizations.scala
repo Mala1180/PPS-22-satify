@@ -1,8 +1,8 @@
 package satify.update.solver.dpll
 
-import satify.model.{CNF, Variable}
-import satify.model.CNF.*
-import satify.model.dpll.{Constraint, Decision}
+import satify.model.cnf.CNF
+import satify.model.cnf.CNF.*
+import satify.model.dpll.{Constraint, Decision, Variable}
 
 import scala.annotation.tailrec
 import scala.collection.immutable.{AbstractSeq, LinearSeq}
@@ -26,8 +26,8 @@ object Optimizations:
     val f: (CNF, Option[Constraint]) => Option[Constraint] =
       (cnf, d) =>
         cnf match
-          case Symbol(Variable(name, _)) => Some(Constraint(name, true))
-          case Not(Symbol(Variable(name, _))) => Some(Constraint(name, false))
+          case Symbol(name: String) => Some(Constraint(name, true))
+          case Not(Symbol(name: String)) => Some(Constraint(name, false))
           case _ => d
 
     f(
@@ -58,8 +58,8 @@ object Optimizations:
           case Discordant => Discordant
 
       cnf match
-        case Symbol(Variable(n, _)) if name == n => Concordant(Constraint(n, true))
-        case Not(Symbol(Variable(n, _))) if name == n => Concordant(Constraint(n, false))
+        case Symbol(n: String) if name == n => Concordant(Constraint(n, true))
+        case Not(Symbol(n: String)) if name == n => Concordant(Constraint(n, false))
         case And(left, right) => f(name, left, right)
         case Or(left, right) => f(name, left, right)
         case _ => Missing

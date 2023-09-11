@@ -1,10 +1,12 @@
 package satify.update.solver.dpll
 
-
-import satify.model.CNF
+import satify.model.cnf.Bool.False
+import satify.model.cnf.CNF
+import satify.model.cnf.CNF.Symbol
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.{Decision, DecisionTree}
+import satify.model.dpll.{Constraint, Decision, DecisionTree, Variable}
 import satify.update.solver.dpll.DpllDecision.decide
+import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.utils.PartialModelUtils.extractModelFromCnf
 

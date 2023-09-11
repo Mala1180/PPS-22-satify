@@ -1,9 +1,9 @@
 package satify.update.solver.dpll.cnf
 
-import satify.model.Bool.{False, True}
-import satify.model.CNF.*
+import satify.model.cnf.Bool.{False, True}
+import satify.model.cnf.CNF.*
+import satify.model.cnf.CNF
 import satify.model.dpll.Constraint
-import satify.model.{CNF, Variable}
 
 object CNFSimplification:
 
@@ -33,9 +33,9 @@ object CNFSimplification:
       */
     def f[V <: CNF](e: V, d: T): T =
       (e match
-        case Symbol(Variable(name, _)) if name == constr.name && constr.value => Symbol(True)
+        case Symbol(name: String) if name == constr.name && constr.value => Symbol(True)
         case s @ Symbol(True) => s
-        case Not(Symbol(Variable(name, _))) if name == constr.name && !constr.value => Symbol(True)
+        case Not(Symbol(name: String)) if name == constr.name && !constr.value => Symbol(True)
         case Not(Symbol(False)) => Symbol(True)
         case _ => d
       ).asInstanceOf[T]
@@ -89,8 +89,8 @@ object CNFSimplification:
       * @return o if cnf is a negative Literal, d otherwise
       */
     def g[V <: CNF](e: V, o: V, d: V): V = e match
-      case Symbol(Variable(name, _)) if name == constr.name && !constr.value => o
-      case Not(Symbol(Variable(name, _))) if name == constr.name && constr.value => o
+      case Symbol(name: String) if name == constr.name && !constr.value => o
+      case Not(Symbol(name: String)) if name == constr.name && constr.value => o
       case Not(Symbol(True)) => o
       case Symbol(False) => o
       case _ => d
@@ -172,7 +172,7 @@ object CNFSimplification:
     */
   private def updateCnf[T <: CNF](cnf: T, constr: Constraint): T =
     (cnf match
-      case Symbol(variable: Variable) if variable.name == constr.name =>
+      case Symbol(name: String) if name == constr.name =>
         if constr.value then Symbol(True)
         else Symbol(False)
       case And(left, right) => And(updateCnf(left, constr), updateCnf(right, constr))

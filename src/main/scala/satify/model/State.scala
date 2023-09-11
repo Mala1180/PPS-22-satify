@@ -1,6 +1,7 @@
 package satify.model
 
 import satify.model
+import satify.model.cnf.CNF
 import satify.model.errors.Error
 import satify.model.expression.Expression
 import satify.model.problems.Problem
@@ -16,7 +17,7 @@ trait State:
   val expression: Option[Expression] = None
 
   /** An entity representing an [[Expression]] converted to Conjunctive Normal Form (CNF) */
-  type CNF = satify.model.CNF
+  type CNF = model.cnf.CNF
   val cnf: Option[CNF] = None
 
   /** An entity containing the solution of the problem (SAT or UNSAT, optional Assignment), it is the output of DPLL */
