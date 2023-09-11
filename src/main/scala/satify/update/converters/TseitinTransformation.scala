@@ -44,9 +44,9 @@ object TseitinTransformation:
       case Nil => Nil
       case (l, e) :: tail => (l, e) :: symbolSelector(replace(tail, e, l))
 
-    val zipped = zipWithSymbol(exp)
+    val zipped = zipWithSymbol(exp).distinctBy(_._2)
     if zipped.size == 1 then zipped
-    else symbolSelector(zipWithSymbol(exp).reverse)
+    else symbolSelector(zipped.reverse)
 
   /** Transform the Symbol and the corresponding expression to CNF form
     * @param exp a Symbol and the corresponding expression
