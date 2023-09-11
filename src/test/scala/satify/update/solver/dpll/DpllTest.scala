@@ -44,7 +44,7 @@ class DpllTest extends AnyFlatSpec with Matchers:
 
   "DPLL" should "do unit propagation when there's only a Variable inside a clause and it is in positive form" in {
     val cnf: CNF = And(sA, And(sB, Or(sB, sC)))
-    dpll(Decision(extractModelFromCnf(cnf), cnf)) shouldBe
+    dpll(cnf) shouldBe
       Branch(
         Decision(seq(Variable("a"), Variable("b"), Variable("c")), cnf),
         Branch(
