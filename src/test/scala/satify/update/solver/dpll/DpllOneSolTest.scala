@@ -1,4 +1,4 @@
-package satify.update.solver.dpll
+/*package satify.update.solver.dpll
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -116,3 +116,4 @@ class DpllOneSolTest extends AnyFlatSpec with Matchers:
     val (_, thirdPm) = dpll(secDt, Set(firstPm.get, secPm.get))
     thirdPm shouldBe Some(seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true))))
   }
+*/

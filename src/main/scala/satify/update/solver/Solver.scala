@@ -52,32 +52,8 @@ object Solver:
 
   /** Private implementation of [[Solver]] */
   private case class DpllAlgorithm(converter: Converter) extends Solver:
-    private var prevSol: (Option[DecisionTree], Option[Set[PartialModel]]) = (None, None)
-
-    override def solve(cnf: CNF): Solution = memoize(cnf =>
-      dpll(cnf) match
-        case (dt, Some(partialModel)) =>
-          println("SAT")
-          prevSol = (Some(dt), Some(Set(partialModel)))
-          println(prevSol)
-          Solution(SAT, List(Assignment(partialModel)))
-        case (_, None) =>
-          println("UNSAT")
-          prevSol = (None, None)
-          Solution(UNSAT, List.empty)
-//      decisionTree = Some(sol._1)
-//      Solution(sol._2, extractSolutions(decisionTree.get))
-    )(cnf)
+    override def solve(cnf: CNF): Solution = memoize(cnf => dpll(cnf))(cnf)
 
     override def solve(exp: Expression): Solution = solve(converter.convert(exp))
 
-    override def next(): Assignment =
-      println(prevSol)
-      prevSol match
-        case (Some(dt), Some(partialModelSet)) =>
-          val sol: (DecisionTree, Option[PartialModel]) = dpll(dt, partialModelSet)
-          sol match
-            case (dt, Some(partialModel)) =>
-              prevSol = (Some(dt), Some(prevSol._2.get + partialModel))
-              Assignment(partialModel)
-        case _ => throw IllegalStateException("No previous solution found")
+    override def next(): Assignment = dpll()

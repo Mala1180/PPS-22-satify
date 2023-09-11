@@ -1,6 +1,6 @@
 package satify.update.solver.dpll
 
-import satify.model.Result
+import satify.model.{Assignment, Result, Solution}
 import satify.model.cnf.Bool.True
 import satify.model.cnf.CNF.*
 import satify.model.cnf.CNF
@@ -16,21 +16,37 @@ import satify.update.solver.dpll.utils.PartialModelUtils.*
 import scala.annotation.tailrec
 import scala.util.Random
 
+case class DpllRun(dt: DecisionTree, s: Solution)
+
 object DpllOneSol:
 
   val rnd: Random = Random(42)
+  private var prevRun: Option[DpllRun] = None
 
-  def dpll(cnf: CNF): (DecisionTree, Option[PartialModel]) =
+  def dpll(cnf: CNF): Solution =
     buildTree(Decision(extractModelFromCnf(cnf), cnf)) match
-      case (dt, SAT) => (dt, extractSolution(dt, Set()))
-      case (dt, UNSAT) => (dt, None)
+      case (dt, SAT) =>
+        println(dt)
+        val solution: Solution = Solution(SAT, List(extractSolution(dt, prevRun)))
+        prevRun = Some(DpllRun(dt, solution))
+        solution
+      case (_, UNSAT) => Solution(UNSAT, Nil)
 
-  def dpll(dt: DecisionTree, prevSol: Set[PartialModel]): (DecisionTree, Option[PartialModel]) =
-    extractSolution(dt, prevSol) match
-      case None => resume(dt) match
-        case (resDt, SAT) => (resDt, extractSolution(resDt, prevSol))
-        case (resDt, UNSAT) => (resDt, None)
-      case s @ Some(_) => (dt, s)
+  def dpll(): Assignment =
+    prevRun match
+      case Some(DpllRun(dt, s)) =>
+        extractSolution(dt, prevRun) match
+          case Assignment(Nil) =>
+            resume(dt) match
+              case (dt, SAT) =>
+                val assignment: Assignment = extractSolution(dt, prevRun)
+                prevRun = Some(DpllRun(dt, Solution(SAT, assignment +: s.assignment)))
+                assignment
+              case (_, UNSAT) => Assignment(Nil)
+          case assignment @ _ =>
+            prevRun = Some(DpllRun(dt, Solution(SAT, assignment +: s.assignment)))
+            assignment
+      case None => throw new NoSuchElementException("No previous instance of DPLL")
 
   def resume(dt: DecisionTree): (DecisionTree, Result) = dt match
     case Leaf(d @ Decision(_, cnf)) =>
@@ -58,20 +74,26 @@ object DpllOneSol:
         case Nil => (Leaf(d), if isSat(d.cnf) then SAT else UNSAT)
     else (Leaf(d), if isSat(d.cnf) then SAT else UNSAT)
 
-  private def extractSolution(dt: DecisionTree, prevSol: Set[PartialModel]): Option[PartialModel] =
+  private def extractSolution(dt: DecisionTree, prevRun: Option[DpllRun]): Assignment =
     dt match
       case Leaf(Decision(pm, cnf)) =>
         cnf match
           case Symbol(True) =>
-            explodeSolutions(
+            val allSolutions = explodeSolutions(
               pm.filter(v =>
                 v match
                   case Variable(name, _) if name.startsWith("ENC") || name.startsWith("TSTN") => false
                   case _ => true
               )
-            ).find(fpm => !(prevSol contains fpm))
-          case _ => None
+            ).map(parModel => Assignment(parModel)).toList
+            prevRun match
+              case Some(pr) =>
+                val filteredList = allSolutions.filter(a => !(pr.s.assignment contains a))
+                if filteredList.nonEmpty then filteredList.head else Assignment(Nil)
+              case None if allSolutions.nonEmpty => allSolutions.head
+              case _ => Assignment(Nil)
+          case _ => Assignment(Nil)
       case Branch(_, left, right) =>
-        extractSolution(left, prevSol) match
-          case s @ Some(_) => s
-          case _ => extractSolution(right, prevSol)
+        extractSolution(left, prevRun) match
+          case s @ Assignment(l) if l.nonEmpty => s
+          case _ => extractSolution(right, prevRun)

@@ -124,7 +124,6 @@ object Update:
     */
   private def nextSolutionUpdate(currentState: State): State =
     val nextAssignment: Assignment = Solver(DPLL).next()
-
     if currentState.problem.isDefined then
       safeUpdate(
         () =>
@@ -145,7 +144,9 @@ object Update:
             currentState.expression.get,
             Solution(
               currentState.solution.get.result,
-              currentState.solution.get.assignment.tail ::: List(currentState.solution.get.assignment.head)
+              nextAssignment match
+                case Assignment(Nil) => currentState.solution.get.assignment
+                case _ => nextAssignment :: currentState.solution.get.assignment
             )
           ),
         EmptySolution
