@@ -30,7 +30,7 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "v0.3.0"
-          title: "Test Release"
+          title: "Sprint 4 Release"
           prerelease: true
           files: |
             target/scala-3.3.0/satify.jar
