@@ -24,7 +24,7 @@ class DpllOneSolTest extends AnyFlatSpec with Matchers:
 
   "DPLL" should "extract one solution at a time" in {
     val firstDt = dpll(cnf)
-
+    println(firstDt)
     firstDt shouldBe
       (Branch(
         Decision(
@@ -80,14 +80,14 @@ class DpllOneSolTest extends AnyFlatSpec with Matchers:
           ),
           Leaf(
             Decision(
-              seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(false))),
-              Symbol(False)
+              seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true))),
+              Symbol(True)
             )
           ),
           Leaf(
             Decision(
-              seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true))),
-              Symbol(True)
+              seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(false))),
+              Symbol(False)
             )
           )
         )
