@@ -2,14 +2,16 @@ package satify.view
 
 import satify.model.State
 import satify.view.Constants.*
+import satify.view.GUI.{problemComboBox, problemParameterPanel}
 import satify.view.Reactions.nextSolutionReaction
 
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.URL
 import java.util.concurrent.Executors
 import javax.swing.ImageIcon
+import javax.swing.plaf.basic.ComboPopup
 import scala.swing.*
-import scala.swing.event.ButtonClicked
+import scala.swing.event.{ButtonClicked, FocusGained, FocusLost, SelectionChanged}
 
 object ComponentUtils:
 
@@ -52,7 +54,60 @@ object ComponentUtils:
     * @return the combo box
     */
   def createProblemComboBox(): ComboBox[String] =
-    new ComboBox(List("No selection", "N-Queens", "Graph Coloring", "Nurse Scheduling"))
+    new ComboBox(List("No selection", "N-Queens", "Graph Coloring", "Nurse Scheduling")):
+      listenTo(selection)
+      maximumSize = new Dimension(200, 30)
+      reactions += { case SelectionChanged(_) =>
+        val parameters: Set[Component] = this.item match
+          case "N-Queens" => Set(createLabelledTextArea("N. queens", nqQueens, 1, 10))
+          case "Graph Coloring" =>
+            Set(
+              createLabelledTextArea("Nodes: n1, n2, n3, ...", gcNodes, 1, 15),
+              createLabelledTextArea("Edges: n1-n2, n2-n3, ...", gcEdges, 1, 10),
+              createLabelledTextArea("N. colors", gcColors, 1, 10)
+            )
+          case "Nurse Scheduling" =>
+            Set(
+              createLabelledTextArea("N. nurses", nsNurses, 1, 10),
+              createLabelledTextArea("Days", nsDays, 1, 10),
+              createLabelledTextArea("Shifts", nsShifts, 1, 10)
+            )
+          case _ => Set()
+        problemParameterPanel.contents.clear()
+        problemParameterPanel.contents.appendAll(parameters)
+        problemParameterPanel.revalidate()
+      }
+
+  /** Creates a text area with a label, name, rows and columns
+    * @param placeholder the text of the label
+    * @param parameter the name of the parameter
+    * @param r rows of the text area
+    * @param c columns of the text area
+    * @return the text area
+    */
+  def createLabelledTextArea(placeholder: String, parameter: String, r: Int, c: Int): TextArea =
+    new TextArea:
+      listenTo(this)
+      name = parameter
+      text = placeholder
+      rows = r
+      columns = c
+      maximumSize = new Dimension(200, 30)
+      border = Swing.EmptyBorder(margin)
+      foreground = Color.GRAY
+      font = Font(fontFamily, Font.ITALIC, 15)
+      reactions += {
+        case FocusGained(_, _, _) =>
+          if text.equals(placeholder) then
+            foreground = Color.BLACK
+            font = Font(fontFamily, Font.PLAIN, 15)
+            text = ""
+        case FocusLost(_, _, _) =>
+          if text.isEmpty then
+            foreground = Color.GRAY
+            font = Font(fontFamily, Font.ITALIC, 15)
+            text = placeholder
+      }
 
   /** Creates a button with the given text
     * @return the button

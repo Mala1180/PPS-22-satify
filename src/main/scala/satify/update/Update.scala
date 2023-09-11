@@ -8,8 +8,7 @@ import satify.model.errors.Error
 import satify.model.errors.Error.*
 import satify.model.expression.Expression
 import satify.model.problems.NQueens.*
-import satify.model.problems.ProblemChoice.{GraphColoring, NurseScheduling, NQueens as NQueensChoice}
-import satify.model.problems.{NQueens, ProblemChoice}
+import satify.model.problems.{NQueens, Problem}
 import satify.update.Message.*
 import satify.update.converters.Converter
 import satify.update.converters.ConverterType.*
@@ -32,13 +31,13 @@ object Update:
       case Input(char) => model
       case Solve(input) =>
         solveUpdate(input)
-      case SolveProblem(problem, parameter) =>
-        problemUpdate(problem, parameter)
+      case SolveProblem(problem) =>
+        problemUpdate(problem)
       case Convert(input) =>
         converterUpdate(input)
       case Import(file) =>
         importUpdate(file)
-      case NextSolution =>
+      case NextSolution() =>
         nextSolutionUpdate(model)
 
   /** Safely update the model by catching any exceptions and returning an error state.
@@ -70,18 +69,14 @@ object Update:
 
   /** Update function to react to the SolveProblem message. This function will attempt to solve the problem and return a state.
     * @param problem problem to solve.
-    * @param parameter parameter for the problem.
     * @return a state with the cnf and solution if no exception is thrown, otherwise a state with the error.
     */
-  private def problemUpdate(problem: ProblemChoice, parameter: Int): State =
+  private def problemUpdate(problem: Problem): State =
     safeUpdate(
       () =>
-        val exp: Expression = problem match
-          case NQueensChoice => NQueens(parameter).exp
-          case GraphColoring => ??? // GraphColoring(parameter).exp
-          case NurseScheduling => ??? // NurseScheduling(parameter).exp
+        val exp = problem.exp
         val cnf: CNF = Converter(Tseitin).convert(exp)
-        State(cnf, Solver(DPLL).solve(exp), NQueens(parameter))
+        State(cnf, Solver(DPLL).solve(exp), problem)
       ,
       InvalidInput
     )

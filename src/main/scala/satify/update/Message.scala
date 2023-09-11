@@ -1,6 +1,6 @@
 package satify.update
 
-import satify.model.problems.ProblemChoice
+import satify.model.problems.Problem
 
 import java.io.File
 
@@ -8,7 +8,7 @@ import java.io.File
 enum Message:
   case Input(char: Char)
   case Solve(input: String)
-  case SolveProblem(problem: ProblemChoice, parameter: Int)
+  case SolveProblem(problem: Problem)
   case Convert(input: String)
   case Import(file: File)
-  case NextSolution
+  case NextSolution()
