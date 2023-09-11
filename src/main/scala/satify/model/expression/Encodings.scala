@@ -14,30 +14,30 @@ object Encodings:
   private def removeDuplicates(vars: Seq[Symbol]): Seq[Symbol] = vars.distinct
 
   /** Encodes the constraint that exactly one of the given variables is true.
-   * @param variables the input variables
-   * @return the [[Expression]] that encodes the constraint
-   */
+    * @param variables the input variables
+    * @return the [[Expression]] that encodes the constraint
+    */
   def exactlyOne(variables: Symbol*): Expression =
     val vars: Seq[Symbol] = removeDuplicates(variables)
     requireVariables(vars, 1, "exactlyOne")
     And(atLeastOne(vars: _*), atMostOne(vars: _*))
 
   /** Encodes the constraint that at least one of the given variables is true.
-   * It is implemented concatenating the expressions with the OR operator.
-   * @param variables the input variables
-   * @return the [[Expression]] that encodes the constraint
-   */
+    * It is implemented concatenating the expressions with the OR operator.
+    * @param variables the input variables
+    * @return the [[Expression]] that encodes the constraint
+    */
   def atLeastOne(variables: Symbol*): Expression =
     val vars: Seq[Symbol] = removeDuplicates(variables)
     requireVariables(vars, 1, "atLeastOne")
     vars.reduceLeft(Or(_, _))
 
   /** Encodes the constraint that at least k of the given variables are true.
-   * It is implemented using the pairwise encoding that produces O(n&#94;2) clauses.
-   * @param k         the number of variables that must be true
-   * @param variables the input variables
-   * @return the [[Expression]] that encodes the constraint
-   */
+    * It is implemented using the pairwise encoding that produces O(n&#94;2) clauses.
+    * @param k         the number of variables that must be true
+    * @param variables the input variables
+    * @return the [[Expression]] that encodes the constraint
+    */
   def atLeastK(k: Int)(variables: Symbol*): Expression =
     val vars: Seq[Symbol] = removeDuplicates(variables)
     requireVariables(vars, 1, "atLeastK")
@@ -55,25 +55,25 @@ object Encodings:
     combinations(vars, k).map(_.reduceLeft(And(_, _))).reduceLeft(Or(_, _))
 
   /** Encodes the constraint that at most one of the given variables is true.
-   * @param variables the input variables
-   * @return the [[Expression]] that encodes the constraint
-   * @see [[atMostK]]
-   */
+    * @param variables the input variables
+    * @return the [[Expression]] that encodes the constraint
+    * @see [[atMostK]]
+    */
   def atMostOne(variables: Symbol*): Expression = atMostK(1)(variables: _*)
 
   /** Encodes the constraint that at most k of the given variables are true. <br>
-   * It is implemented using sequential encoding that produces 2nk + 2n − 3k + 1 clauses (O(n) complexity). <br>
-   * Set of mathematical clauses:<br>
-   * 1) (¬s1,j) for 1 < j <= k <br>
-   * 2) (¬xi ∨ si,1) for 1 < i < n<br>
-   * 3) (¬si−1,1 ∨ si,1) for 1 < i < n<br>
-   * 4) (¬xi ∨ ¬si−1,j−1 ∨ si,j) for 1 < i < n and for 1 < j <= k<br>
-   * 5) (¬si−1,j ∨ si,j) for 1 < i < n and for 1 < j <= k<br>
-   * 6) (¬xi ∨ ¬si−1,k) for 1 < i < n
-   * @param k         the number of variables that must be true
-   * @param variables the input variables
-   * @return the [[Expression]] that encodes the constraint
-   */
+    * It is implemented using sequential encoding that produces 2nk + 2n − 3k + 1 clauses (O(n) complexity). <br>
+    * Set of mathematical clauses:<br>
+    * 1) (¬s1,j) for 1 < j <= k <br>
+    * 2) (¬xi ∨ si,1) for 1 < i < n<br>
+    * 3) (¬si−1,1 ∨ si,1) for 1 < i < n<br>
+    * 4) (¬xi ∨ ¬si−1,j−1 ∨ si,j) for 1 < i < n and for 1 < j <= k<br>
+    * 5) (¬si−1,j ∨ si,j) for 1 < i < n and for 1 < j <= k<br>
+    * 6) (¬xi ∨ ¬si−1,k) for 1 < i < n
+    * @param k         the number of variables that must be true
+    * @param variables the input variables
+    * @return the [[Expression]] that encodes the constraint
+    */
   def atMostK(k: Int)(variables: Symbol*): Expression =
     val X: Seq[Symbol] = removeDuplicates(variables)
     requireVariables(X, 1, "atMostK")
