@@ -1,6 +1,7 @@
 package satify.model
 
 import satify.model
+import satify.model.cnf.CNF
 import satify.model.errors.Error
 import satify.model.expression.Expression
 import satify.model.problems.Problem
@@ -16,7 +17,7 @@ trait State:
   val expression: Option[Expression] = None
 
   /** An entity representing an [[Expression]] converted to Conjunctive Normal Form (CNF) */
-  type CNF = satify.model.CNF
+  type CNF = model.cnf.CNF
   val cnf: Option[CNF] = None
 
   /** An entity containing the solution of the problem (SAT or UNSAT, optional Assignment), it is the output of DPLL */
@@ -80,6 +81,14 @@ object State:
     */
   def apply(cnf: CNF, sol: Solution, problem: Problem): State =
     StateImpl(None, None, Some(cnf), Some(sol), Some(problem))
+
+  /** Creates a new application state with an input problem and its solution.
+    * @param sol     the [[Solution]]
+    * @param problem the [[Problem]] selected
+    * @return a new [[State]] instance.
+    */
+  def apply(sol: Solution, problem: Problem): State =
+    StateImpl(None, None, None, Some(sol), Some(problem))
 
   private case class StateImpl(
       override val input: Option[String] = None,

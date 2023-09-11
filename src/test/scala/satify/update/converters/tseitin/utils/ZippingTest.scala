@@ -1,12 +1,12 @@
-package satify.ExpressionUtilsTest
+package satify.update.converters.tseitin.utils
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.Variable
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
+import satify.update.converters.tseitin.Utils.zipWithSymbol
 
-class SubexpressionsTest extends AnyFlatSpec with Matchers:
+class ZippingTest extends AnyFlatSpec with Matchers:
 
   "In ((a ∧ ¬b) ∨ c) the subexp ¬b" should "be decomposed correctly" in {
     val exp: Expression =

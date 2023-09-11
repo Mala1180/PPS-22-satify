@@ -1,6 +1,6 @@
 package satify.model.problems
 
-import satify.model.Variable
+import satify.model.dpll.Variable
 import satify.model.dpll.OrderedSeq.{given_Ordering_Variable, seq}
 import satify.model.dpll.PartialModel
 import satify.model.expression.Encodings.{atLeastOne, atMostOne}
@@ -57,8 +57,7 @@ case class NQueens(n: Int) extends Problem:
     clauses.reduceLeft(And(_, _))
 
   override val constraints: Set[Expression] = Set(atLeastOneQueen, atMostOneQueen, diagConstr)
-  override def toString: String =
-    ??? // variables.map(_.map(_ => if c.value.isDefined then if c.value.get then s" ♕ " else " · "
+  override def toString: String = s"NQueens($n)"
   override def getVisualization: Component = new FlowPanel()
 
 object NQueens:
@@ -82,4 +81,4 @@ object NQueens:
         println(
           firstN.foldLeft("")((p, c) => p + (if c.value.isDefined then if c.value.get then s" ♕ " else " · " else " "))
         )
-        problem.printNqueens(pm.drop(problem.n))
+      problem.printNqueens(pm.drop(problem.n))
