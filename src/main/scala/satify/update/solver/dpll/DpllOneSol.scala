@@ -71,10 +71,7 @@ object DpllOneSol:
             explodeSolutions(
               pm.filter(v =>
                 v match
-                  case Variable(name, _)
-                    if name.startsWith("X") || name.startsWith("ENC") ||
-                      name.startsWith("TSTN") =>
-                    false
+                  case Variable(name, _) if name.startsWith("ENC") || name.startsWith("TSTN") => false
                   case _ => true
               )
             ).find(fpm => !(prevSol contains fpm))
