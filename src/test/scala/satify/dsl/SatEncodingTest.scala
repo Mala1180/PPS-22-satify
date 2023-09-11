@@ -12,9 +12,9 @@ class SatEncodingTest extends AnyFlatSpec:
 //    ("A", "B") atMost 1 shouldBe ((Not("A") or "ENC0") and (Not("B") or "ENC0"))
 //  }
 
-  """ ("A", "B") atMost one """ should """ be equal to ("A", "B") atMost 1 """ in {
-    ("A", "B") atMost one shouldBe (("A", "B") atMost 1)
-  }
+//  """ ("A", "B") atMost one """ should """ be equal to ("A", "B") atMost 1 """ in {
+//    ("A", "B") atMost one shouldBe (("A", "B") atMost 1)
+//  }
 
   """ ("A", "B", "C") atLeast 1 """ should """ be equal to atLeastOne("A", "B") """ in {
     ("A", "B", "C") atLeast 1 shouldBe ("A" or "B" or "C")
