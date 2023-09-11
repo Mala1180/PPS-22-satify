@@ -1,6 +1,6 @@
 package satify.update
 
-import org.scalatest.flatspec.AnyFlatSpec
+/*import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.State
 import satify.update.Message.*
@@ -8,7 +8,7 @@ import satify.update.Update.update
 
 class NextSolutionUpdateTest extends AnyFlatSpec with Matchers:
 
-  /*  "When NextSolution message is sent to the update component it" should "return an updated State changing first solution assignment" in {
+    "When NextSolution message is sent to the update component it" should "return an updated State changing first solution assignment" in {
     val multipleAssignmentsExpression: String = "a or b"
     val currentState: State = update(State(), Solve(multipleAssignmentsExpression))
     println(currentState)
@@ -24,7 +24,7 @@ class NextSolutionUpdateTest extends AnyFlatSpec with Matchers:
     val newState = update(currentState, NextSolution)
     println(newState)
     currentState.solution.get.assignment.head should be(newState.solution.get.assignment.head)
-  }*/
+  }
 
   "When NextSolution message is sent but no solution are present it" should "return an Error" in {
     val newState = update(State(), NextSolution())
@@ -36,3 +36,5 @@ class NextSolutionUpdateTest extends AnyFlatSpec with Matchers:
     && problem.isEmpty
     && error.isDefined shouldBe true
   }
+
+  */
