@@ -1,7 +1,5 @@
 package satify.update.solver.dpll
 
-
-
 import satify.model.Bool.False
 import satify.model.Variable
 import satify.model.CNF.Symbol
@@ -14,15 +12,14 @@ import scala.util.Random
 
 object DpllDecision:
 
-  private val rnd = Random(64)
+  private val rnd = Random(42)
 
-
-/** Make decisions based on the previous one selecting the most appropriate variable and assignment.
-   * If no optimization can be applied, it makes a random decision.
-   *
-   * @param d previous decision.
-   * @return List of new Decisions
-   */
+  /** Make decisions based on the previous one selecting the most appropriate variable and assignment.
+    * If no optimization can be applied, it makes a random decision.
+    *
+    * @param d previous decision.
+    * @return List of new Decisions
+    */
   def decide(d: Decision): List[Decision] = d match
     case Decision(_, cnf) =>
       unitLiteralIdentification(cnf) match
@@ -30,16 +27,15 @@ object DpllDecision:
         case _ =>
           pureLiteralIdentification(d) match
             case Some(c) =>
-              println(s"pure lit el var $c")
               pureLiteralEliminationDecision(d, c)
             case _ => randomDecisions(d)
 
   /** Make random decisions based on the previous one given as parameter,
-   * by choosing a random variable assigning a random value to it.
-   *
-   * @param d previous decision
-   * @return List of new decisions
-   */
+    * by choosing a random variable assigning a random value to it.
+    *
+    * @param d previous decision
+    * @return List of new decisions
+    */
   def randomDecisions(d: Decision): List[Decision] = d match
     case Decision(pm, cnf) =>
       val fv = filterUnconstrVars(pm)
@@ -54,11 +50,11 @@ object DpllDecision:
       else Nil
 
   /** Make unit propagation decision based on the previous decision and the constraint provided.
-   *
-   * @param d previous decision.
-   * @param c constraint.
-   * @return List of new decisions
-   */
+    *
+    * @param d previous decision.
+    * @param c constraint.
+    * @return List of new decisions
+    */
   def unitPropagationDecision(d: Decision, c: Constraint): List[Decision] =
     d match
       case Decision(pm, cnf) =>
@@ -68,12 +64,12 @@ object DpllDecision:
         )
 
   /** Make pure literals elimination decisions based on the previous decision and the
-   * constraint provided.
-   *
-   * @param d previous decision.
-   * @param c constraint.
-   * @return List of new decisions
-   */
+    * constraint provided.
+    *
+    * @param d previous decision.
+    * @param c constraint.
+    * @return List of new decisions
+    */
   def pureLiteralEliminationDecision(d: Decision, c: Constraint): List[Decision] =
     d match
       case Decision(pm, cnf) =>

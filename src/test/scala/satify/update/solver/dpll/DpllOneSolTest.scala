@@ -5,12 +5,13 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.Bool.{False, True}
 import satify.model.CNF.{And, Not, Or, Symbol}
 import satify.model.Result.*
-import satify.model.dpll.Decision
+import satify.model.dpll.{Decision, DecisionTree}
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.dpll.OrderedSeq.seq
-import satify.model.{CNF, Variable}
+import satify.model.{CNF, Result, Variable}
 import satify.update.solver.dpll.DpllOneSol.{dpll, resume}
 import satify.update.solver.dpll.utils.PartialModelUtils.extractModelFromCnf
+import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
 
 class DpllOneSolTest extends AnyFlatSpec with Matchers:
 
@@ -22,44 +23,38 @@ class DpllOneSolTest extends AnyFlatSpec with Matchers:
 
   val cnf: CNF = And(Or(Symbol(varA), Symbol(varB)), Or(Symbol(varB), Symbol(varC)))
 
-  "DPLL" should "extract one solution at a time" in {
-    val firstDt = dpll(cnf)
-    println(firstDt)
-    firstDt shouldBe
-      (Branch(
+  val expectedFirst: DecisionTree =
+    Branch(
+      Decision(
+        seq(varA, varB, varC),
+        And(
+          Or(Symbol(varA), Symbol(varB)),
+          Or(Symbol(varB), Symbol(varC))
+        )
+      ),
+      Branch(
         Decision(
-          seq(varA, varB, varC),
-          And(
-            Or(Symbol(varA), Symbol(varB)),
-            Or(Symbol(varB), Symbol(varC))
-          )
+          seq(Variable("a", Some(true)), varB, varC),
+          Or(Symbol(varB), Symbol(varC))
         ),
-        Branch(
-          Decision(
-            seq(Variable("a", Some(true)), varB, varC),
-            Or(Symbol(varB), Symbol(varC))
-          ),
-          Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(true)), varC), Symbol(True))),
-          Leaf(
-            Decision(
-              seq(Variable("a", Some(true)), Variable("b", Some(false)), varC),
-              Symbol(varC)
-            )
-          )
-        ),
+        Leaf(Decision(seq(Variable("a", Some(true)), Variable("b", Some(true)), varC), Symbol(True))),
         Leaf(
           Decision(
-            seq(Variable("a", Some(false)), varB, varC),
-            And(Symbol(varB), Or(Symbol(varB), Symbol(varC)))
+            seq(Variable("a", Some(true)), Variable("b", Some(false)), varC),
+            Symbol(varC)
           )
         )
-      ), SAT)
-
-    val secDt = resume(firstDt match
-      case (dt, _) => dt
+      ),
+      Leaf(
+        Decision(
+          seq(Variable("a", Some(false)), varB, varC),
+          And(Symbol(varB), Or(Symbol(varB), Symbol(varC)))
+        )
+      )
     )
 
-    secDt shouldBe (Branch(
+  val expectedSec: DecisionTree =
+    Branch(
       Decision(
         seq(varA, varB, varC),
         And(
@@ -98,6 +93,18 @@ class DpllOneSolTest extends AnyFlatSpec with Matchers:
           And(Symbol(varB), Or(Symbol(varB), Symbol(varC)))
         )
       )
-    ), SAT)
+    )
 
+  "DPLL" should "extract complete the decision tree one solution at a time" in {
+    val (firstDt, _) = dpll(cnf)
+    firstDt shouldBe expectedFirst
+    val (secDt, _) = dpll(firstDt, Set())
+    secDt shouldBe expectedSec
+  }
+
+  "DPLL" should "extract one solution at a time" in {
+    val (firstDt, firstPm) = dpll(cnf)
+    firstPm shouldBe Some(seq(Variable("a", Some(true)), Variable("b", Some(true)), varC))
+    val (_, secPm) = dpll(firstDt, Set(firstPm.get))
+    secPm shouldBe Some(seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true))))
   }

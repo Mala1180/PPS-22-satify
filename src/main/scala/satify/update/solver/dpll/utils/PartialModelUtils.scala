@@ -58,7 +58,10 @@ object PartialModelUtils:
             Set(
               pm.filter(v =>
                 v match
-                  case Variable(name, _) if name.startsWith("X") || name.startsWith("ENC") => false
+                  case Variable(name, _)
+                      if name.startsWith("X") || name.startsWith("ENC") ||
+                        name.startsWith("TSTN") =>
+                    false
                   case _ => true
               )
             )
