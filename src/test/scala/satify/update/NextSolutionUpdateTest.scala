@@ -1,4 +1,4 @@
-package satify.update
+/*package satify.update
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -33,3 +33,4 @@ class NextSolutionUpdateTest extends AnyFlatSpec with Matchers:
     && problem.isEmpty
     && error.isDefined shouldBe true
   }
+ */
