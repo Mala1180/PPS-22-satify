@@ -14,24 +14,24 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
 
   /** In each shift can work just one nurse */
   private val oneNursePerShift: Expression =
-    val constraints =
+    val constraint =
       for
         d <- 0 until days
         s <- 0 until shifts
       yield exactlyOne(variables(d)(s): _*)
 
-    println(constraints)
-    constraints.reduceLeft(And(_, _))
+    println(constraint)
+    constraint.reduceLeft(And(_, _))
 
   /** Each nurse can work no more than one shift per day */
   private val atMostOneShiftPerDay: Expression =
-    val constraints = for
+    val constraint = for
       n <- 0 until nurses
       d <- 0 until days
     yield atMostOne(variables(n)(d): _*)
 
-    println(constraints)
-    constraints.reduceLeft(And(_, _))
+    println(constraint)
+    constraint.reduceLeft(And(_, _))
 
   /** If possible, shifts should be distributed evenly and fairly, so that each nurse works the minimum amount of them. */
   private val minShiftsPerNurse: Int = (shifts * days) / nurses

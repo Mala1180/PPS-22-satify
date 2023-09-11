@@ -7,11 +7,12 @@ import scala.swing.Component
 
 /** Entity representing a SAT problem. */
 trait Problem:
+
   /** The set of problem's constraints, with a description. */
-  val constraints: Set[Expression]
+  val constraints: Set[Expression] = Set()
 
   /** The expression encoded of the problem that must be satisfied. */
-  val exp: Expression = constraints.reduceLeft(And(_, _))
+  def exp: Expression = constraints.reduceLeft(And(_, _))
 
   override def toString: String
   def getVisualization: Component

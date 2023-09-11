@@ -21,22 +21,16 @@ case class NQueens(n: Int) extends Problem:
 
   /** At least one queen on each row and column */
   private val atLeastOneQueen: Expression =
-    val atLeastConstraints =
+    val constraint =
       for i <- 0 until n
-      yield And(
-        atLeastOne(variables(i): _*),
-        atLeastOne(variables.map(row => row(i)): _*)
-      )
-    atLeastConstraints.reduceLeft(And(_, _))
+      yield And(atLeastOne(variables(i): _*), atLeastOne(variables.map(row => row(i)): _*))
+    constraint.reduceLeft(And(_, _))
 
   /** At most one queen on each row and column */
   private val atMostOneQueen: Expression =
     val atMostConstraints =
       for i <- 0 until n
-      yield And(
-        atMostOne(variables(i): _*),
-        atMostOne(variables.map(row => row(i)): _*)
-      )
+      yield And(atMostOne(variables(i): _*), atMostOne(variables.map(row => row(i)): _*))
     atMostConstraints.reduceLeft(And(_, _))
 
   /** At most one queen on each diagonal */
@@ -68,22 +62,24 @@ case class NQueens(n: Int) extends Problem:
   override def getVisualization: Component = new FlowPanel()
 
 object NQueens:
-  def printNQueensFromDimacs(n: Int, pm: PartialModel): Unit =
-    val mapPm: PartialModel = seq(pm.map {
-      case Variable(s"x_$i", value) =>
-        val xx = i.toInt - 1
-        val row: Int = xx / n
-        val col: Int = xx % n
-        Variable(s"x_${row}_$col", value)
-      case v => v
-    }: _*)
-    printNqueens(n, mapPm)
 
-  @tailrec
-  final def printNqueens(n: Int, pm: PartialModel): Unit =
-    val firstN = pm.take(n)
-    if firstN.nonEmpty then
-      println(
-        firstN.foldLeft("")((p, c) => p + (if c.value.isDefined then if c.value.get then s" ♕ " else " · " else " "))
-      )
-      printNqueens(n, pm.drop(n))
+  extension (problem: NQueens)
+    def printNQueensFromDimacs(pm: PartialModel): Unit =
+      val mapPm: PartialModel = seq(pm.map {
+        case Variable(s"x_$i", value) =>
+          val xx = i.toInt - 1
+          val row: Int = xx / problem.n
+          val col: Int = xx % problem.n
+          Variable(s"x_${row}_$col", value)
+        case v => v
+      }: _*)
+      problem.printNqueens(mapPm)
+
+    @tailrec
+    def printNqueens(pm: PartialModel): Unit =
+      val firstN = pm.take(problem.n)
+      if firstN.nonEmpty then
+        println(
+          firstN.foldLeft("")((p, c) => p + (if c.value.isDefined then if c.value.get then s" ♕ " else " · " else " "))
+        )
+        problem.printNqueens(pm.drop(problem.n))

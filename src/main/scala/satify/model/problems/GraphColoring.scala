@@ -11,17 +11,17 @@ case class GraphColoring(edges: List[(String, String)], nodes: List[String], col
 
   /** Each node has exactly one color */
   private val nodeHasExactlyOneColor: Expression =
-    val constraints = for i <- nodes.indices yield exactlyOne(variables(i): _*)
-    constraints.reduceLeft(And(_, _))
+    val constraint = for i <- nodes.indices yield exactlyOne(variables(i): _*)
+    constraint.reduceLeft(And(_, _))
 
   /** Each edge must have different colors in its vertices */
   private val linkedNodesHasDifferentColor: Expression =
-    val constraints =
+    val constraint =
       for
         (i, j) <- edges
         k <- 0 until colors
       yield Or(Not(variables(nodes.indexOf(i))(k)), Not(variables(nodes.indexOf(j))(k)))
-    constraints.reduceLeft(And(_, _))
+    constraint.reduceLeft(And(_, _))
 
   override val constraints: Set[Expression] = Set(nodeHasExactlyOneColor, linkedNodesHasDifferentColor)
   override def getVisualization: Component = new FlowPanel()
