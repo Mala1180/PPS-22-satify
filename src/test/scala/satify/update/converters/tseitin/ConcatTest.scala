@@ -2,7 +2,6 @@ package satify.update.converters.tseitin
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.cnf.Variable
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
 import satify.update.converters.tseitin.TseitinTransformation.concat
@@ -10,32 +9,32 @@ import satify.update.converters.tseitin.TseitinTransformation.concat
 class ConcatTest extends AnyFlatSpec with Matchers:
 
   "Concatenate only one symbol" should "return the symbol without concatenating nothing to it" in {
-    val exps: List[CNF] = List(Symbol(Variable("a")))
+    val exps: List[CNF] = List(Symbol("a"))
     val result: CNF = concat(exps)
     println(result)
-    val expected: CNF = Symbol(Variable("a", None))
+    val expected: CNF = Symbol("a")
     result shouldBe expected
   }
 
   "Concatenate symbols" should "return a valid CNF introducing a new variable representing entire expression" in {
-    val exps: List[CNF] = List(Symbol(Variable("a")), Symbol(Variable("b")), Symbol(Variable("c")))
+    val exps: List[CNF] = List(Symbol("a"), Symbol("b"), Symbol("c"))
     val result: CNF = concat(exps)
     val expected: CNF = And(
-      Symbol(Variable("TSTN0")),
-      And(Symbol(Variable("a")), And(Symbol(Variable("b")), Symbol(Variable("c"))))
+      Symbol("TSTN0"),
+      And(Symbol("a"), And(Symbol("b"), Symbol("c")))
     )
     result shouldBe expected
   }
 
   "Concatenate subexpressions" should "return a valid CNF always adding the equivalence constraint" in {
     val exps: List[CNF] =
-      List(Or(Symbol(Variable("a")), Symbol(Variable("b"))), And(Symbol(Variable("c")), Symbol(Variable("d"))))
+      List(Or(Symbol("a"), Symbol("b")), And(Symbol("c"), Symbol("d")))
     val result: CNF = concat(exps)
     val expected: CNF = And(
-      Symbol(Variable("TSTN0")),
+      Symbol("TSTN0"),
       And(
-        Or(Symbol(Variable("a")), Symbol(Variable("b"))),
-        And(Symbol(Variable("c")), Symbol(Variable("d")))
+        Or(Symbol("a"), Symbol("b")),
+        And(Symbol("c"), Symbol("d"))
       )
     )
     result shouldBe expected
