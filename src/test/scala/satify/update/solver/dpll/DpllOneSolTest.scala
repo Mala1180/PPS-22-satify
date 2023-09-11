@@ -98,13 +98,21 @@ class DpllOneSolTest extends AnyFlatSpec with Matchers:
   "DPLL" should "extract complete the decision tree one solution at a time" in {
     val (firstDt, _) = dpll(cnf)
     firstDt shouldBe expectedFirst
-    val (secDt, _) = dpll(firstDt, Set())
+    val (secDt, _) = dpll(
+      firstDt,
+      Set(
+        seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(true))),
+        seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(false)))
+      )
+    )
     secDt shouldBe expectedSec
   }
 
   "DPLL" should "extract one solution at a time" in {
     val (firstDt, firstPm) = dpll(cnf)
-    firstPm shouldBe Some(seq(Variable("a", Some(true)), Variable("b", Some(true)), varC))
-    val (_, secPm) = dpll(firstDt, Set(firstPm.get))
-    secPm shouldBe Some(seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true))))
+    firstPm shouldBe Some(seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(true))))
+    val (secDt, secPm) = dpll(firstDt, Set(firstPm.get))
+    secPm shouldBe Some(seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(false))))
+    val (_, thirdPm) = dpll(secDt, Set(firstPm.get, secPm.get))
+    thirdPm shouldBe Some(seq(Variable("a", Some(true)), Variable("b", Some(false)), Variable("c", Some(true))))
   }

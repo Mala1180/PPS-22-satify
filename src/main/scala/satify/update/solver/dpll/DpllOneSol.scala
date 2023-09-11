@@ -25,18 +25,17 @@ object DpllOneSol:
 
   val rnd: Random = Random(42)
 
-  // cnf => (DecisionTree, Option[PartialModel])
-  // (DecisionTree, Set[PartialModel]) => (DecisionTree, Option[PartialModel])
-
   def dpll(cnf: CNF): (DecisionTree, Option[PartialModel]) =
     buildTree(Decision(extractModelFromCnf(cnf), cnf)) match
       case (dt, SAT) => (dt, extractSolution(dt, Set()))
       case (dt, UNSAT) => (dt, None)
 
   def dpll(dt: DecisionTree, prevSol: Set[PartialModel]): (DecisionTree, Option[PartialModel]) =
-    resume(dt) match
-      case (resDt, SAT) => (resDt, extractSolution(resDt, prevSol))
-      case (resDt, UNSAT) => (resDt, None)
+    extractSolution(dt, prevSol) match
+      case None => resume(dt) match
+        case (resDt, SAT) => (resDt, extractSolution(resDt, prevSol))
+        case (resDt, UNSAT) => (resDt, None)
+      case s @ Some(_) => (dt, s)
 
   def resume(dt: DecisionTree): (DecisionTree, Result) = dt match
     case Leaf(d @ Decision(_, cnf)) =>
@@ -69,16 +68,16 @@ object DpllOneSol:
       case Leaf(Decision(pm, cnf)) =>
         cnf match
           case Symbol(True) =>
-            val npm =
+            explodeSolutions(
               pm.filter(v =>
                 v match
                   case Variable(name, _)
-                      if name.startsWith("X") || name.startsWith("ENC") ||
-                        name.startsWith("TSTN") =>
+                    if name.startsWith("X") || name.startsWith("ENC") ||
+                      name.startsWith("TSTN") =>
                     false
                   case _ => true
               )
-            if prevSol.contains(npm) then None else Some(npm)
+            ).find(fpm => !(prevSol contains fpm))
           case _ => None
       case Branch(_, left, right) =>
         extractSolution(left, prevSol) match
