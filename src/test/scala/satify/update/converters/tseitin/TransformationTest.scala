@@ -1,14 +1,14 @@
-package satify.update.converters
+package satify.update.converters.tseitin
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.CNF.{Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
+import satify.model.cnf.CNF.{Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
+import satify.model.cnf.CNF
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
-import satify.model.CNF
-import satify.update.converters.TseitinTransformation.transform
+import satify.update.converters.tseitin.TseitinTransformation.transform
 
-class TseitinTransformationTest extends AnyFlatSpec with Matchers:
+class TransformationTest extends AnyFlatSpec with Matchers:
 
   "The transformation of ¬(a ∨ b)" should "throw an exception" in {
     val exp: (Symbol, Expression) = (Symbol("TSTN0"), Not(Or(Symbol("a"), Symbol("b"))))

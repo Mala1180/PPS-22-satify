@@ -2,10 +2,10 @@ package satify.update.solver.dpll
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.CNF.*
+import satify.model.cnf.CNF.*
+import satify.model.cnf.CNF
 import satify.model.dpll.OrderedSeq.{given_Ordering_Variable, seq}
 import satify.model.dpll.{Constraint, Decision, PartialModel, Variable}
-import satify.model.CNF
 import satify.update.solver.dpll.Dpll.dpll
 import satify.update.solver.dpll.utils.PartialModelUtils.*
 

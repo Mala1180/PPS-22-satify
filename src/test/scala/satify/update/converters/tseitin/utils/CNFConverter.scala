@@ -1,13 +1,12 @@
-package satify.update.converters
+package satify.update.converters.tseitin.utils
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
+import satify.model.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
+import satify.model.cnf.CNF
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
-import satify.model.CNF
-import satify.model.dpll.Variable
-import satify.update.converters.TseitinTransformation.convertToCNF
+import satify.update.converters.tseitin.Utils.convertToCNF
 
 class CNFConverter extends AnyFlatSpec with Matchers:
 

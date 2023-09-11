@@ -1,9 +1,7 @@
 package satify.update.parser
 
-import satify.model.CNF.*
-import satify.model.expression.Expression
-import satify.model.{CNF, Literal}
-
+import satify.model.cnf.{CNF, Literal}
+import satify.model.cnf.CNF.*
 import scala.io.Source
 
 /** Read/write objects in DIMACS format. */

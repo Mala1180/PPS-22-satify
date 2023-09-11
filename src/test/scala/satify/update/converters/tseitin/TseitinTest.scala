@@ -1,11 +1,11 @@
-package satify.update.converters
+package satify.update.converters.tseitin
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
+import satify.model.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
+import satify.model.cnf.CNF
 import satify.model.expression.Expression.*
-import satify.model.CNF
-import satify.update.converters.TseitinTransformation.tseitin
+import satify.update.converters.tseitin.TseitinTransformation.tseitin
 
 class TseitinTest extends AnyFlatSpec with Matchers:
 

@@ -1,9 +1,9 @@
-package satify.update.converters
+package satify.model.cnf
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.CNF.*
-import satify.model.CNF
+import satify.model.cnf.CNF.*
+import satify.model.cnf.CNF
 
 class CNFOutputTest extends AnyFlatSpec with Matchers:
 
