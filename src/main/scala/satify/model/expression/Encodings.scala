@@ -143,7 +143,7 @@ object Encodings:
   val exp: Expression = atMostK(3)(Symbol("x1"), Symbol("x2"), Symbol("x3"), Symbol("x4"))
   println(exp)
   println(exp.printAsDSL(false))
-  val cnf = convertToCNF(exp)
+  val cnf = tseitin(exp)
   println(cnf)
   val sol = Solver().dpll(cnf)
 //  given CNFConverter = exp => tseitin(exp)
