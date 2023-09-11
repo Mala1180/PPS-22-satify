@@ -13,7 +13,7 @@ import satify.update.solver.dpll.utils.PartialModelUtils.extractModelFromCnf
 import scala.annotation.tailrec
 
 object Dpll:
-  
+
   def dpll(cnf: CNF): DecisionTree = dpll(Decision(extractModelFromCnf(cnf), cnf))
 
   /** Main DPLL algorithm.
@@ -41,4 +41,3 @@ object Dpll:
       case Nil => throw new Error("Stack should never be empty")
 
     step(List(Frame(dec, Nil, decide(dec))))
-  

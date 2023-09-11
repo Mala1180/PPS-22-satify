@@ -26,7 +26,6 @@ object DpllOneSol:
   def dpll(cnf: CNF): Solution =
     buildTree(Decision(extractModelFromCnf(cnf), cnf)) match
       case (dt, SAT) =>
-        println(dt)
         val solution: Solution = Solution(SAT, List(extractSolution(dt, prevRun)))
         prevRun = Some(DpllRun(dt, solution))
         solution
