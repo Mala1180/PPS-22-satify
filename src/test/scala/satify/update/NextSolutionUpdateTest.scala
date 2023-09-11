@@ -37,4 +37,4 @@ class NextSolutionUpdateTest extends AnyFlatSpec with Matchers:
     && error.isDefined shouldBe true
   }
 
-  */
+ */
