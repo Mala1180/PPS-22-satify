@@ -33,22 +33,17 @@ object Expression:
       case Not(Symbol(_)) => List((f(), exp))
       case _ => subexp(exp, List())(f)
 
-  /** Zip the subexpressions found in the given expression with a Symbol.
-    * @param exp the expression.
-    * @return a list of the subexpressions found in the given expression zipped with the Symbol.
-    */
-  def zipWithSymbol(exp: Expression): List[(Symbol, Expression)] =
-    zipWith(exp)(symbolGenerator("TSTN"))
-
   /** Search for subexpressions in the given expression.
+    *
     * @param exp the expression.
     * @return a list of the subexpressions found in the given expression.
     */
   def subexpressions(exp: Expression): List[Expression] =
-    zipWithSymbol(exp).map(_._2)
+    zipWith(exp)(() => Int).map(_._2)
 
   /** Search if a subexpression is contained in the given expression.
-    * @param exp the expression.
+    *
+    * @param exp    the expression.
     * @param subexp the subexpression to find.
     * @return true if the subexpression is contained in the expression, false otherwise.
     */

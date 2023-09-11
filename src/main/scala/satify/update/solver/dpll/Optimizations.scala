@@ -1,7 +1,7 @@
 package satify.update.solver.dpll
 
-import satify.model.{CNF, Variable}
-import satify.model.CNF.*
+import satify.model.cnf.{CNF, Variable}
+import satify.model.cnf.CNF.*
 import satify.model.dpll.{Constraint, Decision}
 
 import scala.annotation.tailrec

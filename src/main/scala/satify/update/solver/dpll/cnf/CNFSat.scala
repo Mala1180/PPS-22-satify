@@ -1,8 +1,8 @@
 package satify.update.solver.dpll.cnf
 
-import satify.model.Bool.{False, True}
-import satify.model.CNF.{And, Not, Or, Symbol}
-import satify.model.{Bool, CNF, Variable}
+import satify.model.cnf.Bool.{False, True}
+import satify.model.cnf.CNF.{And, Not, Or, Symbol}
+import satify.model.cnf.{Bool, CNF, Variable}
 
 object CNFSat:
 

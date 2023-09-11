@@ -161,7 +161,7 @@ After the definition of a data structure, I started to define the algorithm's ph
 
 The first defined data structure was the Enumeration `Expression` that represents the expression of the formula in the
 enumeration form.
-Looking to the algoritmh's phases I started writing some utils method for the `Expression` object that can be used from
+Looking to the algorithm's phases I started writing some utils method for the `Expression` object that can be used from
 all.
 
 In particular to zip the subexpressions with new variables I made use of generic type to make the code more reusable.
@@ -170,7 +170,7 @@ After the definition of these methods, where I have made great use of Pattern Ma
 implementing the algorithm's phases.
 
 The idea was to use the functional programming, so I defined the `Tseitin` object as a singleton object that contains
-the algorithm's phases and exposing only the `tseitin` method that is the entry point of the algorithm.
+the algorithm's phases and exposing only the `Tseitin` method that is the entry point of the algorithm.
 
 I followed the TDD approach for the core of the algorithm and for the utils methods.
 

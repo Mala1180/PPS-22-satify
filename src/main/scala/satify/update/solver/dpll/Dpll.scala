@@ -1,8 +1,8 @@
 package satify.update.solver.dpll
 
-import satify.model.Bool.{False, True}
-import satify.model.CNF.{And, Not, Or, Symbol}
-import satify.model.{CNF, Variable}
+import satify.model.cnf.Bool.{False, True}
+import satify.model.cnf.CNF.{And, Not, Or, Symbol}
+import satify.model.cnf.{CNF, Variable}
 import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf

@@ -1,13 +1,13 @@
-package satify.update.converters
+package satify.update.converters.tseitin
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.Variable
+import satify.model.cnf.Variable
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
-import satify.update.converters.TseitinTransformation.symbolsReplace
+import satify.update.converters.tseitin.TseitinTransformation.symbolsReplace
 
-class VariableSubstitutionTest extends AnyFlatSpec with Matchers:
+class ReplacingTest extends AnyFlatSpec with Matchers:
 
   "In (¬b) the replacement of subexpressions with symbols" should "return only a new variable representing the input expression" in {
     val exp: Expression = Not(Symbol("b"))

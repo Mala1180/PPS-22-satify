@@ -1,14 +1,16 @@
-package satify.update.converters
+package satify.update.converters.tseitin
 
+import satify.model.cnf.{CNF, Variable}
 import satify.model.expression.Expression
-import satify.model.{CNF, Variable}
+
 import scala.annotation.tailrec
 
 /** Object containing the Tseitin transformation algorithm. */
 private[converters] object TseitinTransformation:
 
-  import satify.model.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
-  import satify.model.Literal
+  import Utils.*
+  import satify.model.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
+  import satify.model.cnf.Literal
   import satify.model.expression.Expression.{replace as replaceExp, *}
 
   /** Applies the Tseitin transformation to the gt iven expression in order to convert it into CNF.
@@ -19,21 +21,6 @@ private[converters] object TseitinTransformation:
     var transformations: List[CNF] = List()
     symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
     concat(transformations)
-
-  // TODO TO ADD TESTS
-  /** Concat all subexpression in And to obtain a valid CNF expression.
-    *
-    * @param subexpressions the subexpressions to concat.
-    * @return the CNF expression.
-    */
-  private def concat(subexpressions: List[CNF]): CNF =
-    if subexpressions.size == 1 then subexpressions.head
-    else
-      var concatenated = subexpressions
-      concatenated = concatenated.prepended(CNFSymbol(Variable("TSTN0")))
-      concatenated.reduceRight((s1, s2) =>
-        CNFAnd(s1.asInstanceOf[CNFOr | Literal], s2.asInstanceOf[CNFAnd | CNFOr | Literal])
-      )
 
   /** Substitute Symbols of nested subexpressions in all others expressions
     *
@@ -107,44 +94,16 @@ private[converters] object TseitinTransformation:
           CNFOr(not(e2), sym) :: Nil
       case ssym @ Symbol(_) => List(symbol(ssym))
 
-  /** Method to check if an expression is in CNF form and can be converted to CNF form.
-    * @param expression The expression to check.
-    * @return true if the expression could be converted to CNF form, false otherwise and in case of empty expression.
+  /** Concat all subexpression in And to obtain a valid CNF expression.
+    *
+    * @param subexpressions the subexpressions to concat.
+    * @return the CNF expression.
     */
-  def isCNF(expression: Expression): Boolean =
-    import Expression.*
-    expression match
-      case Symbol(_) => true
-      case Not(Symbol(_)) => true
-      case And(l, r) =>
-        (l, r) match
-          case (And(_, _), _) => false
-          case _ => isCNF(l) && isCNF(r);
-      case Or(l, r) =>
-        (l, r) match
-          case (And(_, _), _) | (_, And(_, _)) => false
-          case _ => isCNF(l) && isCNF(r);
-      case _ => false
-
-  /** Method to check if an expression is in CNF form and can be converted to CNF form.
-    * @param expression The expression to check.
-    * @return true if the expression could be converted to CNF form, false otherwise and in case of empty expression.
-    */
-  def convertToCNF(expression: Expression): CNF =
-    def convL(exp: Expression): CNFOr | Literal = exp match
-      case Or(l, r) => CNFOr(convL(l), convL(r))
-      case Symbol(v) => CNFSymbol(Variable(v))
-      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
-      case _ => throw new Exception("Expression is not convertible to CNF form")
-    def convR(exp: Expression): CNFAnd | CNFOr | Literal = exp match
-      case And(l, r) => CNFAnd(convL(l), convR(r))
-      case Or(l, r) => CNFOr(convL(l), convL(r))
-      case Symbol(v) => CNFSymbol(Variable(v))
-      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
-      case _ => throw new Exception("Expression is not convertible to CNF form")
-    expression match
-      case Symbol(v) => CNFSymbol(Variable(v))
-      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
-      case And(l, r) => CNFAnd(convL(l), convR(r))
-      case Or(l, r) => CNFOr(convL(l), convL(r))
-      case _ => throw new Exception("Expression is not convertible to CNF form")
+  def concat(subexpressions: List[CNF]): CNF =
+    if subexpressions.size == 1 then subexpressions.head
+    else
+      var concatenated = subexpressions
+      concatenated = concatenated.prepended(CNFSymbol(Variable("TSTN0")))
+      concatenated.reduceRight((s1, s2) =>
+        CNFAnd(s1.asInstanceOf[CNFOr | Literal], s2.asInstanceOf[CNFAnd | CNFOr | Literal])
+      )
