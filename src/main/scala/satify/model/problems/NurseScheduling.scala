@@ -55,7 +55,3 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     maxShiftsPerNurseConstraint
   )
   override def getVisualization: Component = new FlowPanel()
-
-@main def testNurse(): Unit =
-  val prob = NurseScheduling(3, 2, 2)
-  println(prob.exp.printAsDSL(false))

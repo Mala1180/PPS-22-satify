@@ -1,6 +1,8 @@
 package satify.model.problems
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
+import satify.update.solver.Solver
+import satify.update.solver.SolverType.DPLL
 
 import scala.swing.{Component, FlowPanel}
 
@@ -32,10 +34,3 @@ case class GraphColoring(edges: List[(String, String)], nodes: List[String], col
       for j <- 0 until colors do sb.append(s"${variables(i)(j)} ")
       sb.append("\n")
     sb.toString
-
-@main def test(): Unit =
-  val nodes = "node1" :: "node2" :: Nil
-  val edges = (nodes.head, nodes.last) :: Nil
-  val prob = GraphColoring(edges, nodes, 2)
-  println(prob.exp.printAsDSL(false))
-  println(prob.variables.head)

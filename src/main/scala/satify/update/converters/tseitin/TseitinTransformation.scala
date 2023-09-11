@@ -52,8 +52,8 @@ private[converters] object TseitinTransformation:
         case (l, e) :: tail => symbolSelector(replace(tail, e, l, Nil), (l, e) :: acc)
       }
 
-    val zipped = zipWithSymbol(exp)
-    if (zipped.size == 1) zipped
+    val zipped = zipWithSymbol(exp).distinctBy(_._2)
+    if zipped.size == 1 then zipped
     else symbolSelector(zipped.reverse, Nil)
   }
 
