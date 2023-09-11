@@ -122,13 +122,15 @@ object Update:
     * @return a state with the input, expression, and solution if no exception is thrown, otherwise a state with the error.
     */
   private def nextSolutionUpdate(currentState: State): State =
+    val nextAssignment: Assignment = Solver(DPLL).next()
+
     if currentState.problem.isDefined then
       safeUpdate(
         () =>
           State(
             Solution(
               currentState.solution.get.result,
-              currentState.solution.get.assignment.tail ::: List(currentState.solution.get.assignment.head)
+              nextAssignment :: currentState.solution.get.assignment
             ),
             currentState.problem.get
           ),
