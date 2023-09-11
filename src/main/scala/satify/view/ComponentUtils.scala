@@ -11,7 +11,7 @@ import java.util.concurrent.Executors
 import javax.swing.ImageIcon
 import javax.swing.plaf.basic.ComboPopup
 import scala.swing.*
-import scala.swing.event.{ButtonClicked, FocusGained, SelectionChanged}
+import scala.swing.event.{ButtonClicked, FocusGained, FocusLost, SelectionChanged}
 
 object ComponentUtils:
 
@@ -62,8 +62,8 @@ object ComponentUtils:
           case "N-Queens" => Set(createLabelledTextArea("N. queens", nqQueens, 1, 10))
           case "Graph Coloring" =>
             Set(
-              createLabelledTextArea("N. nodes", gcNodes, 1, 10),
-              createLabelledTextArea("N. edge", gcEdges, 1, 10),
+              createLabelledTextArea("Nodes: n1, n2, n3, ...", gcNodes, 1, 15),
+              createLabelledTextArea("Edges: n1-n2, n2-n3, ...", gcEdges, 1, 10),
               createLabelledTextArea("N. colors", gcColors, 1, 10)
             )
           case "Nurse Scheduling" =>
@@ -96,10 +96,17 @@ object ComponentUtils:
       border = Swing.EmptyBorder(margin)
       foreground = Color.GRAY
       font = Font(fontFamily, Font.ITALIC, 15)
-      reactions += { case FocusGained(_, _, _) =>
-        foreground = Color.BLACK
-        font = Font(fontFamily, Font.PLAIN, 15)
-        text = ""
+      reactions += {
+        case FocusGained(_, _, _) =>
+          if text.equals(placeholder) then
+            foreground = Color.BLACK
+            font = Font(fontFamily, Font.PLAIN, 15)
+            text = ""
+        case FocusLost(_, _, _) =>
+          if text.isEmpty then
+            foreground = Color.GRAY
+            font = Font(fontFamily, Font.ITALIC, 15)
+            text = placeholder
       }
 
   /** Creates a button with the given text

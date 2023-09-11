@@ -87,31 +87,30 @@ object Reactions:
     */
   private def readProblemSelection(): Problem =
     var p: Problem = null
-    def checkInput(input: String): Int =
+    def checkInt(input: String): Int =
       if !input.equals("") && input.forall(_.isDigit) && input.toInt > 0 then input.toInt
       else throw new IllegalArgumentException("Parameter value is not valid")
     def getInput(name: String): TextArea = problemParameterPanel.contents
       .filter(c => c.isInstanceOf[TextArea] && c.name.equals(name))
       .head
       .asInstanceOf[TextArea]
-    // TODO: introduce a new def to parse the graph coloring parameters.
-    // maybe it is better to introduce one util def in problem trait to parse the parameters
-    // following this way every new introduced problem should implement the parse method to parse its own type of parameters
-    // from the input to their format. eg. NurseParse -> Int | GCParse -> List[(string, string)], String, Int | NSParse -> Int, Int, Int
+    def checkNodes(input: String): List[String] = input.split(",").map(_.trim).toList
+    def checkEdges(input: String): List[(String, String)] =
+      input.split(",").map(_.trim).toList.map(_.split("-").map(_.trim).toList).map(l => (l.head, l.last))
     try
       p = problemComboBox.item match
-        case "N-Queens" => NQueens(checkInput(getInput(nqQueens).text))
+        case "N-Queens" => NQueens(checkInt(getInput(nqQueens).text))
         case "Graph Coloring" =>
           GraphColoring(
-            List((getInput(gcNodes).text, getInput(gcNodes).text)),
-            List(getInput(gcEdges).text),
-            checkInput(getInput(gcColors).text)
+            checkEdges(getInput(gcEdges).text),
+            checkNodes(getInput(gcNodes).text),
+            checkInt(getInput(gcColors).text)
           )
         case "Nurse Scheduling" =>
           NurseScheduling(
-            checkInput(getInput(nsNurses).text),
-            checkInput(getInput(nsDays).text),
-            checkInput(getInput(nsShifts).text)
+            checkInt(getInput(nsNurses).text),
+            checkInt(getInput(nsDays).text),
+            checkInt(getInput(nsShifts).text)
           )
     catch
       case e: Exception =>
