@@ -2,38 +2,35 @@ package satify.update.parser
 
 import satify.model.cnf.{CNF, Literal}
 import satify.model.cnf.CNF.*
+
+import java.io.{File, PrintWriter}
+import scala.collection.mutable
 import scala.io.Source
 
 /** Read/write objects in DIMACS format. */
 trait Dimacs[T]:
-
   def parse(lines: Seq[String]): Option[T]
-
-  // TODO
-  // def dump(obj: T): Seq[String]
-
-  /*
-  def write(path: String, obj: T): Unit = {
-    val writer = new PrintWriter(new File(path))
-    try dump(obj).foreach(writer.println) finally writer.close()
-  }
-   */
-
+  def dump(obj: T): Seq[String]
   def read(path: String): Option[T] = readSource(Source.fromFile(path))
-
   def read: Option[T] = readSource(Source.stdin)
-
   private def readSource(source: Source) =
     try parse(source.getLines.toList)
     finally source.close()
-
+  protected def writeSource(path: String, obj: T): Unit =
+    val fileName: String = "output.txt"
+    val separator = System.getProperty("file.separator")
+    val writer = new PrintWriter(new File(path + separator + fileName))
+    try dump(obj).foreach(writer.println)
+    finally writer.close()
   protected def stripComments(lines: Seq[String]): Seq[String] =
     lines.filterNot(_.startsWith("c"))
 
-/** Read/write formulas in DIMACS format. */
+  /** Read/write formulas in DIMACS format. */
 object DimacsCNF extends Dimacs[CNF]:
 
   private val Header = "p cnf (\\d+) (\\d+)".r
+
+  def write(path: String, cnf: CNF): Unit = writeSource(path, cnf)
 
   def parse(lines: Seq[String]): Option[CNF] =
     stripComments(lines) match
@@ -43,17 +40,6 @@ object DimacsCNF extends Dimacs[CNF]:
         if or.nonEmpty then Some(buildAndCNF(or))
         else None
       case _ => None
-
-  // TODO
-  /*
-  def dump(cnf: CNF): Seq[String] = {
-    val header = s"p cnf ${cnf.variableCount} ${cnf.clauseCount}"
-    val clauses = cnf.clauses.map {
-      clause => s"${clause.literals.mkString(" ")} 0"
-    }
-    header +: clauses
-  }
-   */
 
   private def parseOr(clause: String): Or | Literal =
     buildOrCNF(
@@ -70,12 +56,33 @@ object DimacsCNF extends Dimacs[CNF]:
         .toSeq
     )
 
-  /*private def buildOrCNF(cnf: Seq[Literal]): Or | Literal =
-    cnf.tail.foldLeft[Or | Literal](cnf.head)((p, c) => Or(c, p))
+  def dump(cnf: CNF): Seq[String] =
+    var cnfSeq: Seq[String] = Seq.empty
+    var cnt = 0
+    val memo: mutable.HashMap[CNF, String] = new mutable.HashMap[CNF, String]():
+      def nextVarName(): String =
+        cnt += 1
+        cnt.toString
 
-  private def buildAndCNF(cnf: Seq[Or | Literal]): And | Or | Literal =
-    cnf.tail.foldLeft[And | Or | Literal](cnf.head)((p, c) => And(c, p))
-   */
+      override def apply(key: CNF): String =
+        getOrElseUpdate(key, nextVarName())
+
+    import CNF.*
+    def dimacs(cnf: CNF): String = cnf match
+      case Symbol(value) =>
+        memo(Symbol(value))
+      case And(left, right) =>
+        dimacs(left) + "\n" + dimacs(right)
+      case Or(left, right) => dimacs(left) + " " + dimacs(right)
+      case Not(branch) =>
+        "-" + memo(branch)
+
+    val dimacsString = dimacs(cnf)
+    val numClauses = dimacsString.split("\n").length
+    // header
+    cnfSeq :+= s"p cnf $cnt $numClauses"
+    cnfSeq ++= dimacsString.split("\n").map(_ + " 0")
+    cnfSeq
 
   private def buildOrCNF(literals: Seq[Literal], p: Option[Or | Literal] = None): Or | Literal =
     p match

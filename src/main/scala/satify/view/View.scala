@@ -4,9 +4,12 @@ import satify.model.cnf.CNF
 import satify.model.errors.Error
 import satify.model.errors.Error.*
 import satify.model.{Solution, State}
-import satify.view.ComponentUtils.{createErrorDialog, createInputTextArea, createNextSection, createOutputTextArea}
+import satify.update.parser.DimacsCNF
+import satify.view.ComponentUtils.*
 import satify.view.Constants.{cnfOutputDialogName, solOutputDialogName}
+import satify.view.GUI.{createExportFileChooser, exportFileChooser}
 
+import java.awt.Color
 import scala.swing.*
 
 object View:
@@ -36,9 +39,17 @@ object View:
     */
   private def updateCnf(cnf: Option[CNF]): Set[Component] =
     if cnf.isDefined then
-      val fp: FlowPanel = new FlowPanel():
+      val exportButton = createButton("Export CNF", 130, 50, Color.BLUE)
+      exportButton.reactions += { case _: event.ButtonClicked =>
+        val result = exportFileChooser.showOpenDialog(null)
+        if result == FileChooser.Result.Approve then DimacsCNF.write(exportFileChooser.selectedFile.getPath, cnf.get)
+        else createErrorDialog("Export error, select a txt file to export the CNF")
+      }
+      val fp: BoxPanel = new BoxPanel(Orientation.Vertical):
         name = cnfOutputDialogName
         contents += new ScrollPane(createOutputTextArea(cnf.get.printAsFormal(), 30, 35))
+        contents += new FlowPanel():
+          contents += exportButton
       Set(fp)
     else Set()
 

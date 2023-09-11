@@ -40,7 +40,7 @@ object Reactions:
     * @param model the current model to update
     */
   def importReaction(model: Model): Unit =
-    val file: File = fileChooser.selectedFile
+    val file: File = importFileChooser.selectedFile
     updateComponents(view(update(model, Import(file))))
 
   /** Reaction to the problem selection, checking also parameter and selection
