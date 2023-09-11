@@ -4,6 +4,8 @@ import satify.model.expression.Expression.{And, Not, Or, Symbol}
 
 object Utils:
 
+  var c = 0
+
   /** Creates a producer of new Symbols starting from the given prefix.
     * @param prefix the prefix of the new Symbol.
     * @return a function that produces a new Symbol starting from the given prefix.
