@@ -81,4 +81,4 @@ object NQueens:
         println(
           firstN.foldLeft("")((p, c) => p + (if c.value.isDefined then if c.value.get then s" ♕ " else " · " else " "))
         )
-      problem.printNqueens(pm.drop(problem.n))
+        problem.printNqueens(pm.drop(problem.n))
