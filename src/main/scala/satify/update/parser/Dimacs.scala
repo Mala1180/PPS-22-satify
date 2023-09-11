@@ -10,23 +10,17 @@ import scala.io.Source
 
 /** Read/write objects in DIMACS format. */
 trait Dimacs[T]:
-
   def parse(lines: Seq[String]): Option[T]
   def dump(obj: T): Seq[String]
-
   def read(path: String): Option[T] = readSource(Source.fromFile(path))
-
   def read: Option[T] = readSource(Source.stdin)
-
   private def readSource(source: Source) =
     try parse(source.getLines.toList)
     finally source.close()
-
-  private def writeSource(path: String, obj: T): Unit =
+  protected def writeSource(path: String, obj: T): Unit =
     val writer = new PrintWriter(new File(path))
     try dump(obj).foreach(writer.println)
     finally writer.close()
-
   protected def stripComments(lines: Seq[String]): Seq[String] =
     lines.filterNot(_.startsWith("c"))
 
@@ -34,6 +28,8 @@ trait Dimacs[T]:
 object DimacsCNF extends Dimacs[CNF]:
 
   private val Header = "p cnf (\\d+) (\\d+)".r
+
+  def write(path: String, cnf: CNF): Unit = writeSource(path, cnf)
 
   def parse(lines: Seq[String]): Option[CNF] =
     stripComments(lines) match
