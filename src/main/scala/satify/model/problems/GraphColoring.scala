@@ -9,20 +9,21 @@ case class GraphColoring(edges: List[(String, String)], nodes: List[String], col
   val variables: Seq[Seq[Symbol]] =
     for i <- nodes.indices yield for j <- 0 until colors yield Symbol(s"${nodes(i)}_c$j")
 
-  private val nodeHasExactlyOneColor: (String, Expression) =
+  /** Each node has exactly one color */
+  private val nodeHasExactlyOneColor: Expression =
     val constraints = for i <- nodes.indices yield exactlyOne(variables(i): _*)
-    ("Each node has exactly one color", constraints.reduceLeft(And(_, _)))
+    constraints.reduceLeft(And(_, _))
 
-  private val linkedNodesHasDifferentColor: (String, Expression) =
+  /** Each edge must have different colors in its vertices */
+  private val linkedNodesHasDifferentColor: Expression =
     val constraints =
       for
         (i, j) <- edges
         k <- 0 until colors
       yield Or(Not(variables(nodes.indexOf(i))(k)), Not(variables(nodes.indexOf(j))(k)))
-    ("Each edge must have different colors in its vertices", constraints.reduceLeft(And(_, _)))
+    constraints.reduceLeft(And(_, _))
 
-  override val constraints: Set[(String, Expression)] = Set(nodeHasExactlyOneColor, linkedNodesHasDifferentColor)
-  override val exp: Expression = constraints.map(_._2).reduceLeft(And(_, _))
+  override val constraints: Set[Expression] = Set(nodeHasExactlyOneColor, linkedNodesHasDifferentColor)
   override def getVisualization: Component = new FlowPanel()
   override def toString: String =
     // print variables as a matrix

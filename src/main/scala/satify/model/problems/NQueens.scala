@@ -19,27 +19,28 @@ case class NQueens(n: Int) extends Problem:
       yield for j <- 0 until n
       yield Symbol(s"x_${i}_$j")
 
-  private val atLeastOneQueen: (String, Expression) =
+  /** At least one queen on each row and column */
+  private val atLeastOneQueen: Expression =
     val atLeastConstraints =
       for i <- 0 until n
       yield And(
         atLeastOne(variables(i): _*),
         atLeastOne(variables.map(row => row(i)): _*)
       )
-    ("At least one queen on each row and column", atLeastConstraints.reduceLeft(And(_, _)))
+    atLeastConstraints.reduceLeft(And(_, _))
 
-  // At least one on each row and column
-  private val atMostOneQueen: (String, Expression) =
+  /** At most one queen on each row and column */
+  private val atMostOneQueen: Expression =
     val atMostConstraints =
       for i <- 0 until n
       yield And(
         atMostOne(variables(i): _*),
         atMostOne(variables.map(row => row(i)): _*)
       )
-    ("At most one queen on each row and column", atMostConstraints.reduceLeft(And(_, _)))
+    atMostConstraints.reduceLeft(And(_, _))
 
-  // Diagonal constraints
-  private val diagConstr: (String, Expression) =
+  /** At most one queen on each diagonal */
+  private val diagConstr: Expression =
     if n < 0 then throw new IllegalArgumentException("n must be positive")
     val clauses =
       for i <- 0 until (n - 1)
@@ -59,10 +60,9 @@ case class NQueens(n: Int) extends Problem:
             And(atMostOne(s.map((_, _, t, _) => t): _*), atMostOne(s.map((_, _, _, t) => t): _*))
           )
         )
-    ("At most one queen in each diagonal", clauses.reduceLeft(And(_, _)))
+    clauses.reduceLeft(And(_, _))
 
-  override val constraints: Set[(String, Expression)] = Set(atLeastOneQueen, atMostOneQueen, diagConstr)
-  override val exp: Expression = constraints.map(_._2).reduceLeft(And(_, _))
+  override val constraints: Set[Expression] = Set(atLeastOneQueen, atMostOneQueen, diagConstr)
   override def toString: String =
     ??? // variables.map(_.map(_ => if c.value.isDefined then if c.value.get then s" ♕ " else " · "
   override def getVisualization: Component = new FlowPanel()

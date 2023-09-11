@@ -12,7 +12,8 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     yield for s <- 0 until shifts
     yield Symbol(s"n${n}_d${d}_s$s")
 
-  private val oneNursePerShift: (String, Expression) =
+  /** In each shift can work just one nurse */
+  private val oneNursePerShift: Expression =
     val constraints =
       for
         d <- 0 until days
@@ -20,16 +21,17 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
       yield exactlyOne(variables(d)(s): _*)
 
     println(constraints)
-    ("In each shift can work just one nurse", constraints.reduceLeft(And(_, _)))
+    constraints.reduceLeft(And(_, _))
 
-  private val atMostOneShiftPerDay: (String, Expression) =
+  /** Each nurse can work no more than one shift per day */
+  private val atMostOneShiftPerDay: Expression =
     val constraints = for
       n <- 0 until nurses
       d <- 0 until days
     yield atMostOne(variables(n)(d): _*)
 
     println(constraints)
-    ("Each nurse can work no more than one shift per day", constraints.reduceLeft(And(_, _)))
+    constraints.reduceLeft(And(_, _))
 
   /** If possible, shifts should be distributed evenly and fairly, so that each nurse works the minimum amount of them. */
   private val minShiftsPerNurse: Int = (shifts * days) / nurses
@@ -39,26 +41,21 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     */
   private val maxShiftsPerNurse: Int = minShiftsPerNurse + 1
 
-  private val minShiftsPerNurseConstraint: (String, Expression) =
-    val constraints = atLeastK(minShiftsPerNurse)(variables.flatten.flatten: _*)
-    ("Each nurse should work at least the minimum number of shifts", constraints)
+  /** Each nurse should work at least the minimum number of shifts */
+  private val minShiftsPerNurseConstraint: Expression = atLeastK(minShiftsPerNurse)(variables.flatten.flatten: _*)
 
-  private val maxShiftsPerNurseConstraint: (String, Expression) =
-    val constraints = atMostK(maxShiftsPerNurse)(variables.flatten.flatten: _*)
-    ("Each nurse should work at most the maximum number of shifts", constraints)
+  /** Each nurse should work at most the maximum number of shifts */
+  private val maxShiftsPerNurseConstraint: Expression = atMostK(maxShiftsPerNurse)(variables.flatten.flatten: _*)
 
   override def toString: String = s"NurseScheduling(nurses=$nurses, days=$days, shifts=$shifts)"
-  override val constraints: Set[(String, Expression)] = Set(
+  override val constraints: Set[Expression] = Set(
     oneNursePerShift,
     atMostOneShiftPerDay,
     minShiftsPerNurseConstraint,
     maxShiftsPerNurseConstraint
   )
-  override val exp: Expression = constraints.map(_._2).reduceLeft(And(_, _))
   override def getVisualization: Component = new FlowPanel()
-  def s(): (String, Expression) = oneNursePerShift
 
 @main def testNurse(): Unit =
   val prob = NurseScheduling(3, 2, 2)
-  println(prob.s())
   println(prob.exp.printAsDSL(false))

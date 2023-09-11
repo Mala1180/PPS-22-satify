@@ -1,16 +1,18 @@
 package satify.model.problems
 
 import satify.model.expression.Expression
+import satify.model.expression.Expression.And
 
 import scala.swing.Component
 
 /** Entity representing a SAT problem. */
 trait Problem:
-  /** The expression encoded of the problem that must be satisfied. */
-  val exp: Expression
-
   /** The set of problem's constraints, with a description. */
-  val constraints: Set[(String, Expression)]
+  val constraints: Set[Expression]
+
+  /** The expression encoded of the problem that must be satisfied. */
+  val exp: Expression = constraints.reduceLeft(And(_, _))
+
   override def toString: String
   def getVisualization: Component
 
