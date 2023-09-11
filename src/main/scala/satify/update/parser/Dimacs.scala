@@ -1,10 +1,9 @@
 package satify.update.parser
 
-import satify.model.cnf.{CNF, Literal, Variable}
 import satify.model.cnf.CNF.*
+import satify.model.cnf.{CNF, Literal, Variable}
 
-import java.io.PrintWriter
-import java.io.File
+import java.io.{File, PrintWriter}
 import scala.collection.mutable
 import scala.io.Source
 
@@ -18,7 +17,9 @@ trait Dimacs[T]:
     try parse(source.getLines.toList)
     finally source.close()
   protected def writeSource(path: String, obj: T): Unit =
-    val writer = new PrintWriter(new File(path))
+    val fileName: String = "output.txt"
+    val separator = System.getProperty("file.separator")
+    val writer = new PrintWriter(new File(path + separator + fileName))
     try dump(obj).foreach(writer.println)
     finally writer.close()
   protected def stripComments(lines: Seq[String]): Seq[String] =

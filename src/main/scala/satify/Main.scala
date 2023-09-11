@@ -34,7 +34,7 @@ object Main extends App with MVU:
     }
 
     importMenuItem.reactions += { case ButtonClicked(_) =>
-      val result = fileChooser.showOpenDialog(null)
+      val result = importFileChooser.showOpenDialog(null)
       if result == FileChooser.Result.Approve then
         Swing.onEDT(disableInteractions())
         Executors.newSingleThreadExecutor().execute(() => importReaction(model))
