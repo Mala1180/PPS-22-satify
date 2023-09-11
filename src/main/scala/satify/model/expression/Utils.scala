@@ -4,29 +4,35 @@ import satify.model.expression.Expression.{And, Not, Or, Symbol}
 
 object Utils:
 
-  /** Generate a new Symbol starting from the given prefix.
+  /** Creates a producer of new Symbols starting from the given prefix.
     * @param prefix the prefix of the new Symbol.
-    * @return a new Symbol.
+    * @return a function that produces a new Symbol starting from the given prefix.
     */
-  def symbolGenerator(prefix: String): () => Symbol =
+  def symbolProducer(prefix: String): () => Symbol =
     var c = 0
     () =>
       val s: Symbol = Symbol(prefix + c)
       c = c + 1
       s
 
+  /** Generate a new Symbol starting from the given prefix.
+    * @param prefix the prefix of the new Symbol.
+    * @return a new Symbol.
+    */
+  def symbolGenerator(prefix: String): () => Symbol = symbolProducer(prefix)
+
   extension (exp: Expression)
-    def printAsFormal(flat: Boolean = false): String =
+    def printAsDSL(flat: Boolean = false): String =
       exp match
         case Symbol(value) => value
         case And(left, right) =>
-          if flat then s"${left.printAsFormal(flat)} and ${right.printAsFormal(flat)}"
-          else s"${left.printAsFormal(flat)} and\n${right.printAsFormal(flat)}"
-        case Or(left, right) => s"${left.printAsFormal(flat)} or ${right.printAsFormal(flat)}"
-        case Not(branch) => s"not(${branch.printAsFormal(flat)})"
+          if flat then s"(${left.printAsDSL(flat)} and ${right.printAsDSL(flat)})"
+          else s"(${left.printAsDSL(flat)} and\n${right.printAsDSL(flat)})"
+        case Or(left, right) => s"(${left.printAsDSL(flat)} or ${right.printAsDSL(flat)})"
+        case Not(branch) => s"not(${branch.printAsDSL(flat)})"
 
-    def printAsDSL(flat: Boolean = false): String =
-      var r = printAsFormal(flat)
+    def printAsFormal(flat: Boolean = false): String =
+      var r = printAsDSL(flat)
         .replace("and", "∧")
         .replace("or", "∨")
         .replace("not", "¬")

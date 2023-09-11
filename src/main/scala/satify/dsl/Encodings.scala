@@ -5,25 +5,24 @@ import satify.model.expression.Expression.*
 
 object Encodings:
 
-  /** Converts a tuple to a list of [[Symbol]]
-    * @param tuple the input [[Tuple]]
-    * @return the list of [[Symbol]]
-    */
-  private def tupleToSymbols(tuple: Tuple): List[Symbol] =
-    tuple.productIterator.toList.map(_.toString).map(Symbol.apply)
+  extension (expressions: Seq[Symbol])
 
-  extension (expressions: Tuple)
-
-    /** Calls [[atMostOne]] if k is 1, [[atMostK]] otherwise.
-      * @see [[atMostOne]] and [[atMostK]]
+    /** Calls [[atMostK]]
+      * @see [[atMostK]]
+      * @return the [[Expression]] that represents the constraint
       */
-    def atMost(k: Int): Expression = k match
-      case 1 => atMostOne(tupleToSymbols(expressions): _*)
-      case _ => atMostK(k)(tupleToSymbols(expressions): _*)
+    def atMost(k: Int): Expression = atMostK(k)(expressions: _*)
 
     /** Calls [[atLeastOne]] if k is 1, [[atLeastK]] otherwise.
       * @see [[atLeastOne]] and [[atLeastK]]
+      * @return the [[Expression]] that represents the constraint
       */
     def atLeast(k: Int): Expression = k match
-      case 1 => atLeastOne(tupleToSymbols(expressions): _*)
-      case _ => atLeastK(k)(tupleToSymbols(expressions): _*)
+      case 1 => atLeastOne(expressions: _*)
+      case _ => atLeastK(k)(expressions: _*)
+
+    /** Calls [[Expression.exactlyOne]]
+      *  @see [[Expression.exactlyOne]]
+      * @return the [[Expression]] that represents the constraint
+      */
+    def exactlyOne: Expression = Expression.exactlyOne(expressions: _*)

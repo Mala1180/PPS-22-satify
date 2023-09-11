@@ -1,6 +1,6 @@
 package satify.model.dpll
 
-import satify.model.Variable
+case class Variable(name: String, value: Option[Boolean] = None)
 
 type PartialModel = Seq[Variable]
 
