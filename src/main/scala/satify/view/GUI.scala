@@ -1,7 +1,7 @@
 package satify.view
 
 import satify.view.ComponentUtils.*
-import satify.view.Constants.{expTextAreaName, headingFont, logoPath, margin, windowSize}
+import satify.view.Constants.*
 
 import java.awt.Color
 import javax.swing.filechooser.FileNameExtensionFilter
@@ -15,7 +15,7 @@ object GUI:
     icon = logoIcon
     border = Swing.EmptyBorder(margin)
 
-  val parameterInputText: TextField = createParameterInputText()
+  val problemParameterPanel: FlowPanel = new FlowPanel()
   val inputScrollPane = new ScrollPane(createInputTextArea())
   val problemComboBox: ComboBox[String] = createProblemComboBox()
 
@@ -29,7 +29,9 @@ object GUI:
   val loadingLabel: Label = createLabel("Loading...", 16)
   loadingLabel.visible = false
 
-  val fileChooser: FileChooser = createImportFileChooser
+  val importFileChooser: FileChooser = createImportFileChooser
+  val exportFileChooser: FileChooser = createExportFileChooser
+
   val helpMenuItem: MenuItem = new MenuItem("Help"):
     maximumSize = new Dimension(50, 200)
   val importMenuItem: MenuItem = new MenuItem("Import"):
@@ -74,7 +76,9 @@ object GUI:
         contents += new FlowPanel():
           contents += new Label("Parameter:"):
             font = headingFont
-        contents += parameterInputText
+        contents += new BoxPanel(Orientation.Vertical):
+          contents += problemParameterPanel
+          font = headingFont
         contents += new FlowPanel():
           contents += solveProblemButton
         contents += new FlowPanel():
@@ -87,6 +91,15 @@ object GUI:
     title = "Import DIMACS formula"
     fileSelectionMode = FileChooser.SelectionMode.FilesOnly
     fileFilter = new FileNameExtensionFilter("Text files", "txt")
+    multiSelectionEnabled = false
+
+  /** Creates a file chooser for the export item in CNF output dialog.
+    *
+    * @return the file chooser
+    */
+  def createExportFileChooser: FileChooser = new FileChooser:
+    title = "Export DIMACS formula"
+    fileSelectionMode = FileChooser.SelectionMode.DirectoriesOnly
     multiSelectionEnabled = false
 
   /** Disable all GUI interactions when the solving or converting process starts. */

@@ -56,10 +56,9 @@ object PartialModelUtils:
         cnf match
           case Symbol(True) =>
             Set(
-              pm.filter(v =>
-                v match
-                  case Variable(name, _) if name.startsWith("ENC") || name.startsWith("TSTN") => false
-                  case _ => true
+              pm.filter(v => v match
+                case Variable(name, _) if name.startsWith("TSTN") || name.startsWith("ENC") => false
+                case _ => true
               )
             )
           case _ => Set.empty

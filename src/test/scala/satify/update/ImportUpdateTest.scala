@@ -3,11 +3,8 @@ package satify.update
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.State
-import satify.model.problems.ProblemChoice
-import satify.model.problems.ProblemChoice.NQueens
 import satify.update.Message.*
 import satify.update.Update.update
-import satify.view.GUI.inputTextArea
 
 import java.io.File
 

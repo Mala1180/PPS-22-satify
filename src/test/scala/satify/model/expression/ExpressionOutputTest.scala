@@ -19,9 +19,9 @@ class ExpressionOutputTest extends AnyFlatSpec with Matchers:
     val exp: Expression =
       Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val fRes: String = exp.printAsFormal(true)
-    val fExp = "a ∧ ¬(b) ∨ c"
+    val fExp = "((a ∧ ¬(b)) ∨ c)"
     val nfRes: String = exp.printAsFormal(false)
-    val nfExp = "a ∧\n¬(b) ∨ c"
+    val nfExp = "((a ∧\n¬(b)) ∨ c)"
     List(fRes, nfRes) shouldBe List(fExp, nfExp)
   }
 
@@ -37,8 +37,8 @@ class ExpressionOutputTest extends AnyFlatSpec with Matchers:
     val exp: Expression =
       Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val fRes: String = exp.printAsDSL(true)
-    val fExp = "a and not(b) or c"
+    val fExp = "((a and not(b)) or c)"
     val nfRes: String = exp.printAsDSL(false)
-    val nfExp = "a and\nnot(b) or c"
+    val nfExp = "((a and\nnot(b)) or c)"
     List(fRes, nfRes) shouldBe List(fExp, nfExp)
   }

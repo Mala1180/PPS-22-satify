@@ -2,13 +2,14 @@ package satify
 
 import satify.Architecture.MVU
 import satify.Main.model
+import satify.view.ComponentUtils.createLabelledTextArea
 import satify.view.Constants.windowSize
 import satify.view.GUI.*
 import satify.view.Reactions.*
 
 import java.util.concurrent.Executors
-import scala.swing.event.ButtonClicked
-import scala.swing.{Dimension, FileChooser, MainFrame, Swing}
+import scala.swing.event.{ButtonClicked, SelectionChanged}
+import scala.swing.{Component, Dimension, FileChooser, MainFrame, Swing}
 
 /** Entry point of the application. */
 object Main extends App with MVU:
@@ -34,7 +35,7 @@ object Main extends App with MVU:
     }
 
     importMenuItem.reactions += { case ButtonClicked(_) =>
-      val result = fileChooser.showOpenDialog(null)
+      val result = importFileChooser.showOpenDialog(null)
       if result == FileChooser.Result.Approve then
         Swing.onEDT(disableInteractions())
         Executors.newSingleThreadExecutor().execute(() => importReaction(model))

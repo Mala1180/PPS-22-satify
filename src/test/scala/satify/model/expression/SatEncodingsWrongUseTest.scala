@@ -6,21 +6,15 @@ import satify.model.expression.Expression.*
 
 class SatEncodingsWrongUseTest extends AnyFlatSpec:
 
-  """ atLeastOne("A")  """ should "throw an IllegalArgumentException" in {
+  "atLeastOne()" should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
-      atLeastOne(Symbol("A"))
+      atLeastOne()
     }
   }
 
-  """ atMostOne("A")  """ should "throw an IllegalArgumentException" in {
+  "atMostOne()" should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
-      atMostOne(Symbol("A"))
-    }
-  }
-
-  """ atLeastK(1)("A") """ should "throw an IllegalArgumentException" in {
-    assertThrows[IllegalArgumentException] {
-      atLeastK(1)(Symbol("A"))
+      atMostOne()
     }
   }
 
@@ -30,14 +24,14 @@ class SatEncodingsWrongUseTest extends AnyFlatSpec:
     }
   }
 
-  """ atMostK(1)("A") """ should "throw an IllegalArgumentException" in {
-    assertThrows[IllegalArgumentException] {
-      atMostK(1)(Symbol("A"))
-    }
-  }
-
   """ atMostK(4)("A", "B", "C") """ should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
       atMostK(4)(Symbol("A"), Symbol("B"), Symbol("C"))
+    }
+  }
+
+  "exactlyOne()" should "throw an IllegalArgumentException" in {
+    assertThrows[IllegalArgumentException] {
+      exactlyOne()
     }
   }
