@@ -2,7 +2,7 @@ package satify.update.solver.dpll.cnf
 
 import satify.model.cnf.Bool.{False, True}
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
-import satify.model.cnf.{Bool, CNF, Variable}
+import satify.model.cnf.{Bool, CNF}
 
 object CNFSat:
 
@@ -19,7 +19,7 @@ object CNFSat:
         case _ => d
 
     cnf match
-      case Not(Symbol(_: Variable)) | Symbol(_: Variable) | Not(Symbol(False)) | Symbol(True) | Or(_, _) => false
+      case Not(Symbol(_: String)) | Symbol(_: String) | Not(Symbol(False)) | Symbol(True) | Or(_, _) => false
       case Not(Symbol(True)) | Symbol(False) => true
       case And(left, right) =>
         f(

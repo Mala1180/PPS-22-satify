@@ -2,7 +2,6 @@ package satify.update.converters.tseitin.utils
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.cnf.Variable
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.update.converters.tseitin.Utils.zipWithSymbol

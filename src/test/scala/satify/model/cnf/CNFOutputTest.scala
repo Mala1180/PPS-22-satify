@@ -3,12 +3,12 @@ package satify.model.cnf
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.cnf.CNF.*
-import satify.model.cnf.{CNF, Variable}
+import satify.model.cnf.CNF
 
 class CNFOutputTest extends AnyFlatSpec with Matchers:
 
   "The cnf symbol a" should "be printed as a in formal way" in {
-    val cnfExp: CNF = Symbol(Variable("a"))
+    val cnfExp: CNF = Symbol("a")
     val fRes: String = cnfExp.printAsFormal(true)
     val nfRes: String = cnfExp.printAsFormal()
     val expected = "a"
@@ -17,7 +17,7 @@ class CNFOutputTest extends AnyFlatSpec with Matchers:
 
   "The cnf exp ((a ∨ ¬b) ∧ c)" should "be printed in the formal way and according to the output flat mode" in {
     val cnfExp: CNF =
-      And(Or(Symbol(Variable("a")), Not(Symbol(Variable("b")))), Symbol(Variable("c")))
+      And(Or(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val fRes: String = cnfExp.printAsFormal(true)
     val fExp: String = "a ∨ ¬(b) ∧ c"
     val nfRes: String = cnfExp.printAsFormal()
@@ -26,7 +26,7 @@ class CNFOutputTest extends AnyFlatSpec with Matchers:
   }
 
   "The only symbol a" should "be printed as a in DSL" in {
-    val exp: CNF = Symbol(Variable("a"))
+    val exp: CNF = Symbol("a")
     val fRes: String = exp.printAsDSL(true)
     val nfRes: String = exp.printAsDSL()
     val expected = "a"
@@ -35,7 +35,7 @@ class CNFOutputTest extends AnyFlatSpec with Matchers:
 
   "The exp ((a ∨ ¬b) ∧ c)" should "be printed in the DSL format according to the output flat mode" in {
     val exp: CNF =
-      And(Or(Symbol(Variable("a")), Not(Symbol(Variable("b")))), Symbol(Variable("c")))
+      And(Or(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val fRes: String = exp.printAsDSL(true)
     val fExp = "a or not(b) and c"
     val nfRes: String = exp.printAsDSL()

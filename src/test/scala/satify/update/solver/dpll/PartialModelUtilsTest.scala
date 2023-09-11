@@ -3,9 +3,9 @@ package satify.update.solver.dpll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.cnf.CNF.*
-import satify.model.cnf.{CNF, Variable}
+import satify.model.cnf.CNF
 import satify.model.dpll.OrderedSeq.{given_Ordering_Variable, seq}
-import satify.model.dpll.{Constraint, Decision, PartialModel}
+import satify.model.dpll.{Constraint, Decision, PartialModel, Variable}
 import satify.update.solver.dpll.Dpll.dpll
 import satify.update.solver.dpll.utils.PartialModelUtils.*
 
@@ -13,9 +13,8 @@ class PartialModelUtilsTest extends AnyFlatSpec with Matchers:
 
   val varA: Variable = Variable("a")
   val varB: Variable = Variable("b")
-  val varC: Variable = Variable("c")
 
-  val cnf: CNF = And(Symbol(varA), Symbol(varB))
+  val cnf: CNF = And(Symbol("a"), Symbol("b"))
 
   val Dpll: CNF => Set[PartialModel] = cnf =>
     val s =
@@ -26,7 +25,7 @@ class PartialModelUtilsTest extends AnyFlatSpec with Matchers:
   "A PartialModel" should "be extractable from a CNF" in {
     extractModelFromCnf(cnf) shouldBe seq(varA, varB)
     val allCnf: CNF =
-      And(Symbol(Variable("c")), And(Or(Symbol(Variable("d")), Not(Symbol(Variable("e")))), Symbol(Variable("f"))))
+      And(Symbol("c"), And(Or(Symbol("d"), Not(Symbol("e"))), Symbol("f")))
     extractModelFromCnf(allCnf) shouldBe seq(Variable("c"), Variable("d"), Variable("e"), Variable("f"))
   }
 
@@ -44,7 +43,7 @@ class PartialModelUtilsTest extends AnyFlatSpec with Matchers:
   "All solutions" should "be extractable from a DecisionTree" in {
     extractSolutionsFromDT(dpll(Decision(extractModelFromCnf(cnf), cnf))) shouldBe
       Set(seq(Variable("a", Some(true)), Variable("b", Some(true))))
-    Dpll(And(Symbol(varA), Or(Symbol(varB), Symbol(varC)))) shouldBe
+    Dpll(And(Symbol("a"), Or(Symbol("b"), Symbol("c")))) shouldBe
       Set(
         seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(true))),
         seq(Variable("a", Some(true)), Variable("b", Some(true)), Variable("c", Some(false))),

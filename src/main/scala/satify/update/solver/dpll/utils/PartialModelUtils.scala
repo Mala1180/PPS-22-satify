@@ -2,10 +2,10 @@ package satify.update.solver.dpll.utils
 
 import satify.model.cnf.Bool.True
 import satify.model.cnf.CNF.*
-import satify.model.cnf.{CNF, Variable}
+import satify.model.cnf.CNF
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.dpll.OrderedSeq.*
-import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel}
+import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel, Variable}
 
 object PartialModelUtils:
 
@@ -18,7 +18,7 @@ object PartialModelUtils:
     */
   def extractModelFromCnf(cnf: CNF): PartialModel =
     cnf match
-      case Symbol(variable: Variable) => seq(variable)
+      case Symbol(name: String) => seq(Variable(name))
       case And(e1, e2) => seq(extractModelFromCnf(e1) ++ extractModelFromCnf(e2): _*)
       case Or(e1, e2) => seq(extractModelFromCnf(e1) ++ extractModelFromCnf(e2): _*)
       case Not(e) => extractModelFromCnf(e)

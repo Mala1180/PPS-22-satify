@@ -4,7 +4,6 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.*
 import satify.model.cnf.CNF.*
-import satify.model.cnf.Variable
 import satify.update.parser.DimacsCNF
 
 import scala.io.Source
@@ -21,12 +20,7 @@ class ParseTest extends AnyFlatSpec with Matchers {
       "c a comment", "c another comment", "p cnf 3 2", "1 2 0", "3 -1 0"
     )
     DimacsCNF.parse(lines) shouldBe
-      Some(
-        And(
-          Or(Symbol(Variable("x_1")), Symbol(Variable("x_2"))),
-          Or(Symbol(Variable("x_3")), Not(Symbol(Variable("x_1"))))
-        )
-      )
+      Some(And(Or(Not(Symbol("x_1")), Symbol("x_3")), Or(Symbol("x_2"), Symbol("x_1"))))
   }
 
   "DimacsCNF" should "open a DIMACS file and parse it" in {

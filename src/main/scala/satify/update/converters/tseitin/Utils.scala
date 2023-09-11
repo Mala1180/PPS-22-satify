@@ -5,7 +5,7 @@ import satify.model.expression.Expression.{And, Not, Or, Symbol, zipWith}
 import satify.model.expression.Utils.symbolGenerator
 import satify.model.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
 import satify.model.cnf.Literal
-import satify.model.cnf.{CNF, Variable}
+import satify.model.cnf.CNF
 
 private[converters] object Utils:
 
@@ -45,20 +45,20 @@ private[converters] object Utils:
   def convertToCNF(expression: Expression): CNF =
     def convL(exp: Expression): CNFOr | Literal = exp match
       case Or(l, r) => CNFOr(convL(l), convL(r))
-      case Symbol(v) => CNFSymbol(Variable(v))
-      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
+      case Symbol(v) => CNFSymbol(v)
+      case Not(Symbol(v)) => CNFNot(CNFSymbol(v))
       case _ => throw new Exception("Expression is not convertible to CNF form")
 
     def convR(exp: Expression): CNFAnd | CNFOr | Literal = exp match
       case And(l, r) => CNFAnd(convL(l), convR(r))
       case Or(l, r) => CNFOr(convL(l), convL(r))
-      case Symbol(v) => CNFSymbol(Variable(v))
-      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
+      case Symbol(v) => CNFSymbol(v)
+      case Not(Symbol(v)) => CNFNot(CNFSymbol(v))
       case _ => throw new Exception("Expression is not convertible to CNF form")
 
     expression match
-      case Symbol(v) => CNFSymbol(Variable(v))
-      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v)))
+      case Symbol(v) => CNFSymbol(v)
+      case Not(Symbol(v)) => CNFNot(CNFSymbol(v))
       case And(l, r) => CNFAnd(convL(l), convR(r))
       case Or(l, r) => CNFOr(convL(l), convL(r))
       case _ => throw new Exception("Expression is not convertible to CNF form")

@@ -1,6 +1,6 @@
 package satify.update.converters.tseitin
 
-import satify.model.cnf.{CNF, Variable}
+import satify.model.cnf.CNF
 import satify.model.expression.Expression
 
 import scala.annotation.tailrec
@@ -65,15 +65,15 @@ private[converters] object TseitinTransformation:
     */
   def transform(exp: (Expression.Symbol, Expression)): List[CNF] =
     def expr(exp: Expression): Literal = exp match
-      case Symbol(v) => CNFSymbol(Variable(v, None))
-      case Not(Symbol(v)) => CNFNot(CNFSymbol(Variable(v, None)))
+      case Symbol(v) => CNFSymbol(v)
+      case Not(Symbol(v)) => CNFNot(CNFSymbol(v))
       case _ => throw new IllegalArgumentException("Expression is not a literal")
     def symbol(exp: Expression): CNFSymbol = exp match
-      case Symbol(v) => CNFSymbol(Variable(v, None))
+      case Symbol(v) => CNFSymbol(v)
       case _ => throw new IllegalArgumentException("Expression is not a literal")
     def not(exp: Expression): Literal = exp match
-      case Not(Symbol(v)) => CNFSymbol(Variable(v, None))
-      case Symbol(v) => CNFNot(CNFSymbol(Variable(v, None)))
+      case Not(Symbol(v)) => CNFSymbol(v)
+      case Symbol(v) => CNFNot(CNFSymbol(v))
       case _ =>
         throw new IllegalArgumentException("Expression is not a literal")
 
@@ -103,7 +103,7 @@ private[converters] object TseitinTransformation:
     if subexpressions.size == 1 then subexpressions.head
     else
       var concatenated = subexpressions
-      concatenated = concatenated.prepended(CNFSymbol(Variable("TSTN0")))
+      concatenated = concatenated.prepended(CNFSymbol("TSTN0"))
       concatenated.reduceRight((s1, s2) =>
         CNFAnd(s1.asInstanceOf[CNFOr | Literal], s2.asInstanceOf[CNFAnd | CNFOr | Literal])
       )
