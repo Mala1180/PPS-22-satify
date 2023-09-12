@@ -16,6 +16,10 @@ import satify.update.solver.dpll.utils.PartialModelUtils.*
 import scala.annotation.tailrec
 import scala.util.Random
 
+/** Save a run of DPLL algorithm.
+  * @param dt decision tree
+  * @param s solution
+  */
 case class DpllRun(dt: DecisionTree, s: Solution)
 
 object DpllOneSol:
@@ -23,6 +27,10 @@ object DpllOneSol:
   val rnd: Random = Random(42)
   private var prevRun: Option[DpllRun] = None
 
+  /** Runs the DPLL algorithm given a CNF in input.
+    * @param cnf with the constraints to be satisfied.
+    * @return a solution with a unique assignment, if it exists
+    */
   def dpll(cnf: CNF): Solution =
     buildTree(Decision(extractModelFromCnf(cnf), cnf)) match
       case (dt, SAT) =>
@@ -31,6 +39,9 @@ object DpllOneSol:
         solution
       case (_, UNSAT) => Solution(UNSAT, Nil)
 
+  /** Runs the DPLL algorithm resuming a previous run, if it exists.
+    * @return another assignment, different from the previous', if any.
+    */
   def dpll(): Assignment =
     prevRun match
       case Some(DpllRun(dt, s)) =>
@@ -47,6 +58,10 @@ object DpllOneSol:
             assignment
       case None => throw new NoSuchElementException("No previous instance of DPLL")
 
+  /** Resume the computation given an existing instance of decision tree.
+    * @param dt decision tree returned on the previous run.
+    * @return the updated decision tree along with the new result.
+    */
   def resume(dt: DecisionTree): (DecisionTree, Result) = dt match
     case Leaf(d @ Decision(_, cnf)) =>
       val checkUnsat = isUnsat(cnf)
@@ -61,6 +76,12 @@ object DpllOneSol:
           resume(right) match
             case (rdt, rres) => (Branch(d, ldt, rdt), if lres == SAT then SAT else rres)
 
+  /** Build the decision tree given a decision in input.
+    * It returns a new decision tree with a new SAT leaf, if any.
+    * Otherwise, the updated decision tree with all UNSAT leafs.
+    * @param d decision to be made
+    * @return updated decision tree along with the result
+    */
   private def buildTree(d: Decision): (DecisionTree, Result) =
     if !isUnsat(d.cnf) && !isSat(d.cnf) then
       decide(d) match
@@ -73,6 +94,12 @@ object DpllOneSol:
         case Nil => (Leaf(d), if isSat(d.cnf) then SAT else UNSAT)
     else (Leaf(d), if isSat(d.cnf) then SAT else UNSAT)
 
+  /** Extract a new assignment from the decision tree s.t. it is not contained in the previous
+    * DPLL run given in input.
+    * @param dt decision tree where to extract the solutions
+    * @param prevRun previous DPLL run with the current extracted solutions.
+    * @return a filled assignment if it exists, or an empty one.
+    */
   private def extractSolution(dt: DecisionTree, prevRun: Option[DpllRun]): Assignment =
     dt match
       case Leaf(Decision(pm, cnf)) =>
