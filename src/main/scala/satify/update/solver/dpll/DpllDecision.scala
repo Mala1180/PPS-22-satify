@@ -75,5 +75,8 @@ object DpllDecision:
       case Decision(pm, cnf) =>
         List(
           Decision(updatePartialAssignment(pm, c), simplifyCnf(cnf, c)),
-          Decision(updatePartialAssignment(pm, Constraint(c.name, !c.value)), simplifyCnf(cnf, Constraint(c.name, !c.value)))
+          Decision(
+            updatePartialAssignment(pm, Constraint(c.name, !c.value)),
+            simplifyCnf(cnf, Constraint(c.name, !c.value))
+          )
         )

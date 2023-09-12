@@ -34,7 +34,7 @@ object DpllOneSol:
   def dpll(cnf: CNF): Solution =
     buildTree(Decision(extractParAssignmentFromCnf(cnf), cnf)) match
       case (dt, SAT) =>
-        val solution: Solution = Solution(SAT, List(extractAssignment(dt, prevRun)))
+        val solution: Solution = Solution(SAT, List(extractAssignment(dt, None)))
         prevRun = Some(DpllRun(dt, solution))
         solution
       case (_, UNSAT) => Solution(UNSAT, Nil)
@@ -102,12 +102,11 @@ object DpllOneSol:
     */
   private def extractAssignment(dt: DecisionTree, prevRun: Option[DpllRun]): Assignment =
 
-    /**
-     * Filter generated variables (from encodings/Tseitin) and do the cartesian product
-     * of all the possible assignments
-     * @param pa partial assignment
-     * @return assignments
-     */
+    /** Filter generated variables (from encodings/Tseitin) and do the cartesian product
+      * of all the possible assignments
+      * @param pa partial assignment
+      * @return assignments
+      */
     def filterAndExplore(pa: PartialAssignment): List[Assignment] = pa match
       case PartialAssignment(optVariables) =>
         explodeAssignments(
@@ -120,6 +119,12 @@ object DpllOneSol:
           )
         )
 
+    /** Return a filled assignment if it exists an assignment inside [[assignments]]
+      * which is not containted in [[prevRun]], an empty one otherwise.
+      * @param assignments to filter
+      * @param prevRun filters assignments
+      * @return an assignment
+      */
     def nextAssignment(assignments: List[Assignment], prevRun: Option[DpllRun]): Assignment =
       prevRun match
         case Some(pr) =>
@@ -129,7 +134,7 @@ object DpllOneSol:
         case _ => Assignment(Nil)
 
     dt match
-      case Leaf(Decision(s @ PartialAssignment(optVariables), cnf)) =>
+      case Leaf(Decision(s @ PartialAssignment(_), cnf)) =>
         cnf match
           case Symbol(True) => nextAssignment(filterAndExplore(s), prevRun)
           case _ => Assignment(Nil)

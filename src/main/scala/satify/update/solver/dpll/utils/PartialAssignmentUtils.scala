@@ -8,8 +8,6 @@ import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.dpll.OrderedList.{list, *}
 import satify.model.dpll.{Constraint, Decision, DecisionTree, OptionalVariable, PartialAssignment}
 
-import scala.::
-
 object PartialAssignmentUtils:
 
   import satify.model.dpll.OrderedList.given_Ordering_OptionalVariable
@@ -95,7 +93,8 @@ object PartialAssignmentUtils:
                 }
               else Assignment(List(Variable(name, true))) :: Assignment(List(Variable(name, false))) :: Nil
             case v @ OptionalVariable(_, Some(_)) =>
-              if next.nonEmpty then explodeAssignments(PartialAssignment(next))
-                .map { case Assignment(variables) => Assignment(v.toVariable +: variables) }
+              if next.nonEmpty then
+                explodeAssignments(PartialAssignment(next))
+                  .map { case Assignment(variables) => Assignment(v.toVariable +: variables) }
               else List(Assignment(List(v.toVariable)))
         case Nil => Nil

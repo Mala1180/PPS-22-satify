@@ -107,11 +107,23 @@ class DpllTest extends AnyFlatSpec with Matchers:
     dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) shouldBe
       Branch(
         Decision(PartialAssignment(list(OptionalVariable("a"), OptionalVariable("b"))), cnf),
-        Leaf(Decision(PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b"))), Symbol(True))),
+        Leaf(
+          Decision(PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b"))), Symbol(True))
+        ),
         Branch(
           Decision(PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b"))), And(Not(sB), sB)),
-          Leaf(Decision(PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(false)))), Symbol(False))),
-          Leaf(Decision(PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(true)))), Symbol(False)))
+          Leaf(
+            Decision(
+              PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(false)))),
+              Symbol(False)
+            )
+          ),
+          Leaf(
+            Decision(
+              PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(true)))),
+              Symbol(False)
+            )
+          )
         )
       )
   }
@@ -126,35 +138,46 @@ class DpllTest extends AnyFlatSpec with Matchers:
       Branch(
         Decision(PartialAssignment(list(OptionalVariable("a"), OptionalVariable("b"), OptionalVariable("c"))), cnf),
         Branch(
-          Decision(PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b"), OptionalVariable("c"))), Or(sB, sC)),
+          Decision(
+            PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b"), OptionalVariable("c"))),
+            Or(sB, sC)
+          ),
           Leaf(
             Decision(
-              PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(true)), OptionalVariable("c"))),
+              PartialAssignment(
+                list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(true)), OptionalVariable("c"))
+              ),
               Symbol(True)
             )
           ),
           Branch(
             Decision(
-              PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(false)), OptionalVariable("c"))),
+              PartialAssignment(
+                list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(false)), OptionalVariable("c"))
+              ),
               sC
             ),
             Leaf(
               Decision(
-                PartialAssignment(list(
-                  OptionalVariable("a", Some(true)),
-                  OptionalVariable("b", Some(false)),
-                  OptionalVariable("c", Some(true))
-                )),
+                PartialAssignment(
+                  list(
+                    OptionalVariable("a", Some(true)),
+                    OptionalVariable("b", Some(false)),
+                    OptionalVariable("c", Some(true))
+                  )
+                ),
                 Symbol(True)
               )
             ),
             Leaf(
               Decision(
-                PartialAssignment(list(
-                  OptionalVariable("a", Some(true)),
-                  OptionalVariable("b", Some(false)),
-                  OptionalVariable("c", Some(false))
-                )),
+                PartialAssignment(
+                  list(
+                    OptionalVariable("a", Some(true)),
+                    OptionalVariable("b", Some(false)),
+                    OptionalVariable("c", Some(false))
+                  )
+                ),
                 Symbol(False)
               )
             )
@@ -167,33 +190,41 @@ class DpllTest extends AnyFlatSpec with Matchers:
           ),
           Branch(
             Decision(
-              PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b", Some(false)), OptionalVariable("c"))),
+              PartialAssignment(
+                list(OptionalVariable("a", Some(false)), OptionalVariable("b", Some(false)), OptionalVariable("c"))
+              ),
               sC
             ),
             Leaf(
               Decision(
-                PartialAssignment(list(
-                  OptionalVariable("a", Some(false)),
-                  OptionalVariable("b", Some(false)),
-                  OptionalVariable("c", Some(true))
-                )),
+                PartialAssignment(
+                  list(
+                    OptionalVariable("a", Some(false)),
+                    OptionalVariable("b", Some(false)),
+                    OptionalVariable("c", Some(true))
+                  )
+                ),
                 Symbol(True)
               )
             ),
             Leaf(
               Decision(
-                PartialAssignment(list(
-                  OptionalVariable("a", Some(false)),
-                  OptionalVariable("b", Some(false)),
-                  OptionalVariable("c", Some(false))
-                )),
+                PartialAssignment(
+                  list(
+                    OptionalVariable("a", Some(false)),
+                    OptionalVariable("b", Some(false)),
+                    OptionalVariable("c", Some(false))
+                  )
+                ),
                 Symbol(False)
               )
             )
           ),
           Leaf(
             Decision(
-              PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b", Some(true)), OptionalVariable("c"))),
+              PartialAssignment(
+                list(OptionalVariable("a", Some(false)), OptionalVariable("b", Some(true)), OptionalVariable("c"))
+              ),
               Symbol(False)
             )
           )
