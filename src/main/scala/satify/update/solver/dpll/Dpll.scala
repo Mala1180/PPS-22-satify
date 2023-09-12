@@ -8,13 +8,13 @@ import satify.model.dpll.{Constraint, Decision, DecisionTree, OptionalVariable}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
-import satify.update.solver.dpll.utils.PartialModelUtils.extractModelFromCnf
+import satify.update.solver.dpll.utils.PartialModelUtils.extractParAssignmentFromCnf
 
 import scala.annotation.tailrec
 
 object Dpll:
 
-  def dpll(cnf: CNF): DecisionTree = dpll(Decision(extractModelFromCnf(cnf), cnf))
+  def dpll(cnf: CNF): DecisionTree = dpll(Decision(extractParAssignmentFromCnf(cnf), cnf))
 
   /** Main DPLL algorithm.
     * @param dec first decision

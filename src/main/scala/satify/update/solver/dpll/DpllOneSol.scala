@@ -32,7 +32,7 @@ object DpllOneSol:
     * @return a solution with a unique assignment, if it exists
     */
   def dpll(cnf: CNF): Solution =
-    buildTree(Decision(extractModelFromCnf(cnf), cnf)) match
+    buildTree(Decision(extractParAssignmentFromCnf(cnf), cnf)) match
       case (dt, SAT) =>
         val solution: Solution = Solution(SAT, List(extractSolution(dt, prevRun)))
         prevRun = Some(DpllRun(dt, solution))
@@ -102,21 +102,21 @@ object DpllOneSol:
     */
   private def extractSolution(dt: DecisionTree, prevRun: Option[DpllRun]): Assignment =
     dt match
-      case Leaf(Decision(pm, cnf)) =>
+      case Leaf(Decision(PartialAssignment(optVariables), cnf)) =>
         cnf match
           case Symbol(True) =>
-            val allSolutions = explodeSolutions(
-              pm.filter(v =>
+            val allAssignments = explodeAssignments(
+              PartialAssignment(optVariables.filter(v =>
                 v match
                   case OptionalVariable(name, _) if name.startsWith("ENC") || name.startsWith("TSTN") => false
                   case _ => true
-              )
-            ).map(parModel => Assignment(parModel)).toList
+              ))
+            )
             prevRun match
               case Some(pr) =>
-                val filteredList = allSolutions.filter(a => !(pr.s.assignment contains a))
-                if filteredList.nonEmpty then filteredList.head else Assignment(Nil)
-              case None if allSolutions.nonEmpty => allSolutions.head
+                val newAssignments = allAssignments.filter(a => !(pr.s.assignment contains a))
+                if newAssignments.nonEmpty then newAssignments.head else Assignment(Nil)
+              case None if allAssignments.nonEmpty => allAssignments.head
               case _ => Assignment(Nil)
           case _ => Assignment(Nil)
       case Branch(_, left, right) =>

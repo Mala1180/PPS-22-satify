@@ -1,8 +1,8 @@
 package satify.model.problems
 
 import satify.model.dpll.OptionalVariable
-import satify.model.dpll.OrderedSeq.{given_Ordering_OptionalVariable, seq}
-import satify.model.dpll.PartialAssignment
+import satify.model.dpll.OrderedList.{given_Ordering_OptionalVariable, list}
+import satify.model.{Assignment, Variable}
 import satify.model.expression.Encodings.{atLeastOne, atMostOne}
 import satify.model.expression.Expression
 import satify.model.expression.Expression.{And, Symbol}
@@ -63,22 +63,25 @@ case class NQueens(n: Int) extends Problem:
 object NQueens:
 
   extension (problem: NQueens)
-    def printNQueensFromDimacs(pm: PartialAssignment): Unit =
-      val mapPm: PartialAssignment = seq(pm.map {
-        case OptionalVariable(s"x_$i", value) =>
-          val xx = i.toInt - 1
-          val row: Int = xx / problem.n
-          val col: Int = xx % problem.n
-          OptionalVariable(s"x_${row}_$col", value)
-        case v => v
-      }: _*)
-      problem.printNqueens(mapPm)
+    def printNQueensFromDimacs(assignment: Assignment): Unit = assignment match
+      case Assignment(variables) =>
+        val a: Assignment =
+          Assignment(variables.map {
+            case Variable(s"x_$i", value) =>
+              val xx = i.toInt - 1
+              val row: Int = xx / problem.n
+              val col: Int = xx % problem.n
+              Variable(s"x_${row}_$col", value)
+            case v => v
+          })
+        problem.printNqueens(a)
 
     @tailrec
-    def printNqueens(pm: PartialAssignment): Unit =
-      val firstN = pm.take(problem.n)
-      if firstN.nonEmpty then
-        println(
-          firstN.foldLeft("")((p, c) => p + (if c.value.isDefined then if c.value.get then s" ♕ " else " · " else " "))
-        )
-        problem.printNqueens(pm.drop(problem.n))
+    def printNqueens(assignment: Assignment): Unit = assignment match
+      case Assignment(variables) =>
+        val firstN = variables.take(problem.n)
+        if firstN.nonEmpty then
+          println(
+            firstN.foldLeft("")((p, c) => p + (if c.value then s" ♕ " else " · "))
+          )
+          problem.printNqueens(Assignment(variables.drop(problem.n)))

@@ -1,13 +1,17 @@
 package satify.model.dpll
 
-case class OptionalVariable(name: String, value: Option[Boolean] = None)
+import satify.model.{Assignment, Variable}
 
-type PartialAssignment = Seq[OptionalVariable]
+case class OptionalVariable(name: String, value: Option[Boolean] = None):
+  lazy val toVariable: Variable = Variable(name, value.get)
 
-object OrderedSeq:
+case class PartialAssignment(optVariables: List[OptionalVariable]):
+  lazy val toAssignment: Assignment = Assignment(optVariables.map(v => v.toVariable))
+
+object OrderedList:
 
   given Ordering[OptionalVariable] with
     def compare(x: OptionalVariable, y: OptionalVariable): Int = (x, y) match
       case (OptionalVariable(xName, _), OptionalVariable(yName, _)) => xName.compareTo(yName)
 
-  def seq[T](elems: T*)(using ordering: Ordering[T]): Seq[T] = elems.distinct.sorted(ordering)
+  def list[T](elems: T*)(using ordering: Ordering[T]): List[T] = elems.distinct.sorted(ordering).toList

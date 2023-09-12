@@ -6,7 +6,7 @@ import satify.model.cnf.CNF.Symbol
 import satify.model.dpll.{Constraint, Decision}
 import satify.update.solver.dpll.Optimizations.{pureLiteralIdentification, unitLiteralIdentification}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
-import satify.update.solver.dpll.utils.PartialModelUtils.{filterUnconstrVars, updateParModel}
+import satify.update.solver.dpll.utils.PartialModelUtils.{filterUnconstrVars, updatePartialAssignment}
 
 import scala.util.Random
 
@@ -44,8 +44,8 @@ object DpllDecision:
         fv(rnd.between(0, fv.size)) match
           case OptionalVariable(n, _) =>
             List(
-              Decision(updateParModel(pm, Constraint(n, v)), simplifyCnf(cnf, Constraint(n, v))),
-              Decision(updateParModel(pm, Constraint(n, !v)), simplifyCnf(cnf, Constraint(n, !v)))
+              Decision(updatePartialAssignment(pm, Constraint(n, v)), simplifyCnf(cnf, Constraint(n, v))),
+              Decision(updatePartialAssignment(pm, Constraint(n, !v)), simplifyCnf(cnf, Constraint(n, !v)))
             )
       else Nil
 
@@ -59,8 +59,8 @@ object DpllDecision:
     d match
       case Decision(pm, cnf) =>
         List(
-          Decision(updateParModel(pm, c), simplifyCnf(cnf, c)),
-          Decision(updateParModel(pm, Constraint(c.name, !c.value)), Symbol(False))
+          Decision(updatePartialAssignment(pm, c), simplifyCnf(cnf, c)),
+          Decision(updatePartialAssignment(pm, Constraint(c.name, !c.value)), Symbol(False))
         )
 
   /** Make pure literals elimination decisions based on the previous decision and the
@@ -74,6 +74,6 @@ object DpllDecision:
     d match
       case Decision(pm, cnf) =>
         List(
-          Decision(updateParModel(pm, c), simplifyCnf(cnf, c)),
-          Decision(updateParModel(pm, Constraint(c.name, !c.value)), simplifyCnf(cnf, Constraint(c.name, !c.value)))
+          Decision(updatePartialAssignment(pm, c), simplifyCnf(cnf, c)),
+          Decision(updatePartialAssignment(pm, Constraint(c.name, !c.value)), simplifyCnf(cnf, Constraint(c.name, !c.value)))
         )

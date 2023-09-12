@@ -7,10 +7,12 @@ enum Result:
   case SAT
   case UNSAT
 
+case class Variable(name: String, value: Boolean)
+
 /** Represents a list of [[Variable]] assigned to a value.
-  * @param parModel the list of variables.
+  * @param variables the list of variables.
   */
-case class Assignment(parModel: PartialAssignment)
+case class Assignment(variables: List[Variable])
 
 /** Represents a solution to the SAT problem. It is used by [[update.Solver]].
   * @param result The result of the SAT problem (SAT or UNSAT).
@@ -27,5 +29,5 @@ object Solution:
           else solution.assignment.size + " Solution"
         }  \n${
           if solution.assignment.isEmpty then ""
-          else solution.assignment.head.parModel.foldLeft("")((b, c) => b + c.name + ": " + c.value.get + "\n")
+          else solution.assignment.head.variables.foldLeft("")((b, c) => b + c.name + ": " + c.value + "\n")
         }"
