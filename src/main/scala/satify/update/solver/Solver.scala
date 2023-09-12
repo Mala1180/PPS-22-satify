@@ -51,7 +51,7 @@ object Solver:
   /** Private implementation of [[Solver]] */
   private case class DpllSolver(converter: Converter) extends Solver:
 
-    import DpllSolverUtils.runDpll
+    import DpllSolverMemoize.runDpll
 
     override def solve(cnf: CNF): Solution = runDpll(cnf)
 
@@ -59,7 +59,7 @@ object Solver:
 
     override def next(): Assignment = dpll()
 
-object DpllSolverUtils:
+object DpllSolverMemoize:
 
   val runDpll: CNF => Solution = memoize(cnf => dpll(cnf))
 
