@@ -11,6 +11,8 @@ import satify.update.solver.SolverType.*
 import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
 import satify.update.solver.dpll.DpllOneSol.dpll
 
+import scala.collection.mutable
+
 /** Entity providing the methods to solve the SAT problem.
   * @see [[satify.update.solver.DPLL]]
   */
@@ -34,10 +36,6 @@ trait Solver:
     */
   def next(): Assignment
 
-  protected def memoize(f: CNF => Solution): CNF => Solution =
-    new collection.mutable.HashMap[CNF, Solution]():
-      override def apply(key: CNF): Solution = getOrElseUpdate(key, f(key))
-
 /** Factory for [[Solver]] instances. */
 object Solver:
 
@@ -52,8 +50,19 @@ object Solver:
 
   /** Private implementation of [[Solver]] */
   private case class DpllAlgorithm(converter: Converter) extends Solver:
-    override def solve(cnf: CNF): Solution = memoize(cnf => dpll(cnf))(cnf)
+
+    import DpllSolverUtils.runDpll
+
+    override def solve(cnf: CNF): Solution = runDpll(cnf)
 
     override def solve(exp: Expression): Solution = solve(converter.convert(exp))
 
     override def next(): Assignment = dpll()
+
+object DpllSolverUtils:
+
+  val runDpll: CNF => Solution = memoize(cnf => dpll(cnf))
+
+  protected def memoize(f: CNF => Solution): CNF => Solution =
+    new collection.mutable.HashMap[CNF, Solution]():
+      override def apply(key: CNF): Solution = getOrElseUpdate(key, f(key))
