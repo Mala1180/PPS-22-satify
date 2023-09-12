@@ -46,10 +46,10 @@ object Solver:
     */
   def apply(algorithmType: SolverType, conversionType: ConverterType = Tseitin): Solver =
     algorithmType match
-      case DPLL => DpllAlgorithm(Converter(conversionType))
+      case DPLL => DpllSolver(Converter(conversionType))
 
   /** Private implementation of [[Solver]] */
-  private case class DpllAlgorithm(converter: Converter) extends Solver:
+  private case class DpllSolver(converter: Converter) extends Solver:
 
     import DpllSolverUtils.runDpll
 
