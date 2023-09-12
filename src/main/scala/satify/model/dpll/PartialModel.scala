@@ -1,12 +1,13 @@
 package satify.model.dpll
 
-case class Variable(name: String, value: Option[Boolean] = None)
+case class OptionalVariable(name: String, value: Option[Boolean] = None)
 
-type PartialModel = Seq[Variable]
+type PartialAssignment = Seq[OptionalVariable]
 
 object OrderedSeq:
-  given Ordering[Variable] with
-    def compare(x: Variable, y: Variable): Int = (x, y) match
-      case (Variable(xName, _), Variable(yName, _)) => xName.compareTo(yName)
+
+  given Ordering[OptionalVariable] with
+    def compare(x: OptionalVariable, y: OptionalVariable): Int = (x, y) match
+      case (OptionalVariable(xName, _), OptionalVariable(yName, _)) => xName.compareTo(yName)
 
   def seq[T](elems: T*)(using ordering: Ordering[T]): Seq[T] = elems.distinct.sorted(ordering)

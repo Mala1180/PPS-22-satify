@@ -1,7 +1,7 @@
 package satify.update.solver.dpll
 
 import satify.model.cnf.Bool.False
-import satify.model.dpll.Variable
+import satify.model.dpll.OptionalVariable
 import satify.model.cnf.CNF.Symbol
 import satify.model.dpll.{Constraint, Decision}
 import satify.update.solver.dpll.Optimizations.{pureLiteralIdentification, unitLiteralIdentification}
@@ -42,7 +42,7 @@ object DpllDecision:
       if fv.nonEmpty then
         val v = rnd.nextBoolean()
         fv(rnd.between(0, fv.size)) match
-          case Variable(n, _) =>
+          case OptionalVariable(n, _) =>
             List(
               Decision(updateParModel(pm, Constraint(n, v)), simplifyCnf(cnf, Constraint(n, v))),
               Decision(updateParModel(pm, Constraint(n, !v)), simplifyCnf(cnf, Constraint(n, !v)))

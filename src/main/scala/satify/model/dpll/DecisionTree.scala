@@ -1,13 +1,13 @@
 package satify.model.dpll
 
 import satify.model.cnf.CNF
-import satify.model.dpll.PartialModel
+import satify.model.dpll.PartialAssignment
 
 /** Decision is a node of DecisionTree.
   * @param pm PartialModel.
   * @param cnf CNF expression.
   */
-case class Decision(pm: PartialModel, cnf: CNF)
+case class Decision(pm: PartialAssignment, cnf: CNF)
 
 /** DecisionTree is the main data structure for the DPLL algorithm. */
 enum DecisionTree:

@@ -2,7 +2,7 @@ package satify.update.solver
 
 import satify.model.Result.*
 import satify.model.cnf.CNF
-import satify.model.dpll.{DecisionTree, PartialModel}
+import satify.model.dpll.{DecisionTree, PartialAssignment}
 import satify.model.expression.Expression
 import satify.model.{Assignment, Solution}
 import satify.update.converters.ConverterType.*

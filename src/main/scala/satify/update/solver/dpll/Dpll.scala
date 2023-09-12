@@ -4,7 +4,7 @@ import satify.model.cnf.Bool.False
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.Symbol
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.{Constraint, Decision, DecisionTree, Variable}
+import satify.model.dpll.{Constraint, Decision, DecisionTree, OptionalVariable}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}

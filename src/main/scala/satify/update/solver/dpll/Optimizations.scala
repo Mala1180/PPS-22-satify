@@ -2,7 +2,7 @@ package satify.update.solver.dpll
 
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
-import satify.model.dpll.{Constraint, Decision, Variable}
+import satify.model.dpll.{Constraint, Decision, OptionalVariable}
 
 import scala.annotation.tailrec
 import scala.collection.immutable.{AbstractSeq, LinearSeq}
@@ -68,8 +68,8 @@ object Optimizations:
       case Decision(pm, cnf) =>
         pm match
           case Seq() => None
-          case Variable(name, None) +: tail =>
+          case OptionalVariable(name, None) +: tail =>
             find(name, cnf) match
               case Concordant(c) => Some(c)
               case _ => pureLiteralIdentification(Decision(tail, cnf))
-          case Variable(_, _) +: tail => pureLiteralIdentification(Decision(tail, cnf))
+          case OptionalVariable(_, _) +: tail => pureLiteralIdentification(Decision(tail, cnf))
