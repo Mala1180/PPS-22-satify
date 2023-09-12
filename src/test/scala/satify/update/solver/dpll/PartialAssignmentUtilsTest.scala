@@ -9,9 +9,9 @@ import satify.model.dpll.OrderedList.{given_Ordering_OptionalVariable, list}
 import satify.model.dpll.{Constraint, Decision, PartialAssignment, OptionalVariable}
 import satify.update.solver.dpll.Dpll.dpll
 import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
-import satify.update.solver.dpll.utils.PartialModelUtils.*
+import satify.update.solver.dpll.utils.PartialAssignmentUtils.*
 
-class PartialModelUtilsTest extends AnyFlatSpec with Matchers:
+class PartialAssignmentUtilsTest extends AnyFlatSpec with Matchers:
 
   val varA: OptionalVariable = OptionalVariable("a")
   val varB: OptionalVariable = OptionalVariable("b")
@@ -57,7 +57,7 @@ class PartialModelUtilsTest extends AnyFlatSpec with Matchers:
       )
   }
 
-  "All solutions" should "be extractable from a DecisionTree" in {
+  "All assignments" should "be extractable from a decision tree" in {
     extractParAssignments(dpll(cnf)) shouldBe
       PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(true)))) :: Nil
     extractSolutions(And(Symbol("a"), Or(Symbol("b"), Symbol("c")))) shouldBe
@@ -68,7 +68,7 @@ class PartialModelUtilsTest extends AnyFlatSpec with Matchers:
       )
   }
 
-  "All solutions" should "be extractable from a partial assignment" in {
+  "All assignments" should "be extractable from a partial assignment" in {
     val partialAssignment: PartialAssignment =
       PartialAssignment(list(OptionalVariable("a"), OptionalVariable("b"), OptionalVariable("c", Some(true))))
     explodeAssignments(partialAssignment) shouldBe

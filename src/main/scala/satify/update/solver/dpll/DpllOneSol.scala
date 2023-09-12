@@ -11,7 +11,7 @@ import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.DpllOneSol.{dpll, resume}
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
-import satify.update.solver.dpll.utils.PartialModelUtils.*
+import satify.update.solver.dpll.utils.PartialAssignmentUtils.*
 
 import scala.annotation.tailrec
 import scala.util.Random
@@ -34,7 +34,7 @@ object DpllOneSol:
   def dpll(cnf: CNF): Solution =
     buildTree(Decision(extractParAssignmentFromCnf(cnf), cnf)) match
       case (dt, SAT) =>
-        val solution: Solution = Solution(SAT, List(extractSolution(dt, prevRun)))
+        val solution: Solution = Solution(SAT, List(extractAssignment(dt, prevRun)))
         prevRun = Some(DpllRun(dt, solution))
         solution
       case (_, UNSAT) => Solution(UNSAT, Nil)
@@ -45,11 +45,11 @@ object DpllOneSol:
   def dpll(): Assignment =
     prevRun match
       case Some(DpllRun(dt, s)) =>
-        extractSolution(dt, prevRun) match
+        extractAssignment(dt, prevRun) match
           case Assignment(Nil) =>
             resume(dt) match
               case (dt, SAT) =>
-                val assignment: Assignment = extractSolution(dt, prevRun)
+                val assignment: Assignment = extractAssignment(dt, prevRun)
                 prevRun = Some(DpllRun(dt, Solution(SAT, assignment +: s.assignment)))
                 assignment
               case (_, UNSAT) => Assignment(Nil)
@@ -100,26 +100,40 @@ object DpllOneSol:
     * @param prevRun previous DPLL run with the current extracted solutions.
     * @return a filled assignment if it exists, or an empty one.
     */
-  private def extractSolution(dt: DecisionTree, prevRun: Option[DpllRun]): Assignment =
-    dt match
-      case Leaf(Decision(PartialAssignment(optVariables), cnf)) =>
-        cnf match
-          case Symbol(True) =>
-            val allAssignments = explodeAssignments(
-              PartialAssignment(optVariables.filter(v =>
-                v match
-                  case OptionalVariable(name, _) if name.startsWith("ENC") || name.startsWith("TSTN") => false
-                  case _ => true
-              ))
+  private def extractAssignment(dt: DecisionTree, prevRun: Option[DpllRun]): Assignment =
+
+    /**
+     * Filter generated variables (from encodings/Tseitin) and do the cartesian product
+     * of all the possible assignments
+     * @param pa partial assignment
+     * @return assignments
+     */
+    def filterAndExplore(pa: PartialAssignment): List[Assignment] = pa match
+      case PartialAssignment(optVariables) =>
+        explodeAssignments(
+          PartialAssignment(
+            optVariables.filter(v =>
+              v match
+                case OptionalVariable(name, _) if name.startsWith("ENC") || name.startsWith("TSTN") => false
+                case _ => true
             )
-            prevRun match
-              case Some(pr) =>
-                val newAssignments = allAssignments.filter(a => !(pr.s.assignment contains a))
-                if newAssignments.nonEmpty then newAssignments.head else Assignment(Nil)
-              case None if allAssignments.nonEmpty => allAssignments.head
-              case _ => Assignment(Nil)
+          )
+        )
+
+    def nextAssignment(assignments: List[Assignment], prevRun: Option[DpllRun]): Assignment =
+      prevRun match
+        case Some(pr) =>
+          val newAssignments = assignments.filter(a => !(pr.s.assignment contains a))
+          if newAssignments.nonEmpty then newAssignments.head else Assignment(Nil)
+        case None if assignments.nonEmpty => assignments.head
+        case _ => Assignment(Nil)
+
+    dt match
+      case Leaf(Decision(s @ PartialAssignment(optVariables), cnf)) =>
+        cnf match
+          case Symbol(True) => nextAssignment(filterAndExplore(s), prevRun)
           case _ => Assignment(Nil)
       case Branch(_, left, right) =>
-        extractSolution(left, prevRun) match
+        extractAssignment(left, prevRun) match
           case s @ Assignment(l) if l.nonEmpty => s
-          case _ => extractSolution(right, prevRun)
+          case _ => extractAssignment(right, prevRun)

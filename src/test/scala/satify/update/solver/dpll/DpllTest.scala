@@ -11,7 +11,7 @@ import satify.model.dpll.OrderedList.*
 import satify.model.dpll.{Decision, DecisionTree, OptionalVariable, PartialAssignment}
 import satify.update.solver.dpll.Dpll.*
 import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
-import satify.update.solver.dpll.utils.PartialModelUtils.*
+import satify.update.solver.dpll.utils.PartialAssignmentUtils.*
 
 class DpllTest extends AnyFlatSpec with Matchers:
 

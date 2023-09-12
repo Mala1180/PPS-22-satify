@@ -10,7 +10,7 @@ import satify.model.dpll.{Constraint, Decision, DecisionTree, OptionalVariable, 
 
 import scala.::
 
-object PartialModelUtils:
+object PartialAssignmentUtils:
 
   import satify.model.dpll.OrderedList.given_Ordering_OptionalVariable
 
