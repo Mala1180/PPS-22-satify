@@ -55,9 +55,9 @@ _Remaining tasks from the previous sprint:_
     <tr>
         <td>1</td>
         <td>Documentation</td>
-        <td>Requirements</td>
+        <td>Requirements update</td>
         <td>All</td>
-        <td>3</td>
+        <td>1</td>
     </tr>
     <tr>
         <td>2</td>
@@ -85,26 +85,45 @@ _New tasks in this sprint:_
     <tbody>
         <tr>
             <td>1</td>
-            <td>Model utils improvement</td>
-            <td>Enable processing of "long" expressions</td>
+            <td rowspan="4">Performance improvements</td>
+            <td>DPLL core functionalities tail recursive</td>
             <td>Fabri</td>
             <td>5</td>
         </tr>
         <tr>
+            <td>1</td>
+            <td>Tseitin transformation core functionalities tail recursive</td>
+            <td>Paganelli</td>
             <td>3</td>
-            <td rowspan="3">DPLL improvement</td>
-            <td>Multi-Thread optimization</td>
-            <td>Fabri</td>
-            <td>3</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Caching mechanism for conversion</td>
+            <td>Paganelli</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Caching mechanism for solving</td>
+            <td>Matteini</td>
+            <td>1</td>
         </tr>
         <tr>
             <td>2</td>
-            <td>Next solution mechanism</td>
+            <td>DPLL Parallelization</td>
+            <td>Analysis for DPLL Multi-Thread</td>
             <td>Fabri</td>
             <td>5</td>
         </tr>
         <tr>
-            <td>4</td>
+            <td>2</td>
+            <td rowspan="2">DPLL improvement</td>
+            <td>Next solution mechanism</td>
+            <td>Fabri</td>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>3</td>
             <td>Stop algorithm</td>
             <td>Fabri</td>
             <td>3</td>
@@ -148,14 +167,14 @@ _New tasks in this sprint:_
         </tr>
         <tr>
             <td>2</td>
-            <td rowspan="2">Test</td>
+            <td rowspan="2">Behavioral testing</td>
             <td>Cucumber plugin</td>
             <td>Matteini</td>
             <td>2</td>
         </tr>
         <tr>
             <td>2</td>
-            <td>BDD testing</td>
+            <td>BDD core testing</td>
             <td>All</td>
             <td>3</td>
         </tr>
@@ -166,16 +185,35 @@ _New tasks in this sprint:_
 
 The goals of this sprint are:
 
-- Enable the processing of long expressions
-- Provide the user a way to get all the solutions
-- Encode the Nurse scheduling and Graph Coloring problems
-- Improve the GUI
+- Optimization algorithms to reduce memory usage.
+- Providing the user a way to get all the solutions incrementally.
+- Encoding the Nurse scheduling and Graph Coloring problems.
+- Addition of some basic functionalities to the GUI.
 
 There will be the third pre-release of the project containing all these functionalities.
 
 ## Deadline
 
 The deadline for this sprint is 11/09/2023.
+
+## Sprint Review
+
+All optimization tasks took longer than expected as the entire functions were rewritten and tested.
+Similarly, the next solution mechanism required a longer time because the algorithm was modified to return one solution
+at a time.
+
+The sprint terminates with a day of delay.
+The main goals of the sprint are achieved, and all the tasks are completed except one which will be moved to the next
+sprint.
+
+Is released a new prototype permitting to solve NQueens, and Graph Coloring problems.
+
+## Sprint Retrospective
+
+The monad implementation for tree data structures was discarded because it was too complex and not worth the effort.
+
+The introduced optimizations improve the performance of the program, but it is still possible to encounter memory
+problems without resizing the default stack size.
 
 ---
 [Previous](3-product-backlog.md)
