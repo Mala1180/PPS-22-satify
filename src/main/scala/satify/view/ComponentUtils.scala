@@ -23,7 +23,6 @@ object ComponentUtils:
   def createImage(path: String, scaledBy: Int): ImageIcon =
     val url: URL = getClass.getResource(path)
     val image = ImageIcon(url)
-    // resize the image maintaining the aspect ratio
     val screenDimension: Dimension = Toolkit.getDefaultToolkit.getScreenSize
     val width: Int = screenDimension.getWidth.toInt
     val ratio: Double = image.getIconWidth.toDouble / image.getIconHeight.toDouble
@@ -184,8 +183,8 @@ object ComponentUtils:
       centerOnScreen()
 
   /** Creates a dialog to show a message
-   * @return the dialog
-   */
+    * @return the dialog
+    */
   def createDialog(dialogTitle: String, description: String): Dialog =
     val box = new BoxPanel(Orientation.Vertical):
       contents += Swing.VStrut(30)
