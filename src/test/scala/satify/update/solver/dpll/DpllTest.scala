@@ -15,7 +15,7 @@ import satify.model.dpll.PartialAssignment.*
 
 class DpllTest extends AnyFlatSpec with Matchers:
 
-  import satify.model.dpll.OrderedList.given_Ordering_OptionalVariable
+  import satify.model.dpll.OrderedList.given
 
   val sA: Symbol = Symbol("a")
   val sB: Symbol = Symbol("b")

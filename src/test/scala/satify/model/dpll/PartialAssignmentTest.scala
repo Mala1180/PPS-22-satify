@@ -1,22 +1,49 @@
-package satify.update.solver.dpll
+package satify.model.dpll
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.cnf.CNF.*
+import satify.model.cnf.Bool.{False, True}
 import satify.model.cnf.CNF
-import satify.model.{Variable, Assignment}
-import satify.model.dpll.OrderedList.{given_Ordering_OptionalVariable, list}
-import satify.model.dpll.{Constraint, Decision, PartialAssignment, OptionalVariable}
-import satify.update.solver.dpll.Dpll.dpll
-import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
+import satify.model.cnf.CNF.*
+import satify.model.dpll.DecisionTree.{Branch, Leaf}
+import satify.model.dpll.OrderedList.list
 import satify.model.dpll.PartialAssignment.*
+import satify.model.dpll.{Constraint, Decision, OptionalVariable, PartialAssignment}
+import satify.model.{Assignment, Variable}
 
-class PartialAssignmentUtilsTest extends AnyFlatSpec with Matchers:
+class PartialAssignmentTest extends AnyFlatSpec with Matchers:
+
+  import satify.model.dpll.OrderedList.given
 
   val varA: OptionalVariable = OptionalVariable("a")
   val varB: OptionalVariable = OptionalVariable("b")
 
   val cnf: CNF = And(Symbol("a"), Symbol("b"))
+
+  val dt: DecisionTree = Branch(
+    Decision(
+      PartialAssignment(List(varA, varB)),
+      And(Symbol("a"), Symbol("b"))
+    ),
+    Branch(
+      Decision(PartialAssignment(List(OptionalVariable("a", Some(true)), varB)), Symbol("b")),
+      Leaf(
+        Decision(
+          PartialAssignment(List(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(true)))),
+          Symbol(True)
+        )
+      ),
+      Leaf(
+        Decision(
+          PartialAssignment(List(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(false)))),
+          Symbol(False)
+        )
+      )
+    ),
+    Leaf(
+      Decision(PartialAssignment(List(OptionalVariable("a", Some(false)), varB)), Symbol(False))
+    )
+  )
 
   "A partial assignment" should "be extractable from a CNF" in {
     extractParAssignmentFromCnf(cnf) shouldBe PartialAssignment(list(varA, varB))
@@ -57,15 +84,16 @@ class PartialAssignmentUtilsTest extends AnyFlatSpec with Matchers:
       )
   }
 
-  "All assignments" should "be extractable from a decision tree" in {
-    extractParAssignments(dpll(cnf)) shouldBe
+  "Partial assignments" should "be extractable from a decision tree" in {
+    extractParAssignments(dt) shouldBe
       PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(true)))) :: Nil
-    extractSolutions(And(Symbol("a"), Or(Symbol("b"), Symbol("c")))) shouldBe
-      List(
-        Assignment(Variable("a", true) :: Variable("b", true) :: Variable("c", true) :: Nil),
-        Assignment(Variable("a", true) :: Variable("b", true) :: Variable("c", false) :: Nil),
-        Assignment(Variable("a", true) :: Variable("b", false) :: Variable("c", true) :: Nil)
-      )
+  }
+
+  "All assignments" should "be extractable from a decision tree" in {
+    val allAssignments =
+      for partialAssignment <- extractParAssignments(dt)
+      yield partialAssignment.toAssignments
+    allAssignments.flatten shouldBe List(Assignment(Variable("a", true) :: Variable("b", true) :: Nil))
   }
 
   "All assignments" should "be extractable from a partial assignment" in {
