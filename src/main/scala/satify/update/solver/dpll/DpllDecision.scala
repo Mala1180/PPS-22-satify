@@ -36,7 +36,7 @@ object DpllDecision:
     * @param d previous decision
     * @return List of new decisions
     */
-  def randomDecisions(d: Decision): List[Decision] = d match
+  private def randomDecisions(d: Decision): List[Decision] = d match
     case Decision(pm, cnf) =>
       val fv = filterUnconstrVars(pm)
       if fv.nonEmpty then
@@ -55,7 +55,7 @@ object DpllDecision:
     * @param c constraint.
     * @return List of new decisions
     */
-  def unitPropagationDecision(d: Decision, c: Constraint): List[Decision] =
+  private def unitPropagationDecision(d: Decision, c: Constraint): List[Decision] =
     d match
       case Decision(pm, cnf) =>
         List(
@@ -70,7 +70,7 @@ object DpllDecision:
     * @param c constraint.
     * @return List of new decisions
     */
-  def pureLiteralEliminationDecision(d: Decision, c: Constraint): List[Decision] =
+  private def pureLiteralEliminationDecision(d: Decision, c: Constraint): List[Decision] =
     d match
       case Decision(pm, cnf) =>
         List(
