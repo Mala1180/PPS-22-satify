@@ -144,6 +144,7 @@ object Update:
           State(
             Solution(
               currentState.solution.get.result,
+              currentState.solution.get.status,
              currentState.solution.get.assignment :+ nextAssignment
             ),
             currentState.problem.get
@@ -158,6 +159,7 @@ object Update:
             currentState.expression.get,
             Solution(
               currentState.solution.get.result,
+              currentState.solution.get.status,
               nextAssignment match
                 case Assignment(Nil) => currentState.solution.get.assignment
                 case _ => currentState.solution.get.assignment :+ nextAssignment

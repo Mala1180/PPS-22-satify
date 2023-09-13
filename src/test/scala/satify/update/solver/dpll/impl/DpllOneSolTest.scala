@@ -3,6 +3,7 @@ package satify.update.solver.dpll.impl
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.Result.*
+import satify.model.Status.*
 import satify.model.cnf.Bool.{False, True}
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
@@ -24,6 +25,7 @@ class DpllOneSolTest extends AnyFlatSpec with Matchers:
     dpll(cnf) shouldBe
       Solution(
         SAT,
+        PARTIAL,
         List(
           Assignment(
             List(Variable("a", true), Variable("b", true), Variable("c", true))

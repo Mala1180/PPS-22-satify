@@ -1,6 +1,7 @@
 package satify.update.solver.dpll.impl
 
 import satify.model.Result.*
+import satify.model.Status.COMPLETED
 import satify.model.cnf.CNF
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.dpll.PartialAssignment.{extractParAssignmentFromCnf, extractParAssignments}
@@ -17,7 +18,7 @@ object DpllAllSol:
     val assignments: List[Assignment] =
       (for partialAssignment <- extractParAssignments(dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)))
         yield partialAssignment.toAssignments).flatten
-    Solution(if assignments.nonEmpty then SAT else UNSAT, assignments)
+    Solution(if assignments.nonEmpty then SAT else UNSAT, COMPLETED, assignments)
 
   /** Main DPLL algorithm.
    * @param dec first decision

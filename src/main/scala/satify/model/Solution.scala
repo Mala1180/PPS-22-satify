@@ -7,6 +7,10 @@ enum Result:
   case SAT
   case UNSAT
 
+enum Status:
+  case COMPLETED
+  case PARTIAL
+
 /** Represent a completed variable, constrained to a value.
   * @param name name of the variable
   * @param value boolean assignment
@@ -20,9 +24,10 @@ case class Assignment(variables: List[Variable])
 
 /** Represents a solution to the SAT problem. It is used by [[update.Solver]].
   * @param result The result of the SAT problem (SAT or UNSAT).
+  * @param status The status (e.g. if the solution is completed or not)
   * @param assignment The assignment of variables to values, if the problem is SAT.
   */
-case class Solution(result: Result, assignment: List[Assignment] = Nil)
+case class Solution(result: Result, status: Status, assignment: List[Assignment] = Nil)
 
 object Solution:
 
