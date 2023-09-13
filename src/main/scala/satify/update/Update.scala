@@ -145,7 +145,7 @@ object Update:
             Solution(
               currentState.solution.get.result,
               currentState.solution.get.status,
-             currentState.solution.get.assignment :+ nextAssignment
+              currentState.solution.get.assignment :+ nextAssignment
             ),
             currentState.problem.get
           ),

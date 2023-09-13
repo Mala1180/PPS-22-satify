@@ -12,18 +12,18 @@ import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 
 import scala.annotation.tailrec
 
-object DpllAllSol:
+object DpllEnumerator:
 
   def dpll(cnf: CNF): Solution =
     val assignments: List[Assignment] =
       (for partialAssignment <- extractParAssignments(dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)))
-        yield partialAssignment.toAssignments).flatten
+      yield partialAssignment.toAssignments).flatten
     Solution(if assignments.nonEmpty then SAT else UNSAT, COMPLETED, assignments)
 
   /** Main DPLL algorithm.
-   * @param dec first decision
-   * @return decision tree of the run.
-   */
+    * @param dec first decision
+    * @return decision tree of the run.
+    */
   def dpll(dec: Decision): DecisionTree =
 
     case class Frame(d: Decision, done: List[DecisionTree], todos: List[Decision])

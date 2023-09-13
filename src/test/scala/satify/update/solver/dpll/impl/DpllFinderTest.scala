@@ -11,9 +11,9 @@ import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.dpll.PartialAssignment.extractParAssignmentFromCnf
 import satify.model.dpll.{Decision, DecisionTree}
 import satify.model.{Assignment, Result, Solution, Variable}
-import satify.update.solver.dpll.impl.DpllOneSol.{dpll, resume}
+import satify.update.solver.dpll.impl.DpllFinder.{dpll, resume}
 
-class DpllOneSolTest extends AnyFlatSpec with Matchers:
+class DpllFinderTest extends AnyFlatSpec with Matchers:
 
   val sA: Symbol = Symbol("a")
   val sB: Symbol = Symbol("b")

@@ -10,9 +10,9 @@ import satify.model.dpll.DecisionTree.*
 import satify.model.dpll.OrderedList.*
 import satify.model.dpll.PartialAssignment.*
 import satify.model.dpll.{Decision, DecisionTree, OptionalVariable, PartialAssignment}
-import satify.update.solver.dpll.impl.DpllAllSol.*
+import satify.update.solver.dpll.impl.DpllEnumerator.*
 
-class DpllAllSolTest extends AnyFlatSpec with Matchers:
+class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
 
   import satify.model.dpll.OrderedList.given
 

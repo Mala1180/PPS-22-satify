@@ -12,12 +12,12 @@ import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
-import satify.update.solver.dpll.impl.DpllOneSol.{dpll, resume}
+import satify.update.solver.dpll.impl.DpllFinder.{dpll, resume}
 
 import scala.annotation.tailrec
 import scala.util.Random
 
-object DpllOneSol:
+object DpllFinder:
 
   /** Save a run of DPLL algorithm.
     *
