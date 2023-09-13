@@ -17,7 +17,7 @@ trait Dimacs[T]:
     try parse(source.getLines.toList)
     finally source.close()
   protected def writeSource(path: String, obj: T): Unit =
-    val fileName: String = "output.txt"
+    val fileName: String = "SATIFY_CNF_EXPORT.txt"
     val separator = System.getProperty("file.separator")
     val writer = new PrintWriter(new File(path + separator + fileName))
     try dump(obj).foreach(writer.println)
@@ -80,6 +80,11 @@ object DimacsCNF extends Dimacs[CNF]:
     val dimacsString = dimacs(cnf)
     val numClauses = dimacsString.split("\n").length
     // header
+    cnfSeq :+= s"c SOURCE: SATIFY, a pure functional SAT solver written in Scala"
+    cnfSeq :+= s"c https://github.com/Mala1180/PPS-22-satify"
+    cnfSeq :+= s"c"
+    cnfSeq :+= s"c AUTHORS: Matteini Mattia, Paganelli Alberto, Fabri Luca"
+    cnfSeq :+= s"c"
     cnfSeq :+= s"p cnf $cnt $numClauses"
     cnfSeq ++= dimacsString.split("\n").map(_ + " 0")
     cnfSeq
@@ -91,6 +96,7 @@ object DimacsCNF extends Dimacs[CNF]:
         literals match
           case head +: Seq() => Or(head, prev)
           case head +: tail => buildOrCNF(tail, Some(Or(head, prev)))
+          case Seq() => prev
 
   private def buildAndCNF(literals: Seq[Or | Literal], p: Option[And | Or | Literal] = None): And | Or | Literal =
     p match

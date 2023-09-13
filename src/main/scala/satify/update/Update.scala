@@ -49,7 +49,8 @@ object Update:
   private def safeUpdate(f: () => State, error: Error, input: Option[String] = None): State =
     try f()
     catch
-      case _: Exception =>
+      case e: Exception =>
+        e.printStackTrace()
         if input.isEmpty then State(error) else State(input.get, error)
 
   /** Update function to react to the Solve message. This function will attempt to solve the input and return a state.
