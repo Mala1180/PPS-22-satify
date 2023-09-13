@@ -89,19 +89,8 @@ object DimacsCNF extends Dimacs[CNF]:
     cnfSeq ++= dimacsString.split("\n").map(_ + " 0")
     cnfSeq
 
-  private def buildOrCNF(literals: Seq[Literal], p: Option[Or | Literal] = None): Or | Literal =
-    p match
-      case None => buildOrCNF(literals.tail, Some(literals.head))
-      case Some(prev) =>
-        literals match
-          case head +: Seq() => Or(head, prev)
-          case head +: tail => buildOrCNF(tail, Some(Or(head, prev)))
-          case Seq() => prev
+  private def buildOrCNF(cnf: Seq[Literal]): Or | Literal =
+    cnf.tail.foldLeft[Or | Literal](cnf.head)((p, c) => Or(c, p))
 
-  private def buildAndCNF(literals: Seq[Or | Literal], p: Option[And | Or | Literal] = None): And | Or | Literal =
-    p match
-      case None => buildAndCNF(literals.tail, Some(literals.head))
-      case Some(prev) =>
-        literals match
-          case head +: Seq() => And(head, prev)
-          case head +: tail => buildAndCNF(tail, Some(And(head, prev)))
+  private def buildAndCNF(cnf: Seq[Or | Literal]): And | Or | Literal =
+    cnf.tail.foldLeft[And | Or | Literal](cnf.head)((p, c) => And(c, p))
