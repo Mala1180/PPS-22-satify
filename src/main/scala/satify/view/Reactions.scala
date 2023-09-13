@@ -24,6 +24,12 @@ import scala.swing.{Component, Swing, TextArea}
 
 object Reactions:
 
+  /** Reaction to the solve all button
+    * @param model the current model to update
+    */
+  def allSolutionsReaction(model: Model): Unit =
+    updateComponents(view(update(model, SolveAll(inputTextArea.text))))
+
   /** Reaction to the solve button
     * @param model the current model to update
     */
