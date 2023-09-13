@@ -8,7 +8,7 @@ import satify.model.dpll.{Constraint, Decision, DecisionTree, OptionalVariable}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
-import satify.update.solver.dpll.utils.PartialAssignmentUtils.extractParAssignmentFromCnf
+import satify.model.dpll.PartialAssignment.extractParAssignmentFromCnf
 
 import scala.annotation.tailrec
 

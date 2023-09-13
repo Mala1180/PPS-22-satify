@@ -3,7 +3,7 @@ package satify.update.solver.dpll.utils
 import satify.model.cnf.CNF
 import satify.model.Assignment
 import satify.update.solver.dpll.Dpll.dpll
-import satify.update.solver.dpll.utils.PartialAssignmentUtils.*
+import satify.model.dpll.PartialAssignment.*
 
 object DpllUtils:
 

@@ -6,7 +6,7 @@ import satify.model.cnf.CNF.Symbol
 import satify.model.dpll.{Constraint, Decision}
 import satify.update.solver.dpll.Optimizations.{pureLiteralIdentification, unitLiteralIdentification}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
-import satify.update.solver.dpll.utils.PartialAssignmentUtils.{filterUnconstrVars, updatePartialAssignment}
+import satify.model.dpll.PartialAssignment.{filterUnconstrVars, updatePartialAssignment}
 
 import scala.util.Random
 

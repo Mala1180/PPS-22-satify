@@ -9,7 +9,7 @@ import satify.model.dpll.OrderedList.{given_Ordering_OptionalVariable, list}
 import satify.model.dpll.{Constraint, Decision, PartialAssignment, OptionalVariable}
 import satify.update.solver.dpll.Dpll.dpll
 import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
-import satify.update.solver.dpll.utils.PartialAssignmentUtils.*
+import satify.model.dpll.PartialAssignment.*
 
 class PartialAssignmentUtilsTest extends AnyFlatSpec with Matchers:
 

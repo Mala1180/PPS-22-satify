@@ -11,7 +11,7 @@ import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.DpllOneSol.{dpll, resume}
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
-import satify.update.solver.dpll.utils.PartialAssignmentUtils.*
+import satify.model.dpll.PartialAssignment.*
 
 import scala.annotation.tailrec
 import scala.util.Random
