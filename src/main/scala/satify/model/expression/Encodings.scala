@@ -64,12 +64,13 @@ object Encodings:
   /** Encodes the constraint that at most k of the given variables are true. <br>
     * It is implemented using sequential encoding that produces 2nk + 2n − 3k + 1 clauses (O(n) complexity). <br>
     * Set of mathematical clauses:<br>
-    * 1) (¬s1,j) for 1 < j <= k <br>
-    * 2) (¬xi ∨ si,1) for 1 < i < n<br>
-    * 3) (¬si−1,1 ∨ si,1) for 1 < i < n<br>
-    * 4) (¬xi ∨ ¬si−1,j−1 ∨ si,j) for 1 < i < n and for 1 < j <= k<br>
-    * 5) (¬si−1,j ∨ si,j) for 1 < i < n and for 1 < j <= k<br>
-    * 6) (¬xi ∨ ¬si−1,k) for 1 < i < n
+    * 1) (&not;s1,j) for 1 &lt; j &le; k <br>
+    * 2) (&not;xi &or; si,1) for 1 &lt; i < n<br>
+    * 3) (&not;si−1,1 &or; si,1) for 1 &lt; i < n<br>
+    * 4) (&not;xi &or; &not;si−1,j−1 &or; si,j) for 1 &lt; i < n and for 1 &lt; j &le; k<br>
+    * 5) (&not;si−1,j &or; si,j) for 1 &lt; i < n and for 1 &le; j &le; k<br>
+    * 6) (&not;xi &or; &not;si−1,k) for 1 &lt; i < n
+    *
     * @param k         the number of variables that must be true
     * @param variables the input variables
     * @return the [[Expression]] that encodes the constraint
