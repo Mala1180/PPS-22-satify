@@ -3,12 +3,13 @@ package satify.model.expression
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.{should, shouldBe}
 import satify.model.expression.Expression.*
+import satify.model.expression.SymbolGeneration.{ErasableSymbolGenerator, encodingVarPrefix}
 
 class SatEncodingsWrongUseTest extends AnyFlatSpec:
 
-  given ResettableSymbolGenerator with
-    def prefix: String = "ENC"
-    
+  given ErasableSymbolGenerator with
+    override def prefix: String = encodingVarPrefix
+
   "atLeastOne()" should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
       atLeastOne()

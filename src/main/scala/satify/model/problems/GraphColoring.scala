@@ -1,15 +1,14 @@
 package satify.model.problems
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
-import satify.update.solver.Solver
-import satify.update.solver.SolverType.DPLL
+import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
 
 import scala.swing.{Component, FlowPanel}
 
 case class GraphColoring(edges: List[(String, String)], nodes: List[String], colors: Int) extends Problem:
 
-  given IncrementalSymbolGenerator with
-    override def prefix: String = encodingVarPrefix
+  given SymbolGenerator with
+    def prefix: String = encodingVarPrefix
 
   val variables: Seq[Seq[Symbol]] =
     for i <- nodes.indices yield for j <- 0 until colors yield Symbol(s"${nodes(i)}_c$j")

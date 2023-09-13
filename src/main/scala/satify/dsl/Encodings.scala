@@ -2,12 +2,9 @@ package satify.dsl
 
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
+import satify.model.expression.SymbolGeneration.SymbolGenerator
 
 object Encodings:
-
-  given SymbolGenerator with
-    def hasToReset: Boolean = false
-    def prefix: String = encodingVarPrefix
 
   extension (expressions: Seq[Symbol])
 

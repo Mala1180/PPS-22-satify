@@ -3,11 +3,12 @@ package satify.model.expression
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.{should, shouldBe}
 import satify.model.expression.Expression.*
+import satify.model.expression.SymbolGeneration.{ErasableSymbolGenerator, encodingVarPrefix}
 
 class SatEncodingsTest extends AnyFlatSpec:
 
-  given ResettableSymbolGenerator with
-    def prefix: String = "ENC"
+  given ErasableSymbolGenerator with
+    override def prefix: String = encodingVarPrefix
 
   """ atLeastOne("A", "B", "C")  """ should """ be equal to "A" or "B" or "C" """ in {
     atLeastOne(Symbol("A"), Symbol("B"), Symbol("C")) shouldBe Or(Or(Symbol("A"), Symbol("B")), Symbol("C"))
@@ -27,18 +28,15 @@ class SatEncodingsTest extends AnyFlatSpec:
     )
   }
 
-//  """ atMostOne("A", "B", "C") """ should """ be equal to  """ in {
-//    atMostOne(Symbol("A"), Symbol("B"), Symbol("C")) shouldBe And(
-//      And(
-//        Or(Not(Symbol("A")), Symbol("ENC0")),
-//        Or(
-//          Not(Symbol("C")),
-//          Symbol("ENC1")
-//        )
-//      ),
-//      And(
-//        And(Or(Not(Symbol("B")), Symbol("ENC1")), Or(Not(Symbol("ENC0")), Symbol("ENC1"))),
-//        Or(Not(Symbol("B")), Not(Symbol("ENC0")))
-//      )
-//    )
-//  }
+  """ atMostOne("A", "B", "C") """ should """ be equal to  """ in {
+    atMostOne(Symbol("A"), Symbol("B"), Symbol("C")) shouldBe And(
+      Or(Not(Symbol("A")), Symbol("ENC0")),
+      And(
+        Or(Not(Symbol("B")), Symbol("ENC1")),
+        And(
+          Or(Not(Symbol("ENC0")), Symbol("ENC1")),
+          And(Or(Not(Symbol("B")), Not(Symbol("ENC0"))), Or(Not(Symbol("C")), Not(Symbol("ENC1"))))
+        )
+      )
+    )
+  }

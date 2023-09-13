@@ -1,11 +1,9 @@
 package satify.model.expression
 
 import satify.model.expression.Expression.*
+import satify.model.expression.SymbolGeneration.SymbolGenerator
 
 object Encodings:
-
-//  private def symbolGenerator(prefix: String): () => Symbol = symbolProducer(prefix)
-//  private val encVarProducer: () => Symbol = symbolGenerator("ENC")
 
   private def requireVariables(vars: Seq[Symbol], minimum: Int, method: String): Unit =
     require(vars.length >= minimum, s"$method encoding requires at least two variables")

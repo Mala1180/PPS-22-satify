@@ -1,11 +1,12 @@
 package satify.update.solver.dpll.utils
 
 import satify.model.cnf.Bool.True
-import satify.model.cnf.CNF.*
 import satify.model.cnf.CNF
+import satify.model.cnf.CNF.*
+import satify.model.dpll.*
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.dpll.OrderedSeq.*
-import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel, Variable}
+import satify.model.expression.SymbolGeneration.{encodingVarPrefix, tseitinVarPrefix}
 
 object PartialModelUtils:
 
@@ -58,7 +59,8 @@ object PartialModelUtils:
             Set(
               pm.filter(v =>
                 v match
-                  case Variable(name, _) if name.startsWith("TSTN") || name.startsWith("ENC") => false
+                  case Variable(name, _) if name.startsWith(tseitinVarPrefix) || name.startsWith(encodingVarPrefix) =>
+                    false
                   case _ => true
               )
             )

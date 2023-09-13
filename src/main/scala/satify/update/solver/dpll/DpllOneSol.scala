@@ -1,13 +1,13 @@
 package satify.update.solver.dpll
 
-import satify.model.{Assignment, Result, Solution}
-import satify.model.cnf.Bool.True
-import satify.model.cnf.CNF.*
-import satify.model.cnf.CNF
 import satify.model.Result.*
-import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel, Variable}
+import satify.model.cnf.Bool.True
+import satify.model.cnf.CNF
+import satify.model.cnf.CNF.*
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.expression.Utils.{encodingVarPrefix, tseitinVarPrefix}
+import satify.model.dpll.*
+import satify.model.expression.SymbolGeneration.{encodingVarPrefix, tseitinVarPrefix}
+import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.DpllOneSol.{dpll, resume}
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
@@ -82,7 +82,8 @@ object DpllOneSol:
             val allSolutions = explodeSolutions(
               pm.filter(v =>
                 v match
-                  case Variable(name, _) if name.startsWith(encodingVarPrefix) || name.startsWith(tseitinVarPrefix) => false
+                  case Variable(name, _) if name.startsWith(encodingVarPrefix) || name.startsWith(tseitinVarPrefix) =>
+                    false
                   case _ => true
               )
             ).map(parModel => Assignment(parModel)).toList

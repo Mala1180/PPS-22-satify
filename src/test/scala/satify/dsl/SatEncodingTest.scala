@@ -3,17 +3,16 @@ package satify.dsl
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.shouldBe
 import satify.model.expression.Expression.*
+import satify.model.expression.SymbolGeneration.{ErasableSymbolGenerator, encodingVarPrefix}
 
 class SatEncodingTest extends AnyFlatSpec:
 
   import satify.dsl.DSL.{*, given}
 
-  given ResettableSymbolGenerator with
-    def prefix: String = "ENC"
+  given ErasableSymbolGenerator with
+    override def prefix: String = encodingVarPrefix
 
   """ ("A", "B") atMost 1 """ should """ be equal to atMostOne("A", "B") """ in {
-//    given SymbolGenerator with
-//      def prefix: String = "cuai"
     ("A", "B") atMost 1 shouldBe atMostOne("A", "B")
   }
 

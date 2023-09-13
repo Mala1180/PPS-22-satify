@@ -5,9 +5,10 @@ import satify.model.expression.Expression.*
 import satify.model.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
 import satify.model.cnf.Literal
 import satify.model.cnf.CNF
+import satify.model.expression.SymbolGeneration.{SymbolGenerator, tseitinVarPrefix}
 
 private[converters] object Utils:
-  
+
   /** Zip the subexpressions found in the given expression with a Symbol.
     *
     * @param exp the expression.
@@ -15,8 +16,7 @@ private[converters] object Utils:
     */
   def zipWithSymbol(exp: Expression): List[(Symbol, Expression)] =
     given SymbolGenerator with
-      override val hasToReset = true
-      override val prefix: String = tseitinVarPrefix 
+      override def prefix: String = tseitinVarPrefix
     zipWith(exp)(summon[SymbolGenerator].generate)
 
   /** Method to check if an expression is in CNF form and can be converted to CNF form.
