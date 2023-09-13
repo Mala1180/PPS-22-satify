@@ -15,7 +15,7 @@ import satify.update.converters.ConverterType.*
 import satify.update.parser.DimacsCNF.*
 import satify.update.solver.Solver
 import satify.update.solver.SolverType.*
-
+import satify.update.Utils.chronometer.*
 import java.io.File
 import scala.io.Source
 
@@ -40,24 +40,6 @@ object Update:
       case NextSolution() =>
         nextSolutionUpdate(model)
 
-  private object chronometer:
-    private var t0: Long = 0
-    def start(): Unit = t0 = System.nanoTime()
-    def stop(): String = s"Time: ${(System.nanoTime() - t0) / 1000000}ms"
-
-  /**
-   * Time a function.
-   *
-   * @param f function to time.
-   * @tparam T return type of the function.
-   * @return a string with the time it took to execute the function.
-   */
-  private def time[T](f: () => T): String =
-    val start = System.nanoTime()
-    val state = f()
-    val end = System.nanoTime()
-    s"Time: ${(end - start) / 1000000}ms"
-
   /** Safely update the model by catching any exceptions and returning an error state.
     * @param f function to execute.
     * @param error error to return if an exception is thrown. For example, if the input is invalid, return InvalidInput.
@@ -78,8 +60,10 @@ object Update:
     safeUpdate(
       () =>
         val exp = reflect(input)
+        start()
         val sol: Solution = Solver(DPLL).solve(exp)
-        State(input, exp, sol)
+        stop()
+        State(input, exp, sol, elapsed())
       ,
       InvalidInput,
       Some(input)
@@ -107,8 +91,10 @@ object Update:
     safeUpdate(
       () =>
         val exp = reflect(input)
+        start()
         val cnf: CNF = Converter(Tseitin).convert(exp)
-        State(input, exp, cnf)
+        stop()
+        State(input, exp, cnf, elapsed())
       ,
       InvalidInput,
       Some(input)
@@ -160,7 +146,8 @@ object Update:
               nextAssignment match
                 case Assignment(Nil) => currentState.solution.get.assignment
                 case _ => nextAssignment :: currentState.solution.get.assignment
-            )
+            ),
+            0
           ),
         EmptySolution
       )
