@@ -8,42 +8,49 @@ import satify.model.{Assignment, Solution}
 import satify.update.converters.ConverterType.*
 import satify.update.converters.{Converter, ConverterType}
 import satify.update.solver.SolverType.*
-import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
-import satify.update.solver.dpll.DpllOneSol.dpll
+import satify.update.solver.dpll.impl.{DpllAllSol, DpllOneSol}
 
 import scala.collection.mutable
 
 /** Entity providing the methods to solve the SAT problem.
-  * @see [[satify.update.solver.DPLL]]
-  */
+ * @see [[satify.update.solver.DPLL]]
+ */
 trait Solver:
 
+  /**
+   * Solves the SAT problem, returning a [[Solution]] with all satisfiable [[Assignment]]s.
+   * @param cnf the input in conjunctive normal form
+   * @return the solution to the SAT problem
+   */
+  def solveAll(cnf: CNF): Solution
+
   /** Solves the SAT problem.
-    * @param cnf the input in conjunctive normal form
-    * @return the solution to the SAT problem
-    */
+   * @param cnf the input in conjunctive normal form
+   * @return the solution to the SAT problem
+   */
   def solve(cnf: CNF): Solution
 
   /** Solves the SAT problem.
-    * @param exp the input expression
-    * @return the solution to the SAT problem
-    */
+   * @param exp the input expression
+   * @return the solution to the SAT problem
+   */
   def solve(exp: Expression): Solution
 
   /** Finds the next assignment of the previous solution, if any.
-    * @return the solution to the SAT problem
-    * @throws IllegalStateException if the previous solution was not found
-    */
+   * @return the solution to the SAT problem
+   * @throws IllegalStateException if the previous solution was not found
+   */
   def next(): Assignment
+
 
 /** Factory for [[Solver]] instances. */
 object Solver:
 
   /** Creates a solver using the given type of algorithm
-    * @param algorithmType the type of the algorithm
-    * @return the Solver
-    * @see [[SolverType]]
-    */
+   * @param algorithmType the type of the algorithm
+   * @return the Solver
+   * @see [[SolverType]]
+   */
   def apply(algorithmType: SolverType, conversionType: ConverterType = Tseitin): Solver =
     algorithmType match
       case DPLL => DpllSolver(Converter(conversionType))
@@ -53,15 +60,17 @@ object Solver:
 
     import DpllSolverMemoize.runDpll
 
-    override def solve(cnf: CNF): Solution = runDpll(cnf)
+    override def solveAll(cnf: CNF): Solution = runDpll(cnf)
+
+    override def solve(cnf: CNF): Solution = DpllOneSol.dpll(cnf)
 
     override def solve(exp: Expression): Solution = solve(converter.convert(exp))
 
-    override def next(): Assignment = dpll()
+    override def next(): Assignment = DpllOneSol.dpll()
 
 object DpllSolverMemoize:
 
-  val runDpll: CNF => Solution = memoize(cnf => dpll(cnf))
+  val runDpll: CNF => Solution = memoize(cnf => DpllAllSol.dpll(cnf))
 
   protected def memoize(f: CNF => Solution): CNF => Solution =
     new collection.mutable.HashMap[CNF, Solution]():

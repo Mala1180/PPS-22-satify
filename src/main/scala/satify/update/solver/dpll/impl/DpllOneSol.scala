@@ -1,28 +1,29 @@
-package satify.update.solver.dpll
+package satify.update.solver.dpll.impl
 
-import satify.model.{Assignment, Result, Solution}
-import satify.model.cnf.Bool.True
-import satify.model.cnf.CNF.*
-import satify.model.cnf.CNF
 import satify.model.Result.*
-import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialAssignment, OptionalVariable}
+import satify.model.cnf.Bool.True
+import satify.model.cnf.CNF
+import satify.model.cnf.CNF.*
+import satify.model.dpll.*
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
+import satify.model.dpll.PartialAssignment.*
+import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
-import satify.update.solver.dpll.DpllOneSol.{dpll, resume}
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
-import satify.model.dpll.PartialAssignment.*
+import satify.update.solver.dpll.impl.DpllOneSol.{dpll, resume}
 
 import scala.annotation.tailrec
 import scala.util.Random
 
-/** Save a run of DPLL algorithm.
-  * @param dt decision tree
-  * @param s solution
-  */
-case class DpllRun(dt: DecisionTree, s: Solution)
-
 object DpllOneSol:
+
+  /** Save a run of DPLL algorithm.
+    *
+    * @param dt decision tree
+    * @param s  solution
+    */
+  case class DpllRun(dt: DecisionTree, s: Solution)
 
   val rnd: Random = Random(42)
   private var prevRun: Option[DpllRun] = None
