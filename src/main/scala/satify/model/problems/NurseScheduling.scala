@@ -6,6 +6,9 @@ import scala.swing.{Component, FlowPanel}
 
 case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
 
+  given IncrementalSymbolGenerator with
+    override def prefix: String = "ENC"
+    
   private val variables: Seq[Seq[Seq[Symbol]]] =
     for n <- 0 until nurses
     yield for d <- 0 until days

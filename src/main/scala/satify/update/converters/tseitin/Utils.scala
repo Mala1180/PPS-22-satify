@@ -1,21 +1,23 @@
 package satify.update.converters.tseitin
 
 import satify.model.expression.Expression
-import satify.model.expression.Expression.{And, Not, Or, Symbol, zipWith}
-import satify.model.expression.Utils.symbolGenerator
+import satify.model.expression.Expression.*
 import satify.model.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
 import satify.model.cnf.Literal
 import satify.model.cnf.CNF
 
 private[converters] object Utils:
-
+  
   /** Zip the subexpressions found in the given expression with a Symbol.
     *
     * @param exp the expression.
     * @return a list of the subexpressions found in the given expression zipped with the Symbol.
     */
   def zipWithSymbol(exp: Expression): List[(Symbol, Expression)] =
-    zipWith(exp)(symbolGenerator("TSTN"))
+    given SymbolGenerator with
+      override val hasToReset = true
+      override val prefix: String = tseitinVarPrefix 
+    zipWith(exp)(summon[SymbolGenerator].generate)
 
   /** Method to check if an expression is in CNF form and can be converted to CNF form.
     *

@@ -6,6 +6,9 @@ import satify.model.expression.Expression.*
 
 class SatEncodingsWrongUseTest extends AnyFlatSpec:
 
+  given ResettableSymbolGenerator with
+    def prefix: String = "ENC"
+    
   "atLeastOne()" should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
       atLeastOne()

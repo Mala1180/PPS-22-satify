@@ -7,6 +7,7 @@ import satify.model.cnf.CNF
 import satify.model.Result.*
 import satify.model.dpll.{Constraint, Decision, DecisionTree, PartialModel, Variable}
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
+import satify.model.expression.Utils.{encodingVarPrefix, tseitinVarPrefix}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.DpllOneSol.{dpll, resume}
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
@@ -81,7 +82,7 @@ object DpllOneSol:
             val allSolutions = explodeSolutions(
               pm.filter(v =>
                 v match
-                  case Variable(name, _) if name.startsWith("ENC") || name.startsWith("TSTN") => false
+                  case Variable(name, _) if name.startsWith(encodingVarPrefix) || name.startsWith(tseitinVarPrefix) => false
                   case _ => true
               )
             ).map(parModel => Assignment(parModel)).toList

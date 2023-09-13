@@ -1,12 +1,11 @@
 package satify.model.expression
 
 import satify.model.expression.Expression.*
-import satify.model.expression.Utils.symbolProducer
 
 object Encodings:
 
-  private def symbolGenerator(prefix: String): () => Symbol = symbolProducer(prefix)
-  private val encVarProducer: () => Symbol = symbolGenerator("ENC")
+//  private def symbolGenerator(prefix: String): () => Symbol = symbolProducer(prefix)
+//  private val encVarProducer: () => Symbol = symbolGenerator("ENC")
 
   private def requireVariables(vars: Seq[Symbol], minimum: Int, method: String): Unit =
     require(vars.length >= minimum, s"$method encoding requires at least two variables")
@@ -17,7 +16,7 @@ object Encodings:
     * @param variables the input variables
     * @return the [[Expression]] that encodes the constraint
     */
-  def exactlyOne(variables: Symbol*): Expression =
+  def exactlyOne(variables: Symbol*)(using SymbolGenerator): Expression =
     val vars: Seq[Symbol] = removeDuplicates(variables)
     requireVariables(vars, 1, "exactlyOne")
     And(atLeastOne(vars: _*), atMostOne(vars: _*))
@@ -59,7 +58,7 @@ object Encodings:
     * @return the [[Expression]] that encodes the constraint
     * @see [[atMostK]]
     */
-  def atMostOne(variables: Symbol*): Expression = atMostK(1)(variables: _*)
+  def atMostOne(variables: Symbol*)(using SymbolGenerator): Expression = atMostK(1)(variables: _*)
 
   /** Encodes the constraint that at most k of the given variables are true. <br>
     * It is implemented using sequential encoding that produces 2nk + 2n − 3k + 1 clauses (O(n) complexity). <br>
@@ -75,13 +74,14 @@ object Encodings:
     * @param variables the input variables
     * @return the [[Expression]] that encodes the constraint
     */
-  def atMostK(k: Int)(variables: Symbol*): Expression =
+  def atMostK(k: Int)(variables: Symbol*)(using generator: SymbolGenerator): Expression =
     val X: Seq[Symbol] = removeDuplicates(variables)
     requireVariables(X, 1, "atMostK")
     val n = X.length
     require(k <= n, "atMostK encoding requires k <= n")
 
-    val S: Seq[Seq[Symbol]] = (1 until n).map(_ => (1 to k).map(_ => encVarProducer())).toList
+    val S: Seq[Seq[Symbol]] = (1 until n).map(_ => (1 to k).map(_ => generator.generate())).toList
+    if generator.hasToReset then generator.reset()
     // (¬s1,j) for 1 < j <= k
     val clauses1: Seq[Expression] = (1 until k).map(j => Not(S.head(j)))
     // (¬xi ∨ si,1) for 1 < i < n

@@ -5,13 +5,17 @@ import satify.model.expression.Expression.*
 
 object Encodings:
 
+  given SymbolGenerator with
+    def hasToReset: Boolean = false
+    def prefix: String = encodingVarPrefix
+
   extension (expressions: Seq[Symbol])
 
     /** Calls [[atMostK]]
       * @see [[atMostK]]
       * @return the [[Expression]] that represents the constraint
       */
-    def atMost(k: Int): Expression = atMostK(k)(expressions: _*)
+    def atMost(k: Int)(using SymbolGenerator): Expression = atMostK(k)(expressions: _*)
 
     /** Calls [[atLeastOne]] if k is 1, [[atLeastK]] otherwise.
       * @see [[atLeastOne]] and [[atLeastK]]
@@ -25,4 +29,4 @@ object Encodings:
       *  @see [[Expression.exactlyOne]]
       * @return the [[Expression]] that represents the constraint
       */
-    def exactlyOne: Expression = Expression.exactlyOne(expressions: _*)
+    def exactlyOne(using SymbolGenerator): Expression = Expression.exactlyOne(expressions: _*)
