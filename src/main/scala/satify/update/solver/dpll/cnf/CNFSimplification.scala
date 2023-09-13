@@ -1,8 +1,8 @@
 package satify.update.solver.dpll.cnf
 
 import satify.model.cnf.Bool.{False, True}
-import satify.model.cnf.CNF.*
 import satify.model.cnf.CNF
+import satify.model.cnf.CNF.*
 import satify.model.dpll.Constraint
 
 object CNFSimplification:

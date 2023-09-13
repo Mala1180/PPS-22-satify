@@ -3,8 +3,8 @@ package satify.update.solver.dpll
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.cnf.Bool.{False, True}
-import satify.model.cnf.CNF.*
 import satify.model.cnf.CNF
+import satify.model.cnf.CNF.*
 import satify.model.dpll.Constraint
 import satify.update.solver.dpll.cnf.CNFSimplification.*
 

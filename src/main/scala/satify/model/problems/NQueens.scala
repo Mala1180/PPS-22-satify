@@ -14,7 +14,7 @@ case class NQueens(n: Int) extends Problem:
 
   given SymbolGenerator with
     def prefix: String = encodingVarPrefix
-    
+
   private val variables: Seq[Seq[Symbol]] =
     if n < 0 then throw new IllegalArgumentException("n must be positive")
     else

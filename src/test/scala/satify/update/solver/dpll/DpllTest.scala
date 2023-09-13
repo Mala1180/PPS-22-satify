@@ -4,8 +4,8 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.should
 import satify.model.cnf.Bool.{False, True}
-import satify.model.cnf.CNF.*
 import satify.model.cnf.CNF
+import satify.model.cnf.CNF.*
 import satify.model.dpll.DecisionTree.*
 import satify.model.dpll.OrderedSeq.*
 import satify.model.dpll.{Decision, DecisionTree, Variable}

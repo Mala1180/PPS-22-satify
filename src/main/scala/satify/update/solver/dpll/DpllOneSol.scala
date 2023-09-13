@@ -4,8 +4,8 @@ import satify.model.Result.*
 import satify.model.cnf.Bool.True
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
-import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.dpll.*
+import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.expression.SymbolGeneration.{encodingVarPrefix, tseitinVarPrefix}
 import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide

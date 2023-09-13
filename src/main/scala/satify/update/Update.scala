@@ -2,8 +2,8 @@ package satify.update
 
 import satify.dsl.Reflection.reflect
 import satify.model.*
-import satify.model.cnf.CNF.Symbol
 import satify.model.cnf.CNF
+import satify.model.cnf.CNF.Symbol
 import satify.model.errors.Error
 import satify.model.errors.Error.*
 import satify.model.expression.Expression

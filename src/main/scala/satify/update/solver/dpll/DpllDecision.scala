@@ -1,9 +1,8 @@
 package satify.update.solver.dpll
 
 import satify.model.cnf.Bool.False
-import satify.model.dpll.Variable
 import satify.model.cnf.CNF.Symbol
-import satify.model.dpll.{Constraint, Decision}
+import satify.model.dpll.{Constraint, Decision, Variable}
 import satify.update.solver.dpll.Optimizations.{pureLiteralIdentification, unitLiteralIdentification}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.utils.PartialModelUtils.{filterUnconstrVars, updateParModel}

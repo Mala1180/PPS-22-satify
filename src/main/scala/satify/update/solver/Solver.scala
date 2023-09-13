@@ -8,8 +8,8 @@ import satify.model.{Assignment, Solution}
 import satify.update.converters.ConverterType.*
 import satify.update.converters.{Converter, ConverterType}
 import satify.update.solver.SolverType.*
-import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
 import satify.update.solver.dpll.DpllOneSol.dpll
+import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
 
 /** Entity providing the methods to solve the SAT problem.
   * @see [[satify.update.solver.DPLL]]

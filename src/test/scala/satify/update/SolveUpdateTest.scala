@@ -3,8 +3,8 @@ package satify.update
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.State
-import satify.update.Update.update
 import satify.update.Message.Solve
+import satify.update.Update.update
 
 class SolveUpdateTest extends AnyFlatSpec with Matchers:
 

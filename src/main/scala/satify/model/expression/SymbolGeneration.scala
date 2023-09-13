@@ -27,4 +27,3 @@ object SymbolGeneration:
 
   trait ErasableSymbolGenerator extends SymbolGenerator:
     override def hasToReset: Boolean = true
-
