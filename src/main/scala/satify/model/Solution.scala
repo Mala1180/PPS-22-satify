@@ -7,6 +7,9 @@ enum Result:
   case SAT
   case UNSAT
 
+/** The Solution could be completed if all the assignments are provided to the user,
+  * partial otherwise.
+  */
 enum Status:
   case COMPLETED
   case PARTIAL
