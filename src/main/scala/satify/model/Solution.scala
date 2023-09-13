@@ -28,10 +28,9 @@ object Solution:
 
   extension (solution: Solution)
     def print: String =
-      s"${solution.result}: ${
-          if solution.assignment.size > 1 then solution.assignment.size + " Solutions"
-          else solution.assignment.size + " Solution"
-        }  \n${
-          if solution.assignment.isEmpty then ""
-          else solution.assignment.head.variables.foldLeft("")((b, c) => b + c.name + ": " + c.value + "\n")
-        }"
+      s"${solution.result} \n ${solution.assignment
+          .map(a =>
+            s"Solution ${solution.assignment.indexOf(a) + 1}" + "\n" +
+              a.variables.foldLeft("")((b, c) => b + c.name + ": " + c.value + "\n")
+          )
+          .foldLeft("")((p, c) => p + "\n" + c)}"
