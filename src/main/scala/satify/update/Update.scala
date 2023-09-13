@@ -29,6 +29,8 @@ object Update:
   def update(model: State, message: Message): State =
     message match
       case Input(char) => model
+      case SolveAll(input) =>
+        solveAllUpdate(input)
       case Solve(input) =>
         solveUpdate(input)
       case SolveProblem(problem) =>
@@ -51,6 +53,23 @@ object Update:
     catch
       case _: Exception =>
         if input.isEmpty then State(error) else State(input.get, error)
+
+  /** Update function to react to the SolveAll message. This function will attempt to solve the input and return a state.
+    *
+    * @param input input to solve
+    * @return a state with the input, expression, and solution if no exception is thrown, otherwise a state with the input and the occurred error
+    */
+  private def solveAllUpdate(input: String): State =
+    safeUpdate(
+      () =>
+        val exp = reflect(input)
+        val cnf: CNF = Converter(Tseitin).convert(exp)
+        val sol: Solution = Solver(DPLL).solveAll(cnf)
+        State(input, exp, sol)
+      ,
+      InvalidInput,
+      Some(input)
+    )
 
   /** Update function to react to the Solve message. This function will attempt to solve the input and return a state.
     * @param input input to solve
