@@ -40,6 +40,24 @@ object Update:
       case NextSolution() =>
         nextSolutionUpdate(model)
 
+  private object chronometer:
+    private var t0: Long = 0
+    def start(): Unit = t0 = System.nanoTime()
+    def stop(): String = s"Time: ${(System.nanoTime() - t0) / 1000000}ms"
+
+  /**
+   * Time a function.
+   *
+   * @param f function to time.
+   * @tparam T return type of the function.
+   * @return a string with the time it took to execute the function.
+   */
+  private def time[T](f: () => T): String =
+    val start = System.nanoTime()
+    val state = f()
+    val end = System.nanoTime()
+    s"Time: ${(end - start) / 1000000}ms"
+
   /** Safely update the model by catching any exceptions and returning an error state.
     * @param f function to execute.
     * @param error error to return if an exception is thrown. For example, if the input is invalid, return InvalidInput.
