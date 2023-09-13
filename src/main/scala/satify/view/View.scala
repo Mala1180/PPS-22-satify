@@ -42,8 +42,11 @@ object View:
       val exportButton = createButton("Export CNF", 130, 50, Color.BLUE)
       exportButton.reactions += { case _: event.ButtonClicked =>
         val result = exportFileChooser.showOpenDialog(cnfOutputDialog)
-        if result == FileChooser.Result.Approve then DimacsCNF.write(exportFileChooser.selectedFile.getPath, cnf.get)
-        else createErrorDialog("Export error, select a txt file to export the CNF")
+        if result == FileChooser.Result.Approve then
+          DimacsCNF.write(exportFileChooser.selectedFile.getPath, cnf.get)
+          exportButton.text = "Exported"
+          exportButton.enabled = false
+        else createErrorDialog("Export error, select a txt file to export the CNF").open()
       }
       val fp: BoxPanel = new BoxPanel(Orientation.Vertical):
         name = cnfOutputDialogName

@@ -134,7 +134,6 @@ object ComponentUtils:
     new Dialog:
       modal = true
       title = dialogTitle
-      // size of the main frame based on the screen size
       size = new Dimension(windowSize.width / 3, windowSize.height / 3 * 2)
       centerOnScreen()
 
@@ -184,15 +183,15 @@ object ComponentUtils:
       size = new Dimension(windowSize.width / 3, windowSize.height / 4 * 2)
       centerOnScreen()
 
-  /** Creates a dialog to show the error
-    * @return the dialog
-    */
-  def createErrorDialog(description: String): Dialog =
-    val errorBox = new BoxPanel(Orientation.Vertical):
+  /** Creates a dialog to show a message
+   * @return the dialog
+   */
+  def createDialog(dialogTitle: String, description: String): Dialog =
+    val box = new BoxPanel(Orientation.Vertical):
       contents += Swing.VStrut(30)
       contents += new BoxPanel(Orientation.Horizontal):
         contents += Swing.HGlue
-        contents += createLabel("ERROR ", 20)
+        contents += createLabel(dialogTitle.toUpperCase(), 20)
         contents += Swing.HGlue
       contents += Swing.VStrut(30)
       contents += new BoxPanel(Orientation.Horizontal):
@@ -201,11 +200,17 @@ object ComponentUtils:
         contents += Swing.HGlue
       contents += Swing.VGlue
     new Dialog:
-      contents = errorBox
+      contents = box
       modal = true
-      title = "Error"
+      title = dialogTitle
       size = new Dimension(windowSize.width / 4, windowSize.height / 4)
       centerOnScreen()
+
+  /** Creates a dialog to show the error
+    * @return the dialog
+    */
+  def createErrorDialog(description: String): Dialog =
+    createDialog("Error", description)
 
   /** Creates a label with the given text and font size
     * @param txt text to show in the label
