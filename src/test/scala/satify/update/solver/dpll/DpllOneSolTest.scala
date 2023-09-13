@@ -10,7 +10,7 @@ import satify.model.dpll.{Decision, DecisionTree}
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.cnf.CNF
 import satify.update.solver.dpll.DpllOneSol.{dpll, resume}
-import satify.model.dpll.PartialAssignmentUtils.extractParAssignmentFromCnf
+import satify.model.dpll.PartialAssignment.extractParAssignmentFromCnf
 import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
 
 class DpllOneSolTest extends AnyFlatSpec with Matchers:
