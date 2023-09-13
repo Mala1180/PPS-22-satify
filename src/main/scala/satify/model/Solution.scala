@@ -7,6 +7,10 @@ enum Result:
   case SAT
   case UNSAT
 
+/** Represent a completed variable, constrained to a value.
+  * @param name name of the variable
+  * @param value boolean assignment
+  */
 case class Variable(name: String, value: Boolean)
 
 /** Represents a list of [[Variable]] assigned to a value.

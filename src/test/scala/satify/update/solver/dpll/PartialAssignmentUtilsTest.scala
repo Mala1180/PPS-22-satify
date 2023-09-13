@@ -71,7 +71,7 @@ class PartialAssignmentUtilsTest extends AnyFlatSpec with Matchers:
   "All assignments" should "be extractable from a partial assignment" in {
     val partialAssignment: PartialAssignment =
       PartialAssignment(list(OptionalVariable("a"), OptionalVariable("b"), OptionalVariable("c", Some(true))))
-    explodeAssignments(partialAssignment) shouldBe
+    partialAssignment.toAssignments shouldBe
       List(
         Assignment(Variable("a", true) :: Variable("b", true) :: Variable("c", true) :: Nil),
         Assignment(Variable("a", false) :: Variable("b", true) :: Variable("c", true) :: Nil),

@@ -9,6 +9,6 @@ object DpllUtils:
 
   def extractSolutions(cnf: CNF): List[Assignment] =
     val s =
-      for pmSet <- extractParAssignments(dpll(cnf))
-      yield explodeAssignments(pmSet)
+      for partialAssignment <- extractParAssignments(dpll(cnf))
+      yield partialAssignment.toAssignments
     s.flatten

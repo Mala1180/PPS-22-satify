@@ -109,15 +109,13 @@ object DpllOneSol:
       */
     def filterAndExplore(pa: PartialAssignment): List[Assignment] = pa match
       case PartialAssignment(optVariables) =>
-        explodeAssignments(
-          PartialAssignment(
-            optVariables.filter(v =>
-              v match
-                case OptionalVariable(name, _) if name.startsWith("ENC") || name.startsWith("TSTN") => false
-                case _ => true
-            )
+        PartialAssignment(
+          optVariables.filter(v =>
+            v match
+              case OptionalVariable(name, _) if name.startsWith("ENC") || name.startsWith("TSTN") => false
+              case _ => true
           )
-        )
+        ).toAssignments
 
     /** Return a filled assignment if it exists an assignment inside [[assignments]]
       * which is not containted in [[prevRun]], an empty one otherwise.
