@@ -21,10 +21,17 @@ class SatEncodingsTest extends AnyFlatSpec:
     )
   }
 
-  """ exactlyOne("A", "B") """ should """ be equal to atMostOne("A", "B") and atLeastOne("A", "B") """ in {
-    exactlyOne(Symbol("A"), Symbol("B")) shouldBe And(
+  """ exactly(1)("A", "B") """ should """ be equal to atMostOne("A", "B") and atLeastOne("A", "B") """ in {
+    exactlyK(1)(Symbol("A"), Symbol("B")) shouldBe And(
       atLeastOne(Symbol("A"), Symbol("B")),
       atMostOne(Symbol("A"), Symbol("B"))
+    )
+  }
+
+  """ exactly(2)("A", "B", "C") """ should """ be equal to atMostK(2)("A", "B", "C") and atLeastK(2)("A", "B", "C") """ in {
+    exactlyK(2)(Symbol("A"), Symbol("B")) shouldBe And(
+      atMostK(2)(Symbol("A"), Symbol("B"), Symbol("C")),
+      atLeastK(2)(Symbol("A"), Symbol("B"), Symbol("C"))
     )
   }
 

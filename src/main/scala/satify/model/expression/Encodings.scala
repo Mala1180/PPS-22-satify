@@ -14,10 +14,10 @@ object Encodings:
     * @param variables the input variables
     * @return the [[Expression]] that encodes the constraint
     */
-  def exactlyOne(variables: Symbol*)(using SymbolGenerator): Expression =
+  def exactlyK(k: Int)(variables: Symbol*)(using SymbolGenerator): Expression =
     val vars: Seq[Symbol] = removeDuplicates(variables)
     requireVariables(vars, 1, "exactlyOne")
-    And(atLeastOne(vars: _*), atMostOne(vars: _*))
+    And(atLeastK(k)(vars: _*), atMostK(k)(vars: _*))
 
   /** Encodes the constraint that at least one of the given variables is true.
     * It is implemented concatenating the expressions with the OR operator.

@@ -22,8 +22,9 @@ object Encodings:
       case 1 => atLeastOne(expressions: _*)
       case _ => atLeastK(k)(expressions: _*)
 
-    /** Calls [[Expression.exactlyOne]]
-      *  @see [[Expression.exactlyOne]]
+    /** Calls [[Expression.exactlyK]]
+     *
+      *  @see [[Expression.exactlyK]]
       * @return the [[Expression]] that represents the constraint
       */
-    def exactlyOne(using SymbolGenerator): Expression = Expression.exactlyOne(expressions: _*)
+    def exactly(k: Int)(using SymbolGenerator): Expression = Expression.exactlyK(k)(expressions: _*)

@@ -15,7 +15,7 @@ case class GraphColoring(edges: List[(String, String)], nodes: List[String], col
 
   /** Each node has exactly one color */
   private val nodeHasExactlyOneColor: Expression =
-    val constraint = for i <- nodes.indices yield exactlyOne(variables(i): _*)
+    val constraint = for i <- nodes.indices yield exactlyK(1)(variables(i): _*)
     constraint.reduceLeft(And(_, _))
 
   /** Each edge must have different colors in its vertices */

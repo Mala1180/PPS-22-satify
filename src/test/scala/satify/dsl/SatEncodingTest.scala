@@ -24,6 +24,14 @@ class SatEncodingTest extends AnyFlatSpec:
     ("A", "B", "C") atLeast 1 shouldBe atLeastOne("A", "B", "C")
   }
 
-  """ ("A", "B", "C") atLeast 2  """ should """ be equal to atLeastK(2)("A", "B", "C") """ in {
-    ("A", "B", "C") atLeast 2 shouldBe atLeastK(2)("A", "B", "C")
+  """ ("A", "B", "C", "D") atLeast three  """ should """ be equal to atLeastK(3)("A", "B", "C", "D") """ in {
+    ("A", "B", "C", "D") atLeast three shouldBe atLeastK(3)("A", "B", "C", "D")
+  }
+
+  """ ("A", "B") exactly one """ should """ be equal to exactly(1)("A", "B") """ in {
+    ("A", "B") exactly one shouldBe exactlyK(1)("A", "B")
+  }
+
+  """ ("A", "B", "C") exactly two """ should """ be equal to exactlyK(1)("A", "B", "C") """ in {
+    ("A", "B", "C") exactly two shouldBe exactlyK(2)("A", "B", "C")
   }

@@ -22,7 +22,7 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
       for
         d <- 0 until days
         s <- 0 until shifts
-      yield exactlyOne(variables(d)(s): _*)
+      yield exactlyK(1)(variables(d)(s): _*)
 
     println(constraint)
     constraint.reduceLeft(And(_, _))

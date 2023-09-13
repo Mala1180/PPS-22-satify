@@ -34,8 +34,8 @@ class SatEncodingsWrongUseTest extends AnyFlatSpec:
     }
   }
 
-  "exactlyOne()" should "throw an IllegalArgumentException" in {
+  "exactly(1)()" should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
-      exactlyOne()
+      exactlyK(1)()
     }
   }
