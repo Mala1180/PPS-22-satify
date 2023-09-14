@@ -2,7 +2,7 @@ package satify.update.solver
 
 import satify.model.Result.*
 import satify.model.cnf.CNF
-import satify.model.dpll.{DecisionTree, PartialModel}
+import satify.model.dpll.{DecisionTree, PartialAssignment}
 import satify.model.expression.Expression
 import satify.model.{Assignment, Solution}
 import satify.update.converters.ConverterType.*
@@ -10,6 +10,8 @@ import satify.update.converters.{Converter, ConverterType}
 import satify.update.solver.SolverType.*
 import satify.update.solver.dpll.DpllOneSol.dpll
 import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
+
+import scala.collection.mutable
 
 /** Entity providing the methods to solve the SAT problem.
   * @see [[satify.update.solver.DPLL]]
@@ -34,10 +36,6 @@ trait Solver:
     */
   def next(): Assignment
 
-  protected def memoize(f: CNF => Solution): CNF => Solution =
-    new collection.mutable.HashMap[CNF, Solution]():
-      override def apply(key: CNF): Solution = getOrElseUpdate(key, f(key))
-
 /** Factory for [[Solver]] instances. */
 object Solver:
 
@@ -48,12 +46,23 @@ object Solver:
     */
   def apply(algorithmType: SolverType, conversionType: ConverterType = Tseitin): Solver =
     algorithmType match
-      case DPLL => DpllAlgorithm(Converter(conversionType))
+      case DPLL => DpllSolver(Converter(conversionType))
 
   /** Private implementation of [[Solver]] */
-  private case class DpllAlgorithm(converter: Converter) extends Solver:
-    override def solve(cnf: CNF): Solution = memoize(cnf => dpll(cnf))(cnf)
+  private case class DpllSolver(converter: Converter) extends Solver:
+
+    import DpllSolverMemoize.runDpll
+
+    override def solve(cnf: CNF): Solution = runDpll(cnf)
 
     override def solve(exp: Expression): Solution = solve(converter.convert(exp))
 
     override def next(): Assignment = dpll()
+
+object DpllSolverMemoize:
+
+  val runDpll: CNF => Solution = memoize(cnf => dpll(cnf))
+
+  protected def memoize(f: CNF => Solution): CNF => Solution =
+    new collection.mutable.HashMap[CNF, Solution]():
+      override def apply(key: CNF): Solution = getOrElseUpdate(key, f(key))

@@ -1,16 +1,22 @@
 package satify.model
 
-import satify.model.dpll.PartialModel
+import satify.model.dpll.PartialAssignment
 
 /** Sum Type representing the two possible results of SAT problem. */
 enum Result:
   case SAT
   case UNSAT
 
-/** Represents a list of [[Variable]] assigned to a value.
-  * @param parModel the list of variables.
+/** Represent a completed variable, constrained to a value.
+  * @param name name of the variable
+  * @param value boolean assignment
   */
-case class Assignment(parModel: PartialModel)
+case class Variable(name: String, value: Boolean)
+
+/** Represents a list of [[Variable]] assigned to a value.
+  * @param variables the list of variables.
+  */
+case class Assignment(variables: List[Variable])
 
 /** Represents a solution to the SAT problem. It is used by [[update.Solver]].
   * @param result The result of the SAT problem (SAT or UNSAT).
@@ -27,5 +33,5 @@ object Solution:
           else solution.assignment.size + " Solution"
         }  \n${
           if solution.assignment.isEmpty then ""
-          else solution.assignment.head.parModel.foldLeft("")((b, c) => b + c.name + ": " + c.value.get + "\n")
+          else solution.assignment.head.variables.foldLeft("")((b, c) => b + c.name + ": " + c.value + "\n")
         }"
