@@ -15,7 +15,7 @@ import satify.update.converters.ConverterType.*
 import satify.update.parser.DimacsCNF.*
 import satify.update.solver.Solver
 import satify.update.solver.SolverType.*
-import satify.update.Utils.chronometer.*
+import satify.update.Utils.Chronometer.*
 import java.io.File
 import scala.io.Source
 

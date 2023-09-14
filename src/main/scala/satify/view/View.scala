@@ -31,7 +31,7 @@ object View:
           contents += new ScrollPane(createOutputTextArea(sol.get.print, 30, 35))
           contents += createNextSection(model)
           contents += new FlowPanel():
-            contents += createLabel(model.time.get.toString + "ns", 15)
+            contents += createLabel(model.time.get.toString + "ms", 15)
             contents += Swing.VStrut(5)
       Set(fp)
     else Set()
@@ -54,7 +54,7 @@ object View:
         contents += new FlowPanel():
           contents += exportButton
         contents += new FlowPanel():
-          contents += createLabel(time.get.toString + "ns", 15)
+          contents += createLabel(time.get.toString + "ms", 15)
           contents += Swing.VStrut(5)
       Set(fp)
     else Set()
