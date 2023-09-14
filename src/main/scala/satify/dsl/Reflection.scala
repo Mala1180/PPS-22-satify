@@ -3,10 +3,15 @@ package satify.dsl
 import satify.model.expression.Expression
 import satify.model.expression.Expression.Symbol
 
+import java.util.concurrent.Executors
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Promise}
+
 object Reflection:
 
   private val excludedWords = getDSLKeywords.mkString("|")
   private val regexPattern = s"""((?!$excludedWords\\b)\\b(?![0-9]+\\b)\\w+)"""
+  private val replStartedPromise = Promise[Unit]()
 
   private def getDSLKeywords: List[String] =
     val operators = classOf[Operators.type].getMethods.map(_.getName).toList
@@ -19,17 +24,16 @@ object Reflection:
     * @param input the input to process
     * @return the processed input
     */
-  def processInput(input: String): String =
-    // TODO: link these operators to the ones in the DSL
-    // regExp to match all words that are not operators
-    input
-      .replaceAll(regexPattern, "\"$1\"")
-      .replaceAll("\n", " ")
+  def processInput(input: String): String = input
+    .replaceAll(regexPattern, "\"$1\"")
+    .replaceAll("\n", " ")
 
-  /** Reflects the input to the REPL returning an Expression
+  /** Reflects the input to the REPL returning an Expression.
+    * If the REPL is not started yet, waits until it is started.
     * @param input the input to evaluate
     * @return the [[Expression]]
     * @throws IllegalArgumentException if the input is malformed
+    * @see [[startRepl]]
     */
   def reflect(input: String): Expression =
     if input.matches(regexPattern) then Symbol(input)
@@ -42,5 +46,16 @@ object Reflection:
           |import satify.dsl.DSL.{*, given}
           |""".stripMargin
       println(code)
+      Await.result(replStartedPromise.future, Duration.Inf)
       try dotty.tools.repl.ScriptEngine().eval(imports + code).asInstanceOf[Expression]
       catch case e: Exception => throw new IllegalArgumentException(e.getMessage)
+
+  /** Starts the REPL in a separate thread
+    * When the REPL is started, the a promise is completed permitting to call [[reflect]] method.
+    */
+  def startRepl(): Unit = Executors
+    .newSingleThreadExecutor()
+    .execute(() =>
+      dotty.tools.repl.ScriptEngine().eval("println()")
+      replStartedPromise.success(())
+    )
