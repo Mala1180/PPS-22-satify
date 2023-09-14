@@ -16,7 +16,7 @@ object View:
   def view(model: State): Set[Component] =
     import model.*
     if error.isDefined then updateError(error.get, input.getOrElse(""))
-    else updateExpression(input.getOrElse("")) ++ updateCnf(cnf) ++ updateSolution(model, solution)
+    else updateExpression(input.getOrElse("")) ++ updateCnf(cnf, time) ++ updateSolution(model, solution)
 
   /** Update the solution components
     * @param model the current state
@@ -24,12 +24,15 @@ object View:
     * @return a set of components to add to the GUI
     */
   private def updateSolution(model: State, sol: Option[Solution]): Set[Component] =
-    if sol.isDefined then
+    if sol.isDefined && model.time.isDefined then
       val fp: FlowPanel = new FlowPanel():
         name = solOutputDialogName
         contents += new BoxPanel(Orientation.Vertical):
           contents += new ScrollPane(createOutputTextArea(sol.get.print, 30, 35))
           contents += createNextSection(model)
+          contents += new FlowPanel():
+            contents += createLabel(model.time.get.toString + "ms", 15)
+            contents += Swing.VStrut(5)
       Set(fp)
     else Set()
 
@@ -37,8 +40,8 @@ object View:
     * @param cnf the CNF to show in new components
     * @return a set of components to add to the GUI
     */
-  private def updateCnf(cnf: Option[CNF]): Set[Component] =
-    if cnf.isDefined then
+  private def updateCnf(cnf: Option[CNF], time: Option[Long]): Set[Component] =
+    if cnf.isDefined && time.isDefined then
       val exportButton = createButton("Export CNF", 130, 50, Color.BLUE)
       exportButton.reactions += { case _: event.ButtonClicked =>
         exportFileChooser.showOpenDialog(cnfOutputDialog) match
@@ -53,6 +56,9 @@ object View:
         contents += new ScrollPane(createOutputTextArea(cnf.get.printAsFormal(), 30, 35))
         contents += new FlowPanel():
           contents += exportButton
+        contents += new FlowPanel():
+          contents += createLabel(time.get.toString + "ms", 15)
+          contents += Swing.VStrut(5)
       Set(fp)
     else Set()
 
