@@ -20,7 +20,7 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
         s <- 0 until shifts
       yield exactlyOne(variables(d)(s): _*)
 
-    println(constraint)
+    //println(constraint)
     constraint.reduceLeft(And(_, _))
 
   /** Each nurse can work no more than one shift per day */
@@ -30,7 +30,7 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
       d <- 0 until days
     yield atMostOne(variables(n)(d): _*)
 
-    println(constraint)
+    //println(constraint)
     constraint.reduceLeft(And(_, _))
 
   /** If possible, shifts should be distributed evenly and fairly, so that each nurse works the minimum amount of them. */

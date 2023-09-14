@@ -41,11 +41,10 @@ object Encodings:
   def atLeastK(k: Int)(variables: Symbol*): Expression =
     val vars: Seq[Symbol] = removeDuplicates(variables)
     requireVariables(vars, 1, "atLeastK")
-    require(k <= vars.length, "atLeastK encoding requires k <= n")
+    require(k > 0 && k <= vars.length, "atLeastK encoding requires k <= n")
 
     def combinations(vars: Seq[Symbol], k: Int): Seq[Seq[Expression]] =
-      if (k == 0) Seq(Seq())
-      else if (k == 1) vars.map(Seq(_))
+      if (k == 1) vars.map(Seq(_))
       else
         for
           i <- vars.indices
