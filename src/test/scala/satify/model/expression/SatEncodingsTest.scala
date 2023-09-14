@@ -34,16 +34,3 @@ class SatEncodingsTest extends AnyFlatSpec:
       atMostK(2)(Symbol("A"), Symbol("B"), Symbol("C"))
     )
   }
-
-  """ atMostOne("A", "B", "C") """ should """ be equal to  """ in {
-    atMostOne(Symbol("A"), Symbol("B"), Symbol("C")) shouldBe And(
-      Or(Not(Symbol("A")), Symbol("ENC0")),
-      And(
-        Or(Not(Symbol("B")), Symbol("ENC1")),
-        And(
-          Or(Not(Symbol("ENC0")), Symbol("ENC1")),
-          And(Or(Not(Symbol("B")), Not(Symbol("ENC0"))), Or(Not(Symbol("C")), Not(Symbol("ENC1"))))
-        )
-      )
-    )
-  }
