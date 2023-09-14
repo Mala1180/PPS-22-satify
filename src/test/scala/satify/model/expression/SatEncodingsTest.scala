@@ -29,9 +29,9 @@ class SatEncodingsTest extends AnyFlatSpec:
   }
 
   """ exactly(2)("A", "B", "C") """ should """ be equal to atMostK(2)("A", "B", "C") and atLeastK(2)("A", "B", "C") """ in {
-    exactlyK(2)(Symbol("A"), Symbol("B")) shouldBe And(
-      atMostK(2)(Symbol("A"), Symbol("B"), Symbol("C")),
-      atLeastK(2)(Symbol("A"), Symbol("B"), Symbol("C"))
+    exactlyK(2)(Symbol("A"), Symbol("B"), Symbol("C")) shouldBe And(
+      atLeastK(2)(Symbol("A"), Symbol("B"), Symbol("C")),
+      atMostK(2)(Symbol("A"), Symbol("B"), Symbol("C"))
     )
   }
 

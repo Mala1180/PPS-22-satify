@@ -18,13 +18,10 @@ object Encodings:
       * @see [[atLeastOne]] and [[atLeastK]]
       * @return the [[Expression]] that represents the constraint
       */
-    def atLeast(k: Int): Expression = k match
-      case 1 => atLeastOne(expressions: _*)
-      case _ => atLeastK(k)(expressions: _*)
+    def atLeast(k: Int): Expression = atLeastK(k)(expressions: _*)
 
-    /** Calls [[Expression.exactlyK]]
-     *
-      *  @see [[Expression.exactlyK]]
+    /** Calls [[exactlyK]]
+      * @see [[exactlyK]]
       * @return the [[Expression]] that represents the constraint
       */
-    def exactly(k: Int)(using SymbolGenerator): Expression = Expression.exactlyK(k)(expressions: _*)
+    def exactly(k: Int)(using SymbolGenerator): Expression = exactlyK(k)(expressions: _*)

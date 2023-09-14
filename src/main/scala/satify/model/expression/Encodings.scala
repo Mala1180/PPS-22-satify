@@ -20,35 +20,31 @@ object Encodings:
     And(atLeastK(k)(vars: _*), atMostK(k)(vars: _*))
 
   /** Encodes the constraint that at least one of the given variables is true.
-    * It is implemented concatenating the expressions with the OR operator.
     * @param variables the input variables
     * @return the [[Expression]] that encodes the constraint
+    * @see [[atLeastK]]
     */
-  def atLeastOne(variables: Symbol*): Expression =
-    val vars: Seq[Symbol] = removeDuplicates(variables)
-    requireVariables(vars, 1, "atLeastOne")
-    vars.reduceLeft(Or(_, _))
+  def atLeastOne(variables: Symbol*): Expression = atLeastK(1)(variables: _*)
 
   /** Encodes the constraint that at least k of the given variables are true.
     * It is implemented using the pairwise encoding that produces O(n&#94;2) clauses.
     * @param k         the number of variables that must be true
     * @param variables the input variables
-    * @return the [[Expression]] that encodes the constraint
+    * @return the [[Expression]] that encodes
+   *         the constraint
     */
   def atLeastK(k: Int)(variables: Symbol*): Expression =
     val vars: Seq[Symbol] = removeDuplicates(variables)
     requireVariables(vars, 1, "atLeastK")
-    require(k <= vars.length, "atLeastK encoding requires k <= n")
+    require(0 < k && k <= vars.length, "atLeastK encoding requires 0 < k <= n")
 
-    def combinations(vars: Seq[Symbol], k: Int): Seq[Seq[Expression]] =
-      if (k == 0) Seq(Seq())
-      else if (k == 1) vars.map(Seq(_))
-      else
+    def combinations(vars: Seq[Symbol], k: Int): Seq[Seq[Expression]] = k match
+      case 1 => vars.map(Seq(_))
+      case _ =>
         for
           i <- vars.indices
           subCombination <- combinations(vars.drop(i + 1), k - 1)
         yield vars(i) +: subCombination
-
     combinations(vars, k).map(_.reduceLeft(And(_, _))).reduceLeft(Or(_, _))
 
   /** Encodes the constraint that at most one of the given variables is true.
