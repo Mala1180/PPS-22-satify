@@ -4,28 +4,35 @@ import satify.model.cnf.{CNF, Literal}
 import satify.model.cnf.CNF.*
 
 import java.io.{File, PrintWriter}
+import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.io.Source
 
 /** Read/write objects in DIMACS format. */
 trait Dimacs[T]:
+
   def parse(lines: Seq[String]): Option[T]
+
   def dump(obj: T): Seq[String]
+
   def read(path: String): Option[T] = readSource(Source.fromFile(path))
+
   def read: Option[T] = readSource(Source.stdin)
+
   private def readSource(source: Source) =
     try parse(source.getLines.toList)
     finally source.close()
+
   protected def writeSource(path: String, obj: T): Unit =
-    val fileName: String = "output.txt"
+    val fileName: String = "satify_cnf_export.txt"
     val separator = System.getProperty("file.separator")
     val writer = new PrintWriter(new File(path + separator + fileName))
     try dump(obj).foreach(writer.println)
     finally writer.close()
+
   protected def stripComments(lines: Seq[String]): Seq[String] =
     lines.filterNot(_.startsWith("c"))
 
-  /** Read/write formulas in DIMACS format. */
 object DimacsCNF extends Dimacs[CNF]:
 
   private val Header = "p cnf (\\d+) (\\d+)".r
@@ -80,22 +87,17 @@ object DimacsCNF extends Dimacs[CNF]:
     val dimacsString = dimacs(cnf)
     val numClauses = dimacsString.split("\n").length
     // header
+    cnfSeq :+= s"c SOURCE: Satify"
+    cnfSeq :+= s"c https://github.com/Mala1180/PPS-22-satify"
+    cnfSeq :+= s"c"
+    cnfSeq :+= s"c AUTHORS: Matteini Mattia, Paganelli Alberto, Fabri Luca"
+    cnfSeq :+= s"c"
     cnfSeq :+= s"p cnf $cnt $numClauses"
     cnfSeq ++= dimacsString.split("\n").map(_ + " 0")
     cnfSeq
 
-  private def buildOrCNF(literals: Seq[Literal], p: Option[Or | Literal] = None): Or | Literal =
-    p match
-      case None => buildOrCNF(literals.tail, Some(literals.head))
-      case Some(prev) =>
-        literals match
-          case head +: Seq() => Or(head, prev)
-          case head +: tail => buildOrCNF(tail, Some(Or(head, prev)))
+  private def buildOrCNF(cnf: Seq[Literal]): Or | Literal =
+    cnf.tail.foldLeft[Or | Literal](cnf.head)((p, c) => Or(c, p))
 
-  private def buildAndCNF(literals: Seq[Or | Literal], p: Option[And | Or | Literal] = None): And | Or | Literal =
-    p match
-      case None => buildAndCNF(literals.tail, Some(literals.head))
-      case Some(prev) =>
-        literals match
-          case head +: Seq() => And(head, prev)
-          case head +: tail => buildAndCNF(tail, Some(And(head, prev)))
+  private def buildAndCNF(cnf: Seq[Or | Literal]): And | Or | Literal =
+    cnf.tail.foldLeft[And | Or | Literal](cnf.head)((p, c) => And(c, p))

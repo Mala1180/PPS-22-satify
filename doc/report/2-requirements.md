@@ -97,11 +97,10 @@ to easily compose the instance (which is an **Expression**).
     5. The user can visit a section where it is possible to select some main examples of SAT problem to solve.
     6. The user has to parameterize the problem selected.
     7. The user can convert the logical expression in CNF and see the transformed formula.
-    8. The user can solve the instance inserted in input.
-    9. The user can see the result of the algorithm, and all the assignments that make the expression satisfiable if
-       they
-       exist.
-    10. The user must be able to see the assignments done by the DPLL of the variables that make the logical expression
+    8. The user can export the CNF to a text file in DIMACS format.
+    9. The user can solve the instance inserted in input.
+   10. The user can see the result of the algorithm, and all the assignments that make the expression satisfiable if they exist.
+   11. The user must be able to see the assignments done by the DPLL of the variables that make the logical expression
         satisfiable.
     11. The user can see the time spent by the DPLL algorithm to solve the instance.
     12. The user can see the time spent by the Tseitin transformation algorithm to convert the instance.
