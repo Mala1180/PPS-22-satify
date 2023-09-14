@@ -10,15 +10,6 @@ object Encodings:
 
   private def removeDuplicates(vars: Seq[Symbol]): Seq[Symbol] = vars.distinct
 
-  /** Encodes the constraint that exactly one of the given variables is true.
-    * @param variables the input variables
-    * @return the [[Expression]] that encodes the constraint
-    */
-  def exactlyK(k: Int)(variables: Symbol*)(using SymbolGenerator): Expression =
-    val vars: Seq[Symbol] = removeDuplicates(variables)
-    requireVariables(vars, 1, "exactlyOne")
-    And(atLeastK(k)(vars: _*), atMostK(k)(vars: _*))
-
   /** Encodes the constraint that at least one of the given variables is true.
     * @param variables the input variables
     * @return the [[Expression]] that encodes the constraint
@@ -30,13 +21,12 @@ object Encodings:
     * It is implemented using the pairwise encoding that produces O(n&#94;2) clauses.
     * @param k         the number of variables that must be true
     * @param variables the input variables
-    * @return the [[Expression]] that encodes
-   *         the constraint
+    * @return the [[Expression]] that encodes the constraint
     */
   def atLeastK(k: Int)(variables: Symbol*): Expression =
     val vars: Seq[Symbol] = removeDuplicates(variables)
     requireVariables(vars, 1, "atLeastK")
-    require(0 < k && k <= vars.length, "atLeastK encoding requires 0 < k <= n")
+    require(0 < k && k <= vars.length, "atLeastK encoding requires 0 < k <= n (n = variables number)")
 
     def combinations(vars: Seq[Symbol], k: Int): Seq[Seq[Expression]] = k match
       case 1 => vars.map(Seq(_))
@@ -49,6 +39,7 @@ object Encodings:
 
   /** Encodes the constraint that at most one of the given variables is true.
     * @param variables the input variables
+    *                  @param SymbolGenerator the generator of new symbols
     * @return the [[Expression]] that encodes the constraint
     * @see [[atMostK]]
     */
@@ -66,13 +57,14 @@ object Encodings:
     *
     * @param k         the number of variables that must be true
     * @param variables the input variables
+    * @param generator the generator of new symbols
     * @return the [[Expression]] that encodes the constraint
     */
   def atMostK(k: Int)(variables: Symbol*)(using generator: SymbolGenerator): Expression =
     val X: Seq[Symbol] = removeDuplicates(variables)
     requireVariables(X, 1, "atMostK")
     val n = X.length
-    require(k <= n, "atMostK encoding requires k <= n")
+    require(0 < k && k <= X.length, "atMostK encoding requires 0 < k <= n (n = variables number)")
 
     val S: Seq[Seq[Symbol]] = (1 until n).map(_ => (1 to k).map(_ => generator.generate())).toList
     if generator.hasToReset then generator.reset()
@@ -95,3 +87,21 @@ object Encodings:
     // (¬xi ∨ ¬si−1,k) for 1 < i < n
     val clauses6: Seq[Expression] = for i <- 1 until n yield Or(Not(X(i)), Not(S(i - 1).last))
     (clauses1 ++ clauses2 ++ clauses3 ++ clauses4 ++ clauses5 ++ clauses6) reduceRight (And(_, _))
+
+  /** Encodes the constraint that exactly one of the given variables is true.
+    * @param variables the input variables
+    * @param SymbolGenerator the generator of new symbols
+    * @return the [[Expression]] that encodes the constraint
+    */
+  def exactlyK(k: Int)(variables: Symbol*)(using SymbolGenerator): Expression =
+    val vars: Seq[Symbol] = removeDuplicates(variables)
+    requireVariables(vars, 1, "exactlyOne")
+    And(atLeastK(k)(vars: _*), atMostK(k)(vars: _*))
+
+  /** Encodes the constraint that exactly one of the given variables is true.
+    * @param variables the input variables
+    * @param SymbolGenerator the generator of new symbols
+    * @return the [[Expression]] that encodes the constraint
+    * @see [[exactlyK]]
+    */
+  def exactlyOne(variables: Symbol*)(using SymbolGenerator): Expression = exactlyK(1)(variables: _*)

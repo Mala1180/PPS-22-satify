@@ -22,7 +22,7 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
       for
         d <- 0 until days
         s <- 0 until shifts
-      yield exactlyK(1)(variables(d)(s): _*)
+      yield exactlyOne(variables(d)(s): _*)
     constraint.reduceLeft(And(_, _))
 
   /** Each nurse can work no more than one shift per day */

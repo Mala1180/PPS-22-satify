@@ -5,8 +5,8 @@ import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
 import satify.model.dpll.*
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.OrderedList.{list, *}
-import satify.model.expression.SymbolGeneration.{tseitinVarPrefix, encodingVarPrefix}
+import satify.model.dpll.OrderedList.list
+import satify.model.expression.SymbolGeneration.{encodingVarPrefix, tseitinVarPrefix}
 import satify.model.{Assignment, Variable}
 
 /** Represents an [[Assignment]] where the variables could not be yet constrained by the DPLL algorithm.
@@ -98,7 +98,9 @@ object PartialAssignment:
               PartialAssignment(
                 optVars.filter(v =>
                   v match
-                    case OptionalVariable(name, _) if name.startsWith(tseitinVarPrefix) || name.startsWith(encodingVarPrefix) => false
+                    case OptionalVariable(name, _)
+                        if name.startsWith(tseitinVarPrefix) || name.startsWith(encodingVarPrefix) =>
+                      false
                     case _ => true
                 )
               )

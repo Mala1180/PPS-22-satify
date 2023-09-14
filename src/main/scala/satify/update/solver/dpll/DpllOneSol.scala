@@ -10,11 +10,8 @@ import satify.model.dpll.PartialAssignment.*
 import satify.model.expression.SymbolGeneration.{encodingVarPrefix, tseitinVarPrefix}
 import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
-import satify.update.solver.dpll.DpllOneSol.{dpll, resume}
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
-import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 
-import scala.annotation.tailrec
 import scala.util.Random
 
 /** Save a run of DPLL algorithm.
@@ -113,7 +110,9 @@ object DpllOneSol:
         PartialAssignment(
           optVariables.filter(v =>
             v match
-              case OptionalVariable(name, _) if name.startsWith(encodingVarPrefix) || name.startsWith(tseitinVarPrefix) => false
+              case OptionalVariable(name, _)
+                  if name.startsWith(encodingVarPrefix) || name.startsWith(tseitinVarPrefix) =>
+                false
               case _ => true
           )
         ).toAssignments

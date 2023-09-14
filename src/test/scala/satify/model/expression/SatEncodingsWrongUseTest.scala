@@ -46,3 +46,14 @@ class SatEncodingsWrongUseTest extends AnyFlatSpec:
     }
   }
 
+  """ atMostK(0)("A", "B", "C") """ should "throw an IllegalArgumentException" in {
+    assertThrows[IllegalArgumentException] {
+      atMostK(0)(Symbol("A"), Symbol("B"), Symbol("C"))
+    }
+  }
+
+  """ exactlyK(0)("A", "B", "C") """ should "throw an IllegalArgumentException" in {
+    assertThrows[IllegalArgumentException] {
+      exactlyK(0)(Symbol("A"), Symbol("B"), Symbol("C"))
+    }
+  }
