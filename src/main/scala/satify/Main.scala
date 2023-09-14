@@ -20,14 +20,20 @@ object Main extends App with MVU:
       Swing.onEDT(disableInteractions())
       Executors.newSingleThreadExecutor().execute(() => solutionReaction(model))
     }
+
+    solveProblemButton.reactions += { case ButtonClicked(_) =>
+      Swing.onEDT(disableInteractions())
+      Executors.newSingleThreadExecutor().execute(() => problemSolutionReaction(model))
+    }
+
     cnfButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(disableInteractions())
       Executors.newSingleThreadExecutor().execute(() => cnfReaction(model))
     }
 
-    solveProblemButton.reactions += { case ButtonClicked(_) =>
+    cnfProblemButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(disableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => problemSolutionReaction(model))
+      Executors.newSingleThreadExecutor().execute(() => problemCnfReaction(model))
     }
 
     helpMenuItem.reactions += { case ButtonClicked(_) =>

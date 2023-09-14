@@ -78,22 +78,23 @@ object State:
   def apply(input: String, exp: Expression, sol: Solution, time: Long): State =
     StateImpl(Some(input), Some(exp), None, Some(sol), None, Some(time), None)
 
-  /** Creates a new application state with an input problem, its CNF, and its solution.
+  /** Creates a new application state with an input problem and its CNF.
     * @param cnf the [[CNF]]
-    * @param sol the [[Solution]]
     * @param problem the [[Problem]] selected
+    * @param time the time elapsed in milliseconds
     * @return a new [[State]] instance.
     */
-  def apply(cnf: CNF, sol: Solution, problem: Problem): State =
-    StateImpl(None, None, Some(cnf), Some(sol), Some(problem))
+  def apply(cnf: CNF, problem: Problem, time: Long): State =
+    StateImpl(None, None, Some(cnf), None, Some(problem), Some(time))
 
   /** Creates a new application state with an input problem and its solution.
     * @param sol     the [[Solution]]
     * @param problem the [[Problem]] selected
+    * @param time the time elapsed in milliseconds
     * @return a new [[State]] instance.
     */
-  def apply(sol: Solution, problem: Problem): State =
-    StateImpl(None, None, None, Some(sol), Some(problem))
+  def apply(sol: Solution, problem: Problem, time: Long): State =
+    StateImpl(None, None, None, Some(sol), Some(problem), Some(time))
 
   private case class StateImpl(
       override val input: Option[String] = None,
