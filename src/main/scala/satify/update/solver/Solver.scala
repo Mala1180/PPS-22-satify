@@ -18,27 +18,33 @@ import scala.collection.mutable
   */
 trait Solver:
 
-  /** Solves the SAT problem, returning a [[Solution]] with all satisfiable [[Assignment]]s.
+  /** Solves the SAT problem, returning a solution with all satisfiable assignments.
     * @param cnf the input in conjunctive normal form
     * @return the solution to the SAT problem
     */
   def solveAll(cnf: CNF): Solution
 
-  /** Solves the SAT problem returning a [[Solution]] with a satisfiable [[Assignment]].
+  /** Solves the SAT problem, returning a solution with all satisfiable assignments.
+    * @param exp the input expression
+    * @return the solution to the SAT problem
+    */
+  def solveAll(exp: Expression): Solution
+
+  /** Solves the SAT problem returning a solution with a satisfiable assignment.
     * @param cnf the input in conjunctive normal form
     * @return the solution to the SAT problem
     */
   def solve(cnf: CNF): Solution
 
-  /** Solves the SAT problem.
+  /** Solves the SAT problem returning a solution with a satisfiable assignment.
     * @param exp the input expression
     * @return the solution to the SAT problem
     */
   def solve(exp: Expression): Solution
 
   /** Finds the next assignment of the previous solution, if any.
-    * @return the solution to the SAT problem
-    * @throws IllegalStateException if the previous solution was not found
+    * @return a filled assignment if there is another satisfiable, an empty one otherwise.
+    * @throws IllegalStateException if a previous run was not found
     */
   def next(): Assignment
 
@@ -58,6 +64,8 @@ object Solver:
   private case class DpllSolver(converter: Converter) extends Solver:
 
     override def solveAll(cnf: CNF): Solution = enumerate(cnf)
+
+    override def solveAll(exp: Expression): Solution = solveAll(converter.convert(exp))
 
     override def solve(cnf: CNF): Solution = DpllFinder.dpll(cnf)
 
