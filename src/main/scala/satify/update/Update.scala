@@ -29,6 +29,8 @@ object Update:
   def update(model: State, message: Message): State =
     message match
       case Input(char) => model
+      case SolveAll(input) =>
+        solveAllUpdate(input)
       case Solve(input) =>
         solveUpdate(input)
       case SolveProblem(problem) =>
@@ -54,6 +56,24 @@ object Update:
       case e: Exception =>
         e.printStackTrace()
         if input.isEmpty then State(error) else State(input.get, error)
+
+  /** Update function to react to the SolveAll message. This function will attempt to solve the input and return a state.
+    *
+    * @param input input to solve
+    * @return a state with the input, expression, and solution if no exception is thrown, otherwise a state with the input and the occurred error
+    */
+  private def solveAllUpdate(input: String): State =
+    safeUpdate(
+      () =>
+        val exp = reflect(input)
+        start()
+        val sol: Solution = Solver(DPLL).solveAll(exp)
+        stop()
+        State(input, exp, sol, elapsed())
+      ,
+      InvalidInput,
+      Some(input)
+    )
 
   /** Update function to react to the Solve message. This function will attempt to solve the input and return a state.
     * @param input input to solve
@@ -149,7 +169,8 @@ object Update:
           State(
             Solution(
               currentState.solution.get.result,
-              nextAssignment :: currentState.solution.get.assignment
+              currentState.solution.get.status,
+              currentState.solution.get.assignment :+ nextAssignment
             ),
             currentState.problem.get,
             0
@@ -164,9 +185,10 @@ object Update:
             currentState.expression.get,
             Solution(
               currentState.solution.get.result,
+              currentState.solution.get.status,
               nextAssignment match
                 case Assignment(Nil) => currentState.solution.get.assignment
-                case _ => nextAssignment :: currentState.solution.get.assignment
+                case _ => currentState.solution.get.assignment :+ nextAssignment
             ),
             0
           ),

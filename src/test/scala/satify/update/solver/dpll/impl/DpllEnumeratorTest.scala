@@ -1,19 +1,18 @@
-package satify.update.solver.dpll
+package satify.update.solver.dpll.impl
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.should
 import satify.model.cnf.Bool.{False, True}
-import satify.model.cnf.CNF.*
 import satify.model.cnf.CNF
+import satify.model.cnf.CNF.*
 import satify.model.dpll.DecisionTree.*
 import satify.model.dpll.OrderedList.*
-import satify.model.dpll.{Decision, DecisionTree, OptionalVariable, PartialAssignment}
-import satify.update.solver.dpll.Dpll.*
-import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
 import satify.model.dpll.PartialAssignment.*
+import satify.model.dpll.{Decision, DecisionTree, OptionalVariable, PartialAssignment}
+import satify.update.solver.dpll.impl.DpllEnumerator.*
 
-class DpllTest extends AnyFlatSpec with Matchers:
+class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
 
   import satify.model.dpll.OrderedList.given
 
@@ -24,14 +23,14 @@ class DpllTest extends AnyFlatSpec with Matchers:
   val cnf: CNF = And(sA, sB)
 
   "DPLL" should "be SAT" in {
-    extractSolutions(cnf).size should be > 0
-    extractSolutions(And(sA, Or(sB, sC))).size should be > 0
+    dpll(cnf).assignment.size should be > 0
+    dpll(And(sA, Or(sB, sC))).assignment.size should be > 0
   }
 
   "DPLL" should "be UNSAT" in {
-    extractSolutions(And(sA, Not(sA))) shouldBe Nil
-    extractSolutions(And(sA, And(Or(sB, sC), Not(sA)))) shouldBe Nil
-    extractSolutions(
+    dpll(And(sA, Not(sA))).assignment shouldBe Nil
+    dpll(And(sA, And(Or(sB, sC), Not(sA)))).assignment shouldBe Nil
+    dpll(
       And(
         Or(sA, sB),
         And(
@@ -39,12 +38,12 @@ class DpllTest extends AnyFlatSpec with Matchers:
           And(Or(sA, Not(sB)), Or(Not(sA), Not(sB)))
         )
       )
-    ) shouldBe Nil
+    ).assignment shouldBe Nil
   }
 
   "DPLL" should "do unit propagation when there's only a OptionalVariable inside a clause and it is in positive form" in {
     val cnf: CNF = And(sA, And(sB, Or(sB, sC)))
-    dpll(cnf) shouldBe
+    dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) shouldBe
       Branch(
         Decision(PartialAssignment(list(OptionalVariable("a"), OptionalVariable("b"), OptionalVariable("c"))), cnf),
         Branch(

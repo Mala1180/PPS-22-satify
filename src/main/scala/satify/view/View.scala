@@ -1,6 +1,7 @@
 package satify.view
 
 import satify.model.cnf.CNF
+import satify.model.Status.*
 import satify.model.errors.Error
 import satify.model.errors.Error.*
 import satify.model.{Solution, State}
@@ -20,23 +21,27 @@ object View:
 
   /** Update the solution components
     * @param model the current state
-    * @param sol the solution to show
+    * @param oSol the (optional) solution to show
     * @return a set of components to add to the GUI
     */
-  private def updateSolution(model: State, sol: Option[Solution]): Set[Component] =
-    if sol.isDefined && model.time.isDefined then
-      val fp: FlowPanel = new FlowPanel():
-        name = solOutputDialogName
-        contents += new BoxPanel(Orientation.Vertical):
-          contents += new ScrollPane(createOutputTextArea(sol.get.print, 30, 35))
-          contents += createNextSection(model)
-          contents += new FlowPanel():
-            contents += createLabel(model.time.get.toString + "ms", 15)
-            contents += Swing.VStrut(5)
-      Set(fp)
-    else Set()
+  private def updateSolution(model: State, oSol: Option[Solution]): Set[Component] =
+    oSol match
+      case Some(sol) =>
+        val fp: FlowPanel = new FlowPanel():
+          name = solOutputDialogName
+          contents += new BoxPanel(Orientation.Vertical):
+            contents += new ScrollPane(createOutputTextArea(sol.print, 30, 35))
+            sol.status match
+              case PARTIAL => contents += createNextSection(model)
+              case _ =>
+            contents += new FlowPanel():
+              contents += createLabel(model.time.get.toString + "ms", 15)
+              contents += Swing.VStrut(5)
+        Set(fp)
+      case None => Set()
 
   /** Update the CNF text area
+    *
     * @param cnf the CNF to show in new components
     * @return a set of components to add to the GUI
     */
@@ -63,13 +68,15 @@ object View:
     else Set()
 
   /** Update the expression text area
+    *
     * @param exp the exp to show in new component
     * @return a set of components to add to the GUI
     */
   private def updateExpression(exp: String): Set[Component] = Set(createInputTextArea(exp))
 
   /** Update the error and show it in a dialog
-    *  @param error the error to show in a popup dialog
+    *
+    * @param error the error to show in a popup dialog
     * @param input the input to show in new component
     * @return a set of components to add to the GUI
     */
