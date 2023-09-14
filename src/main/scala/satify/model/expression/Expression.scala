@@ -48,9 +48,9 @@ object Expression:
   def contains(exp: Expression, subexp: Expression): Boolean = subexpressions(exp).contains(subexp)
 
   /** Count the number of clauses in the given expression.
-   * @param exp the expression.
-   * @return the number of clauses in the given expression.
-   */
+    * @param exp the expression.
+    * @return the number of clauses in the given expression.
+    */
   def clauses(exp: Expression): Int =
     zipWith(exp)(() => Int).size
 

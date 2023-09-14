@@ -88,7 +88,7 @@ class TseitinTest extends AnyFlatSpec with Matchers:
   "The CNF form of ((¬a ∨ (b ∧ c)) ∨ d)" should "be correctly generated" in {
     val exp = Or(Or(Not(Symbol("a")), And(Symbol("b"), Symbol("c"))), Symbol("d"))
     val result = tseitin(exp)
-    val expected : CNF = CNFAnd(
+    val expected: CNF = CNFAnd(
       CNFSymbol("TSTN0"),
       CNFAnd(
         CNFOr(CNFOr(CNFSymbol("TSTN1"), CNFSymbol("d")), CNFNot(CNFSymbol("TSTN0"))),
@@ -108,7 +108,10 @@ class TseitinTest extends AnyFlatSpec with Matchers:
                       CNFOr(CNFSymbol("b"), CNFNot(CNFSymbol("TSTN3"))),
                       CNFAnd(
                         CNFOr(CNFSymbol("c"), CNFNot(CNFSymbol("TSTN3"))),
-                        CNFAnd(CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("TSTN2"))), CNFOr(CNFSymbol("a"), CNFSymbol("TSTN2")))
+                        CNFAnd(
+                          CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("TSTN2"))),
+                          CNFOr(CNFSymbol("a"), CNFSymbol("TSTN2"))
+                        )
                       )
                     )
                   )
