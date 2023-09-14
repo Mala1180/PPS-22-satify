@@ -8,7 +8,7 @@ import satify.model.{Solution, State}
 import satify.update.parser.DimacsCNF
 import satify.view.ComponentUtils.*
 import satify.view.Constants.{cnfOutputDialogName, solOutputDialogName}
-import satify.view.GUI.{createExportFileChooser, exportFileChooser}
+import satify.view.GUI.{cnfOutputDialog, createExportFileChooser, exportFileChooser, problemParameterPanel}
 
 import java.awt.Color
 import scala.swing.*
@@ -17,11 +17,11 @@ object View:
   def view(model: State): Set[Component] =
     import model.*
     if error.isDefined then updateError(error.get, input.getOrElse(""))
-    else updateExpression(input.getOrElse("")) ++ updateCnf(cnf) ++ updateSolution(model, solution)
+    else updateExpression(input.getOrElse("")) ++ updateCnf(cnf, time) ++ updateSolution(model, solution)
 
   /** Update the solution components
     * @param model the current state
-    * @param sol the solution to show
+    * @param oSol the (optional) solution to show
     * @return a set of components to add to the GUI
     */
   private def updateSolution(model: State, oSol: Option[Solution]): Set[Component] =
@@ -34,6 +34,9 @@ object View:
             sol.status match
               case PARTIAL => contents += createNextSection(model)
               case _ =>
+            contents += new FlowPanel():
+              contents += createLabel(model.time.get.toString + "ms", 15)
+              contents += Swing.VStrut(5)
         Set(fp)
       case None => Set()
 
@@ -42,19 +45,25 @@ object View:
     * @param cnf the CNF to show in new components
     * @return a set of components to add to the GUI
     */
-  private def updateCnf(cnf: Option[CNF]): Set[Component] =
-    if cnf.isDefined then
+  private def updateCnf(cnf: Option[CNF], time: Option[Long]): Set[Component] =
+    if cnf.isDefined && time.isDefined then
       val exportButton = createButton("Export CNF", 130, 50, Color.BLUE)
       exportButton.reactions += { case _: event.ButtonClicked =>
-        val result = exportFileChooser.showOpenDialog(null)
-        if result == FileChooser.Result.Approve then DimacsCNF.write(exportFileChooser.selectedFile.getPath, cnf.get)
-        else createErrorDialog("Export error, select a txt file to export the CNF")
+        exportFileChooser.showOpenDialog(cnfOutputDialog) match
+          case FileChooser.Result.Approve =>
+            DimacsCNF.write(exportFileChooser.selectedFile.getPath, cnf.get)
+            exportButton.text = "Exported"
+            exportButton.enabled = false
+          case _ => createErrorDialog("Export error, select a txt file to export the CNF").open()
       }
       val fp: BoxPanel = new BoxPanel(Orientation.Vertical):
         name = cnfOutputDialogName
         contents += new ScrollPane(createOutputTextArea(cnf.get.printAsFormal(), 30, 35))
         contents += new FlowPanel():
           contents += exportButton
+        contents += new FlowPanel():
+          contents += createLabel(time.get.toString + "ms", 15)
+          contents += Swing.VStrut(5)
       Set(fp)
     else Set()
 

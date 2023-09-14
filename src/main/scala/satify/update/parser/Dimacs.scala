@@ -24,7 +24,7 @@ trait Dimacs[T]:
     finally source.close()
 
   protected def writeSource(path: String, obj: T): Unit =
-    val fileName: String = "output.txt"
+    val fileName: String = "satify_cnf_export.txt"
     val separator = System.getProperty("file.separator")
     val writer = new PrintWriter(new File(path + separator + fileName))
     try dump(obj).foreach(writer.println)
@@ -87,24 +87,17 @@ object DimacsCNF extends Dimacs[CNF]:
     val dimacsString = dimacs(cnf)
     val numClauses = dimacsString.split("\n").length
     // header
+    cnfSeq :+= s"c SOURCE: Satify"
+    cnfSeq :+= s"c https://github.com/Mala1180/PPS-22-satify"
+    cnfSeq :+= s"c"
+    cnfSeq :+= s"c AUTHORS: Matteini Mattia, Paganelli Alberto, Fabri Luca"
+    cnfSeq :+= s"c"
     cnfSeq :+= s"p cnf $cnt $numClauses"
     cnfSeq ++= dimacsString.split("\n").map(_ + " 0")
     cnfSeq
 
-  @tailrec
-  private def buildOrCNF(literals: Seq[Literal], p: Option[Or | Literal] = None): Or | Literal =
-    p match
-      case None => buildOrCNF(literals.tail, Some(literals.head))
-      case Some(prev) =>
-        literals match
-          case head +: Seq() => Or(head, prev)
-          case head +: tail => buildOrCNF(tail, Some(Or(head, prev)))
+  private def buildOrCNF(cnf: Seq[Literal]): Or | Literal =
+    cnf.tail.foldLeft[Or | Literal](cnf.head)((p, c) => Or(c, p))
 
-  @tailrec
-  private def buildAndCNF(literals: Seq[Or | Literal], p: Option[And | Or | Literal] = None): And | Or | Literal =
-    p match
-      case None => buildAndCNF(literals.tail, Some(literals.head))
-      case Some(prev) =>
-        literals match
-          case head +: Seq() => And(head, prev)
-          case head +: tail => buildAndCNF(tail, Some(And(head, prev)))
+  private def buildAndCNF(cnf: Seq[Or | Literal]): And | Or | Literal =
+    cnf.tail.foldLeft[And | Or | Literal](cnf.head)((p, c) => And(c, p))

@@ -97,25 +97,27 @@ to easily compose the instance (which is an **Expression**).
     5. The user can visit a section where it is possible to select some main examples of SAT problem to solve.
     6. The user has to parameterize the problem selected.
     7. The user can convert the logical expression in CNF and see the transformed formula.
-    8. The user can solve the instance inserted in input.
-    9. The user can see the result of the algorithm, and all the assignments that make the expression satisfiable if
-       they
-       exist.
-    10. The user must be able to see the assignments done by the DPLL of the variables that make the logical expression
+    8. The user can export the CNF to a text file in DIMACS format.
+    9. The user can solve the instance inserted in input.
+   10. The user can see the result of the algorithm, and all the assignments that make the expression satisfiable if they exist.
+   11. The user must be able to see the assignments done by the DPLL of the variables that make the logical expression
         satisfiable.
+    11. The user can see the time spent by the DPLL algorithm to solve the instance.
+    12. The user can see the time spent by the Tseitin transformation algorithm to convert the instance.
 
 2. ### System requirements
     1. The system preprocesses the expression given in input checking its correctness.
     2. The system transforms the input into the corresponding data structure through the Internal DSL.
     3. The system applies the Tseitin transformation to the expression obtaining the CNF.
     4. The system applies the DPLL algorithm with CNF as input. The DPLL algorithm works only with CNF expressions.
-    5. The system collects all the assignments of the solution.
-    6. The system can also only convert the expression in CNF simply applying the Tseitin transformation.
-    7. A file imported must be a text file containing the input in DIMACS format.
-    8. When a file is imported, the system parses the file and converts the expression into DSL format, filling the
+    5. The system measures the time spent by the Tseitin Transformation algorithm to convert and the DPLL algorithm to solve it (in nanoseconds).
+    6. The system collects all the assignments of the solution.
+    7. The system can also only convert the expression in CNF simply applying the Tseitin transformation.
+    8. A file imported must be a text file containing the input in DIMACS format.
+    9. When a file is imported, the system parses the file and converts the expression into DSL format, filling the
        input
        area.
-    9. When a problem is selected, the system creates the corresponding expression based on the parameters inserted by
+    10. When a problem is selected, the system creates the corresponding expression based on the parameters inserted by
        the
        user, then follows the solving process.
 

@@ -15,7 +15,7 @@ import satify.update.converters.ConverterType.*
 import satify.update.parser.DimacsCNF.*
 import satify.update.solver.Solver
 import satify.update.solver.SolverType.*
-
+import satify.update.Utils.Chronometer.*
 import java.io.File
 import scala.io.Source
 
@@ -37,6 +37,8 @@ object Update:
         problemUpdate(problem)
       case Convert(input) =>
         converterUpdate(input)
+      case ConvertProblem(problem) =>
+        converterProblemUpdate(problem)
       case Import(file) =>
         importUpdate(file)
       case NextSolution() =>
@@ -51,7 +53,8 @@ object Update:
   private def safeUpdate(f: () => State, error: Error, input: Option[String] = None): State =
     try f()
     catch
-      case _: Exception =>
+      case e: Exception =>
+        e.printStackTrace()
         if input.isEmpty then State(error) else State(input.get, error)
 
   /** Update function to react to the SolveAll message. This function will attempt to solve the input and return a state.
@@ -63,9 +66,10 @@ object Update:
     safeUpdate(
       () =>
         val exp = reflect(input)
-        val cnf: CNF = Converter(Tseitin).convert(exp)
-        val sol: Solution = Solver(DPLL).solveAll(cnf)
-        State(input, exp, sol)
+        start()
+        val sol: Solution = Solver(DPLL).solveAll(exp)
+        stop()
+        State(input, exp, sol, elapsed())
       ,
       InvalidInput,
       Some(input)
@@ -79,8 +83,10 @@ object Update:
     safeUpdate(
       () =>
         val exp = reflect(input)
+        start()
         val sol: Solution = Solver(DPLL).solve(exp)
-        State(input, exp, sol)
+        stop()
+        State(input, exp, sol, elapsed())
       ,
       InvalidInput,
       Some(input)
@@ -93,9 +99,10 @@ object Update:
   private def problemUpdate(problem: Problem): State =
     safeUpdate(
       () =>
-        val exp = problem.exp
-        val cnf: CNF = Converter(Tseitin).convert(exp)
-        State(cnf, Solver(DPLL).solve(exp), problem)
+        start()
+        val sol = Solver(DPLL).solve(problem.exp)
+        stop()
+        State(sol, problem, elapsed())
       ,
       InvalidInput
     )
@@ -108,11 +115,29 @@ object Update:
     safeUpdate(
       () =>
         val exp = reflect(input)
+        start()
         val cnf: CNF = Converter(Tseitin).convert(exp)
-        State(input, exp, cnf)
+        stop()
+        State(input, exp, cnf, elapsed())
       ,
       InvalidInput,
       Some(input)
+    )
+
+  /** Update function to react to the ConvertProblem message. This function will attempt to convert the selected problem and return a state.
+    *
+    * @param problem problem to convert.
+    * @return a state with the input, expression, and cnf if no exception is thrown, otherwise a state with the input and the occurred error
+    */
+  private def converterProblemUpdate(problem: Problem): State =
+    safeUpdate(
+      () =>
+        start()
+        val cnf: CNF = Converter(Tseitin).convert(problem.exp)
+        stop()
+        State(cnf, problem, elapsed())
+      ,
+      InvalidInput
     )
 
   /** Update function to react to the Import message. This function will attempt to import the file and return a state.
@@ -147,7 +172,8 @@ object Update:
               currentState.solution.get.status,
               currentState.solution.get.assignment :+ nextAssignment
             ),
-            currentState.problem.get
+            currentState.problem.get,
+            0
           ),
         EmptySolution
       )
@@ -163,7 +189,8 @@ object Update:
               nextAssignment match
                 case Assignment(Nil) => currentState.solution.get.assignment
                 case _ => currentState.solution.get.assignment :+ nextAssignment
-            )
+            ),
+            0
           ),
         EmptySolution
       )
