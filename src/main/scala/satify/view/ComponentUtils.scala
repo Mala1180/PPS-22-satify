@@ -2,14 +2,13 @@ package satify.view
 
 import satify.model.State
 import satify.view.Constants.*
-import satify.view.GUI.{problemComboBox, problemParameterPanel}
+import satify.view.GUI.problemParameterPanel
 import satify.view.Reactions.nextSolutionReaction
 
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.URL
 import java.util.concurrent.Executors
 import javax.swing.ImageIcon
-import javax.swing.plaf.basic.ComboPopup
 import scala.swing.*
 import scala.swing.event.{ButtonClicked, FocusGained, FocusLost, SelectionChanged}
 
@@ -189,14 +188,19 @@ object ComponentUtils:
           contents += createLabel("  - EXP → !(EXP) | !EXP", helpFontSize)
           contents += createLabel("  - EXP → (EXP)", helpFontSize)
           contents += createLabel("  - EXP → var", helpFontSize)
-          contents += createLabel("  - BINARY_OP → and | or | xor | implies | iff | /\\ | \\/ | ^ | -> | <-> ", helpFontSize)
+          contents += createLabel(
+            "  - BINARY_OP → and | or | xor | implies | iff | /\\ | \\/ | ^ | -> | <-> ",
+            helpFontSize
+          )
           contents += createLabel("  - EXP → (VARS) ENCODING NUM", helpFontSize)
           contents += createLabel("  - ENCODING → atLeast | atMost | exactly", helpFontSize)
           contents += createLabel("  - VARS → var, VARS | var", helpFontSize)
-          contents += createLabel("  - NUM → one | two | three | four | five | six | seven | eight | nine | ten", helpFontSize)
+          contents += createLabel(
+            "  - NUM → one | two | three | four | five | six | seven | eight | nine | ten",
+            helpFontSize
+          )
           contents += createLabel("  - NUM → 1 | 2 | 3 ... (no limit)", helpFontSize)
           contents += Swing.VStrut(100)
-
 
     new Dialog:
       contents = helpBox
