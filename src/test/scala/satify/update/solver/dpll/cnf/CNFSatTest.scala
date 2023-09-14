@@ -1,12 +1,12 @@
-package satify.update.solver.dpll
+package satify.update.solver.dpll.cnf
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.cnf.CNF.{And, Not, Or, Symbol}
 import satify.model.cnf.CNF
+import satify.model.cnf.CNF.{And, Not, Or, Symbol}
 import satify.model.dpll.Constraint
-import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.cnf.CNFSat.isUnsat
+import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 
 class CNFSatTest extends AnyFlatSpec with Matchers:
 

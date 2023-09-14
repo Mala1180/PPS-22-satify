@@ -1,4 +1,4 @@
-package satify.parser
+package satify.update.parser
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -12,7 +12,7 @@ import scala.util.Using
 
 class DumpTest extends AnyFlatSpec with Matchers {
 
-  val header: Seq[String] = List("c SOURCE: SATIFY, a pure functional SAT solver written in Scala",
+  val header: Seq[String] = List("c SOURCE: Satify",
     "c https://github.com/Mala1180/PPS-22-satify", "c", "c AUTHORS: Matteini Mattia, Paganelli Alberto, Fabri Luca",
     "c")
 

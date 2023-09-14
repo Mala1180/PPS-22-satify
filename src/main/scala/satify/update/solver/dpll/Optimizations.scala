@@ -2,7 +2,7 @@ package satify.update.solver.dpll
 
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
-import satify.model.dpll.{Constraint, Decision, Variable}
+import satify.model.dpll.{Constraint, Decision, OptionalVariable, PartialAssignment}
 
 import scala.annotation.tailrec
 import scala.collection.immutable.{AbstractSeq, LinearSeq}
@@ -65,11 +65,13 @@ object Optimizations:
         case _ => Missing
 
     dec match
-      case Decision(pm, cnf) =>
-        pm match
-          case Seq() => None
-          case Variable(name, None) +: tail =>
-            find(name, cnf) match
-              case Concordant(c) => Some(c)
-              case _ => pureLiteralIdentification(Decision(tail, cnf))
-          case Variable(_, _) +: tail => pureLiteralIdentification(Decision(tail, cnf))
+      case Decision(PartialAssignment(optVariables), cnf) =>
+        optVariables match
+          case ::(head, next) =>
+            head match
+              case OptionalVariable(name, None) =>
+                find(name, cnf) match
+                  case Concordant(c) => Some(c)
+                  case _ => pureLiteralIdentification(Decision(PartialAssignment(next), cnf))
+              case OptionalVariable(_, _) => pureLiteralIdentification(Decision(PartialAssignment(next), cnf))
+          case Nil => None

@@ -4,28 +4,35 @@ import satify.model.cnf.{CNF, Literal}
 import satify.model.cnf.CNF.*
 
 import java.io.{File, PrintWriter}
+import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.io.Source
 
 /** Read/write objects in DIMACS format. */
 trait Dimacs[T]:
+
   def parse(lines: Seq[String]): Option[T]
+
   def dump(obj: T): Seq[String]
+
   def read(path: String): Option[T] = readSource(Source.fromFile(path))
+
   def read: Option[T] = readSource(Source.stdin)
+
   private def readSource(source: Source) =
     try parse(source.getLines.toList)
     finally source.close()
+
   protected def writeSource(path: String, obj: T): Unit =
-    val fileName: String = "SATIFY_CNF_EXPORT.txt"
+    val fileName: String = "satify_cnf_export.txt"
     val separator = System.getProperty("file.separator")
     val writer = new PrintWriter(new File(path + separator + fileName))
     try dump(obj).foreach(writer.println)
     finally writer.close()
+
   protected def stripComments(lines: Seq[String]): Seq[String] =
     lines.filterNot(_.startsWith("c"))
 
-  /** Read/write formulas in DIMACS format. */
 object DimacsCNF extends Dimacs[CNF]:
 
   private val Header = "p cnf (\\d+) (\\d+)".r
@@ -80,7 +87,7 @@ object DimacsCNF extends Dimacs[CNF]:
     val dimacsString = dimacs(cnf)
     val numClauses = dimacsString.split("\n").length
     // header
-    cnfSeq :+= s"c SOURCE: SATIFY, a pure functional SAT solver written in Scala"
+    cnfSeq :+= s"c SOURCE: Satify"
     cnfSeq :+= s"c https://github.com/Mala1180/PPS-22-satify"
     cnfSeq :+= s"c"
     cnfSeq :+= s"c AUTHORS: Matteini Mattia, Paganelli Alberto, Fabri Luca"
