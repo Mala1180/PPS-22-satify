@@ -97,11 +97,10 @@ to easily compose the instance (which is an **Expression**).
     5. The user can visit a section where it is possible to select some main examples of SAT problem to solve.
     6. The user has to parameterize the problem selected.
     7. The user can convert the logical expression in CNF and see the transformed formula.
-    8. The user can solve the instance inserted in input.
-    9. The user can see the result of the algorithm, and all the assignments that make the expression satisfiable if
-       they
-       exist.
-    10. The user must be able to see the assignments done by the DPLL of the variables that make the logical expression
+    8. The user can export the CNF to a text file in DIMACS format.
+    9. The user can solve the instance inserted in input.
+   10. The user can see the result of the algorithm, and all the assignments that make the expression satisfiable if they exist.
+   11. The user must be able to see the assignments done by the DPLL of the variables that make the logical expression
         satisfiable.
 
 2. ### System requirements
@@ -112,12 +111,9 @@ to easily compose the instance (which is an **Expression**).
     5. The system collects all the assignments of the solution.
     6. The system can also only convert the expression in CNF simply applying the Tseitin transformation.
     7. A file imported must be a text file containing the input in DIMACS format.
-    8. When a file is imported, the system parses the file and converts the expression into DSL format, filling the
-       input
-       area.
-    9. When a problem is selected, the system creates the corresponding expression based on the parameters inserted by
-       the
-       user, then follows the solving process.
+    8. A file exported must be a text file containing the output in DIMACS format representing the CNF.
+    9. When a file is imported, the system parses the file and converts the expression into DSL format, filling the input area.
+    10. When a problem is selected, the system creates the corresponding expression based on the parameters inserted by the user, then follows the solving process.
 
 3. ## Non-functional requirements
     1. The system must be executable on the three main operating systems: Windows, Linux and MacOS.

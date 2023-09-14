@@ -24,7 +24,7 @@ The variable to be assigned at a decision branch is chose:
 - as a unit literal inside a clause of the expression, e.g. a literal which is the only one inside the clause. This
   technique is called unit propagation
 - pure literal. If a literal appears only in positive form inside the expression, or only in negative form. This
-  techniques is called pure literal elimination.
+  techniques are called pure literal elimination.
 
 It is obvious to observe that the complexity of the algorithm is strictly related on choosing the right variable to
 branch. In the literature exist a bunch of more heuristics and optimizations.
