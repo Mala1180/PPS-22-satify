@@ -88,7 +88,7 @@ class TseitinTest extends AnyFlatSpec with Matchers:
   "The CNF form of ((¬a ∨ (b ∧ c)) ∨ d)" should "be correctly generated" in {
     val exp = Or(Or(Not(Symbol("a")), And(Symbol("b"), Symbol("c"))), Symbol("d"))
     val result = tseitin(exp)
-    val expected = CNFAnd(
+    val expected: CNF = CNFAnd(
       CNFSymbol("TSTN0"),
       CNFAnd(
         CNFOr(CNFOr(CNFSymbol("TSTN1"), CNFSymbol("d")), CNFNot(CNFSymbol("TSTN0"))),
@@ -97,26 +97,20 @@ class TseitinTest extends AnyFlatSpec with Matchers:
           CNFAnd(
             CNFOr(CNFNot(CNFSymbol("d")), CNFSymbol("TSTN0")),
             CNFAnd(
-              CNFOr(
-                CNFOr(CNFSymbol("TSTN2"), CNFSymbol("TSTN3")),
-                CNFNot(CNFSymbol("TSTN1"))
-              ),
+              CNFOr(CNFOr(CNFSymbol("TSTN2"), CNFSymbol("TSTN3")), CNFNot(CNFSymbol("TSTN1"))),
               CNFAnd(
                 CNFOr(CNFNot(CNFSymbol("TSTN2")), CNFSymbol("TSTN1")),
                 CNFAnd(
                   CNFOr(CNFNot(CNFSymbol("TSTN3")), CNFSymbol("TSTN1")),
                   CNFAnd(
-                    CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("TSTN2"))),
+                    CNFOr(CNFOr(CNFNot(CNFSymbol("b")), CNFNot(CNFSymbol("c"))), CNFSymbol("TSTN3")),
                     CNFAnd(
-                      CNFOr(CNFSymbol("a"), CNFSymbol("TSTN2")),
+                      CNFOr(CNFSymbol("b"), CNFNot(CNFSymbol("TSTN3"))),
                       CNFAnd(
-                        CNFOr(
-                          CNFOr(CNFNot(CNFSymbol("b")), CNFNot(CNFSymbol("c"))),
-                          CNFSymbol("TSTN3")
-                        ),
+                        CNFOr(CNFSymbol("c"), CNFNot(CNFSymbol("TSTN3"))),
                         CNFAnd(
-                          CNFOr(CNFSymbol("b"), CNFNot(CNFSymbol("TSTN3"))),
-                          CNFOr(CNFSymbol("c"), CNFNot(CNFSymbol("TSTN3")))
+                          CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("TSTN2"))),
+                          CNFOr(CNFSymbol("a"), CNFSymbol("TSTN2"))
                         )
                       )
                     )
