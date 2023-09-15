@@ -11,7 +11,6 @@ import satify.update.solver.DpllSolverMemoize.enumerate
 import satify.update.solver.SolverType.*
 import satify.update.solver.dpll.impl.{DpllEnumerator, DpllFinder}
 
-import scala.collection.mutable
 
 /** Entity providing the methods to solve the SAT problem.
   * @see [[satify.update.solver.DPLL]]
@@ -56,14 +55,14 @@ object Solver:
     * @return the Solver
     * @see [[SolverType]]
     */
-  def apply(algorithmType: SolverType, conversionType: ConverterType = Tseitin): Solver =
+  def apply(algorithmType: SolverType, conversionType: ConverterType = Tseitin, cache: Boolean = true): Solver =
     algorithmType match
-      case DPLL => DpllSolver(Converter(conversionType))
+      case DPLL => DpllSolver(Converter(conversionType, cache), cache)
 
   /** Private implementation of [[Solver]] */
-  private case class DpllSolver(converter: Converter) extends Solver:
+  private case class DpllSolver(converter: Converter, cache: Boolean = true) extends Solver:
 
-    override def solveAll(cnf: CNF): Solution = enumerate(cnf)
+    override def solveAll(cnf: CNF): Solution = if cache then enumerate(cnf) else DpllEnumerator.dpll(cnf)
 
     override def solveAll(exp: Expression): Solution = solveAll(converter.convert(exp))
 

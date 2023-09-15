@@ -32,10 +32,10 @@ object Converter:
     * @param converterType the type of converter to create.
     * @return the converter.
     */
-  def apply(converterType: ConverterType): Converter = converterType match
-    case Tseitin => TseitinConverter()
+  def apply(converterType: ConverterType, cache: Boolean = true): Converter = converterType match
+    case Tseitin => TseitinConverter(cache)
 
   /** Private implementation of [[Converter]] */
-  private case class TseitinConverter() extends Converter:
+  private case class TseitinConverter(cache: Boolean = true) extends Converter:
 
-    override def convert(exp: Expression): CNF = memoize(tseitin)(exp)
+    override def convert(exp: Expression): CNF = if cache then memoize(tseitin)(exp) else tseitin(exp)
