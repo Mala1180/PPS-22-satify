@@ -5,7 +5,6 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.State
 import satify.update.Message.*
 import satify.update.Update.update
-import satify.view.GUI.inputTextArea
 
 class ConvertUpdateTest extends AnyFlatSpec with Matchers:
 

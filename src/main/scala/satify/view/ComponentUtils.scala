@@ -2,16 +2,25 @@ package satify.view
 
 import satify.model.State
 import satify.view.Constants.*
-import satify.view.GUI.{problemComboBox, problemParameterPanel}
+import satify.view.GUI.{
+  disableInteractions,
+  enableInteractions,
+  opAttr,
+  problemComboBox,
+  problemParameterPanel,
+  textPane,
+  textPaneText
+}
 import satify.view.Reactions.nextSolutionReaction
 
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.URL
 import java.util.concurrent.Executors
-import javax.swing.ImageIcon
+import javax.swing.{ImageIcon, JTextArea}
 import javax.swing.plaf.basic.ComboPopup
+import javax.swing.text.{SimpleAttributeSet, StyleConstants}
 import scala.swing.*
-import scala.swing.event.{ButtonClicked, FocusGained, FocusLost, SelectionChanged}
+import scala.swing.event.{ButtonClicked, FocusGained, FocusLost, SelectionChanged, ValueChanged}
 
 object ComponentUtils:
 
@@ -30,24 +39,57 @@ object ComponentUtils:
     val newHeight: Int = (newWidth / ratio).toInt
     ImageIcon(image.getImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH))
 
-  /** Creates a text area for the input
-    * @return the text area
+  /** Creates a text pane for the input
+    * @return the text pane
     */
-  def createInputTextArea(txt: String = ""): TextArea =
-    new TextArea:
-      name = expTextAreaName
-      text = txt
-      rows = 22
-      columns = 45
-      border = Swing.EmptyBorder(margin)
+  def createInputTextPane(txt: String = ""): TextPane =
+
+    def updateInputTextPane(t: TextPane): Unit =
+      val s = t.text
+      textPaneText = s
+      val f: (Int => Int, Int) => Unit = (g, length) =>
+        var indexes: List[Int] = List()
+        var from = 0
+        var start = g(from)
+        while start != -1 do
+          indexes = indexes :+ start
+          from = from + length
+          start = g(from)
+        Swing.onEDT {
+          indexes.foreach(i => t.styledDocument.setCharacterAttributes(i, length, opAttr, true))
+        }
+      f(i => s.indexOf("!", i), 1)
+      f(i => s.indexOf("or ", i), 2)
+      f(
+        i => {
+          val and = s.indexOf("and ", i)
+          val not = s.indexOf("not ", i)
+          if and == -1 then not
+          else if not == -1 then and
+          else math.min(and, not)
+        },
+        3
+      )
+
+    val textPane = new TextPane():
+      name = expTextPaneName
+    textPane.text = txt
+    textPane.font = Font(fontFamily, Font.PLAIN, 18)
+    updateInputTextPane(textPane)
+    textPane.reactions += { case ValueChanged(t: TextPane) =>
+      val s = t.text
+      if s != textPaneText then updateInputTextPane(t)
+    }
+    textPane
 
   def createParameterInputText(): TextField =
-    new TextField:
+    val tf = new TextField:
       name = parameterInputName
       text = ""
       columns = 5
       border = Swing.EmptyBorder(margin)
       maximumSize = new Dimension(100, 30)
+    tf
 
   /** Creates a combo box for the problem selection
     * @return the combo box
@@ -119,6 +161,7 @@ object ComponentUtils:
   def createNextSection(model: State): BoxPanel =
     val nextSolutionButton = createButton("Next", 100, 40)
     nextSolutionButton.reactions += { case ButtonClicked(_) =>
+      Swing.onEDT(enableInteractions())
       Executors.newSingleThreadExecutor().execute(() => nextSolutionReaction(model))
     }
     new BoxPanel(Orientation.Horizontal):

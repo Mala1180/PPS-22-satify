@@ -2,13 +2,16 @@ package satify
 
 import satify.Architecture.MVU
 import satify.Main.model
+import satify.view.ComponentUtils.createLabelledTextArea
 import satify.view.Constants.windowSize
 import satify.view.GUI.*
 import satify.view.Reactions.*
 
+import java.awt.{Color, Font}
 import java.util.concurrent.Executors
-import scala.swing.event.ButtonClicked
-import scala.swing.{Dimension, FileChooser, MainFrame, Swing}
+import javax.swing.text.DefaultStyledDocument
+import scala.swing.event.{ButtonClicked, EditDone, KeyTyped, SelectionChanged, ValueChanged}
+import scala.swing.{Component, Dimension, FileChooser, MainFrame, Reactions, Swing, TextArea, TextPane}
 
 /** Entry point of the application. */
 object Main extends App with MVU:
