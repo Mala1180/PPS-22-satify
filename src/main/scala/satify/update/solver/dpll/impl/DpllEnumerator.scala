@@ -1,20 +1,25 @@
-package satify.update.solver.dpll
+package satify.update.solver.dpll.impl
 
-import satify.model.cnf.Bool.False
+import satify.model.Result.*
+import satify.model.Status.COMPLETED
 import satify.model.cnf.CNF
-import satify.model.cnf.CNF.Symbol
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.PartialAssignment.extractParAssignmentFromCnf
+import satify.model.dpll.PartialAssignment.{extractParAssignmentFromCnf, extractParAssignments}
 import satify.model.dpll.{Constraint, Decision, DecisionTree, OptionalVariable}
+import satify.model.{Assignment, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 
 import scala.annotation.tailrec
 
-object Dpll:
+object DpllEnumerator:
 
-  def dpll(cnf: CNF): DecisionTree = dpll(Decision(extractParAssignmentFromCnf(cnf), cnf))
+  def dpll(cnf: CNF): Solution =
+    val assignments: List[Assignment] =
+      (for partialAssignment <- extractParAssignments(dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)))
+      yield partialAssignment.toAssignments).flatten
+    Solution(if assignments.nonEmpty then SAT else UNSAT, COMPLETED, assignments)
 
   /** Main DPLL algorithm.
     * @param dec first decision

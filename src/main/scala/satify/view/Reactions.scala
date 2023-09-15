@@ -13,6 +13,12 @@ import scala.swing.{Component, Swing, TextArea}
 
 object Reactions:
 
+  /** Reaction to the solve all button
+    * @param model the current model to update
+    */
+  def allSolutionsReaction(model: Model): Unit =
+    updateComponents(view(update(model, SolveAll(inputTextArea.text))))
+
   /** Reaction to the solve button
     * @param model the current model to update
     */
@@ -36,10 +42,16 @@ object Reactions:
     * @param model the current model to update
     */
   def problemSolutionReaction(model: Model): Unit =
-    if !problemComboBox.item.equals("No selection") then
-      val p: Problem = readProblemSelection()
-      updateComponents(view(update(model, SolveProblem(p))))
-    else createErrorDialog("Not a valid problem selection").open()
+    val p: Problem = readProblemSelection()
+    updateComponents(view(update(model, SolveProblem(p))))
+
+  /** Reaction to the problem selection, checking also parameter and selection
+    *
+    * @param model the current model to update
+    */
+  def problemCnfReaction(model: Model): Unit =
+    val p: Problem = readProblemSelection()
+    updateComponents(view(update(model, ConvertProblem(p))))
 
   /** Reaction to the next solution button
     * @param model the current model to update to display next assignment

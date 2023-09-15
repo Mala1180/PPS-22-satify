@@ -15,13 +15,15 @@ class NQueensTest extends AnyFlatSpec with Matchers:
   "NQueens 3x3" should "be UNSAT" in {
     val problem = NQueens(3)
     val sol = Solver(DPLL).solve(problem.exp)
-    sol should matchPattern { case Solution(UNSAT, _) => }
+    println("NQueens 3x3")
+    sol should matchPattern { case Solution(UNSAT, _, _) => }
   }
 
   "NQueens 4x4" should "be SAT" in {
     val problem = NQueens(4)
     val sol = Solver(DPLL).solve(problem.exp)
-    sol should matchPattern { case Solution(SAT, _) => }
+    sol should matchPattern { case Solution(SAT, _, _) => }
+    println("NQueens 4x4")
     problem.printNqueens(sol.assignment.head)
   }
 
@@ -29,7 +31,7 @@ class NQueensTest extends AnyFlatSpec with Matchers:
     val oCnf = DimacsCNF.read("src/main/resources/cnf/nqueens10.txt")
     oCnf should matchPattern { case Some(_) => }
     val sol = Solver(DPLL).solve(oCnf.get)
-    sol should matchPattern { case Solution(SAT, _) => }
+    sol should matchPattern { case Solution(SAT, _, _) => }
     println("NQueens 10x10")
     printNQueensFromDimacs(10, sol.assignment.head)
   }

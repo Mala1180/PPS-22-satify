@@ -1,6 +1,7 @@
-package satify.update.solver.dpll
+package satify.update.solver.dpll.impl
 
 import satify.model.Result.*
+import satify.model.Status.*
 import satify.model.cnf.Bool.True
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
@@ -11,16 +12,19 @@ import satify.model.expression.SymbolGeneration.{encodingVarPrefix, tseitinVarPr
 import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
+import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
+import satify.update.solver.dpll.impl.DpllFinder.{dpll, resume}
 
 import scala.util.Random
 
-/** Save a run of DPLL algorithm.
-  * @param dt decision tree
-  * @param s solution
-  */
-case class DpllRun(dt: DecisionTree, s: Solution)
+object DpllFinder:
 
-object DpllOneSol:
+  /** Save a run of DPLL algorithm.
+    *
+    * @param dt decision tree
+    * @param s  solution
+    */
+  case class DpllRun(dt: DecisionTree, s: Solution)
 
   val rnd: Random = Random(42)
   private var prevRun: Option[DpllRun] = None
@@ -32,10 +36,10 @@ object DpllOneSol:
   def dpll(cnf: CNF): Solution =
     buildTree(Decision(extractParAssignmentFromCnf(cnf), cnf)) match
       case (dt, SAT) =>
-        val solution: Solution = Solution(SAT, List(extractAssignment(dt, None)))
+        val solution: Solution = Solution(SAT, PARTIAL, List(extractAssignment(dt, None)))
         prevRun = Some(DpllRun(dt, solution))
         solution
-      case (_, UNSAT) => Solution(UNSAT, Nil)
+      case (_, UNSAT) => Solution(UNSAT, COMPLETED, Nil)
 
   /** Runs the DPLL algorithm resuming a previous run, if it exists.
     * @return another assignment, different from the previous', if any.
@@ -48,11 +52,11 @@ object DpllOneSol:
             resume(dt) match
               case (dt, SAT) =>
                 val assignment: Assignment = extractAssignment(dt, prevRun)
-                prevRun = Some(DpllRun(dt, Solution(SAT, assignment +: s.assignment)))
+                prevRun = Some(DpllRun(dt, Solution(SAT, PARTIAL, assignment +: s.assignment)))
                 assignment
               case (_, UNSAT) => Assignment(Nil)
           case assignment @ _ =>
-            prevRun = Some(DpllRun(dt, Solution(SAT, assignment +: s.assignment)))
+            prevRun = Some(DpllRun(dt, Solution(SAT, PARTIAL, assignment +: s.assignment)))
             assignment
       case None => throw new NoSuchElementException("No previous instance of DPLL")
 

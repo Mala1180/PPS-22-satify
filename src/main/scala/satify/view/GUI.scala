@@ -19,9 +19,11 @@ object GUI:
   val inputScrollPane = new ScrollPane(createInputTextArea())
   val problemComboBox: ComboBox[String] = createProblemComboBox()
 
+  val solveAllButton: Button = createButton("Solve all", 200, 40, Color(170, 30, 60))
   val solveButton: Button = createButton("Solve", 100, 40, Color(170, 30, 60))
   val solveProblemButton: Button = createButton("Solve", 100, 40, Color(170, 30, 60))
   val cnfButton: Button = createButton("Convert to CNF", 170, 40, Color(50, 50, 150))
+  val cnfProblemButton: Button = createButton("Convert to CNF", 170, 40, Color(50, 50, 150))
 
   val solutionOutputDialog: Dialog = createOutputDialog("Solution")
   val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
@@ -60,7 +62,8 @@ object GUI:
           contents += new Label("Input:"):
             font = headingFont
         contents += inputScrollPane
-      contents += new FlowPanel():
+      contents += new GridPanel(3, 1):
+        contents += solveAllButton
         contents += solveButton
         contents += cnfButton
       contents += new FlowPanel():
@@ -81,6 +84,7 @@ object GUI:
           font = headingFont
         contents += new FlowPanel():
           contents += solveProblemButton
+          contents += cnfProblemButton
         contents += new FlowPanel():
           contents += loadingLabel
 
@@ -106,16 +110,20 @@ object GUI:
   def disableInteractions(): Unit =
     loadingLabel.visible = true
     inputTextArea.enabled = false
+    solveAllButton.enabled = false
     solveButton.enabled = false
     solveProblemButton.enabled = false
     cnfButton.enabled = false
+    cnfProblemButton.enabled = false
     importMenuItem.enabled = false
 
   /** Disable all GUI interactions when the solving or converting process finish or crash. */
   def enableInteractions(): Unit =
     loadingLabel.visible = false
     inputTextArea.enabled = true
+    solveAllButton.enabled = true
     solveButton.enabled = true
     solveProblemButton.enabled = true
     cnfButton.enabled = true
+    cnfProblemButton.enabled = true
     importMenuItem.enabled = true

@@ -15,18 +15,29 @@ object Main extends App with MVU:
   new MainFrame:
     title = "Satify SAT Solver"
 
+    solveAllButton.reactions += { case ButtonClicked(_) =>
+      Swing.onEDT(disableInteractions())
+      Executors.newSingleThreadExecutor().execute(() => allSolutionsReaction(model))
+    }
+
     solveButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(disableInteractions())
       Executors.newSingleThreadExecutor().execute(() => solutionReaction(model))
-    }
-    cnfButton.reactions += { case ButtonClicked(_) =>
-      Swing.onEDT(disableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => cnfReaction(model))
     }
 
     solveProblemButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(disableInteractions())
       Executors.newSingleThreadExecutor().execute(() => problemSolutionReaction(model))
+    }
+
+    cnfButton.reactions += { case ButtonClicked(_) =>
+      Swing.onEDT(disableInteractions())
+      Executors.newSingleThreadExecutor().execute(() => cnfReaction(model))
+    }
+
+    cnfProblemButton.reactions += { case ButtonClicked(_) =>
+      Swing.onEDT(disableInteractions())
+      Executors.newSingleThreadExecutor().execute(() => problemCnfReaction(model))
     }
 
     helpMenuItem.reactions += { case ButtonClicked(_) =>
