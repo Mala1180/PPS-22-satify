@@ -39,7 +39,7 @@ object Encodings:
 
   /** Encodes the constraint that at most one of the given variables is true.
     * @param variables the input variables
-    *                  @param SymbolGenerator the generator of new symbols
+    * @param SymbolGenerator the generator of new symbols
     * @return the [[Expression]] that encodes the constraint
     * @see [[atMostK]]
     */
