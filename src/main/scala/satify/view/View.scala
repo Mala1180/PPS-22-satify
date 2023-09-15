@@ -1,7 +1,7 @@
 package satify.view
 
-import satify.model.cnf.CNF
 import satify.model.Status.*
+import satify.model.cnf.CNF
 import satify.model.errors.Error
 import satify.model.errors.Error.*
 import satify.model.{Solution, State}

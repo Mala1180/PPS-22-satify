@@ -5,18 +5,7 @@ import satify.model.problems.{GraphColoring, NQueens, NurseScheduling, Problem}
 import satify.update.Message.*
 import satify.update.Update.update
 import satify.view.ComponentUtils.createErrorDialog
-import satify.view.Constants.{
-  cnfOutputDialogName,
-  expTextAreaName,
-  gcColors,
-  gcEdges,
-  gcNodes,
-  nqQueens,
-  nsDays,
-  nsNurses,
-  nsShifts,
-  solOutputDialogName
-}
+import satify.view.Constants.*
 import satify.view.GUI.*
 
 import java.io.File

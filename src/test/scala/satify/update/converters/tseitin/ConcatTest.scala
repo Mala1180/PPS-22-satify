@@ -11,7 +11,6 @@ class ConcatTest extends AnyFlatSpec with Matchers:
   "Concatenate only one symbol" should "return the symbol without concatenating nothing to it" in {
     val exps: List[CNF] = List(Symbol("a"))
     val result: CNF = concat(exps)
-    println(result)
     val expected: CNF = Symbol("a")
     result shouldBe expected
   }

@@ -2,8 +2,8 @@ package satify.update.converters.tseitin
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
 import satify.model.cnf.CNF
+import satify.model.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
 import satify.model.expression.Expression.*
 import satify.update.converters.tseitin.TseitinTransformation.tseitin
 

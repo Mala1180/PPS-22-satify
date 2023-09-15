@@ -1,7 +1,7 @@
 package satify.dsl
 
 import satify.model.expression.Expression.Symbol
-object Conversion:
+object Conversions:
 
   given Conversion[String, Symbol] with
     def apply(s: String): Symbol = Symbol(s)

@@ -15,6 +15,7 @@ class NQueensTest extends AnyFlatSpec with Matchers:
   "NQueens 3x3" should "be UNSAT" in {
     val problem = NQueens(3)
     val sol = Solver(DPLL).solve(problem.exp)
+    println("NQueens 3x3")
     sol should matchPattern { case Solution(UNSAT, _, _) => }
   }
 

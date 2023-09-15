@@ -2,20 +2,21 @@ package satify.update
 
 import satify.dsl.Reflection.reflect
 import satify.model.*
-import satify.model.cnf.CNF.Symbol
 import satify.model.cnf.CNF
+import satify.model.cnf.CNF.Symbol
 import satify.model.errors.Error
 import satify.model.errors.Error.*
 import satify.model.expression.Expression
 import satify.model.problems.NQueens.*
 import satify.model.problems.{NQueens, Problem}
 import satify.update.Message.*
+import satify.update.Utils.Chronometer.*
 import satify.update.converters.Converter
 import satify.update.converters.ConverterType.*
 import satify.update.parser.DimacsCNF.*
 import satify.update.solver.Solver
 import satify.update.solver.SolverType.*
-import satify.update.Utils.Chronometer.*
+
 import java.io.File
 import scala.io.Source
 

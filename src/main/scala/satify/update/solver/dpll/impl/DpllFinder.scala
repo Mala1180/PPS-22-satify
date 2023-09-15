@@ -8,13 +8,13 @@ import satify.model.cnf.CNF.*
 import satify.model.dpll.*
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.dpll.PartialAssignment.*
+import satify.model.expression.SymbolGeneration.{encodingVarPrefix, tseitinVarPrefix}
 import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.impl.DpllFinder.{dpll, resume}
 
-import scala.annotation.tailrec
 import scala.util.Random
 
 object DpllFinder:
@@ -114,7 +114,9 @@ object DpllFinder:
         PartialAssignment(
           optVariables.filter(v =>
             v match
-              case OptionalVariable(name, _) if name.startsWith("ENC") || name.startsWith("TSTN") => false
+              case OptionalVariable(name, _)
+                  if name.startsWith(encodingVarPrefix) || name.startsWith(tseitinVarPrefix) =>
+                false
               case _ => true
           )
         ).toAssignments
