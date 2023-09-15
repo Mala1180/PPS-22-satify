@@ -60,28 +60,29 @@ object GUI:
         pages += new Page("Problems", createProblemsComponent())
 
   private def createInputComponent(): Component =
-    val gridPanel: BorderPanel = new BorderPanel():
-
-      val inputGrid: GridPanel = new GridPanel(1, 1):
-        contents += inputScrollPane
-      inputGrid.border = Swing.EmptyBorder(0, 0, 0, 25)
-
-      layout(inputGrid) = BorderPanel.Position.Center
-
-      layout(
-        new FlowPanel():
-          contents += new GridPanel(4, 1):
+    val borderPanel: BorderPanel = new BorderPanel():
+      val label = new Label("Input:")
+      label.border = Swing.EmptyBorder(0, 0, 2, 0)
+      label.horizontalAlignment = Alignment.Left
+      layout(label) = BorderPanel.Position.North
+      layout(new BorderPanel():
+        val inputGrid: GridPanel = new GridPanel(1, 1):
+          contents += inputScrollPane
+        inputGrid.border = Swing.EmptyBorder(0, 0, 0, 25)
+        layout(inputGrid) = BorderPanel.Position.Center
+        layout(
+          new GridPanel(8, 1):
             contents += solveAllButton
             contents += solveButton
             contents += cnfButton
             contents += loadingLabel
-      ) = BorderPanel.Position.East
+        ) = BorderPanel.Position.East
+      ) = BorderPanel.Position.Center
 
-    gridPanel.background = Color.BLUE
-    val borderPanel = new BorderPanel():
-      layout(gridPanel) = BorderPanel.Position.Center
+    val mainBorderPanel = new BorderPanel():
+      layout(borderPanel) = BorderPanel.Position.Center
       border = Swing.EmptyBorder(75, 100, 75, 100)
-    borderPanel
+    mainBorderPanel
 
   private def createProblemsComponent(): Component =
     new FlowPanel():
