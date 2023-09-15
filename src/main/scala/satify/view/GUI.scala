@@ -4,14 +4,11 @@ import satify.view.ComponentUtils.*
 import satify.view.Constants.*
 
 import java.awt.{Color, Dimension}
-import javax.swing.border.Border
-import javax.swing.event.{DocumentEvent, DocumentListener}
 import javax.swing.filechooser.FileNameExtensionFilter
 import javax.swing.text.{DefaultStyledDocument, SimpleAttributeSet, StyleConstants}
 import javax.swing.{ImageIcon, JFileChooser}
-import scala.swing.{TextPane, *}
+import scala.swing.*
 import scala.swing.TabbedPane.Page
-import scala.swing.event.{EditDone, KeyTyped, ValueChanged}
 
 object GUI:
   private val logoIcon: ImageIcon = createImage(logoPath, 5)
@@ -20,7 +17,7 @@ object GUI:
     border = Swing.EmptyBorder(margin)
 
   val problemParameterPanel: FlowPanel = new FlowPanel()
-  val textPane: TextPane = createInputTextPane(textPaneText)
+  val textPane: TextPane = createInputTextPane("")
   val opAttr: SimpleAttributeSet = createOperatorsAttribute()
 
   val inputScrollPane = new ScrollPane(textPane)
@@ -30,8 +27,6 @@ object GUI:
   val solveButton: Button = createButton("Solve", 100, 40, Color(170, 30, 60))
   val solveProblemButton: Button = createButton("Solve", 100, 40, Color(170, 30, 60))
   val cnfButton: Button = createButton("Convert to CNF", 170, 40, Color(50, 50, 150))
-  val stopButton: Button = createButton("Stop", 100, 40, Color(170, 30, 60))
-  stopButton.visible = false
   val cnfProblemButton: Button = createButton("Convert to CNF", 170, 40, Color(50, 50, 150))
 
   val solutionOutputDialog: Dialog = createOutputDialog("Solution")
@@ -75,11 +70,10 @@ object GUI:
 
       layout(
         new FlowPanel():
-          contents += new GridPanel(5, 1):
+          contents += new GridPanel(4, 1):
             contents += solveAllButton
             contents += solveButton
             contents += cnfButton
-            contents += stopButton
             contents += loadingLabel
       ) = BorderPanel.Position.East
 
@@ -109,19 +103,18 @@ object GUI:
           contents += loadingLabel
 
   /** Creates a file chooser for the import menu item.
-   * @return the file chooser
-   */
+    * @return the file chooser
+    */
   private def createImportFileChooser: FileChooser = new FileChooser:
     title = "Import DIMACS formula"
     fileSelectionMode = FileChooser.SelectionMode.FilesOnly
     fileFilter = new FileNameExtensionFilter("Text files", "txt")
     multiSelectionEnabled = false
 
-  /**
-   * Creates a [[SimpleAttributeSet]] to set a specific font style
-   * for input operators.
-   * @return
-   */
+  /** Creates a [[SimpleAttributeSet]] to set a specific font style
+    * for input operators.
+    * @return
+    */
   private def createOperatorsAttribute(): SimpleAttributeSet =
     val attribute = new SimpleAttributeSet()
     StyleConstants.setFontSize(attribute, 16)
@@ -130,9 +123,9 @@ object GUI:
     attribute
 
   /** Creates a file chooser for the export item in CNF output dialog.
-   *
-   * @return the file chooser
-   */
+    *
+    * @return the file chooser
+    */
   def createExportFileChooser: FileChooser = new FileChooser:
     title = "Export DIMACS formula"
     fileSelectionMode = FileChooser.SelectionMode.DirectoriesOnly
@@ -141,7 +134,6 @@ object GUI:
   /** Disable all GUI interactions when the solving or converting process starts. */
   def disableInteractions(): Unit =
     loadingLabel.visible = true
-    stopButton.visible = true
     inputTextPane.enabled = false
     solveAllButton.enabled = false
     solveButton.enabled = false
@@ -153,7 +145,6 @@ object GUI:
   /** Disable all GUI interactions when the solving or converting process finish or crash. */
   def enableInteractions(): Unit =
     loadingLabel.visible = false
-    stopButton.visible = false
     inputTextPane.enabled = true
     solveAllButton.enabled = true
     solveButton.enabled = true

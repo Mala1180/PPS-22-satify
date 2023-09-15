@@ -8,8 +8,7 @@ import satify.view.GUI.{
   opAttr,
   problemComboBox,
   problemParameterPanel,
-  textPane,
-  textPaneText
+  textPane
 }
 import satify.view.Reactions.nextSolutionReaction
 
@@ -18,7 +17,6 @@ import java.net.URL
 import java.util.concurrent.Executors
 import javax.swing.{ImageIcon, JTextArea}
 import javax.swing.plaf.basic.ComboPopup
-import javax.swing.text.{SimpleAttributeSet, StyleConstants}
 import scala.swing.*
 import scala.swing.event.{ButtonClicked, FocusGained, FocusLost, SelectionChanged, ValueChanged}
 
@@ -45,26 +43,32 @@ object ComponentUtils:
   def createInputTextPane(txt: String = ""): TextPane =
     var textPaneText: String = ""
 
+    /** Update the style of a text pane
+      * @param t a text pane
+      */
     def updateStyle(t: TextPane): Unit =
-      val s = t.text
-      textPaneText = s
+      val text = t.text
+      textPaneText = text
 
+      // Util function to minimize repetitions
       def f(h: Int => Int, from: Int, length: Int): List[Int] =
         val start = h(from)
         if start != -1 then f(h, from + length, length) :+ start
         else Nil
 
+      // Set character attribute foreach offset inside the input list
       def g(l: List[Int], length: Int): Unit = Swing.onEDT {
         l.foreach(i => t.styledDocument.setCharacterAttributes(i, length, opAttr, true))
       }
 
-      g(f(i => s.indexOf("!", i), 0, 1), 1)
-      g(f(i => s.indexOf("or ", i), 0, 2), 2)
+      // Update all operators style
+      g(f(i => text.indexOf("!", i), 0, 1), 1)
+      g(f(i => text.indexOf("or ", i), 0, 2), 2)
       g(
         f(
           i => {
-            val l: List[Int] = (s.indexOf("and ", i) :: s.indexOf("not ", i) ::
-              s.indexOf("xor ", i) :: Nil)
+            val l: List[Int] = (text.indexOf("and ", i) :: text.indexOf("not ", i) ::
+              text.indexOf("xor ", i) :: Nil)
               .filter(i => i != -1)
             l match
               case Nil => -1
