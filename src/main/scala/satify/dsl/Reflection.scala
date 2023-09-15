@@ -4,14 +4,11 @@ import satify.model.expression.Expression
 import satify.model.expression.Expression.Symbol
 
 import java.util.concurrent.Executors
-import scala.concurrent.duration.Duration
-import scala.concurrent.{Await, Promise}
 
 object Reflection:
 
   private val excludedWords = getDSLKeywords.mkString("|")
   private val regexPattern = s"""((?!$excludedWords\\b)\\b(?![0-9]+\\b)\\w+)"""
-  private val replStartedPromise = Promise[Unit]()
 
   private def getDSLKeywords: List[String] =
     val operators = classOf[Operators.type].getMethods.map(_.getName).toList
@@ -46,7 +43,6 @@ object Reflection:
           |import satify.dsl.DSL.{*, given}
           |""".stripMargin
       println(code)
-      Await.result(replStartedPromise.future, Duration.Inf)
       try dotty.tools.repl.ScriptEngine().eval(imports + code).asInstanceOf[Expression]
       catch case e: Exception => throw new IllegalArgumentException(e.getMessage)
 
@@ -55,7 +51,4 @@ object Reflection:
     */
   def startRepl(): Unit = Executors
     .newSingleThreadExecutor()
-    .execute(() =>
-      dotty.tools.repl.ScriptEngine().eval("println()")
-      replStartedPromise.success(())
-    )
+    .execute(() => dotty.tools.repl.ScriptEngine().eval("println()"))
