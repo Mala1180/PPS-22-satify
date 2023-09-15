@@ -7,7 +7,6 @@ import satify.view.Constants.windowSize
 import satify.view.GUI.*
 import satify.view.Reactions.*
 import java.util.concurrent.Executors
-import javax.swing.text.DefaultStyledDocument
 import scala.swing.event.ButtonClicked
 import scala.swing.{Dimension, FileChooser, MainFrame, Swing}
 

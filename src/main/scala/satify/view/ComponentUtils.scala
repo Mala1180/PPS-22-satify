@@ -2,21 +2,13 @@ package satify.view
 
 import satify.model.State
 import satify.view.Constants.*
-import satify.view.GUI.{
-  disableInteractions,
-  enableInteractions,
-  opAttr,
-  problemComboBox,
-  problemParameterPanel,
-  textPane
-}
+import satify.view.GUI.{disableInteractions, enableInteractions, opAttr, problemComboBox, problemParameterPanel, textPane}
 import satify.view.Reactions.nextSolutionReaction
 
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.URL
 import java.util.concurrent.Executors
-import javax.swing.{ImageIcon, JTextArea}
-import javax.swing.plaf.basic.ComboPopup
+import javax.swing.ImageIcon
 import scala.swing.*
 import scala.swing.event.{ButtonClicked, FocusGained, FocusLost, SelectionChanged, ValueChanged}
 
