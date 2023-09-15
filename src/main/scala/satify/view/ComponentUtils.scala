@@ -2,9 +2,15 @@ package satify.view
 
 import satify.model.State
 import satify.view.Constants.*
-import satify.view.GUI.{disableInteractions, enableInteractions, opAttr, problemComboBox, problemParameterPanel, textPane}
+import satify.view.GUI.{
+  disableInteractions,
+  enableInteractions,
+  opAttr,
+  problemComboBox,
+  problemParameterPanel,
+  textPane
+}
 import satify.view.Reactions.nextSolutionReaction
-
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.URL
 import java.util.concurrent.Executors
