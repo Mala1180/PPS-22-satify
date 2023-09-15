@@ -4,23 +4,6 @@ import satify.model.expression.Expression.{And, Not, Or, Symbol}
 
 object Utils:
 
-  /** Creates a producer of new Symbols starting from the given prefix.
-    * @param prefix the prefix of the new Symbol.
-    * @return a function that produces a new Symbol starting from the given prefix.
-    */
-  def symbolProducer(prefix: String): () => Symbol =
-    var c = 0
-    () =>
-      val s: Symbol = Symbol(prefix + c)
-      c = c + 1
-      s
-
-  /** Generate a new Symbol starting from the given prefix.
-    * @param prefix the prefix of the new Symbol.
-    * @return a new Symbol.
-    */
-  def symbolGenerator(prefix: String): () => Symbol = symbolProducer(prefix)
-
   extension (exp: Expression)
     def printAsDSL(flat: Boolean = false): String =
       exp match

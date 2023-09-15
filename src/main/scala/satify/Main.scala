@@ -2,19 +2,23 @@ package satify
 
 import satify.Architecture.MVU
 import satify.Main.model
-import satify.view.ComponentUtils.createLabelledTextArea
 import satify.view.Constants.windowSize
 import satify.view.GUI.*
 import satify.view.Reactions.*
 
 import java.util.concurrent.Executors
-import scala.swing.event.{ButtonClicked, SelectionChanged}
-import scala.swing.{Component, Dimension, FileChooser, MainFrame, Swing}
+import scala.swing.event.ButtonClicked
+import scala.swing.{Dimension, FileChooser, MainFrame, Swing}
 
 /** Entry point of the application. */
 object Main extends App with MVU:
   new MainFrame:
     title = "Satify SAT Solver"
+
+    solveAllButton.reactions += { case ButtonClicked(_) =>
+      Swing.onEDT(disableInteractions())
+      Executors.newSingleThreadExecutor().execute(() => allSolutionsReaction(model))
+    }
 
     solveButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(disableInteractions())

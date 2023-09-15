@@ -7,9 +7,9 @@ import satify.model.expression.Expression
 import satify.model.{Assignment, Solution}
 import satify.update.converters.ConverterType.*
 import satify.update.converters.{Converter, ConverterType}
+import satify.update.solver.DpllSolverMemoize.enumerate
 import satify.update.solver.SolverType.*
-import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
-import satify.update.solver.dpll.DpllOneSol.dpll
+import satify.update.solver.dpll.impl.{DpllEnumerator, DpllFinder}
 
 import scala.collection.mutable
 
@@ -18,21 +18,33 @@ import scala.collection.mutable
   */
 trait Solver:
 
-  /** Solves the SAT problem.
+  /** Solves the SAT problem, returning a solution with all satisfiable assignments.
+    * @param cnf the input in conjunctive normal form
+    * @return the solution to the SAT problem
+    */
+  def solveAll(cnf: CNF): Solution
+
+  /** Solves the SAT problem, returning a solution with all satisfiable assignments.
+    * @param exp the input expression
+    * @return the solution to the SAT problem
+    */
+  def solveAll(exp: Expression): Solution
+
+  /** Solves the SAT problem returning a solution with a satisfiable assignment.
     * @param cnf the input in conjunctive normal form
     * @return the solution to the SAT problem
     */
   def solve(cnf: CNF): Solution
 
-  /** Solves the SAT problem.
+  /** Solves the SAT problem returning a solution with a satisfiable assignment.
     * @param exp the input expression
     * @return the solution to the SAT problem
     */
   def solve(exp: Expression): Solution
 
   /** Finds the next assignment of the previous solution, if any.
-    * @return the solution to the SAT problem
-    * @throws IllegalStateException if the previous solution was not found
+    * @return a filled assignment if there is another satisfiable, an empty one otherwise.
+    * @throws IllegalStateException if a previous run was not found
     */
   def next(): Assignment
 
@@ -51,17 +63,19 @@ object Solver:
   /** Private implementation of [[Solver]] */
   private case class DpllSolver(converter: Converter) extends Solver:
 
-    import DpllSolverMemoize.runDpll
+    override def solveAll(cnf: CNF): Solution = enumerate(cnf)
 
-    override def solve(cnf: CNF): Solution = runDpll(cnf)
+    override def solveAll(exp: Expression): Solution = solveAll(converter.convert(exp))
+
+    override def solve(cnf: CNF): Solution = DpllFinder.dpll(cnf)
 
     override def solve(exp: Expression): Solution = solve(converter.convert(exp))
 
-    override def next(): Assignment = dpll()
+    override def next(): Assignment = DpllFinder.dpll()
 
 object DpllSolverMemoize:
 
-  val runDpll: CNF => Solution = memoize(cnf => dpll(cnf))
+  val enumerate: CNF => Solution = memoize(cnf => DpllEnumerator.dpll(cnf))
 
   protected def memoize(f: CNF => Solution): CNF => Solution =
     new collection.mutable.HashMap[CNF, Solution]():

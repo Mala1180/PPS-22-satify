@@ -10,7 +10,6 @@ import org.scalatest.matchers.should.Matchers
 import satify.Architecture.MVU
 import satify.Main.Model
 import satify.update.Message
-import satify.view.GUI
 
 import scala.swing.Component
 

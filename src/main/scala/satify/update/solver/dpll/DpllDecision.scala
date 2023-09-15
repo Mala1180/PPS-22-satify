@@ -1,12 +1,11 @@
 package satify.update.solver.dpll
 
 import satify.model.cnf.Bool.False
-import satify.model.dpll.OptionalVariable
 import satify.model.cnf.CNF.Symbol
-import satify.model.dpll.{Constraint, Decision}
+import satify.model.dpll.PartialAssignment.{filterUnconstrVars, updatePartialAssignment}
+import satify.model.dpll.{Constraint, Decision, OptionalVariable}
 import satify.update.solver.dpll.Optimizations.{pureLiteralIdentification, unitLiteralIdentification}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
-import satify.model.dpll.PartialAssignment.{filterUnconstrVars, updatePartialAssignment}
 
 import scala.util.Random
 
