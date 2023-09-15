@@ -63,12 +63,12 @@ object ComponentUtils:
 
       // Update all operators style
       g(f(i => text.indexOf("!", i), 0, 1), 1)
-      g(f(i => text.indexOf("or ", i), 0, 2), 2)
+      g(f(i => text.indexOf("or", i), 0, 2), 2)
       g(
         f(
           i => {
-            val l: List[Int] = (text.indexOf("and ", i) :: text.indexOf("not ", i) ::
-              text.indexOf("xor ", i) :: Nil)
+            val l: List[Int] = (text.indexOf("and", i) :: text.indexOf("not", i) ::
+              text.indexOf("xor", i) :: Nil)
               .filter(i => i != -1)
             l match
               case Nil => -1
