@@ -43,31 +43,41 @@ object ComponentUtils:
     * @return the text pane
     */
   def createInputTextPane(txt: String = ""): TextPane =
+    var textPaneText: String = ""
 
-    def updateInputTextPane(t: TextPane): Unit =
+    def updateStyle(t: TextPane): Unit =
       val s = t.text
       textPaneText = s
-      val f: (Int => Int, Int) => Unit = (g, length) =>
-        var indexes: List[Int] = List()
-        var from = 0
-        var start = g(from)
-        while start != -1 do
-          indexes = indexes :+ start
-          from = from + length
-          start = g(from)
-        Swing.onEDT {
-          indexes.foreach(i => t.styledDocument.setCharacterAttributes(i, length, opAttr, true))
-        }
-      f(i => s.indexOf("!", i), 1)
-      f(i => s.indexOf("or ", i), 2)
-      f(
-        i => {
-          val and = s.indexOf("and ", i)
-          val not = s.indexOf("not ", i)
-          if and == -1 then not
-          else if not == -1 then and
-          else math.min(and, not)
-        },
+
+      def f(h: Int => Int, from: Int, length: Int): List[Int] =
+        val start = h(from)
+        if start != -1 then f(h, from + length, length) :+ start
+        else Nil
+
+      def g(l: List[Int], length: Int): Unit = Swing.onEDT {
+        l.foreach(i => t.styledDocument.setCharacterAttributes(i, length, opAttr, true))
+      }
+
+      g(f(i => s.indexOf("!", i), 0, 1), 1)
+      g(f(i => s.indexOf("or ", i), 0, 2), 2)
+      g(
+        f(
+          i => {
+            val l: List[Int] = (s.indexOf("and ", i) :: s.indexOf("not ", i) ::
+              s.indexOf("xor ", i) :: Nil)
+              .filter(i => i != -1)
+            l match
+              case Nil => -1
+              case _ =>
+                l.min((x, y) =>
+                  if x > y then 1
+                  else if x < y then -1
+                  else 0
+                )
+          },
+          0,
+          3
+        ),
         3
       )
 
@@ -75,10 +85,10 @@ object ComponentUtils:
       name = expTextPaneName
     textPane.text = txt
     textPane.font = Font(fontFamily, Font.PLAIN, 18)
-    updateInputTextPane(textPane)
+    updateStyle(textPane)
     textPane.reactions += { case ValueChanged(t: TextPane) =>
       val s = t.text
-      if s != textPaneText then updateInputTextPane(t)
+      if s != textPaneText then updateStyle(t)
     }
     textPane
 

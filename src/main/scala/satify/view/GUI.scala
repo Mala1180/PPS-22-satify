@@ -20,7 +20,6 @@ object GUI:
     border = Swing.EmptyBorder(margin)
 
   val problemParameterPanel: FlowPanel = new FlowPanel()
-  var textPaneText: String = ""
   val textPane: TextPane = createInputTextPane(textPaneText)
   val opAttr: SimpleAttributeSet = createOperatorsAttribute()
 
