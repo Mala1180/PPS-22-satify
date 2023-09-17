@@ -9,6 +9,8 @@ object Constants:
   val logoPath = "/img/Satify_logo-colored.png"
   val fontFamily = "Arial"
   val headingFont: Font = Font(fontFamily, Font.BOLD, 16)
+  val helpFontSize = 16
+  val helpDialogMargin = 50
   val expTextAreaName = "expTextArea"
   val parameterInputName = "parTextField"
   val cnfOutputDialogName = "cnfOutputDialog"
