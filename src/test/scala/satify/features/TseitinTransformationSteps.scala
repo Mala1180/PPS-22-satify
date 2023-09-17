@@ -7,7 +7,7 @@ import satify.update.converters.{Converter, ConverterType}
 
 object TseitinTransformationSteps extends ScalaDsl with EN:
 
-  import ReflectionSteps.*
+  import DSLSteps.*
   var cnf: Option[CNF] = None
 
   And("converted to CNF Form")(() =>

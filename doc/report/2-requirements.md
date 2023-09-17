@@ -93,24 +93,27 @@ to easily compose the instance (which is an **Expression**).
     1. The user can insert in input a logical expression through the use of a DSL.
     2. The user can see a help section that explains how to use the DSL.
     3. The user cannot use DSL keywords as variable names.
-    4. The user can import a logical expression from a text file in DIMACS format.
-    5. The user can visit a section where it is possible to select some main examples of SAT problem to solve.
-    6. The user has to parameterize the problem selected.
-    7. The user can convert the logical expression in CNF and see the transformed formula.
-    8. The user can export the CNF to a text file in DIMACS format.
-    9. The user can solve the instance inserted in input.
-   10. The user can see the result of the algorithm, and all the assignments that make the expression satisfiable if they exist.
-   11. The user must be able to see the assignments done by the DPLL of the variables that make the logical expression
+    4. The user can use SAT encodings through the DSL (at most, at least, exactly).
+    5. The user can import a logical expression from a text file in DIMACS format.
+    6. The user can visit a section where it is possible to select some main examples of SAT problem to solve.
+    7. The user has to parameterize the problem selected.
+    8. The user can convert the logical expression in CNF and see the transformed formula.
+    9. The user can export the CNF to a text file in DIMACS format.
+    10. The user can solve the instance inserted in input.
+    11. The user can see the result of the algorithm, and all the assignments that make the expression satisfiable if
+        they exist.
+    12. The user must be able to see the assignments done by the DPLL of the variables that make the logical expression
         satisfiable.
-    11. The user can see the time spent by the DPLL algorithm to solve the instance.
-    12. The user can see the time spent by the Tseitin transformation algorithm to convert the instance.
+    13. The user can see the time spent by the DPLL algorithm to solve the instance.
+    14. The user can see the time spent by the Tseitin transformation algorithm to convert the instance.
 
 2. ### System requirements
     1. The system preprocesses the expression given in input checking its correctness.
     2. The system transforms the input into the corresponding data structure through the Internal DSL.
     3. The system applies the Tseitin transformation to the expression obtaining the CNF.
     4. The system applies the DPLL algorithm with CNF as input. The DPLL algorithm works only with CNF expressions.
-    5. The system measures the time spent by the Tseitin Transformation algorithm to convert and the DPLL algorithm to solve it (in nanoseconds).
+    5. The system measures the time spent by the Tseitin Transformation algorithm to convert and the DPLL algorithm to
+       solve it (in nanoseconds).
     6. The system collects all the assignments of the solution.
     7. The system can also only convert the expression in CNF simply applying the Tseitin transformation.
     8. A file imported must be a text file containing the input in DIMACS format.
@@ -118,8 +121,8 @@ to easily compose the instance (which is an **Expression**).
        input
        area.
     10. When a problem is selected, the system creates the corresponding expression based on the parameters inserted by
-       the
-       user, then follows the solving process.
+        the
+        user, then follows the solving process.
 
 3. ## Non-functional requirements
     1. The system must be executable on the three main operating systems: Windows, Linux and MacOS.
@@ -139,5 +142,14 @@ to easily compose the instance (which is an **Expression**).
        architecture of the system.
     5. The code must be constantly formatted following a predefined code style using ScalaFMT.
     6. The releases must follow the Semantic Versioning specification.
+
+## Requirements traceability
+
+|         Requirement          |                                       Feature / Scenarios                                        |
+|:----------------------------:|:------------------------------------------------------------------------------------------------:|
+|  [1.i](#user-requirements)   |                   [DSL.feature](../../src/test/resources/features/DSL.feature)                   |
+| [1.iii](#user-requirements)  |                   [DSL.feature](../../src/test/resources/features/DSL.feature)                   |
+|  [1.iv](#user-requirements)  |          [SatEncodings.feature](../../src/test/resources/features/SatEncodings.feature)          |
+| [1.viii](#user-requirements) | [TseitinTransformation.feature](../../src/test/resources/features/TseitinTransformation.feature) |
 
 [Previous](1-methodology.md) | [Next](3-architectural-design.md)
