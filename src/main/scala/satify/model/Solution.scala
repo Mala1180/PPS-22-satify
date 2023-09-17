@@ -7,6 +7,13 @@ enum Result:
   case SAT
   case UNSAT
 
+/** The Solution could be completed if all the assignments are provided to the user,
+  * partial otherwise.
+  */
+enum Status:
+  case COMPLETED
+  case PARTIAL
+
 /** Represent a completed variable, constrained to a value.
   * @param name name of the variable
   * @param value boolean assignment
@@ -20,18 +27,18 @@ case class Assignment(variables: List[Variable])
 
 /** Represents a solution to the SAT problem. It is used by [[update.Solver]].
   * @param result The result of the SAT problem (SAT or UNSAT).
+  * @param status The status (e.g. if the solution is completed or not)
   * @param assignment The assignment of variables to values, if the problem is SAT.
   */
-case class Solution(result: Result, assignment: List[Assignment] = Nil)
+case class Solution(result: Result, status: Status, assignment: List[Assignment] = Nil)
 
 object Solution:
 
   extension (solution: Solution)
     def print: String =
-      s"${solution.result}: ${
-          if solution.assignment.size > 1 then solution.assignment.size + " Solutions"
-          else solution.assignment.size + " Solution"
-        }  \n${
-          if solution.assignment.isEmpty then ""
-          else solution.assignment.head.variables.foldLeft("")((b, c) => b + c.name + ": " + c.value + "\n")
-        }"
+      s"${solution.result} \n ${solution.assignment
+          .map(a =>
+            s"Solution ${solution.assignment.indexOf(a) + 1}" + "\n" +
+              a.variables.foldLeft("")((b, c) => b + c.name + ": " + c.value + "\n")
+          )
+          .foldLeft("")((p, c) => p + "\n" + c)}"

@@ -1,16 +1,18 @@
 package satify.model.problems
 
-import satify.model.dpll.OptionalVariable
-import satify.model.dpll.OrderedList.list
-import satify.model.{Assignment, Variable}
 import satify.model.expression.Encodings.{atLeastOne, atMostOne}
 import satify.model.expression.Expression
-import satify.model.expression.Expression.{And, Symbol}
+import satify.model.expression.Expression.*
+import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
+import satify.model.{Assignment, Variable}
 
 import scala.annotation.tailrec
 import scala.swing.{Component, FlowPanel}
 
 case class NQueens(n: Int) extends Problem:
+
+  given SymbolGenerator with
+    def prefix: String = encodingVarPrefix
 
   private val variables: Seq[Seq[Symbol]] =
     if n < 0 then throw new IllegalArgumentException("n must be positive")

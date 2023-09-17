@@ -3,8 +3,12 @@ package satify.model.expression
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.{should, shouldBe}
 import satify.model.expression.Expression.*
+import satify.model.expression.SymbolGeneration.{ErasableSymbolGenerator, encodingVarPrefix}
 
 class SatEncodingsWrongUseTest extends AnyFlatSpec:
+
+  given ErasableSymbolGenerator with
+    override def prefix: String = encodingVarPrefix
 
   "atLeastOne()" should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
@@ -30,8 +34,26 @@ class SatEncodingsWrongUseTest extends AnyFlatSpec:
     }
   }
 
-  "exactlyOne()" should "throw an IllegalArgumentException" in {
+  "exactly(1)()" should "throw an IllegalArgumentException" in {
     assertThrows[IllegalArgumentException] {
-      exactlyOne()
+      exactlyK(1)()
+    }
+  }
+
+  """ atLeastK(0)("A", "B", "C") """ should "throw an IllegalArgumentException" in {
+    assertThrows[IllegalArgumentException] {
+      atLeastK(0)(Symbol("A"), Symbol("B"), Symbol("C"))
+    }
+  }
+
+  """ atMostK(0)("A", "B", "C") """ should "throw an IllegalArgumentException" in {
+    assertThrows[IllegalArgumentException] {
+      atMostK(0)(Symbol("A"), Symbol("B"), Symbol("C"))
+    }
+  }
+
+  """ exactlyK(0)("A", "B", "C") """ should "throw an IllegalArgumentException" in {
+    assertThrows[IllegalArgumentException] {
+      exactlyK(0)(Symbol("A"), Symbol("B"), Symbol("C"))
     }
   }

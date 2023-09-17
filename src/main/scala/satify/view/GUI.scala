@@ -19,6 +19,7 @@ object GUI:
   val inputScrollPane = new ScrollPane(createInputTextArea())
   val problemComboBox: ComboBox[String] = createProblemComboBox()
 
+  val solveAllButton: Button = createButton("Solve all", 200, 40, Color(170, 30, 60))
   val solveButton: Button = createButton("Solve", 100, 40, Color(170, 30, 60))
   val solveProblemButton: Button = createButton("Solve", 100, 40, Color(170, 30, 60))
   val cnfButton: Button = createButton("Convert to CNF", 170, 40, Color(50, 50, 150))
@@ -61,7 +62,8 @@ object GUI:
           contents += new Label("Input:"):
             font = headingFont
         contents += inputScrollPane
-      contents += new FlowPanel():
+      contents += new GridPanel(3, 1):
+        contents += solveAllButton
         contents += solveButton
         contents += cnfButton
       contents += new FlowPanel():
@@ -108,6 +110,7 @@ object GUI:
   def disableInteractions(): Unit =
     loadingLabel.visible = true
     inputTextArea.enabled = false
+    solveAllButton.enabled = false
     solveButton.enabled = false
     solveProblemButton.enabled = false
     cnfButton.enabled = false
@@ -118,6 +121,7 @@ object GUI:
   def enableInteractions(): Unit =
     loadingLabel.visible = false
     inputTextArea.enabled = true
+    solveAllButton.enabled = true
     solveButton.enabled = true
     solveProblemButton.enabled = true
     cnfButton.enabled = true

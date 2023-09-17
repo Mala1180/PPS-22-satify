@@ -2,6 +2,7 @@ package satify.dsl
 
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
+import satify.model.expression.SymbolGeneration.SymbolGenerator
 
 object Encodings:
 
@@ -11,18 +12,16 @@ object Encodings:
       * @see [[atMostK]]
       * @return the [[Expression]] that represents the constraint
       */
-    def atMost(k: Int): Expression = atMostK(k)(expressions: _*)
+    def atMost(k: Int)(using SymbolGenerator): Expression = atMostK(k)(expressions: _*)
 
     /** Calls [[atLeastOne]] if k is 1, [[atLeastK]] otherwise.
       * @see [[atLeastOne]] and [[atLeastK]]
       * @return the [[Expression]] that represents the constraint
       */
-    def atLeast(k: Int): Expression = k match
-      case 1 => atLeastOne(expressions: _*)
-      case _ => atLeastK(k)(expressions: _*)
+    def atLeast(k: Int): Expression = atLeastK(k)(expressions: _*)
 
-    /** Calls [[Expression.exactlyOne]]
-      *  @see [[Expression.exactlyOne]]
+    /** Calls [[exactlyK]]
+      * @see [[exactlyK]]
       * @return the [[Expression]] that represents the constraint
       */
-    def exactlyOne: Expression = Expression.exactlyOne(expressions: _*)
+    def exactly(k: Int)(using SymbolGenerator): Expression = exactlyK(k)(expressions: _*)

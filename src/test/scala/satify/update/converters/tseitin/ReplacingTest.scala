@@ -51,9 +51,9 @@ class ReplacingTest extends AnyFlatSpec with Matchers:
 
     val result: List[(Symbol, Expression)] = symbolsReplace(exp)
     val expected: List[(Symbol, Expression)] = List(
-      (Symbol("TSTN4"), And(Symbol("e"), Symbol("f"))),
-      (Symbol("TSTN3"), And(Symbol("c"), Symbol("d"))),
       (Symbol("TSTN2"), And(Symbol("a"), Symbol("b"))),
+      (Symbol("TSTN3"), And(Symbol("c"), Symbol("d"))),
+      (Symbol("TSTN4"), And(Symbol("e"), Symbol("f"))),
       (Symbol("TSTN1"), Or(Symbol("TSTN2"), Symbol("TSTN3"))),
       (Symbol("TSTN0"), And(Symbol("TSTN1"), Symbol("TSTN4")))
     )
@@ -69,10 +69,10 @@ class ReplacingTest extends AnyFlatSpec with Matchers:
 
     val result: List[(Symbol, Expression)] = symbolsReplace(exp)
     val expected: List[(Symbol, Expression)] = List(
-      (Symbol("TSTN4"), Not(Symbol("c"))),
-      (Symbol("TSTN3"), And(Symbol("TSTN4"), Symbol("d"))),
       (Symbol("TSTN2"), Or(Symbol("a"), Symbol("b"))),
+      (Symbol("TSTN4"), Not(Symbol("c"))),
       (Symbol("TSTN1"), And(Symbol("a"), Symbol("TSTN2"))),
+      (Symbol("TSTN3"), And(Symbol("TSTN4"), Symbol("d"))),
       (Symbol("TSTN0"), Or(Symbol("TSTN1"), Symbol("TSTN3")))
     )
     result shouldBe expected

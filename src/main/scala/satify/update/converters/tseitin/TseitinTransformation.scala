@@ -54,7 +54,7 @@ private[converters] object TseitinTransformation:
 
     val zipped = zipWithSymbol(exp).distinctBy(_._2)
     if zipped.size == 1 then zipped
-    else symbolSelector(zipped.reverse, Nil)
+    else symbolSelector(zipped.sortBy((_, e) => clauses(e)), Nil)
   }
 
   /** Transform the Symbol and the corresponding expression to CNF form
