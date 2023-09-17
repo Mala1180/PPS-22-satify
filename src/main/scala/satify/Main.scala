@@ -2,7 +2,7 @@ package satify
 
 import satify.Architecture.MVU
 import satify.Main.model
-import satify.view.ComponentUtils.createLabelledTextArea
+import satify.view.utils.ComponentUtils.createLabelledTextArea
 import satify.view.Constants.windowSize
 import satify.view.GUI.*
 import satify.view.Reactions.*

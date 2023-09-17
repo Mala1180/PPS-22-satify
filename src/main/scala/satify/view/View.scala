@@ -6,7 +6,7 @@ import satify.model.errors.Error
 import satify.model.errors.Error.*
 import satify.model.{Solution, State}
 import satify.update.parser.DimacsCNF
-import satify.view.ComponentUtils.*
+import satify.view.utils.ComponentUtils.*
 import satify.view.Constants.{cnfOutputDialogName, solOutputDialogName}
 import satify.view.GUI.{cnfOutputDialog, createExportFileChooser, exportFileChooser, problemParameterPanel}
 

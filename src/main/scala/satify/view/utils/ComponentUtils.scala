@@ -1,22 +1,17 @@
-package satify.view
+package satify.view.utils
 
 import satify.model.State
 import satify.view.Constants.*
-import satify.view.GUI.{
-  disableInteractions,
-  enableInteractions,
-  opAttr,
-  problemComboBox,
-  problemParameterPanel,
-  textPane
-}
+import satify.view.GUI.*
 import satify.view.Reactions.nextSolutionReaction
+import satify.view.utils.TextPaneUtils.{textPaneText, updateStyle}
+
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.URL
 import java.util.concurrent.Executors
 import javax.swing.ImageIcon
 import scala.swing.*
-import scala.swing.event.{ButtonClicked, FocusGained, FocusLost, SelectionChanged, ValueChanged}
+import scala.swing.event.*
 
 object ComponentUtils:
 
@@ -39,50 +34,6 @@ object ComponentUtils:
     * @return the text pane
     */
   def createInputTextPane(txt: String = ""): TextPane =
-    var textPaneText: String = ""
-
-    /** Update the style of a text pane
-      * @param t a text pane
-      */
-    def updateStyle(t: TextPane): Unit =
-      val text = t.text
-      textPaneText = text
-
-      // Util function to minimize repetitions
-      def f(h: Int => Int, from: Int, length: Int): List[Int] =
-        val start = h(from)
-        if start != -1 then f(h, from + length, length) :+ start
-        else Nil
-
-      // Set character attribute foreach offset inside the input list
-      def g(l: List[Int], length: Int): Unit = Swing.onEDT {
-        l.foreach(i => t.styledDocument.setCharacterAttributes(i, length, opAttr, true))
-      }
-
-      // Update all operators style
-      g(f(i => text.indexOf("!", i), 0, 1), 1)
-      g(f(i => text.indexOf("or", i), 0, 2), 2)
-      g(
-        f(
-          i => {
-            val l: List[Int] = (text.indexOf("and", i) :: text.indexOf("not", i) ::
-              text.indexOf("xor", i) :: Nil)
-              .filter(i => i != -1)
-            l match
-              case Nil => -1
-              case _ =>
-                l.min((x, y) =>
-                  if x > y then 1
-                  else if x < y then -1
-                  else 0
-                )
-          },
-          0,
-          3
-        ),
-        3
-      )
-
     val textPane = new TextPane():
       name = expTextPaneName
     textPane.text = txt
@@ -95,13 +46,12 @@ object ComponentUtils:
     textPane
 
   def createParameterInputText(): TextField =
-    val tf = new TextField:
+    new TextField:
       name = parameterInputName
       text = ""
       columns = 5
       border = Swing.EmptyBorder(margin)
       maximumSize = new Dimension(100, 30)
-    tf
 
   /** Creates a combo box for the problem selection
     * @return the combo box

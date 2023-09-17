@@ -4,7 +4,7 @@ import satify.Main.{Model, view}
 import satify.model.problems.{GraphColoring, NQueens, NurseScheduling, Problem}
 import satify.update.Message.*
 import satify.update.Update.update
-import satify.view.ComponentUtils.createErrorDialog
+import satify.view.utils.ComponentUtils.createErrorDialog
 import satify.view.Constants.*
 import satify.view.GUI.*
 

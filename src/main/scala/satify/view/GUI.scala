@@ -1,6 +1,6 @@
 package satify.view
 
-import satify.view.ComponentUtils.*
+import satify.view.utils.ComponentUtils.*
 import satify.view.Constants.*
 
 import java.awt.{Color, Dimension}
@@ -18,8 +18,6 @@ object GUI:
 
   val problemParameterPanel: FlowPanel = new FlowPanel()
   val textPane: TextPane = createInputTextPane("")
-  val opAttr: SimpleAttributeSet = createOperatorsAttribute()
-
   val inputScrollPane = new ScrollPane(textPane)
   val problemComboBox: ComboBox[String] = createProblemComboBox()
 
@@ -111,17 +109,6 @@ object GUI:
     fileSelectionMode = FileChooser.SelectionMode.FilesOnly
     fileFilter = new FileNameExtensionFilter("Text files", "txt")
     multiSelectionEnabled = false
-
-  /** Creates a [[SimpleAttributeSet]] to set a specific font style
-    * for input operators.
-    * @return
-    */
-  private def createOperatorsAttribute(): SimpleAttributeSet =
-    val attribute = new SimpleAttributeSet()
-    StyleConstants.setFontSize(attribute, 16)
-    StyleConstants.setBold(attribute, true)
-    StyleConstants.setForeground(attribute, Color(50, 50, 150))
-    attribute
 
   /** Creates a file chooser for the export item in CNF output dialog.
     *
