@@ -2,6 +2,7 @@ package satify
 
 import satify.Architecture.MVU
 import satify.Main.model
+import satify.dsl.Reflection.startRepl
 import satify.view.Constants.windowSize
 import satify.view.GUI.*
 import satify.view.Reactions.*
@@ -12,6 +13,7 @@ import scala.swing.{Dimension, FileChooser, MainFrame, Swing}
 
 /** Entry point of the application. */
 object Main extends App with MVU:
+  startRepl()
   new MainFrame:
     title = "Satify SAT Solver"
 
