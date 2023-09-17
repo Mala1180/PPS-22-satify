@@ -118,11 +118,9 @@ to easily compose the instance (which is an **Expression**).
     7. The system can also only convert the expression in CNF simply applying the Tseitin transformation.
     8. A file imported must be a text file containing the input in DIMACS format.
     9. When a file is imported, the system parses the file and converts the expression into DSL format, filling the
-       input
-       area.
+       input area.
     10. When a problem is selected, the system creates the corresponding expression based on the parameters inserted by
-        the
-        user, then follows the solving process.
+        the user, then follows the solving process.
 
 3. ## Non-functional requirements
     1. The system must be executable on the three main operating systems: Windows, Linux and MacOS.
@@ -138,8 +136,7 @@ to easily compose the instance (which is an **Expression**).
     3. The core of the system must be implemented following a TDD approach and using the ScalaTest framework to obtain
        readable tests following FlatSpec style.
     4. The system must be correctly documented using Scaladoc to let potential new developers understand the code and
-       the
-       architecture of the system.
+       the architecture of the system.
     5. The code must be constantly formatted following a predefined code style using ScalaFMT.
     6. The releases must follow the Semantic Versioning specification.
 
