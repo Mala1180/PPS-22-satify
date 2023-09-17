@@ -18,7 +18,7 @@ object DpllEnumerator:
   def dpll(cnf: CNF): Solution =
     val assignments: List[Assignment] =
       (for partialAssignment <- extractParAssignments(dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)))
-      yield partialAssignment.toAssignments).flatten
+      yield partialAssignment.toAssignments).flatten.distinct
     Solution(if assignments.nonEmpty then SAT else UNSAT, COMPLETED, assignments)
 
   /** Main DPLL algorithm.
