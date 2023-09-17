@@ -145,11 +145,16 @@ to easily compose the instance (which is an **Expression**).
 
 ## Requirements traceability
 
-|         Requirement          |                                       Feature / Scenarios                                        |
-|:----------------------------:|:------------------------------------------------------------------------------------------------:|
-|  [1.i](#user-requirements)   |                   [DSL.feature](../../src/test/resources/features/DSL.feature)                   |
-| [1.iii](#user-requirements)  |                   [DSL.feature](../../src/test/resources/features/DSL.feature)                   |
-|  [1.iv](#user-requirements)  |          [SatEncodings.feature](../../src/test/resources/features/SatEncodings.feature)          |
-| [1.viii](#user-requirements) | [TseitinTransformation.feature](../../src/test/resources/features/TseitinTransformation.feature) |
+|          Requirement          |                                                                                                                   Feature / Scenarios                                                                                                                   |
+|:-----------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|   [1.i](#user-requirements)   |                                                                                              [DSL.feature](../../src/test/resources/features/DSL.feature)                                                                                               |
+|  [1.iii](#user-requirements)  |                                                                                              [DSL.feature](../../src/test/resources/features/DSL.feature)                                                                                               |
+|  [1.iv](#user-requirements)   |                                                                                     [SatEncodings.feature](../../src/test/resources/features/SatEncodings.feature)                                                                                      |
+| [1.viii](#user-requirements)  |                                                                            [TseitinTransformation.feature](../../src/test/resources/features/TseitinTransformation.feature)                                                                             |
+|  [2.i](#system-requirements)  |                                                                                    [ProcessInputTest.scala](../../src/test/scala/satify/dsl/ProcessInputTest.scala)                                                                                     |
+| [2.ii](#system-requirements)  | [OperatorsTest.scala](../../src/test/scala/satify/dsl/OperatorsTest.scala) <br/> [MathOperatorsTest.scala](../../src/test/scala/satify/dsl/MathOperatorsTest.scala)<br/> [SatEncodingTest.scala](../../src/test/scala/satify/dsl/SatEncodingTest.scala) |
+| [2.iii](#system-requirements) |                                                                              [TseitinTest.scala](../../src/test/scala/satify/update/converters/tseitin/TseitinTest.scala)                                                                               |
+|           add yours           |                                                                                                                        add yours                                                                                                                        |
+|  [2.x](#system-requirements)  |                                                                                                [problems package](../../src/test/scala/satify/problems)                                                                                                 |
 
 [Previous](1-methodology.md) | [Next](3-architectural-design.md)

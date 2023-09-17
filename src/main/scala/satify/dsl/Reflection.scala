@@ -19,12 +19,9 @@ object Reflection:
     * @param input the input to process
     * @return the processed input
     */
-  def processInput(input: String): String =
-    // TODO: link these operators to the ones in the DSL
-    // regExp to match all words that are not operators
-    input
-      .replaceAll(regexPattern, "\"$1\"")
-      .replaceAll("\n", " ")
+  def processInput(input: String): String = input
+    .replaceAll(regexPattern, "\"$1\"")
+    .replaceAll("\n", " ")
 
   /** Reflects the input to the REPL returning an Expression
     * @param input the input to evaluate
