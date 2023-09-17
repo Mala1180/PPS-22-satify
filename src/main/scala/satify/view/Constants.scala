@@ -10,6 +10,8 @@ object Constants:
   val fontFamily = "Arial"
   val headingFont: Font = Font(fontFamily, Font.BOLD, 16)
   val expTextPaneName = "expTextPane"
+  val helpFontSize = 16
+  val helpDialogMargin = 50
   val parameterInputName = "parTextField"
   val cnfOutputDialogName = "cnfOutputDialog"
   val solOutputDialogName = "solOutputDialog"

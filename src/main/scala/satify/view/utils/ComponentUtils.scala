@@ -2,7 +2,7 @@ package satify.view.utils
 
 import satify.model.State
 import satify.view.Constants.*
-import satify.view.GUI.*
+import satify.view.GUI.{enableInteractions, problemParameterPanel}
 import satify.view.Reactions.nextSolutionReaction
 import satify.view.utils.TextPaneUtils.{textPaneText, updateStyle}
 
@@ -161,31 +161,59 @@ object ComponentUtils:
     */
   def createHelpDialog(): Dialog =
     val helpBox = new BoxPanel(Orientation.Horizontal):
-      contents += Swing.HGlue
-      contents += new BoxPanel(Orientation.Vertical):
-        contents += createLabel("Operators:", 20, Font.BOLD)
-        contents += Swing.VStrut(10)
-        contents += createLabel("  - AND:                and | /\\ ", 18)
-        contents += createLabel("  - OR:                     or | \\/ ", 18)
-        contents += createLabel("  - NOT:                 not | ! ", 18)
-        contents += createLabel("  - XOR:                 xor | ^ ", 18)
-        contents += createLabel("  - IMPLICATION:      implies | -> ", 18)
-        contents += createLabel("  - DOUBLE IMPL.:     iff | <-> ", 18)
-        contents += Swing.VStrut(20)
-        contents += createLabel("Encodings:", 20, Font.BOLD)
-        contents += Swing.VStrut(10)
-        contents += createLabel("  - AT LEAST ONE:  (X1, X2, ...) atLeast 1", 18)
-        contents += createLabel("  - AT LEAST K:        (X1, X2, ...) atLeast three", 18)
-        contents += createLabel("  - AT MOST ONE:   (X1, X2, ...) atMost one", 18)
-        contents += createLabel("  - AT MOST K:         (X1, X2, ...) atMost 3", 18)
-        contents += createLabel("  - EXACTLY ONE:   (X1, X2, ...) exactlyOne", 18)
-      contents += Swing.HGlue
+      border = Swing.EmptyBorder(helpDialogMargin, helpDialogMargin, helpDialogMargin, helpDialogMargin)
+      xLayoutAlignment = 0.5
+      yLayoutAlignment = 0.5
+      contents += new BoxPanel(Orientation.Horizontal):
+        contents += new BoxPanel(Orientation.Vertical):
+          contents += createLabel("Binary Operators:", 20, Font.BOLD)
+          contents += Swing.VStrut(10)
+          contents += createLabel("  - AND:                and | /\\ ", helpFontSize)
+          contents += createLabel("  - OR:                     or | \\/ ", helpFontSize)
+          contents += createLabel("  - XOR:                 xor | ^ ", helpFontSize)
+          contents += createLabel("  - IMPLICATION:      implies | -> ", helpFontSize)
+          contents += createLabel("  - DOUBLE IMPL.:     iff | <-> ", helpFontSize)
+          contents += Swing.VStrut(20)
+          contents += createLabel("Unary Operators:", 20, Font.BOLD)
+          contents += Swing.VStrut(10)
+          contents += createLabel("  - NOT:                 not | ! ", helpFontSize)
+          contents += Swing.VStrut(20)
+          contents += createLabel("Encodings:", 20, Font.BOLD)
+          contents += Swing.VStrut(10)
+          contents += createLabel("  - AT LEAST ONE:  (X1, X2, ...) atLeast 1", helpFontSize)
+          contents += createLabel("  - AT LEAST K:        (X1, X2, ...) atLeast three", helpFontSize)
+          contents += createLabel("  - AT MOST ONE:   (X1, X2, ...) atMost one", helpFontSize)
+          contents += createLabel("  - AT MOST K:         (X1, X2, ...) atMost 3", helpFontSize)
+          contents += createLabel("  - EXACTLY K:   (X1, X2, ...) exactly two", helpFontSize)
+        contents += Swing.HStrut(50)
+        contents += new BoxPanel(Orientation.Vertical):
+          contents += createLabel("Grammar:", 20, Font.BOLD)
+          contents += Swing.VStrut(10)
+          contents += createLabel("  - EXP → EXP BINARY_OP EXP | (EXP BINARY_OP EXP)", helpFontSize)
+          contents += createLabel("  - EXP → not(EXP)", helpFontSize)
+          contents += createLabel("  - EXP → !(EXP) | !EXP", helpFontSize)
+          contents += createLabel("  - EXP → (EXP)", helpFontSize)
+          contents += createLabel("  - EXP → var", helpFontSize)
+          contents += createLabel(
+            "  - BINARY_OP → and | or | xor | implies | iff | /\\ | \\/ | ^ | -> | <-> ",
+            helpFontSize
+          )
+          contents += createLabel("  - EXP → (VARS) ENCODING NUM", helpFontSize)
+          contents += createLabel("  - ENCODING → atLeast | atMost | exactly", helpFontSize)
+          contents += createLabel("  - VARS → var, VARS | var", helpFontSize)
+          contents += createLabel(
+            "  - NUM → one | two | three | four | five | six | seven | eight | nine | ten",
+            helpFontSize
+          )
+          contents += createLabel("  - NUM → 1 | 2 | 3 ... (no limit)", helpFontSize)
+          contents += Swing.VStrut(100)
+
     new Dialog:
       contents = helpBox
       modal = true
       title = "Help"
-      size = new Dimension(windowSize.width / 3, windowSize.height / 4 * 2)
       centerOnScreen()
+      pack()
 
   /** Creates a dialog to show a message
     * @return the dialog
