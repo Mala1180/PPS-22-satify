@@ -59,7 +59,6 @@ object Update:
         if input.isEmpty then State(error) else State(input.get, error)
 
   /** Update function to react to the SolveAll message. This function will attempt to solve the input and return a state.
-    *
     * @param input input to solve
     * @return a state with the input, expression, and solution if no exception is thrown, otherwise a state with the input and the occurred error
     */
@@ -126,7 +125,6 @@ object Update:
     )
 
   /** Update function to react to the ConvertProblem message. This function will attempt to convert the selected problem and return a state.
-    *
     * @param problem problem to convert.
     * @return a state with the input, expression, and cnf if no exception is thrown, otherwise a state with the input and the occurred error
     */

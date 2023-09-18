@@ -10,6 +10,7 @@ import satify.update.parser.DimacsCNF
 import satify.view.utils.ComponentUtils.*
 import satify.view.Constants.{cnfOutputDialogName, problemOutputDialogName, solOutputDialogName}
 import satify.view.GUI.{cnfOutputDialog, createExportFileChooser, exportFileChooser, problemParameterPanel}
+import satify.view.utils.Title.*
 
 import java.awt.Color
 import scala.swing.*
@@ -46,20 +47,19 @@ object View:
       case None => Set()
 
   /** Update the CNF text area
-    *
     * @param cnf the CNF to show in new components
     * @return a set of components to add to the GUI
     */
   private def updateCnf(cnf: Option[CNF], time: Option[Long]): Set[Component] =
     if cnf.isDefined && time.isDefined then
-      val exportButton = createButton("Export CNF", 130, 50, Color.BLUE)
+      val exportButton = createButton(Export.title, 130, 50, Color.BLUE)
       exportButton.reactions += { case _: event.ButtonClicked =>
         exportFileChooser.showOpenDialog(cnfOutputDialog) match
           case FileChooser.Result.Approve =>
             DimacsCNF.write(exportFileChooser.selectedFile.getPath, cnf.get)
-            exportButton.text = "Exported"
+            exportButton.text = Exported.title
             exportButton.enabled = false
-          case _ => createErrorDialog("Export error, select a txt file to export the CNF").open()
+          case _ => createErrorDialog(InvalidExport.description).open()
       }
       val fp: BoxPanel = new BoxPanel(Orientation.Vertical):
         name = cnfOutputDialogName
@@ -74,25 +74,16 @@ object View:
     else Set()
 
   /** Update the expression text area
-    *
     * @param exp the exp to show in new component
     * @return a set of components to add to the GUI
     */
   private def updateExpression(exp: String): Set[Component] = Set(createInputTextPane(exp))
 
   /** Update the error and show it in a dialog
-    *
     * @param error the error to show in a popup dialog
     * @param input the input to show in new component
     * @return a set of components to add to the GUI
     */
   private def updateError(error: Error, input: String): Set[Component] =
-    var errorDialog: Dialog = null
-    error match
-      case InvalidInput => errorDialog = createErrorDialog("Invalid input")
-      case InvalidImport =>
-        errorDialog = createErrorDialog("Import error, select a txt file containing a valid DIMACS CNF")
-      case EmptySolution => errorDialog = createErrorDialog("Empty solution, no next assignment to show")
-      case Unknown => errorDialog = createErrorDialog("Unknown error occurred")
-    errorDialog.open()
+    createErrorDialog(error.description).open()
     Set(createInputTextPane(input))

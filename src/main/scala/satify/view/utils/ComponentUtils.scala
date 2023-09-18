@@ -6,6 +6,7 @@ import satify.view.Constants.*
 import satify.view.GUI.{enableInteractions, problemOutputDialog, problemParameterPanel, solutionOutputDialog}
 import satify.view.Reactions.{nextSolutionReaction, problemSolutionReaction}
 import satify.view.utils.TextPaneUtils.{textPaneText, updateStyle}
+import satify.view.utils.Title.*
 
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.URL
@@ -46,6 +47,10 @@ object ComponentUtils:
     }
     textPane
 
+  /**
+   * Creates a text field for the input parameter
+   * @return the text field
+   */
   def createParameterInputText(): TextField =
     new TextField:
       name = parameterInputName
@@ -127,7 +132,7 @@ object ComponentUtils:
     * @return the BoxPanel containing the section
     */
   def createShowSection(problem: Problem, assignment: Assignment): BoxPanel =
-    val showProblemButton = createButton("Show", 100, 40)
+    val showProblemButton = createButton(Show.title, 100, 40)
     showProblemButton.reactions += { case ButtonClicked(_) =>
       problemOutputDialog.contents =
         createOutputTextArea(problem.toString(assignment), 20, 50, Font(fontFamily, Font.ITALIC, 22))
@@ -141,7 +146,7 @@ object ComponentUtils:
     * @return the BoxPanel containing the section
     */
   def createNextSection(model: State): BoxPanel =
-    val nextSolutionButton = createButton("Next", 100, 40)
+    val nextSolutionButton = createButton(Next.title, 100, 40)
     nextSolutionButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(enableInteractions())
       Executors.newSingleThreadExecutor().execute(() => nextSolutionReaction(model))
@@ -238,7 +243,7 @@ object ComponentUtils:
     new Dialog:
       contents = helpBox
       modal = true
-      title = "Help"
+      title = Help.title
       centerOnScreen()
       pack()
 
@@ -269,7 +274,7 @@ object ComponentUtils:
     * @return the dialog
     */
   def createErrorDialog(description: String): Dialog =
-    createDialog("Error", description)
+    createDialog(ErrorDialog.title, description)
 
   /** Creates a label with the given text and font size
     * @param txt text to show in the label

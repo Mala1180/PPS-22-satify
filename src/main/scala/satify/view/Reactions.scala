@@ -7,6 +7,7 @@ import satify.update.Update.update
 import satify.view.utils.ComponentUtils.createErrorDialog
 import satify.view.Constants.*
 import satify.view.GUI.*
+import satify.model.errors.Error.InvalidInput
 
 import java.io.File
 import scala.swing.{Component, Swing, TextArea}
@@ -114,5 +115,5 @@ object Reactions:
     catch
       case e: Exception =>
         e.printStackTrace()
-        createErrorDialog("Input not valid").open()
+        createErrorDialog(InvalidInput.description).open()
     p

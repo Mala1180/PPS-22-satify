@@ -15,7 +15,6 @@ object DpllDecision:
 
   /** Make decisions based on the previous one selecting the most appropriate variable and assignment.
     * If no optimization can be applied, it makes a random decision.
-    *
     * @param d previous decision.
     * @return List of new Decisions
     */
