@@ -4,11 +4,13 @@ import satify.model.expression.Expression
 import satify.model.expression.Expression.Symbol
 
 import java.util.concurrent.Executors
+import scala.util.matching.Regex
 
 object Reflection:
 
   private val excludedWords = getDSLKeywords.mkString("|")
-  private val regexPattern = s"""((?!$excludedWords\\b)\\b(?![0-9]+\\b)\\w+)"""
+  private val symbolsRegexPattern: Regex = s"""((?!$excludedWords\\b)\\b(?![0-9]+\\b)\\w+)""".r
+  private val commentsRegexPattern: Regex = """(//.*)|(/\*[^*]*\*+(?:[^/*][^*]*\*+)*/)""".r
 
   private def getDSLKeywords: List[String] =
     val operators = classOf[Operators.type].getMethods.map(_.getName).toList
@@ -22,8 +24,10 @@ object Reflection:
     * @return the processed input
     */
   def processInput(input: String): String = input
-    .replaceAll(regexPattern, "\"$1\"")
+    .replaceAll(commentsRegexPattern.toString(), "")
+    .replaceAll(symbolsRegexPattern.toString(), "\"$1\"")
     .replaceAll("\n", " ")
+    .trim
 
   /** Reflects the input to the REPL returning an Expression.
     * If the REPL is not started yet, waits until it is started.
@@ -33,11 +37,10 @@ object Reflection:
     * @see [[startRepl]]
     */
   def reflect(input: String): Expression =
-    if input.matches(regexPattern) then Symbol(input)
+    val code = processInput(input)
+    if code.matches("\"" + symbolsRegexPattern.toString() + "\"") then Symbol(code.substring(1, code.length - 1))
+    else if code.isBlank || code.isEmpty then throw new IllegalArgumentException("Empty input")
     else
-      val code: String = input match
-        case "" => throw new IllegalArgumentException("Empty input")
-        case i => processInput(i)
       val imports =
         """import satify.model.expression.Expression
           |import satify.dsl.DSL.{*, given}
