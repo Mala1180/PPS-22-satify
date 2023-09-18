@@ -3,7 +3,7 @@ package satify.dsl
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.shouldBe
 
-class ReflectionTest extends AnyFlatSpec:
+class ProcessInputTest extends AnyFlatSpec:
 
   import satify.dsl.Reflection.*
 
@@ -14,13 +14,12 @@ class ReflectionTest extends AnyFlatSpec:
 
   "processInput" should "work also excluding math operators" in {
     processInput("""a \/ !B /\ c""") shouldBe """"a" \/ !"B" /\ "c""""
-    processInput("""\/(/\(a, b), !(b, c))""") shouldBe """\/(/\("a", "b"), !("b", "c"))"""
+    processInput("""(a \/ (!B /\ c))""") shouldBe """("a" \/ (!"B" /\ "c"))"""
   }
 
   "processInput" should "work also works with SAT encodings" in {
-    processInput(
-      """atLeast(1)(a, b, c) and atMostOne(a, b)"""
-    ) shouldBe """atLeast(1)("a", "b", "c") and atMostOne("a", "b")"""
+    processInput("""atLeast(1)(a, b, c) and atMostOne(a, b)""") shouldBe
+      """atLeast(1)("a", "b", "c") and atMostOne("a", "b")"""
   }
 
   "processInput" should "ignore number constants" in {

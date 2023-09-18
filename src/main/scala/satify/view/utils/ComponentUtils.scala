@@ -1,16 +1,18 @@
-package satify.view
+package satify.view.utils
 
-import satify.model.State
+import satify.model.{Assignment, State}
+import satify.model.problems.Problem
 import satify.view.Constants.*
-import satify.view.GUI.problemParameterPanel
-import satify.view.Reactions.nextSolutionReaction
+import satify.view.GUI.{enableInteractions, problemOutputDialog, problemParameterPanel, solutionOutputDialog}
+import satify.view.Reactions.{nextSolutionReaction, problemSolutionReaction}
+import satify.view.utils.TextPaneUtils.{textPaneText, updateStyle}
 
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.URL
 import java.util.concurrent.Executors
 import javax.swing.ImageIcon
 import scala.swing.*
-import scala.swing.event.{ButtonClicked, FocusGained, FocusLost, SelectionChanged}
+import scala.swing.event.*
 
 object ComponentUtils:
 
@@ -29,16 +31,20 @@ object ComponentUtils:
     val newHeight: Int = (newWidth / ratio).toInt
     ImageIcon(image.getImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH))
 
-  /** Creates a text area for the input
-    * @return the text area
+  /** Creates a text pane for the input
+    * @return the text pane
     */
-  def createInputTextArea(txt: String = ""): TextArea =
-    new TextArea:
-      name = expTextAreaName
-      text = txt
-      rows = 22
-      columns = 45
-      border = Swing.EmptyBorder(margin)
+  def createInputTextPane(txt: String = ""): TextPane =
+    val textPane = new TextPane():
+      name = expTextPaneName
+    textPane.text = txt
+    textPane.font = Font(fontFamily, Font.PLAIN, 18)
+    updateStyle(textPane)
+    textPane.reactions += { case ValueChanged(t: TextPane) =>
+      val s = t.text
+      if s != textPaneText then updateStyle(t)
+    }
+    textPane
 
   def createParameterInputText(): TextField =
     new TextField:
@@ -115,14 +121,41 @@ object ComponentUtils:
     preferredSize = new Dimension(width, height)
     foreground = color
 
+  /** Creates a centered section with a Show button. Used to show a graphical representation for the problem.
+    * @param problem the problem
+    * @param assignment the assignment to show graphically
+    * @return the BoxPanel containing the section
+    */
+  def createShowSection(problem: Problem, assignment: Assignment): BoxPanel =
+    val showProblemButton = createButton("Show", 100, 40)
+    showProblemButton.reactions += { case ButtonClicked(_) =>
+      problemOutputDialog.contents =
+        createOutputTextArea(problem.toString(assignment), 20, 50, Font(fontFamily, Font.ITALIC, 22))
+      problemOutputDialog.centerOnScreen()
+      problemOutputDialog.open()
+    }
+    createCenteredBox(showProblemButton)
+
+  /** Creates a centered section with a Next button. Used to show the next solution.
+    * @param model the model
+    * @return the BoxPanel containing the section
+    */
   def createNextSection(model: State): BoxPanel =
     val nextSolutionButton = createButton("Next", 100, 40)
     nextSolutionButton.reactions += { case ButtonClicked(_) =>
+      Swing.onEDT(enableInteractions())
       Executors.newSingleThreadExecutor().execute(() => nextSolutionReaction(model))
     }
+    createCenteredBox(nextSolutionButton)
+
+  /** Creates a centered section with a component inside.
+    * @param component the component to center
+    * @return the BoxPanel containing the centered component
+    */
+  private def createCenteredBox(component: Component): BoxPanel =
     new BoxPanel(Orientation.Horizontal):
       contents += Swing.HGlue
-      contents += nextSolutionButton
+      contents += component
       contents += Swing.HGlue
 
   /** Creates a dialog to show the output
@@ -141,14 +174,14 @@ object ComponentUtils:
     * @param c columns
     * @return the text area
     */
-  def createOutputTextArea(txt: String, r: Int, c: Int): TextArea =
+  def createOutputTextArea(txt: String, r: Int, c: Int, textFont: Font = Font(fontFamily, Font.ITALIC, 18)): TextArea =
     new TextArea:
       text = txt
       rows = r
       columns = c
       border = Swing.EmptyBorder(margin)
       editable = false
-      font = Font(fontFamily, Font.ITALIC, 18)
+      font = textFont
 
   /** Creates a dialog to show the help
     * @return the dialog

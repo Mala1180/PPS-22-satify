@@ -4,10 +4,11 @@ import satify.model.Status.*
 import satify.model.cnf.CNF
 import satify.model.errors.Error
 import satify.model.errors.Error.*
-import satify.model.{Solution, State}
+import satify.model.problems.NQueens
+import satify.model.{Assignment, Solution, State}
 import satify.update.parser.DimacsCNF
-import satify.view.ComponentUtils.*
-import satify.view.Constants.{cnfOutputDialogName, solOutputDialogName}
+import satify.view.utils.ComponentUtils.*
+import satify.view.Constants.{cnfOutputDialogName, problemOutputDialogName, solOutputDialogName}
 import satify.view.GUI.{cnfOutputDialog, createExportFileChooser, exportFileChooser, problemParameterPanel}
 
 import java.awt.Color
@@ -31,11 +32,15 @@ object View:
           name = solOutputDialogName
           contents += new BoxPanel(Orientation.Vertical):
             contents += new ScrollPane(createOutputTextArea(sol.print, 30, 35))
+            if model.problem.isDefined then
+              contents += createShowSection(model.problem.get, model.solution.get.assignment.head)
             sol.status match
               case PARTIAL => contents += createNextSection(model)
               case _ =>
             contents += new FlowPanel():
-              contents += createLabel(model.time.get.toString + "ms", 15)
+              if model.time.get > 1_000_000 then
+                contents += createLabel((model.time.get / 1_000_000).toString + "ms", 15)
+              else contents += createLabel(model.time.get.toString + "ns", 15)
               contents += Swing.VStrut(5)
         Set(fp)
       case None => Set()
@@ -62,7 +67,8 @@ object View:
         contents += new FlowPanel():
           contents += exportButton
         contents += new FlowPanel():
-          contents += createLabel(time.get.toString + "ms", 15)
+          if time.get > 1_000_000 then contents += createLabel((time.get / 1_000_000).toString + "ms", 15)
+          else contents += createLabel(time.get.toString + "ns", 15)
           contents += Swing.VStrut(5)
       Set(fp)
     else Set()
@@ -72,7 +78,7 @@ object View:
     * @param exp the exp to show in new component
     * @return a set of components to add to the GUI
     */
-  private def updateExpression(exp: String): Set[Component] = Set(createInputTextArea(exp))
+  private def updateExpression(exp: String): Set[Component] = Set(createInputTextPane(exp))
 
   /** Update the error and show it in a dialog
     *
@@ -89,4 +95,4 @@ object View:
       case EmptySolution => errorDialog = createErrorDialog("Empty solution, no next assignment to show")
       case Unknown => errorDialog = createErrorDialog("Unknown error occurred")
     errorDialog.open()
-    Set(createInputTextArea(input))
+    Set(createInputTextPane(input))

@@ -4,7 +4,7 @@ import satify.Main.{Model, view}
 import satify.model.problems.{GraphColoring, NQueens, NurseScheduling, Problem}
 import satify.update.Message.*
 import satify.update.Update.update
-import satify.view.ComponentUtils.createErrorDialog
+import satify.view.utils.ComponentUtils.createErrorDialog
 import satify.view.Constants.*
 import satify.view.GUI.*
 
@@ -17,19 +17,19 @@ object Reactions:
     * @param model the current model to update
     */
   def allSolutionsReaction(model: Model): Unit =
-    updateComponents(view(update(model, SolveAll(inputTextArea.text))))
+    updateComponents(view(update(model, SolveAll(inputTextPane.text))))
 
   /** Reaction to the solve button
     * @param model the current model to update
     */
   def solutionReaction(model: Model): Unit =
-    updateComponents(view(update(model, Solve(inputTextArea.text))))
+    updateComponents(view(update(model, Solve(inputTextPane.text))))
 
   /** Reaction to the convert button
     * @param model the current model to update
     */
   def cnfReaction(model: Model): Unit =
-    updateComponents(view(update(model, Convert(inputTextArea.text))))
+    updateComponents(view(update(model, Convert(inputTextPane.text))))
 
   /** Reaction to the import button
     * @param model the current model to update
@@ -46,7 +46,6 @@ object Reactions:
     updateComponents(view(update(model, SolveProblem(p))))
 
   /** Reaction to the problem selection, checking also parameter and selection
-    *
     * @param model the current model to update
     */
   def problemCnfReaction(model: Model): Unit =
@@ -76,14 +75,13 @@ object Reactions:
           case n if n == cnfOutputDialogName =>
             cnfOutputDialog.contents = c
             cnfOutputDialog.open()
-          case n if n == expTextAreaName =>
+          case n if n == expTextPaneName =>
             inputScrollPane.contents = c
       })
       enableInteractions()
     }
 
   /** Read the problem selection from the GUI, checking also the parameters.
-    *
     * @return the problem selected
     */
   private def readProblemSelection(): Problem =
