@@ -6,6 +6,7 @@ import satify.view.Constants.*
 import satify.view.GUI.{enableInteractions, problemOutputDialog, problemParameterPanel, solutionOutputDialog}
 import satify.view.Reactions.{nextSolutionReaction, problemSolutionReaction}
 import satify.view.utils.TextPaneUtils.{textPaneText, updateStyle}
+import satify.view.utils.Title.*
 
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.URL
@@ -46,6 +47,9 @@ object ComponentUtils:
     }
     textPane
 
+  /** Creates a text field for the input parameter
+    * @return the text field
+    */
   def createParameterInputText(): TextField =
     new TextField:
       name = parameterInputName
@@ -58,23 +62,25 @@ object ComponentUtils:
     * @return the combo box
     */
   def createProblemComboBox(): ComboBox[String] =
-    new ComboBox(List("No selection", "N-Queens", "Graph Coloring", "Nurse Scheduling")):
+    import ProblemTitle.*
+    import Placeholders.*
+    new ComboBox(List("No selection", NQueens.title, GraphColoring.title, NurseScheduling.title)):
       listenTo(selection)
       maximumSize = new Dimension(200, 30)
       reactions += { case SelectionChanged(_) =>
         val parameters: Set[Component] = this.item match
-          case "N-Queens" => Set(createLabelledTextArea("N. queens", nqQueens, 1, 10))
-          case "Graph Coloring" =>
+          case NQueens.title => Set(createLabelledTextArea(QueensNumbers.description, nQueens, 1, 10))
+          case GraphColoring.title =>
             Set(
-              createLabelledTextArea("Nodes: n1, n2, n3, ...", gcNodes, 1, 15),
-              createLabelledTextArea("Edges: n1-n2, n2-n3, ...", gcEdges, 1, 10),
-              createLabelledTextArea("N. colors", gcColors, 1, 10)
+              createLabelledTextArea(GraphColoringNodes.description, gcNodes, 1, 15),
+              createLabelledTextArea(GraphColoringEdges.description, gcEdges, 1, 10),
+              createLabelledTextArea(GraphColoringColors.description, gcColors, 1, 10)
             )
-          case "Nurse Scheduling" =>
+          case NurseScheduling.title =>
             Set(
-              createLabelledTextArea("N. nurses", nsNurses, 1, 10),
-              createLabelledTextArea("Days", nsDays, 1, 10),
-              createLabelledTextArea("Shifts", nsShifts, 1, 10)
+              createLabelledTextArea(NurseSchedulingNurses.description, nsNurses, 1, 10),
+              createLabelledTextArea(NurseSchedulingDays.description, nsDays, 1, 10),
+              createLabelledTextArea(NurseSchedulingShifts.description, nsShifts, 1, 10)
             )
           case _ => Set()
         problemParameterPanel.contents.clear()
@@ -127,7 +133,7 @@ object ComponentUtils:
     * @return the BoxPanel containing the section
     */
   def createShowSection(problem: Problem, assignment: Assignment): BoxPanel =
-    val showProblemButton = createButton("Show", 100, 40)
+    val showProblemButton = createButton(Show.title, 100, 40)
     showProblemButton.reactions += { case ButtonClicked(_) =>
       problemOutputDialog.contents =
         createOutputTextArea(problem.toString(assignment), 20, 50, Font(fontFamily, Font.ITALIC, 22))
@@ -141,7 +147,7 @@ object ComponentUtils:
     * @return the BoxPanel containing the section
     */
   def createNextSection(model: State): BoxPanel =
-    val nextSolutionButton = createButton("Next", 100, 40)
+    val nextSolutionButton = createButton(Next.title, 100, 40)
     nextSolutionButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(enableInteractions())
       Executors.newSingleThreadExecutor().execute(() => nextSolutionReaction(model))
@@ -238,7 +244,7 @@ object ComponentUtils:
     new Dialog:
       contents = helpBox
       modal = true
-      title = "Help"
+      title = Help.title
       centerOnScreen()
       pack()
 
@@ -269,7 +275,7 @@ object ComponentUtils:
     * @return the dialog
     */
   def createErrorDialog(description: String): Dialog =
-    createDialog("Error", description)
+    createDialog(ErrorDialog.title, description)
 
   /** Creates a label with the given text and font size
     * @param txt text to show in the label

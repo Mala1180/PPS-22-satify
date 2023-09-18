@@ -20,7 +20,6 @@ import scala.util.Random
 object DpllFinder:
 
   /** Save a run of DPLL algorithm.
-    *
     * @param dt decision tree
     * @param s  solution
     */

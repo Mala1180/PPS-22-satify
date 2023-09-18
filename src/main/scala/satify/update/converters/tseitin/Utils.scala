@@ -9,7 +9,6 @@ import satify.model.expression.SymbolGeneration.{SymbolGenerator, tseitinVarPref
 private[converters] object Utils:
 
   /** Zip the subexpressions found in the given expression with a Symbol.
-    *
     * @param exp the expression.
     * @return a list of the subexpressions found in the given expression zipped with the Symbol.
     */
@@ -19,7 +18,6 @@ private[converters] object Utils:
     zipWith(exp)(summon[SymbolGenerator].generate)
 
   /** Method to check if an expression is in CNF form and can be converted to CNF form.
-    *
     * @param expression The expression to check.
     * @return true if the expression could be converted to CNF form, false otherwise and in case of empty expression.
     */
@@ -39,7 +37,6 @@ private[converters] object Utils:
       case _ => false
 
   /** Method to check if an expression is in CNF form and can be converted to CNF form.
-    *
     * @param expression The expression to check.
     * @return true if the expression could be converted to CNF form, false otherwise and in case of empty expression.
     */
