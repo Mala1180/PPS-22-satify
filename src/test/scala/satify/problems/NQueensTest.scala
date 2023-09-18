@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.Result.*
 import satify.model.Solution
 import satify.model.problems.NQueens
-import satify.model.problems.NQueens.{printNQueensFromDimacs}
+import satify.model.problems.NQueens.printNQueensFromDimacs
 import satify.update.parser.DimacsCNF
 import satify.update.solver.SolverType.DPLL
 import satify.update.solver.{Solver, SolverType}

@@ -127,7 +127,8 @@ object ComponentUtils:
       problemOutputDialog.contents =
         createOutputTextArea(problem.toString(assignment), 20, 50, Font(fontFamily, Font.ITALIC, 22))
       problemOutputDialog.centerOnScreen()
-      problemOutputDialog.open()}
+      problemOutputDialog.open()
+    }
     createCenteredBox(showProblemButton)
 
   /** Creates a centered section with a Next button. Used to show the next solution.

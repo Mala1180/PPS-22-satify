@@ -67,14 +67,16 @@ case class NQueens(n: Int) extends Problem:
       case Assignment(variables) =>
         val firstN = variables.take(n)
         if firstN.nonEmpty then
-          getStringView(Assignment(variables.drop(n)), acc + "\n" + firstN.foldLeft("")((p, c) => p + (if c.value then s" ♕ " else " · ")))
+          getStringView(
+            Assignment(variables.drop(n)),
+            acc + "\n" + firstN.foldLeft("")((p, c) => p + (if c.value then s" ♕ " else " · "))
+          )
         else acc
     getStringView(assignment, "")
 
 object NQueens:
 
   extension (problem: NQueens)
-
     def printNQueens(assignment: Assignment): Unit = assignment match
       case Assignment(variables) =>
         val firstN = variables.take(problem.n)
@@ -85,21 +87,21 @@ object NQueens:
 
   import satify.model.dpll.OrderedList.given
 
-    @tailrec
-    def printNQueensFromDimacs(n: Int, assignment: Assignment): Unit = assignment match
-      case Assignment(variables) =>
-        val firstN = variables.take(n)
-        if firstN.nonEmpty then
-          println(
-            firstN
-              .map {
-                case Variable(s"x_$i", value) =>
-                  val xx = i.toInt - 1
-                  val row: Int = xx / n
-                  val col: Int = xx % n
-                  Variable(s"x_${row}_$col", value)
-                case v => v
-              }
-              .foldLeft("")((p, c) => p + (if c.value then s" ♕ " else " · "))
-          )
-          printNQueensFromDimacs(n, Assignment(variables.drop(n)))
+  @tailrec
+  def printNQueensFromDimacs(n: Int, assignment: Assignment): Unit = assignment match
+    case Assignment(variables) =>
+      val firstN = variables.take(n)
+      if firstN.nonEmpty then
+        println(
+          firstN
+            .map {
+              case Variable(s"x_$i", value) =>
+                val xx = i.toInt - 1
+                val row: Int = xx / n
+                val col: Int = xx % n
+                Variable(s"x_${row}_$col", value)
+              case v => v
+            }
+            .foldLeft("")((p, c) => p + (if c.value then s" ♕ " else " · "))
+        )
+        printNQueensFromDimacs(n, Assignment(variables.drop(n)))
