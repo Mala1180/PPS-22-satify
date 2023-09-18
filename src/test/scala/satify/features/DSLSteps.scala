@@ -12,7 +12,7 @@ object DSLSteps extends ScalaDsl with EN:
   var error: Exception = _
 
   Given("the input {string}")((strExp: String) => input = strExp)
-  Given("an empty input")(() => input = "")
+  Given("an empty input") { input = "" }
 
   When("it is reflected to scala compiler") {
     try expression = Some(reflect(input))
