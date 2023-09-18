@@ -1,14 +1,22 @@
 package satify.view.utils
 
-import scala.swing.{Swing, TextPane}
+import satify.dsl.Reflection.getDSLKeywords
+import satify.view.Constants.fontFamily
 
-import java.awt.Color
-import javax.swing.text.{SimpleAttributeSet, StyleConstants}
+import scala.swing.{Swing, TextPane}
+import java.awt.{Color, Font}
+import javax.swing.text.{MutableAttributeSet, SimpleAttributeSet, StyleConstants}
 
 object TextPaneUtils:
 
   var textPaneText: String = ""
-  private val opAttr: SimpleAttributeSet = createOperatorsAttribute()
+  private val opAttr: SimpleAttributeSet = createKeywordsAttribute()
+
+  given Ordering[Int] = (x, y) => {
+    if x > y then 1
+    else if x < y then -1
+    else 0
+  }
 
   /** Update the style of a text pane
     *
@@ -36,40 +44,52 @@ object TextPaneUtils:
       * @param l      list of offsets
       * @param length length of each String
       */
-    def setOperatorsAttribute(l: List[Int], length: Int): Unit = Swing.onEDT {
-      l.foreach(i => t.styledDocument.setCharacterAttributes(i, length, opAttr, true))
+    def setKeywordsAttribute(l: List[Int], length: Int): Unit = Swing.onEDT {
+      for off <- l
+      do t.styledDocument.setCharacterAttributes(off, length, opAttr, true)
     }
 
-    // Update all operators style
-    setOperatorsAttribute(occurrencesIndex(i => text.indexOf("!", i), 0, 1), 1)
-    setOperatorsAttribute(occurrencesIndex(i => text.indexOf("or", i), 0, 2), 2)
-    setOperatorsAttribute(
-      occurrencesIndex(
-        i => {
-          val l: List[Int] = (text.indexOf("and", i) :: text.indexOf("not", i) ::
-            text.indexOf("xor", i) :: Nil)
-            .filter(i => i != -1)
-          l match
-            case Nil => -1
-            case _ =>
-              l.min((x, y) =>
-                if x > y then 1
-                else if x < y then -1
-                else 0
-              )
-        },
-        0,
-        3
-      ),
-      3
-    )
+    val keywords = getDSLKeywords
+    val lengths = keywords.map(_.length).distinct
+    // Update all keyword style
+    for len <- lengths
+    do
+      setKeywordsAttribute(
+        occurrencesIndex(
+          i => {
+            val l: List[Int] =
+              for
+                keyword <- keywords
+                if keyword.length == len
+                idx = text.indexOf(keyword, i)
+                if idx != -1
+              yield idx
+            l match
+              case Nil => -1
+              case _ => l.min
+          },
+          0,
+          len
+        ),
+        len
+      )
 
   /** Creates a simple attribute set to set a specific font style or input operators.
     * @return a [[SimpleAttributeSet]]
     */
-  private def createOperatorsAttribute(): SimpleAttributeSet =
+  private def createKeywordsAttribute(): SimpleAttributeSet =
     val attribute = new SimpleAttributeSet()
     StyleConstants.setFontSize(attribute, 16)
     StyleConstants.setBold(attribute, true)
     StyleConstants.setForeground(attribute, Color(50, 50, 150))
+    attribute
+
+  /** Creates a simple attribute set to set the default font style or input operators.
+    *
+    * @return a [[SimpleAttributeSet]]
+    */
+  private def createDefaultKeywordsAttribute(): SimpleAttributeSet =
+    val attribute = new SimpleAttributeSet()
+    StyleConstants.setFontFamily(attribute, fontFamily)
+    StyleConstants.setFontSize(attribute, 18)
     attribute

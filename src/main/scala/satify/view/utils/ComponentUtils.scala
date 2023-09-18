@@ -2,6 +2,7 @@ package satify.view.utils
 
 import satify.model.State
 import satify.view.Constants.*
+import satify.view.GUI
 import satify.view.GUI.{enableInteractions, problemParameterPanel}
 import satify.view.Reactions.nextSolutionReaction
 import satify.view.utils.TextPaneUtils.{textPaneText, updateStyle}

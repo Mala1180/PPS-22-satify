@@ -10,7 +10,7 @@ object Reflection:
   private val excludedWords = getDSLKeywords.mkString("|")
   private val regexPattern = s"""((?!$excludedWords\\b)\\b(?![0-9]+\\b)\\w+)"""
 
-  private def getDSLKeywords: List[String] =
+  def getDSLKeywords: List[String] =
     val operators = classOf[Operators.type].getMethods.map(_.getName).toList
     val encodings = classOf[Encodings.type].getMethods.map(_.getName).toList
     val numbers = classOf[Numbers.type].getMethods.map(_.getName).toList
