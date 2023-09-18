@@ -1,17 +1,18 @@
-package satify.view
+package satify.view.utils
 
 import satify.model.{Assignment, State}
 import satify.model.problems.Problem
 import satify.view.Constants.*
-import satify.view.GUI.{problemOutputDialog, problemParameterPanel, solutionOutputDialog}
+import satify.view.GUI.{enableInteractions, problemOutputDialog, problemParameterPanel, solutionOutputDialog}
 import satify.view.Reactions.{nextSolutionReaction, problemSolutionReaction}
+import satify.view.utils.TextPaneUtils.{textPaneText, updateStyle}
 
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.URL
 import java.util.concurrent.Executors
 import javax.swing.ImageIcon
 import scala.swing.*
-import scala.swing.event.{ButtonClicked, FocusGained, FocusLost, SelectionChanged}
+import scala.swing.event.*
 
 object ComponentUtils:
 
@@ -30,16 +31,20 @@ object ComponentUtils:
     val newHeight: Int = (newWidth / ratio).toInt
     ImageIcon(image.getImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH))
 
-  /** Creates a text area for the input
-    * @return the text area
+  /** Creates a text pane for the input
+    * @return the text pane
     */
-  def createInputTextArea(txt: String = ""): TextArea =
-    new TextArea:
-      name = expTextAreaName
-      text = txt
-      rows = 22
-      columns = 45
-      border = Swing.EmptyBorder(margin)
+  def createInputTextPane(txt: String = ""): TextPane =
+    val textPane = new TextPane():
+      name = expTextPaneName
+    textPane.text = txt
+    textPane.font = Font(fontFamily, Font.PLAIN, 18)
+    updateStyle(textPane)
+    textPane.reactions += { case ValueChanged(t: TextPane) =>
+      val s = t.text
+      if s != textPaneText then updateStyle(t)
+    }
+    textPane
 
   def createParameterInputText(): TextField =
     new TextField:
@@ -138,6 +143,7 @@ object ComponentUtils:
   def createNextSection(model: State): BoxPanel =
     val nextSolutionButton = createButton("Next", 100, 40)
     nextSolutionButton.reactions += { case ButtonClicked(_) =>
+      Swing.onEDT(enableInteractions())
       Executors.newSingleThreadExecutor().execute(() => nextSolutionReaction(model))
     }
     createCenteredBox(nextSolutionButton)

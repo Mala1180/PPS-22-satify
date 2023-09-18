@@ -5,7 +5,7 @@ import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
 import satify.model.{Assignment, Variable}
-import satify.view.ComponentUtils.createOutputTextArea
+import satify.view.utils.ComponentUtils.createOutputTextArea
 import satify.view.Constants.problemOutputDialogName
 
 import scala.annotation.tailrec

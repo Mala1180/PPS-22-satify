@@ -7,7 +7,7 @@ import satify.model.errors.Error.*
 import satify.model.problems.NQueens
 import satify.model.{Assignment, Solution, State}
 import satify.update.parser.DimacsCNF
-import satify.view.ComponentUtils.*
+import satify.view.utils.ComponentUtils.*
 import satify.view.Constants.{cnfOutputDialogName, problemOutputDialogName, solOutputDialogName}
 import satify.view.GUI.{cnfOutputDialog, createExportFileChooser, exportFileChooser, problemParameterPanel}
 
@@ -75,7 +75,7 @@ object View:
     * @param exp the exp to show in new component
     * @return a set of components to add to the GUI
     */
-  private def updateExpression(exp: String): Set[Component] = Set(createInputTextArea(exp))
+  private def updateExpression(exp: String): Set[Component] = Set(createInputTextPane(exp))
 
   /** Update the error and show it in a dialog
     *
@@ -92,4 +92,4 @@ object View:
       case EmptySolution => errorDialog = createErrorDialog("Empty solution, no next assignment to show")
       case Unknown => errorDialog = createErrorDialog("Unknown error occurred")
     errorDialog.open()
-    Set(createInputTextArea(input))
+    Set(createInputTextPane(input))

@@ -164,34 +164,20 @@ object Update:
     */
   private def nextSolutionUpdate(currentState: State): State =
     val nextAssignment: Assignment = Solver(DPLL).next()
+    val sol = Solution(
+      currentState.solution.get.result,
+      currentState.solution.get.status,
+      nextAssignment match
+        case Assignment(Nil) => currentState.solution.get.assignment
+        case _ => currentState.solution.get.assignment :+ nextAssignment
+    )
     if currentState.problem.isDefined then
       safeUpdate(
-        () =>
-          State(
-            Solution(
-              currentState.solution.get.result,
-              currentState.solution.get.status,
-              currentState.solution.get.assignment :+ nextAssignment
-            ),
-            currentState.problem.get,
-            0
-          ),
+        () => State(sol, currentState.problem.get, 0),
         EmptySolution
       )
     else
       safeUpdate(
-        () =>
-          State(
-            currentState.input.get,
-            currentState.expression.get,
-            Solution(
-              currentState.solution.get.result,
-              currentState.solution.get.status,
-              nextAssignment match
-                case Assignment(Nil) => currentState.solution.get.assignment
-                case _ => currentState.solution.get.assignment :+ nextAssignment
-            ),
-            0
-          ),
+        () => State(currentState.input.get, currentState.expression.get, sol, 0),
         EmptySolution
       )

@@ -1,10 +1,11 @@
 package satify.view
 
-import satify.view.ComponentUtils.*
+import satify.view.utils.ComponentUtils.*
 import satify.view.Constants.*
 
-import java.awt.Color
+import java.awt.{Color, Dimension}
 import javax.swing.filechooser.FileNameExtensionFilter
+import javax.swing.text.{DefaultStyledDocument, SimpleAttributeSet, StyleConstants}
 import javax.swing.{ImageIcon, JFileChooser}
 import scala.swing.*
 import scala.swing.TabbedPane.Page
@@ -16,7 +17,8 @@ object GUI:
     border = Swing.EmptyBorder(margin)
 
   val problemParameterPanel: FlowPanel = new FlowPanel()
-  val inputScrollPane = new ScrollPane(createInputTextArea())
+  val textPane: TextPane = createInputTextPane("")
+  val inputScrollPane = new ScrollPane(textPane)
   val problemComboBox: ComboBox[String] = createProblemComboBox()
 
   val solveAllButton: Button = createButton("Solve all", 200, 40, Color(170, 30, 60))
@@ -40,10 +42,10 @@ object GUI:
   val importMenuItem: MenuItem = new MenuItem("Import"):
     maximumSize = new Dimension(1000, 200)
 
-  def inputTextArea: TextArea = inputScrollPane.contents
-    .filter(c => c.isInstanceOf[TextArea] && c.name == expTextAreaName)
+  def inputTextPane: TextPane = inputScrollPane.contents
+    .filter(c => c.isInstanceOf[TextPane] && c.name == expTextPaneName)
     .head
-    .asInstanceOf[TextArea]
+    .asInstanceOf[TextPane]
 
   def createBaseGUI(): BoxPanel =
     new BoxPanel(Orientation.Vertical):
@@ -57,18 +59,29 @@ object GUI:
         pages += new Page("Problems", createProblemsComponent())
 
   private def createInputComponent(): Component =
-    new FlowPanel():
-      contents += new BoxPanel(Orientation.Vertical):
-        contents += new FlowPanel():
-          contents += new Label("Input:"):
-            font = headingFont
-        contents += inputScrollPane
-      contents += new GridPanel(3, 1):
-        contents += solveAllButton
-        contents += solveButton
-        contents += cnfButton
-      contents += new FlowPanel():
-        contents += loadingLabel
+    val borderPanel: BorderPanel = new BorderPanel():
+      val label = new Label("Input:")
+      label.border = Swing.EmptyBorder(0, 0, 2, 0)
+      label.horizontalAlignment = Alignment.Left
+      layout(label) = BorderPanel.Position.North
+      layout(new BorderPanel():
+        val inputGrid: GridPanel = new GridPanel(1, 1):
+          contents += inputScrollPane
+        inputGrid.border = Swing.EmptyBorder(0, 0, 0, 25)
+        layout(inputGrid) = BorderPanel.Position.Center
+        layout(
+          new GridPanel(8, 1):
+            contents += solveAllButton
+            contents += solveButton
+            contents += cnfButton
+            contents += loadingLabel
+        ) = BorderPanel.Position.East
+      ) = BorderPanel.Position.Center
+
+    val mainBorderPanel = new BorderPanel():
+      layout(borderPanel) = BorderPanel.Position.Center
+      border = Swing.EmptyBorder(75, 100, 75, 100)
+    mainBorderPanel
 
   private def createProblemsComponent(): Component =
     new FlowPanel():
@@ -110,7 +123,7 @@ object GUI:
   /** Disable all GUI interactions when the solving or converting process starts. */
   def disableInteractions(): Unit =
     loadingLabel.visible = true
-    inputTextArea.enabled = false
+    inputTextPane.enabled = false
     solveAllButton.enabled = false
     solveButton.enabled = false
     solveProblemButton.enabled = false
@@ -121,7 +134,7 @@ object GUI:
   /** Disable all GUI interactions when the solving or converting process finish or crash. */
   def enableInteractions(): Unit =
     loadingLabel.visible = false
-    inputTextArea.enabled = true
+    inputTextPane.enabled = true
     solveAllButton.enabled = true
     solveButton.enabled = true
     solveProblemButton.enabled = true
