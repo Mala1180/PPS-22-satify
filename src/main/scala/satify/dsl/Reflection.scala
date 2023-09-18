@@ -38,8 +38,7 @@ object Reflection:
     */
   def reflect(input: String): Expression =
     val code = processInput(input)
-    println("processedInput:" + code)
-    if code.matches("\"" + symbolsRegexPattern.toString() + "\"") then Symbol(code)
+    if code.matches("\"" + symbolsRegexPattern.toString() + "\"") then Symbol(code.substring(1, code.length - 1))
     else if code.isBlank || code.isEmpty then throw new IllegalArgumentException("Empty input")
     else
       val imports =
