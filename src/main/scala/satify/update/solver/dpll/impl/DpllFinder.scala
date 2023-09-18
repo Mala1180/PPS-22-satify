@@ -26,7 +26,6 @@ object DpllFinder:
     */
   case class DpllRun(dt: DecisionTree, s: Solution)
 
-  val rnd: Random = Random(42)
   private var prevRun: Option[DpllRun] = None
 
   /** Runs the DPLL algorithm given a CNF in input.

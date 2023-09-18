@@ -15,7 +15,6 @@ object DpllDecision:
 
   /** Make decisions based on the previous one selecting the most appropriate variable and assignment.
     * If no optimization can be applied, it makes a random decision.
-    *
     * @param d previous decision.
     * @return List of new Decisions
     */
@@ -31,7 +30,6 @@ object DpllDecision:
 
   /** Make random decisions based on the previous one given as parameter,
     * by choosing a random variable assigning a random value to it.
-    *
     * @param d previous decision
     * @return List of new decisions
     */
@@ -49,7 +47,6 @@ object DpllDecision:
       else Nil
 
   /** Make unit propagation decision based on the previous decision and the constraint provided.
-    *
     * @param d previous decision.
     * @param c constraint.
     * @return List of new decisions
@@ -64,7 +61,6 @@ object DpllDecision:
 
   /** Make pure literals elimination decisions based on the previous decision and the
     * constraint provided.
-    *
     * @param d previous decision.
     * @param c constraint.
     * @return List of new decisions

@@ -5,11 +5,11 @@ import satify.model.cnf.CNF
 import satify.model.errors.Error
 import satify.model.errors.Error.*
 import satify.model.problems.NQueens
-import satify.model.{Assignment, Solution, State}
+import satify.model.{Assignment, Result, Solution, State}
 import satify.update.parser.DimacsCNF
-import satify.view.utils.ComponentUtils.*
 import satify.view.Constants.{cnfOutputDialogName, problemOutputDialogName, solOutputDialogName}
 import satify.view.GUI.{cnfOutputDialog, createExportFileChooser, exportFileChooser, problemParameterPanel}
+import satify.view.utils.ComponentUtils.*
 
 import java.awt.Color
 import scala.swing.*
@@ -32,7 +32,7 @@ object View:
           name = solOutputDialogName
           contents += new BoxPanel(Orientation.Vertical):
             contents += new ScrollPane(createOutputTextArea(sol.print, 30, 35))
-            if model.problem.isDefined then
+            if model.problem.isDefined && model.solution.get.result == Result.SAT then
               contents += createShowSection(model.problem.get, model.solution.get.assignment.head)
             sol.status match
               case PARTIAL => contents += createNextSection(model)
