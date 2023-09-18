@@ -32,6 +32,10 @@ class ReflectionTest extends AnyFlatSpec:
     processInput("a\nand b") shouldBe """"a" and "b""""
   }
 
+  "processInput" should "remove comments" in {
+    processInput("a and b\n// use of AND operator") shouldBe """"a" and "b" """
+  }
+
 //  """reflection""" should "return a valid expression" in {
 //    reflect("a or not(B) and c") shouldBe And(Or(Symbol("a"), Not(Symbol("B"))), Symbol("c"))
 //    reflect("(a -> b) and !c") shouldBe And(Or(Not(Symbol("a")), Symbol("b")), Not(Symbol("c")))
