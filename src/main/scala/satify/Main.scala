@@ -6,6 +6,7 @@ import satify.dsl.Reflection.startRepl
 import satify.view.Constants.windowSize
 import satify.view.GUI.*
 import satify.view.Reactions.*
+import satify.view.utils.Title.App
 import java.util.concurrent.Executors
 import scala.swing.event.ButtonClicked
 import scala.swing.{Dimension, FileChooser, MainFrame, Swing}
@@ -14,7 +15,7 @@ import scala.swing.{Dimension, FileChooser, MainFrame, Swing}
 object Main extends App with MVU:
   startRepl()
   new MainFrame:
-    title = "Satify SAT Solver"
+    title = App.title
 
     solveAllButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(disableInteractions())

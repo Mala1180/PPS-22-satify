@@ -61,7 +61,7 @@ object GUI:
 
   private def createInputComponent(): Component =
     val borderPanel: BorderPanel = new BorderPanel():
-      val label = new Label("Input:")
+      val label = new Label(InputTab.title)
       label.border = Swing.EmptyBorder(0, 0, 2, 0)
       label.horizontalAlignment = Alignment.Left
       layout(label) = BorderPanel.Position.North

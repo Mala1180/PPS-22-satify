@@ -1,7 +1,7 @@
 package satify.view.utils
 
-
 enum Title(val title: String):
+  case App extends Title("Satify SAT Solver")
   case Solve extends Title("Solve")
   case SolveAll extends Title("Solve All")
   case Convert extends Title("Convert to CNF")
@@ -20,15 +20,3 @@ enum Title(val title: String):
   case ConversionDialog extends Title("Converted formula")
   case ProblemDialog extends Title("Problem visualization")
   case LoadingLabel extends Title("Loading...")
-/*
-
-enum TabTitles(val title: String):
-  case Solve extends Titles("Solve")
-  case SolveAll extends Titles("Solve All")
-  case Convert extends Titles("Convert to CNF")
-  case Next extends Titles("Next")
-  case Show extends Titles("Show")
-  case Import extends Titles("Import CNF")
-  case Export extends Titles("Export CNF")
-  case Exported extends Titles("Exported CNF")
-  case Help extends Titles("Help")*/

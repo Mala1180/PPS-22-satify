@@ -47,10 +47,9 @@ object ComponentUtils:
     }
     textPane
 
-  /**
-   * Creates a text field for the input parameter
-   * @return the text field
-   */
+  /** Creates a text field for the input parameter
+    * @return the text field
+    */
   def createParameterInputText(): TextField =
     new TextField:
       name = parameterInputName
@@ -63,23 +62,25 @@ object ComponentUtils:
     * @return the combo box
     */
   def createProblemComboBox(): ComboBox[String] =
-    new ComboBox(List("No selection", "N-Queens", "Graph Coloring", "Nurse Scheduling")):
+    import ProblemTitle.*
+    import Placeholders.*
+    new ComboBox(List("No selection", NQueens.title, GraphColoring.title, NurseScheduling.title)):
       listenTo(selection)
       maximumSize = new Dimension(200, 30)
       reactions += { case SelectionChanged(_) =>
         val parameters: Set[Component] = this.item match
-          case "N-Queens" => Set(createLabelledTextArea("N. queens", nqQueens, 1, 10))
-          case "Graph Coloring" =>
+          case NQueens.title => Set(createLabelledTextArea(QueensNumbers.description, nQueens, 1, 10))
+          case GraphColoring.title =>
             Set(
-              createLabelledTextArea("Nodes: n1, n2, n3, ...", gcNodes, 1, 15),
-              createLabelledTextArea("Edges: n1-n2, n2-n3, ...", gcEdges, 1, 10),
-              createLabelledTextArea("N. colors", gcColors, 1, 10)
+              createLabelledTextArea(GraphColoringNodes.description, gcNodes, 1, 15),
+              createLabelledTextArea(GraphColoringEdges.description, gcEdges, 1, 10),
+              createLabelledTextArea(GraphColoringColors.description, gcColors, 1, 10)
             )
-          case "Nurse Scheduling" =>
+          case NurseScheduling.title =>
             Set(
-              createLabelledTextArea("N. nurses", nsNurses, 1, 10),
-              createLabelledTextArea("Days", nsDays, 1, 10),
-              createLabelledTextArea("Shifts", nsShifts, 1, 10)
+              createLabelledTextArea(NurseSchedulingNurses.description, nsNurses, 1, 10),
+              createLabelledTextArea(NurseSchedulingDays.description, nsDays, 1, 10),
+              createLabelledTextArea(NurseSchedulingShifts.description, nsShifts, 1, 10)
             )
           case _ => Set()
         problemParameterPanel.contents.clear()

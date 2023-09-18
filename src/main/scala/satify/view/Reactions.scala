@@ -99,7 +99,7 @@ object Reactions:
       input.split(",").map(_.trim).toList.map(_.split("-").map(_.trim).toList).map(l => (l.head, l.last))
     try
       p = problemComboBox.item match
-        case "N-Queens" => NQueens(checkInt(getInput(nqQueens).text))
+        case "N-Queens" => NQueens(checkInt(getInput(nQueens).text))
         case "Graph Coloring" =>
           GraphColoring(
             checkEdges(getInput(gcEdges).text),
