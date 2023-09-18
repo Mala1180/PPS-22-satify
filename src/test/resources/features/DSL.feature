@@ -14,3 +14,8 @@ Feature: Inserting expression through DSL
     Given the input "a b c"
     When it is reflected to scala compiler
     Then I should obtain an IllegalArgumentException
+
+  Scenario: I cannot use DSL keywords as variable names.
+    Given the input "and or not"
+    When it is reflected to scala compiler
+    Then I should obtain an IllegalArgumentException
