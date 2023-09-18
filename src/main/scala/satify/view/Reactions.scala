@@ -46,7 +46,6 @@ object Reactions:
     updateComponents(view(update(model, SolveProblem(p))))
 
   /** Reaction to the problem selection, checking also parameter and selection
-    *
     * @param model the current model to update
     */
   def problemCnfReaction(model: Model): Unit =
@@ -83,7 +82,6 @@ object Reactions:
     }
 
   /** Read the problem selection from the GUI, checking also the parameters.
-    *
     * @return the problem selected
     */
   private def readProblemSelection(): Problem =
