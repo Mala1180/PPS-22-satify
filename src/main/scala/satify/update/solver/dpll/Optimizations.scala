@@ -44,9 +44,7 @@ object Optimizations:
     */
   @tailrec
   def pureLiteralIdentification(dec: Decision): Option[Constraint] =
-
     def find(name: String, cnf: CNF): PureLitSearch =
-
       val f: (String, CNF, CNF) => PureLitSearch = (n, left, right) =>
         find(n, left) match
           case Concordant(cLeft) =>
