@@ -163,7 +163,9 @@ object Update:
     * @return a state with the input, expression, and solution if no exception is thrown, otherwise a state with the error.
     */
   private def nextSolutionUpdate(currentState: State): State =
+    start()
     val nextAssignment: Assignment = Solver(DPLL).next()
+    stop()
     val sol = Solution(
       currentState.solution.get.result,
       currentState.solution.get.status,
@@ -173,11 +175,11 @@ object Update:
     )
     if currentState.problem.isDefined then
       safeUpdate(
-        () => State(sol, currentState.problem.get, 0),
+        () => State(sol, currentState.problem.get, elapsed()),
         EmptySolution
       )
     else
       safeUpdate(
-        () => State(currentState.input.get, currentState.expression.get, sol, 0),
+        () => State(currentState.input.get, currentState.expression.get, sol, elapsed()),
         EmptySolution
       )
