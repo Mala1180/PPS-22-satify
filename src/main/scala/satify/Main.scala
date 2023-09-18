@@ -6,7 +6,6 @@ import satify.dsl.Reflection.startRepl
 import satify.view.Constants.windowSize
 import satify.view.GUI.*
 import satify.view.Reactions.*
-
 import java.util.concurrent.Executors
 import scala.swing.event.ButtonClicked
 import scala.swing.{Dimension, FileChooser, MainFrame, Swing}
