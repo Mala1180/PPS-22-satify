@@ -4,7 +4,7 @@ import io.cucumber.scala.{EN, ScalaDsl}
 import org.scalatest.matchers.should.Matchers.{a, shouldBe}
 import satify.dsl.Reflection.reflect
 import satify.features.DSLSteps.{Given, Then, When}
-import satify.model.{Assignment, Solution}
+import satify.model.{Assignment, Solution, Variable}
 import satify.model.expression.Expression
 import satify.model.Result.*
 import satify.update.solver.Solver
@@ -15,12 +15,12 @@ object SolverSteps extends ScalaDsl with EN:
   import DSLSteps.*
   var sol: Solution = _
 
-  val getAssignmentsAsString: List[Assignment] => String = assignments =>
+  val assignmentsAsString: List[Assignment] => String = assignments =>
     val assignmentList: List[String] = assignments
-      .map(a =>
-        a.variables.foldLeft("(")((p, c) =>
-          p + s"${c.name}: ${c.value}${if a.variables.last == c then "" else ", "}"
-        ) + ")"
+      .map(assignment =>
+        val v = assignment.variables
+        val variableAsString: Variable => String = variable => s"${variable.name}: ${variable.value}"
+        v.tail.foldLeft(s"(${variableAsString(v.head)}")((p, c) => p + s", ${variableAsString(c)}") + ")"
       )
     assignmentList.foldLeft("")((p, c) => s"$p$c${if assignmentList.last == c then "" else s", "}")
 
@@ -37,9 +37,9 @@ object SolverSteps extends ScalaDsl with EN:
   And("ran using a solver that returns one assignment at a time")(() => sol = Solver(DPLL).solve(expression.get))
 
   And("I should obtain the assignments {string}") { (expectedAssignments: String) =>
-    getAssignmentsAsString(sol.assignments) shouldBe expectedAssignments
+    assignmentsAsString(sol.assignments) shouldBe expectedAssignments
   }
 
   And("I should obtain another assignment {string}") { (expectedAssignments: String) =>
-    getAssignmentsAsString(Solver(DPLL).next() :: Nil) shouldBe expectedAssignments
+    assignmentsAsString(Solver(DPLL).next() :: Nil) shouldBe expectedAssignments
   }
