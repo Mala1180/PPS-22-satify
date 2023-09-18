@@ -28,6 +28,10 @@ object SolverSteps extends ScalaDsl with EN:
     sol.result shouldBe SAT
   }
 
+  Then("the result should be UNSAT") { () =>
+    sol.result shouldBe UNSAT
+  }
+
   And("ran using a solver that returns all the assignments")(() => sol = Solver(DPLL).solveAll(expression.get))
 
   And("ran using a solver that returns one assignment at a time")(() => sol = Solver(DPLL).solve(expression.get))
