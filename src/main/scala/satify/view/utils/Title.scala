@@ -17,7 +17,7 @@ enum Title(val title: String):
   case ImportDialog extends Title("Import CNF from DIMACS")
   case ExportDialog extends Title("Export CNF from DIMACS")
   case SolutionDialog extends Title("Solution")
-  case ConversionDialog extends Title("Coverted formula")
+  case ConversionDialog extends Title("Converted formula")
   case ProblemDialog extends Title("Problem visualization")
   case LoadingLabel extends Title("Loading...")
 /*
