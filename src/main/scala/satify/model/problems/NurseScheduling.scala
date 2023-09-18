@@ -1,4 +1,5 @@
 package satify.model.problems
+import satify.model.Assignment
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
@@ -54,4 +55,4 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     minShiftsPerNurseConstraint,
     maxShiftsPerNurseConstraint
   )
-  override def getVisualization: Component = new FlowPanel()
+  def toString(assignment: Assignment): String = ???

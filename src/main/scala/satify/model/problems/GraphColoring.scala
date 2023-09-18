@@ -1,4 +1,5 @@
 package satify.model.problems
+import satify.model.Assignment
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
@@ -28,7 +29,7 @@ case class GraphColoring(edges: List[(String, String)], nodes: List[String], col
     constraint.reduceLeft(And(_, _))
 
   override val constraints: Set[Expression] = Set(nodeHasExactlyOneColor, linkedNodesHasDifferentColor)
-  override def getVisualization: Component = new FlowPanel()
+  def toString(assignment: Assignment): String = ???
   override def toString: String =
     // print variables as a matrix
     val sb = new StringBuilder

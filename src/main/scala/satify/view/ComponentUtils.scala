@@ -1,8 +1,9 @@
 package satify.view
 
-import satify.model.State
+import satify.model.{Assignment, State}
+import satify.model.problems.Problem
 import satify.view.Constants.*
-import satify.view.GUI.problemParameterPanel
+import satify.view.GUI.{problemOutputDialog, problemParameterPanel, solutionOutputDialog}
 import satify.view.Reactions.nextSolutionReaction
 
 import java.awt.{Color, Font, Image, Toolkit}
@@ -115,14 +116,40 @@ object ComponentUtils:
     preferredSize = new Dimension(width, height)
     foreground = color
 
+  /** Creates a centered section with a Show button. Used to show a graphical representation for the problem.
+    * @param problem the problem
+    * @param assignment the assignment to show graphically
+    * @return the BoxPanel containing the section
+    */
+  def createShowSection(problem: Problem, assignment: Assignment): BoxPanel =
+    val showProblemButton = createButton("Show", 100, 40)
+    showProblemButton.reactions += { case ButtonClicked(_) =>
+      problemOutputDialog.contents =
+        createOutputTextArea(problem.toString(assignment), 20, 50, Font(fontFamily, Font.ITALIC, 22))
+      problemOutputDialog.setLocationRelativeTo(solutionOutputDialog)
+      problemOutputDialog.open()
+    }
+    createCenteredBox(showProblemButton)
+
+  /** Creates a centered section with a Next button. Used to show the next solution.
+    * @param model the model
+    * @return the BoxPanel containing the section
+    */
   def createNextSection(model: State): BoxPanel =
     val nextSolutionButton = createButton("Next", 100, 40)
     nextSolutionButton.reactions += { case ButtonClicked(_) =>
       Executors.newSingleThreadExecutor().execute(() => nextSolutionReaction(model))
     }
+    createCenteredBox(nextSolutionButton)
+
+  /** Creates a centered section with a component inside.
+    * @param component the component to center
+    * @return the BoxPanel containing the centered component
+    */
+  private def createCenteredBox(component: Component): BoxPanel =
     new BoxPanel(Orientation.Horizontal):
       contents += Swing.HGlue
-      contents += nextSolutionButton
+      contents += component
       contents += Swing.HGlue
 
   /** Creates a dialog to show the output
@@ -141,14 +168,14 @@ object ComponentUtils:
     * @param c columns
     * @return the text area
     */
-  def createOutputTextArea(txt: String, r: Int, c: Int): TextArea =
+  def createOutputTextArea(txt: String, r: Int, c: Int, textFont: Font = Font(fontFamily, Font.ITALIC, 18)): TextArea =
     new TextArea:
       text = txt
       rows = r
       columns = c
       border = Swing.EmptyBorder(margin)
       editable = false
-      font = Font(fontFamily, Font.ITALIC, 18)
+      font = textFont
 
   /** Creates a dialog to show the help
     * @return the dialog
