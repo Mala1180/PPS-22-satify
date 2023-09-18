@@ -4,7 +4,7 @@ import satify.model.{Assignment, State}
 import satify.model.problems.Problem
 import satify.view.Constants.*
 import satify.view.GUI.{problemOutputDialog, problemParameterPanel, solutionOutputDialog}
-import satify.view.Reactions.nextSolutionReaction
+import satify.view.Reactions.{nextSolutionReaction, problemSolutionReaction}
 
 import java.awt.{Color, Font, Image, Toolkit}
 import java.net.URL
@@ -126,9 +126,8 @@ object ComponentUtils:
     showProblemButton.reactions += { case ButtonClicked(_) =>
       problemOutputDialog.contents =
         createOutputTextArea(problem.toString(assignment), 20, 50, Font(fontFamily, Font.ITALIC, 22))
-      problemOutputDialog.setLocationRelativeTo(solutionOutputDialog)
-      problemOutputDialog.open()
-    }
+      problemOutputDialog.centerOnScreen()
+      problemOutputDialog.open()}
     createCenteredBox(showProblemButton)
 
   /** Creates a centered section with a Next button. Used to show the next solution.
