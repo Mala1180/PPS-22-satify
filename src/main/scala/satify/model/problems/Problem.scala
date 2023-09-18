@@ -1,5 +1,6 @@
 package satify.model.problems
 
+import satify.model.Assignment
 import satify.model.expression.Expression
 import satify.model.expression.Expression.And
 
@@ -14,8 +15,7 @@ trait Problem:
   /** The expression encoded of the problem that must be satisfied. */
   def exp: Expression = constraints.reduceLeft(And(_, _))
 
-  override def toString: String
-  def getVisualization: Component
+  def toString(assignment: Assignment): String
 
 //enum ProblemChoice:
 //  case GraphColoring

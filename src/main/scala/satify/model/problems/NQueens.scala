@@ -5,9 +5,11 @@ import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
 import satify.model.{Assignment, Variable}
+import satify.view.utils.ComponentUtils.createOutputTextArea
+import satify.view.Constants.problemOutputDialogName
 
 import scala.annotation.tailrec
-import scala.swing.{Component, FlowPanel}
+import scala.swing.{BoxPanel, Component, FlowPanel, Orientation}
 
 case class NQueens(n: Int) extends Problem:
 
@@ -59,21 +61,29 @@ case class NQueens(n: Int) extends Problem:
     clauses.reduceLeft(And(_, _))
 
   override val constraints: Set[Expression] = Set(atLeastOneQueen, atMostOneQueen, diagConstr)
-  override def toString: String = s"NQueens($n)"
-  override def getVisualization: Component = new FlowPanel()
+  def toString(assignment: Assignment): String =
+    @tailrec
+    def getStringView(assignment: Assignment, acc: String): String = assignment match
+      case Assignment(variables) =>
+        val firstN = variables.take(n)
+        if firstN.nonEmpty then
+          getStringView(
+            Assignment(variables.drop(n)),
+            acc + "\n" + firstN.foldLeft("")((p, c) => p + (if c.value then s" ♕ " else " · "))
+          )
+        else acc
+    getStringView(assignment, "")
 
 object NQueens:
 
   extension (problem: NQueens)
-    @tailrec
-    def printNqueens(assignment: Assignment): Unit = assignment match
+    def printNQueens(assignment: Assignment): Unit = assignment match
       case Assignment(variables) =>
         val firstN = variables.take(problem.n)
         if firstN.nonEmpty then
           println(
             firstN.foldLeft("")((p, c) => p + (if c.value then s" ♕ " else " · "))
           )
-          problem.printNqueens(Assignment(variables.drop(problem.n)))
 
   import satify.model.dpll.OrderedList.given
 

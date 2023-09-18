@@ -29,6 +29,7 @@ object GUI:
 
   val solutionOutputDialog: Dialog = createOutputDialog("Solution")
   val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
+  val problemOutputDialog: Dialog = createOutputDialog("Problem visualization")
   val helpDialog: Dialog = createHelpDialog()
   val loadingLabel: Label = createLabel("Loading...", 16)
   loadingLabel.visible = false
