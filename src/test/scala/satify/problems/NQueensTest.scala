@@ -24,7 +24,7 @@ class NQueensTest extends AnyFlatSpec with Matchers:
     val sol = Solver(DPLL).solve(problem.exp)
     sol should matchPattern { case Solution(SAT, _, _) => }
     println("NQueens 4x4")
-    problem.printNqueens(sol.assignment.head)
+    problem.printNqueens(sol.assignments.head)
   }
 
   "NQueens 10x10" should "be SAT" in {
@@ -33,7 +33,7 @@ class NQueensTest extends AnyFlatSpec with Matchers:
     val sol = Solver(DPLL).solve(oCnf.get)
     sol should matchPattern { case Solution(SAT, _, _) => }
     println("NQueens 10x10")
-    printNQueensFromDimacs(10, sol.assignment.head)
+    printNQueensFromDimacs(10, sol.assignments.head)
   }
 
 /*

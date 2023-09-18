@@ -168,8 +168,8 @@ object Update:
       currentState.solution.get.result,
       currentState.solution.get.status,
       nextAssignment match
-        case Assignment(Nil) => currentState.solution.get.assignment
-        case _ => currentState.solution.get.assignment :+ nextAssignment
+        case Assignment(Nil) => currentState.solution.get.assignments
+        case _ => currentState.solution.get.assignments :+ nextAssignment
     )
     if currentState.problem.isDefined then
       safeUpdate(

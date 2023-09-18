@@ -13,7 +13,7 @@ import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
-import satify.update.solver.dpll.impl.DpllFinder.{dpll, resume}
+import satify.update.solver.dpll.impl.DpllFinder.{find, resume}
 
 import scala.util.Random
 
@@ -33,8 +33,8 @@ object DpllFinder:
     * @param cnf with the constraints to be satisfied.
     * @return a solution with a unique assignment, if it exists
     */
-  def dpll(cnf: CNF): Solution =
-    buildTree(Decision(extractParAssignmentFromCnf(cnf), cnf)) match
+  def find(cnf: CNF): Solution =
+    dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) match
       case (dt, SAT) =>
         val solution: Solution = Solution(SAT, PARTIAL, List(extractAssignment(dt, None)))
         prevRun = Some(DpllRun(dt, solution))
@@ -44,7 +44,7 @@ object DpllFinder:
   /** Runs the DPLL algorithm resuming a previous run, if it exists.
     * @return another assignment, different from the previous', if any.
     */
-  def dpll(): Assignment =
+  def find(): Assignment =
     prevRun match
       case Some(DpllRun(dt, s)) =>
         extractAssignment(dt, prevRun) match
@@ -52,11 +52,11 @@ object DpllFinder:
             resume(dt) match
               case (dt, SAT) =>
                 val assignment: Assignment = extractAssignment(dt, prevRun)
-                prevRun = Some(DpllRun(dt, Solution(SAT, PARTIAL, assignment +: s.assignment)))
+                prevRun = Some(DpllRun(dt, Solution(SAT, PARTIAL, assignment +: s.assignments)))
                 assignment
               case (_, UNSAT) => Assignment(Nil)
           case assignment @ _ =>
-            prevRun = Some(DpllRun(dt, Solution(SAT, PARTIAL, assignment +: s.assignment)))
+            prevRun = Some(DpllRun(dt, Solution(SAT, PARTIAL, assignment +: s.assignments)))
             assignment
       case None => throw new NoSuchElementException("No previous instance of DPLL")
 
@@ -68,7 +68,7 @@ object DpllFinder:
     case Leaf(d @ Decision(_, cnf)) =>
       val checkUnsat = isUnsat(cnf)
       val checkSat = isSat(cnf)
-      if !checkSat && !checkUnsat then buildTree(d)
+      if !checkSat && !checkUnsat then dpll(d)
       else (dt, if checkSat then SAT else UNSAT)
 
     case Branch(d, left, right) =>
@@ -84,14 +84,14 @@ object DpllFinder:
     * @param d decision to be made
     * @return updated decision tree along with the result
     */
-  private def buildTree(d: Decision): (DecisionTree, Result) =
+  private def dpll(d: Decision): (DecisionTree, Result) =
     if !isUnsat(d.cnf) && !isSat(d.cnf) then
       decide(d) match
         case ::(head, next) =>
-          buildTree(head) match
+          dpll(head) match
             case (dtl, SAT) => (Branch(d, dtl, Leaf(next.head)), SAT)
             case (dtl, UNSAT) =>
-              buildTree(next.head) match
+              dpll(next.head) match
                 case (dtr, res) => (Branch(d, dtl, dtr), res)
         case Nil => (Leaf(d), if isSat(d.cnf) then SAT else UNSAT)
     else (Leaf(d), if isSat(d.cnf) then SAT else UNSAT)
@@ -130,7 +130,7 @@ object DpllFinder:
     def nextAssignment(assignments: List[Assignment], prevRun: Option[DpllRun]): Assignment =
       prevRun match
         case Some(pr) =>
-          val newAssignments = assignments.filter(a => !(pr.s.assignment contains a))
+          val newAssignments = assignments.filter(a => !(pr.s.assignments contains a))
           if newAssignments.nonEmpty then newAssignments.head else Assignment(Nil)
         case None if assignments.nonEmpty => assignments.head
         case _ => Assignment(Nil)

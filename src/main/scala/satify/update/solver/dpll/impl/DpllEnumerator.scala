@@ -15,7 +15,7 @@ import scala.annotation.tailrec
 
 object DpllEnumerator:
 
-  def dpll(cnf: CNF): Solution =
+  def enumerate(cnf: CNF): Solution =
     val assignments: List[Assignment] =
       (for partialAssignment <- extractParAssignments(dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)))
       yield partialAssignment.toAssignments).flatten.distinct

@@ -16,6 +16,6 @@ object SatEncodingsSteps extends ScalaDsl with EN:
   }
 
   Then("I should obtain {int} possible assignments") { (n: Int) =>
-    println(sol.assignment)
-    sol.assignment.size shouldBe n
+    println(sol.assignments)
+    sol.assignments.size shouldBe n
   }

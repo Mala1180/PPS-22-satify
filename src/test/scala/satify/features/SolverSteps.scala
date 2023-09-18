@@ -37,7 +37,7 @@ object SolverSteps extends ScalaDsl with EN:
   And("ran using a solver that returns one assignment at a time")(() => sol = Solver(DPLL).solve(expression.get))
 
   And("I should obtain the assignments {string}") { (expectedAssignments: String) =>
-    getAssignmentsAsString(sol.assignment) shouldBe expectedAssignments
+    getAssignmentsAsString(sol.assignments) shouldBe expectedAssignments
   }
 
   And("I should obtain another assignment {string}") { (expectedAssignments: String) =>
