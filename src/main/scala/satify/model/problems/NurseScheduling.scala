@@ -61,21 +61,21 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
   )
   def toString(assignment: Assignment): String = ???
 
-@main def test(): Unit =
-  val exp1 = NurseScheduling(6, 2, 3).atMostOneShiftPerDay
-  val sol1 = Solver(DPLL).solve(exp1)
-  println(sol1)
-  val exp2 = NurseScheduling(6, 2, 3).oneNursePerShift
-  val sol2 = Solver(DPLL).solve(exp2)
-  println(sol2)
-  val exp3 = NurseScheduling(6, 2, 3).minShiftsPerNurseConstraint
-  val sol3 = Solver(DPLL).solve(exp3)
-  println(sol3)
-  val exp4 = NurseScheduling(6, 2, 3).maxShiftsPerNurseConstraint
-  val sol4 = Solver(DPLL).solve(exp4)
-  println(sol4)
-
-  val expFinal = NurseScheduling(6, 2, 3).exp
-  val solFinal = Solver(DPLL).solve(expFinal)
-  println(solFinal)
-  println(expFinal.printAsDSL(false))
+//@main def test(): Unit =
+//  val exp1 = NurseScheduling(6, 2, 3).atMostOneShiftPerDay
+//  val sol1 = Solver(DPLL).solve(exp1)
+//  println(sol1)
+//  val exp2 = NurseScheduling(6, 2, 3).oneNursePerShift
+//  val sol2 = Solver(DPLL).solve(exp2)
+//  println(sol2)
+//  val exp3 = NurseScheduling(6, 2, 3).minShiftsPerNurseConstraint
+//  val sol3 = Solver(DPLL).solve(exp3)
+//  println(sol3)
+//  val exp4 = NurseScheduling(6, 2, 3).maxShiftsPerNurseConstraint
+//  val sol4 = Solver(DPLL).solve(exp4)
+//  println(sol4)
+//
+//  val expFinal = NurseScheduling(6, 2, 3).exp
+//  val solFinal = Solver(DPLL).solve(expFinal)
+//  println(solFinal)
+//  println(expFinal.printAsDSL(false))
