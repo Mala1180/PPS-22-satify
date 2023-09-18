@@ -35,7 +35,9 @@ object View:
               case PARTIAL => contents += createNextSection(model)
               case _ =>
             contents += new FlowPanel():
-              contents += createLabel(model.time.get.toString + "ms", 15)
+              if model.time.get > 1_000_000 then
+                contents += createLabel((model.time.get / 1_000_000).toString + "ms", 15)
+              else contents += createLabel(model.time.get.toString + "ns", 15)
               contents += Swing.VStrut(5)
         Set(fp)
       case None => Set()
@@ -62,7 +64,8 @@ object View:
         contents += new FlowPanel():
           contents += exportButton
         contents += new FlowPanel():
-          contents += createLabel(time.get.toString + "ms", 15)
+          if time.get > 1_000_000 then contents += createLabel((time.get / 1_000_000).toString + "ms", 15)
+          else contents += createLabel(time.get.toString + "ns", 15)
           contents += Swing.VStrut(5)
       Set(fp)
     else Set()
