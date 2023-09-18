@@ -2,6 +2,7 @@ package satify.view
 
 import satify.view.utils.ComponentUtils.*
 import satify.view.Constants.*
+import satify.view.utils.Title.*
 
 import java.awt.{Color, Dimension}
 import javax.swing.filechooser.FileNameExtensionFilter
@@ -21,25 +22,25 @@ object GUI:
   val inputScrollPane = new ScrollPane(textPane)
   val problemComboBox: ComboBox[String] = createProblemComboBox()
 
-  val solveAllButton: Button = createButton("Solve all", 200, 40, Color(170, 30, 60))
-  val solveButton: Button = createButton("Solve", 100, 40, Color(170, 30, 60))
-  val solveProblemButton: Button = createButton("Solve", 100, 40, Color(170, 30, 60))
-  val cnfButton: Button = createButton("Convert to CNF", 170, 40, Color(50, 50, 150))
-  val cnfProblemButton: Button = createButton("Convert to CNF", 170, 40, Color(50, 50, 150))
+  val solveAllButton: Button = createButton(SolveAll.title, 200, 40, Color(170, 30, 60))
+  val solveButton: Button = createButton(Solve.title, 100, 40, Color(170, 30, 60))
+  val solveProblemButton: Button = createButton(Solve.title, 100, 40, Color(170, 30, 60))
+  val cnfButton: Button = createButton(Convert.title, 170, 40, Color(50, 50, 150))
+  val cnfProblemButton: Button = createButton(Convert.title, 170, 40, Color(50, 50, 150))
 
-  val solutionOutputDialog: Dialog = createOutputDialog("Solution")
-  val cnfOutputDialog: Dialog = createOutputDialog("Converted formula")
-  val problemOutputDialog: Dialog = createOutputDialog("Problem visualization")
+  val solutionOutputDialog: Dialog = createOutputDialog(SolutionDialog.title)
+  val cnfOutputDialog: Dialog = createOutputDialog(ConversionDialog.title)
+  val problemOutputDialog: Dialog = createOutputDialog(ProblemDialog.title)
   val helpDialog: Dialog = createHelpDialog()
-  val loadingLabel: Label = createLabel("Loading...", 16)
+  val loadingLabel: Label = createLabel(LoadingLabel.title, 16)
   loadingLabel.visible = false
 
   val importFileChooser: FileChooser = createImportFileChooser
   val exportFileChooser: FileChooser = createExportFileChooser
 
-  val helpMenuItem: MenuItem = new MenuItem("Help"):
+  val helpMenuItem: MenuItem = new MenuItem(Help.title):
     maximumSize = new Dimension(50, 200)
-  val importMenuItem: MenuItem = new MenuItem("Import"):
+  val importMenuItem: MenuItem = new MenuItem(Import.title):
     maximumSize = new Dimension(1000, 200)
 
   def inputTextPane: TextPane = inputScrollPane.contents
@@ -55,12 +56,12 @@ object GUI:
       contents += new BoxPanel(Orientation.Horizontal):
         contents += logoLabel
       contents += new TabbedPane:
-        pages += new Page("Input", createInputComponent())
-        pages += new Page("Problems", createProblemsComponent())
+        pages += new Page(InputTab.title, createInputComponent())
+        pages += new Page(ProblemTab.title, createProblemsComponent())
 
   private def createInputComponent(): Component =
     val borderPanel: BorderPanel = new BorderPanel():
-      val label = new Label("Input:")
+      val label = new Label(InputTab.title)
       label.border = Swing.EmptyBorder(0, 0, 2, 0)
       label.horizontalAlignment = Alignment.Left
       layout(label) = BorderPanel.Position.North
@@ -106,17 +107,16 @@ object GUI:
     * @return the file chooser
     */
   private def createImportFileChooser: FileChooser = new FileChooser:
-    title = "Import DIMACS formula"
+    title = ImportDialog.title
     fileSelectionMode = FileChooser.SelectionMode.FilesOnly
     fileFilter = new FileNameExtensionFilter("Text files", "txt")
     multiSelectionEnabled = false
 
   /** Creates a file chooser for the export item in CNF output dialog.
-    *
     * @return the file chooser
     */
   def createExportFileChooser: FileChooser = new FileChooser:
-    title = "Export DIMACS formula"
+    title = ExportDialog.title
     fileSelectionMode = FileChooser.SelectionMode.DirectoriesOnly
     multiSelectionEnabled = false
 

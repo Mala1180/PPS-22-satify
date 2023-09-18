@@ -2,6 +2,7 @@ package satify.update.converters.tseitin
 
 import satify.model.cnf.CNF
 import satify.model.expression.Expression
+import satify.model.expression.SymbolGeneration.tseitinVarPrefix
 
 import scala.annotation.tailrec
 
@@ -23,7 +24,6 @@ private[converters] object TseitinTransformation:
     concat(transformations)
 
   /** Substitute Symbols of nested subexpressions in all others expressions
-    *
     * @param exp the expression where to substitute Symbols
     * @return the decomposed expression in subexpressions with Symbols correctly substituted.
     */
@@ -58,7 +58,6 @@ private[converters] object TseitinTransformation:
   }
 
   /** Transform the Symbol and the corresponding expression to CNF form
-    *
     * @param exp a Symbol and the corresponding expression
     * @return a list of Symbol and expressions in CNF form for the given Symbol and expression
     * @throws IllegalArgumentException if the expression is not a subexpression
@@ -74,8 +73,7 @@ private[converters] object TseitinTransformation:
     def not(exp: Expression): Literal = exp match
       case Not(Symbol(v)) => CNFSymbol(v)
       case Symbol(v) => CNFNot(CNFSymbol(v))
-      case _ =>
-        throw new IllegalArgumentException("Expression is not a literal")
+      case _ => throw new IllegalArgumentException("Expression is not a literal")
 
     val (s, e) = exp
     val sym = symbol(s)
@@ -95,7 +93,6 @@ private[converters] object TseitinTransformation:
       case ssym @ Symbol(_) => List(symbol(ssym))
 
   /** Concat all subexpression in And to obtain a valid CNF expression.
-    *
     * @param subexpressions the subexpressions to concat.
     * @return the CNF expression.
     */
@@ -103,7 +100,7 @@ private[converters] object TseitinTransformation:
     if subexpressions.size == 1 then subexpressions.head
     else
       var concatenated = subexpressions
-      concatenated = concatenated.prepended(CNFSymbol("TSTN0"))
+      concatenated = concatenated.prepended(CNFSymbol(tseitinVarPrefix + "0"))
       concatenated.reduceRight((s1, s2) =>
         CNFAnd(s1.asInstanceOf[CNFOr | Literal], s2.asInstanceOf[CNFAnd | CNFOr | Literal])
       )

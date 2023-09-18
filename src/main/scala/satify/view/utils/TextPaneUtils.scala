@@ -11,7 +11,6 @@ object TextPaneUtils:
   private val opAttr: SimpleAttributeSet = createOperatorsAttribute()
 
   /** Update the style of a text pane
-    *
     * @param t a text pane
     */
   def updateStyle(t: TextPane): Unit =
@@ -19,7 +18,6 @@ object TextPaneUtils:
     textPaneText = text
 
     /** Util function to find all starting indexes where a specific substring appears inside a String.
-      *
       * @param findIndex function which takes an Int, representing the index position where start searching for
       *                  occurrences and returns an Int, that is equal -1 if no occurrences are found, n otherwise.
       * @param from      starting index to search for occurrences
@@ -32,7 +30,6 @@ object TextPaneUtils:
       else Nil
 
     /** Sets character attribute foreach offset inside the input list
-      *
       * @param l      list of offsets
       * @param length length of each String
       */

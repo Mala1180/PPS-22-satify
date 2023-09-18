@@ -7,6 +7,12 @@ import satify.update.Update.update
 import satify.view.utils.ComponentUtils.createErrorDialog
 import satify.view.Constants.*
 import satify.view.GUI.*
+import satify.model.errors.Error.InvalidInput
+import satify.view.utils.ProblemTitle.{
+  NQueens as GUINQueens,
+  GraphColoring as GUIGraphColoring,
+  NurseScheduling as GUINurseScheduling
+}
 
 import java.io.File
 import scala.swing.{Component, Swing, TextArea}
@@ -88,7 +94,7 @@ object Reactions:
     var p: Problem = null
     def checkInt(input: String): Int =
       if !input.equals("") && input.forall(_.isDigit) && input.toInt > 0 then input.toInt
-      else throw new IllegalArgumentException("Parameter value is not valid")
+      else throw new IllegalArgumentException(InvalidInput.description)
     def getInput(name: String): TextArea = problemParameterPanel.contents
       .filter(c => c.isInstanceOf[TextArea] && c.name.equals(name))
       .head
@@ -98,14 +104,14 @@ object Reactions:
       input.split(",").map(_.trim).toList.map(_.split("-").map(_.trim).toList).map(l => (l.head, l.last))
     try
       p = problemComboBox.item match
-        case "N-Queens" => NQueens(checkInt(getInput(nqQueens).text))
-        case "Graph Coloring" =>
+        case GUINQueens.title => NQueens(checkInt(getInput(nQueens).text))
+        case GUIGraphColoring.title =>
           GraphColoring(
             checkEdges(getInput(gcEdges).text),
             checkNodes(getInput(gcNodes).text),
             checkInt(getInput(gcColors).text)
           )
-        case "Nurse Scheduling" =>
+        case GUINurseScheduling.title =>
           NurseScheduling(
             checkInt(getInput(nsNurses).text),
             checkInt(getInput(nsDays).text),
@@ -114,5 +120,5 @@ object Reactions:
     catch
       case e: Exception =>
         e.printStackTrace()
-        createErrorDialog("Input not valid").open()
+        createErrorDialog(InvalidInput.description).open()
     p
