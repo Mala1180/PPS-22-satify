@@ -1,5 +1,8 @@
 package satify.view.utils
 
+/**
+ * Title of the application and its components.
+ */
 enum Title(val title: String):
   case App extends Title("Satify SAT Solver")
   case Solve extends Title("Solve")

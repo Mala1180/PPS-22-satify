@@ -2,6 +2,11 @@ package satify.view.utils
 
 import satify.model.problems.NurseScheduling
 
+/**
+ * Enums to represent the different problems and their placeholders in the GUI.
+ * Here is where the problem titles are defined.
+ * @param title the title of the problem
+ */
 enum ProblemTitle(val title: String):
   case NQueens extends ProblemTitle("N-Queens")
   case GraphColoring extends ProblemTitle("Graph Coloring")

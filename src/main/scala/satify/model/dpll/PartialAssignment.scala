@@ -16,7 +16,6 @@ case class PartialAssignment(optVariables: List[OptionalVariable]):
   lazy val toAssignments: List[Assignment] = explodeAssignments(this)
 
   /** Cartesian product of all possible variable assignments to a partial assignment.
-    *
     * @param pa partial assignment
     * @return cartesian product of pa
     */
@@ -44,7 +43,6 @@ object PartialAssignment:
   import satify.model.dpll.OrderedList.given
 
   /** Extract a partial assignment from an expression in CNF.
-    *
     * @param cnf where to extract a Model
     * @return correspondent partial assignment from CNF given as parameter.
     */
@@ -60,7 +58,6 @@ object PartialAssignment:
     PartialAssignment(extractOptVars(cnf))
 
   /** Filters unconstrained variables from the partial model
-    *
     * @param partialAssignment partial model
     * @return filtered partial model
     */
@@ -70,7 +67,6 @@ object PartialAssignment:
         optVariables.filter { case OptionalVariable(_, o) => o.isEmpty }
 
   /** Update a partial assignment given a constraint as parameter
-    *
     * @param partialAssignment  partial model
     * @param varConstr variable constraint
     * @return updated partial assignment
@@ -85,7 +81,6 @@ object PartialAssignment:
         })
 
   /** Get all SAT solutions, e.g. all Leaf nodes where the CNF has been simplified to Symbol(True).
-    *
     * @param dt DecisionTree
     * @return a set of PartialModel(s).
     */

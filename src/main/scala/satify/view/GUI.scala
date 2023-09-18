@@ -113,7 +113,6 @@ object GUI:
     multiSelectionEnabled = false
 
   /** Creates a file chooser for the export item in CNF output dialog.
-    *
     * @return the file chooser
     */
   def createExportFileChooser: FileChooser = new FileChooser:
