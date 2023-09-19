@@ -1,9 +1,11 @@
 package satify.update.solver.dpll.cnf
 
 import satify.model.cnf.Bool.{False, True}
-import satify.model.cnf.CNF
+import satify.model.cnf.{CNF, Literal}
 import satify.model.cnf.CNF.*
 import satify.model.dpll.Constraint
+
+import scala.annotation.tailrec
 
 object CNFSimplification:
 
@@ -170,7 +172,7 @@ object CNFSimplification:
     * @param constr constraint to apply
     * @return Updated CNF
     */
-  private def updateCnf[T <: CNF](cnf: T, constr: Constraint): T =
+  private def updateCNF[T <: CNF](cnf: T, constr: Constraint): T =
     (cnf match
       case Symbol(name: String) if name == constr.name =>
         if constr.value then Symbol(True)
@@ -180,3 +182,46 @@ object CNFSimplification:
       case Not(symbol) => Not(updateCnf(symbol, constr))
       case _ => cnf
     ).asInstanceOf[T]
+
+  private def updateCnf[T <: CNF](cnf: T, constr: Constraint): T =
+
+    case class Frame(cnf: CNF, done: List[CNF], todos: List[CNF])
+
+    def childAsList(cnf: CNF): List[CNF] = cnf match
+      case Symbol(value) => Nil
+      case And(left, right) => left :: right :: Nil
+      case Or(left, right) => left :: right :: Nil
+      case Not(branch) => branch :: Nil
+
+    @tailrec
+    def step(stack: List[Frame]): CNF = stack match
+      case Frame(cnf, done, Nil) :: tail =>
+        val ret =
+          done match
+            case ::(head, next) =>
+              cnf match
+                case And(_, _) =>
+                  And(next.head.asInstanceOf[Or | Literal], head.asInstanceOf[And | Or | Literal])
+                case Or(_, _) => Or(next.head.asInstanceOf[Or | Literal], head.asInstanceOf[Or | Literal])
+                case Not(_) => Not(head.asInstanceOf[Symbol])
+                case _ => throw new IllegalStateException(s"Error $cnf")
+            case Nil =>
+              cnf match
+                case Symbol(name: String) if name == constr.name =>
+                  if constr.value then Symbol(True)
+                  else Symbol(False)
+                case s@Symbol(value) => Symbol(value)
+                case _ => throw new IllegalStateException(s"Error $cnf")
+
+        tail match
+          case Nil => ret
+          case Frame(tn, td, tt) :: more => step(Frame(tn, ret :: td, tt) :: more)
+
+      case Frame(label, done, x :: xs) :: tail =>
+        childAsList(x) match
+          case Nil => step(Frame(x, Nil, Nil) :: Frame(label, done, xs) :: tail)
+          case children@_ => step(Frame(x, Nil, children) :: Frame(label, done, xs) :: tail)
+      case Nil =>
+        throw new Error("Stack should never be empty")
+
+    step(List(Frame(cnf, Nil, childAsList(cnf)))).asInstanceOf[T]

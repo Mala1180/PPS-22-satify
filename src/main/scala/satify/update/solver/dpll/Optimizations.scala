@@ -23,6 +23,37 @@ object Optimizations:
     */
   def unitLiteralIdentification(cnf: CNF): Option[Constraint] =
 
+    /*
+    @tailrec
+    def loop(todo: List[CNF], done: Boolean = false): Boolean =
+      todo match
+        case Nil => false
+        case And(left, right) :: tail => loop(left :: right :: tail, false)
+        case head :: tail =>
+          head match
+            case Not(Symbol(_: String)) | Symbol(_: String) | Not(Symbol(False)) | Symbol(True) | Or(_, _) =>
+              loop(tail, false)
+            case Not(Symbol(True)) | Symbol(False) => true
+            case _ => false
+
+    loop(cnf :: Nil)
+     */
+
+    @tailrec
+    def loop(todo: List[CNF], done: Option[Constraint] = None): Option[Constraint] =
+      todo match
+        case Nil => None
+        case And(left, right) :: tail => loop(left :: right :: tail, None)
+        case head :: tail =>
+          head match
+            case Symbol(name: String) => Some(Constraint(name, true))
+            case Not(Symbol(name: String)) => Some(Constraint(name, false))
+            case _ => loop(tail, None)
+
+    loop(cnf :: Nil)
+
+
+  /*
     val f: (CNF, Option[Constraint]) => Option[Constraint] =
       (cnf, d) =>
         cnf match
@@ -37,6 +68,9 @@ object Optimizations:
         case Or(_, _) => None
         case _ => None
     )
+
+   */
+
 
   /** Identify pure literals
     * @param dec previous decision
