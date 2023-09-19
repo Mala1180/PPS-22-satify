@@ -13,7 +13,7 @@ import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
-import satify.update.solver.dpll.impl.DpllFinder.{find, resume}
+import satify.update.solver.dpll.impl.DpllFinder.{findNext, resume}
 
 import scala.util.Random
 
@@ -44,7 +44,7 @@ object DpllFinder:
   /** Runs the DPLL algorithm resuming a previous run, if it exists.
     * @return another assignment, different from the previous', if any.
     */
-  def find(): Assignment =
+  def findNext(): Assignment =
     prevRun match
       case Some(DpllRun(dt, s)) =>
         extractAssignment(dt, prevRun) match

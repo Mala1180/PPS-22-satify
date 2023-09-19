@@ -10,7 +10,7 @@ import satify.update.converters.{Converter, ConverterType}
 import satify.update.solver.DpllSolverMemoize.dpllEnumerate
 import satify.update.solver.SolverType.*
 import satify.update.solver.dpll.impl.DpllEnumerator.enumerate
-import satify.update.solver.dpll.impl.DpllFinder.find
+import satify.update.solver.dpll.impl.DpllFinder.{find, findNext}
 
 import scala.collection.mutable
 
@@ -72,7 +72,7 @@ object Solver:
 
     override def solve(exp: Expression): Solution = solve(converter.convert(exp))
 
-    override def next(): Assignment = find()
+    override def next(): Assignment = findNext()
 
 object DpllSolverMemoize:
 

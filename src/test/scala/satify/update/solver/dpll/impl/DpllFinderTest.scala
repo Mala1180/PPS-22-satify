@@ -11,7 +11,7 @@ import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.dpll.PartialAssignment.extractParAssignmentFromCnf
 import satify.model.dpll.{Decision, DecisionTree}
 import satify.model.{Assignment, Result, Solution, Variable}
-import satify.update.solver.dpll.impl.DpllFinder.{find, resume}
+import satify.update.solver.dpll.impl.DpllFinder.{find, findNext, resume}
 
 class DpllFinderTest extends AnyFlatSpec with Matchers:
 
@@ -32,11 +32,11 @@ class DpllFinderTest extends AnyFlatSpec with Matchers:
           )
         )
       )
-    find() shouldBe
+    findNext() shouldBe
       Assignment(
         List(Variable("a", true), Variable("b", true), Variable("c", false))
       )
-    find() shouldBe
+    findNext() shouldBe
       Assignment(
         List(Variable("a", true), Variable("b", false), Variable("c", true))
       )
