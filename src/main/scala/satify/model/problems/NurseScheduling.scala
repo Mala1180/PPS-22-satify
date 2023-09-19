@@ -1,5 +1,5 @@
 package satify.model.problems
-import satify.model.Assignment
+import satify.model.{Assignment, Variable}
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
@@ -38,13 +38,11 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
 
   /** If possible, shifts should be distributed evenly and fairly, so that each nurse works the minimum amount of them. */
   private val minShiftsPerNurse: Int = (shifts * days) / nurses
-  println("Min shifts per nurse" + minShiftsPerNurse)
 
   /** If this is not possible, because the total number of shifts is not divisible by the number of nurses,
     * some nurses will be assigned one more shift, without crossing the maximum number of shifts which can be worked by each nurse
     */
   private val maxShiftsPerNurse: Int = minShiftsPerNurse + 1
-  println("Max shifts per nurse" + maxShiftsPerNurse)
 
   /** Each nurse should work at least the minimum number of shifts */
   val minShiftsPerNurseConstraint: Expression = atLeastK(minShiftsPerNurse)(variables.flatten.flatten: _*)
@@ -59,23 +57,19 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     minShiftsPerNurseConstraint,
     maxShiftsPerNurseConstraint
   )
-  def toString(assignment: Assignment): String = ???
+  def toString(assignment: Assignment): String =
+    var output = s"There are $shifts shifts a day\n" +
+      "Min shifts per nurse " + minShiftsPerNurse + "\n" +
+      "Max shifts per nurse " + maxShiftsPerNurse + "\n"
 
-//@main def test(): Unit =
-//  val exp1 = NurseScheduling(6, 2, 3).atMostOneShiftPerDay
-//  val sol1 = Solver(DPLL).solve(exp1)
-//  println(sol1)
-//  val exp2 = NurseScheduling(6, 2, 3).oneNursePerShift
-//  val sol2 = Solver(DPLL).solve(exp2)
-//  println(sol2)
-//  val exp3 = NurseScheduling(6, 2, 3).minShiftsPerNurseConstraint
-//  val sol3 = Solver(DPLL).solve(exp3)
-//  println(sol3)
-//  val exp4 = NurseScheduling(6, 2, 3).maxShiftsPerNurseConstraint
-//  val sol4 = Solver(DPLL).solve(exp4)
-//  println(sol4)
-//
-//  val expFinal = NurseScheduling(6, 2, 3).exp
-//  val solFinal = Solver(DPLL).solve(expFinal)
-//  println(solFinal)
-//  println(expFinal.printAsDSL(false))
+    assignment match
+      case Assignment(variables) =>
+        variables.filter(_.value).foreach { v =>
+          val name = v.name
+          val nurse = "Nurse-" + name.split("_d")(0).replace("n", "")
+          val day = "Day " + name.split("_s")(0).last
+          val shift = name.split("_s")(1)
+          output += s"$nurse works $day at the shift number $shift\n"
+        }
+        output
+      case _ => output
