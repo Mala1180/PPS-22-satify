@@ -45,18 +45,18 @@ private[converters] object Utils:
       case Or(l, r) => CNFOr(convL(l), convL(r))
       case Symbol(v) => CNFSymbol(v)
       case Not(Symbol(v)) => CNFNot(CNFSymbol(v))
-      case _ => throw new Exception("Expression is not convertible to CNF form")
+      case _ => throw new IllegalArgumentException("Expression is not convertible to CNF form")
 
     def convR(exp: Expression): CNFAnd | CNFOr | Literal = exp match
       case And(l, r) => CNFAnd(convL(l), convR(r))
       case Or(l, r) => CNFOr(convL(l), convL(r))
       case Symbol(v) => CNFSymbol(v)
       case Not(Symbol(v)) => CNFNot(CNFSymbol(v))
-      case _ => throw new Exception("Expression is not convertible to CNF form")
+      case _ => throw new IllegalArgumentException("Expression is not convertible to CNF form")
 
     expression match
       case Symbol(v) => CNFSymbol(v)
       case Not(Symbol(v)) => CNFNot(CNFSymbol(v))
       case And(l, r) => CNFAnd(convL(l), convR(r))
       case Or(l, r) => CNFOr(convL(l), convL(r))
-      case _ => throw new Exception("Expression is not convertible to CNF form")
+      case _ => throw new IllegalArgumentException("Expression is not convertible to CNF form")

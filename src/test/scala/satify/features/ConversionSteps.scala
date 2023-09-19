@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers.*
 import satify.model.cnf.CNF
 import satify.update.converters.{Converter, ConverterType}
 
-object TseitinTransformationSteps extends ScalaDsl with EN:
+object ConversionSteps extends ScalaDsl with EN:
 
   import DSLSteps.*
   var cnf: Option[CNF] = None
