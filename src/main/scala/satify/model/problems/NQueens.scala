@@ -72,6 +72,7 @@ case class NQueens(n: Int) extends Problem:
             acc + "\n" + firstN.foldLeft("")((p, c) => p + (if c.value then s" ♕ " else " · "))
           )
         else acc
+      case _ => acc
     getStringView(assignment, "")
 
 object NQueens:

@@ -1,5 +1,5 @@
 package satify.model.problems
-import satify.model.Assignment
+import satify.model.{Assignment, Variable}
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
@@ -35,15 +35,13 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     constraint.reduceLeft(And(_, _))
 
   /** If possible, shifts should be distributed evenly and fairly, so that each nurse works the minimum amount of them. */
-  private val minShiftsPerNurse: Float = (shifts * days) / nurses
-  println("Min shifts per nurse" + minShiftsPerNurse)
+  private val minShiftsPerNurse: Int = (shifts * days) / nurses
 
   /** If this is not possible, because the total number of shifts is not divisible by the number of nurses,
     * some nurses will be assigned one more shift, without crossing the maximum number of shifts which can be worked by each nurse
     */
   private val maxShiftsPerNurse: Int =
     if minShiftsPerNurse.isValidInt then minShiftsPerNurse.toInt else minShiftsPerNurse.toInt + 1
-  println("Max shifts per nurse" + maxShiftsPerNurse)
 
   /** Each nurse should work at least the minimum number of shifts */
   private val minShiftsPerNurseConstraint: Expression =
@@ -66,4 +64,20 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     minShiftsPerNurseConstraint,
     maxShiftsPerNurseConstraint
   )
-  def toString(assignment: Assignment): String = ???
+
+  def toString(assignment: Assignment): String =
+    var output = s"There are $shifts shifts a day\n" +
+      "Min shifts per nurse " + minShiftsPerNurse + "\n" +
+      "Max shifts per nurse " + maxShiftsPerNurse + "\n"
+
+    assignment match
+      case Assignment(variables) =>
+        variables.filter(_.value).foreach { v =>
+          val name = v.name
+          val nurse = "Nurse-" + name.split("_d")(0).replace("n", "")
+          val day = "Day " + name.split("_s")(0).last
+          val shift = name.split("_s")(1)
+          output += s"$nurse works $day at the shift number $shift\n"
+        }
+        output
+      case _ => output

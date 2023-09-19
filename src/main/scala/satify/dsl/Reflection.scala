@@ -11,7 +11,7 @@ object Reflection:
   private val excludedWords = getDSLKeywords.mkString("|")
   private val symbolsRegexPattern: Regex = s"""((?!$excludedWords\\b)\\b(?![0-9]+\\b)\\w+)""".r
   private val commentsRegexPattern: Regex = """(//.*)|(/\*[^*]*\*+(?:[^/*][^*]*\*+)*/)""".r
-
+  private val privateVariablesPattern: Regex = "\\b(ENC|TSTN)\\w*".r
   private def getDSLKeywords: List[String] =
     val operators = classOf[Operators.type].getMethods.map(_.getName).toList
     val encodings = classOf[Encodings.type].getMethods.map(_.getName).toList
@@ -37,6 +37,8 @@ object Reflection:
     * @see [[startRepl]]
     */
   def reflect(input: String): Expression =
+    if privateVariablesPattern.findFirstIn(input).isDefined then
+      throw IllegalArgumentException("Cannot use variables that start with ENC or TSTN")
     val code = processInput(input)
     if code.matches("\"" + symbolsRegexPattern.toString() + "\"") then Symbol(code.substring(1, code.length - 1))
     else if code.isBlank || code.isEmpty then throw new IllegalArgumentException("Empty input")

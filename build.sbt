@@ -21,6 +21,11 @@ lazy val root = (project in file("."))
     assembly / assemblyJarName := "satify.jar"
   )
 
+Compile / doc / scalacOptions ++= Seq(
+  "-d",
+  file("doc/api").toString
+)
+
 jacocoReportSettings := JacocoReportSettings()
   .withTitle("Jacoco Satify Coverage Report")
   .withThresholds(

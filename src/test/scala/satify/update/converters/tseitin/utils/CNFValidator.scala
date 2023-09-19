@@ -37,34 +37,34 @@ class CNFValidator extends AnyFlatSpec with Matchers:
   "The exp ((a ∧ ¬b) ∨ c)" should "be validated as CNF" in {
     val exp = And(
       Or(
-        Or(Symbol("TSTN1"), Symbol("d")),
-        Not(Symbol("TSTN0"))
+        Or(Symbol("GEN1"), Symbol("d")),
+        Not(Symbol("GEN0"))
       ),
       And(
-        Or(Not(Symbol("TSTN1")), Symbol("TSTN0")),
+        Or(Not(Symbol("GEN1")), Symbol("GEN0")),
         And(
-          Or(Not(Symbol("d")), Symbol("TSTN0")),
+          Or(Not(Symbol("d")), Symbol("GEN0")),
           And(
             Or(
-              Or(Symbol("TSTN2"), Symbol("TSTN3")),
-              Not(Symbol("TSTN1"))
+              Or(Symbol("GEN2"), Symbol("GEN3")),
+              Not(Symbol("GEN1"))
             ),
             And(
-              Or(Not(Symbol("TSTN2")), Symbol("TSTN1")),
+              Or(Not(Symbol("GEN2")), Symbol("GEN1")),
               And(
-                Or(Not(Symbol("TSTN3")), Symbol("TSTN1")),
+                Or(Not(Symbol("GEN3")), Symbol("GEN1")),
                 And(
-                  Or(Not(Symbol("a")), Not(Symbol("TSTN2"))),
+                  Or(Not(Symbol("a")), Not(Symbol("GEN2"))),
                   And(
-                    Or(Symbol("a"), Symbol("TSTN2")),
+                    Or(Symbol("a"), Symbol("GEN2")),
                     And(
                       Or(
                         Or(Not(Symbol("b")), Not(Symbol("c"))),
-                        Symbol("TSTN3")
+                        Symbol("GEN3")
                       ),
                       And(
-                        Or(Symbol("b"), Not(Symbol("TSTN3"))),
-                        Or(Symbol("c"), Not(Symbol("TSTN3")))
+                        Or(Symbol("b"), Not(Symbol("GEN3"))),
+                        Or(Symbol("c"), Not(Symbol("GEN3")))
                       )
                     )
                   )
