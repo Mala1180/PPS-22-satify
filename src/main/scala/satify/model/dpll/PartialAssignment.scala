@@ -52,7 +52,6 @@ object PartialAssignment:
 
     @tailrec
     def extractOptVars(todo: List[CNF], done: List[OptionalVariable] = Nil): List[OptionalVariable] = todo match
-
       case ::(head, next) =>
         head match
           case Symbol(name: String) => extractOptVars(next, list(OptionalVariable(name) +: done: _*))
@@ -94,25 +93,28 @@ object PartialAssignment:
     * @param dt DecisionTree
     * @return a set of PartialModel(s).
     */
-  @tailrec
-  def extractParAssignments(todo: List[DecisionTree],
-                            done: List[PartialAssignment] = Nil): List[PartialAssignment] =
-    todo match
-      case ::(head, next) =>
-        head match
-          case Leaf(Decision(PartialAssignment(optVars), cnf)) =>
-            cnf match
-              case Symbol(True) =>
-                done :+
-                  PartialAssignment(
-                    optVars.filter(v =>
-                      v match
-                        case OptionalVariable(name, _)
-                            if name.startsWith(tseitinVarPrefix) || name.startsWith(encodingVarPrefix) =>
-                          false
-                        case _ => true
+  def extractParAssignments(dt: DecisionTree): List[PartialAssignment] =
+
+    @tailrec
+    def extract(todo: List[DecisionTree], done: List[PartialAssignment] = Nil): List[PartialAssignment] =
+      todo match
+        case ::(head, next) =>
+          head match
+            case Leaf(Decision(PartialAssignment(optVars), cnf)) =>
+              cnf match
+                case Symbol(True) =>
+                  done :+
+                    PartialAssignment(
+                      optVars.filter(v =>
+                        v match
+                          case OptionalVariable(name, _)
+                              if name.startsWith(tseitinVarPrefix) || name.startsWith(encodingVarPrefix) =>
+                            false
+                          case _ => true
+                      )
                     )
-                  )
-              case _ => Nil
-          case Branch(_, left, right) => extractParAssignments(todo ++ (left :: right :: Nil))
-      case Nil => done
+                case _ => Nil
+            case Branch(_, left, right) => extract(todo ++ (left :: right :: Nil))
+        case Nil => done
+
+    extract(dt :: Nil)
