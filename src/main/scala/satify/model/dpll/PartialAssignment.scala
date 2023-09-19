@@ -9,6 +9,8 @@ import satify.model.dpll.OrderedList.list
 import satify.model.expression.SymbolGeneration.{encodingVarPrefix, tseitinVarPrefix}
 import satify.model.{Assignment, Variable}
 
+import scala.annotation.tailrec
+
 /** Represents an [[Assignment]] where the variables could not be yet constrained by the DPLL algorithm.
   * @param optVariables optional variables.
   */
@@ -48,16 +50,22 @@ object PartialAssignment:
     */
   def extractParAssignmentFromCnf(cnf: CNF): PartialAssignment =
 
-    def extractOptVars(cnf: CNF): List[OptionalVariable] = cnf match
-      case Symbol(name: String) => list(OptionalVariable(name))
-      case And(e1, e2) => list(extractOptVars(e1) ++ extractOptVars(e2): _*)
-      case Or(e1, e2) => list(extractOptVars(e1) ++ extractOptVars(e2): _*)
-      case Not(e) => extractOptVars(e)
-      case _ => list()
+    @tailrec
+    def extractOptVars(todo: List[CNF], done: List[OptionalVariable] = Nil): List[OptionalVariable] = todo match
 
-    PartialAssignment(extractOptVars(cnf))
+      case ::(head, next) =>
+        head match
+          case Symbol(name: String) => extractOptVars(next, list(OptionalVariable(name) +: done: _*))
+          case And(e1, e2) => extractOptVars(next ++ (e1 :: e2 :: Nil), done)
+          case Or(e1, e2) => extractOptVars(next ++ (e1 :: e2 :: Nil), done)
+          case Not(e) => extractOptVars(next :+ e, done)
+          case _ => Nil
+      case Nil => done
+
+    PartialAssignment(extractOptVars(cnf :: Nil))
 
   /** Filters unconstrained variables from the partial model
+    *
     * @param partialAssignment partial model
     * @return filtered partial model
     */
@@ -67,8 +75,9 @@ object PartialAssignment:
         optVariables.filter { case OptionalVariable(_, o) => o.isEmpty }
 
   /** Update a partial assignment given a constraint as parameter
-    * @param partialAssignment  partial model
-    * @param varConstr variable constraint
+    *
+    * @param partialAssignment partial model
+    * @param varConstr         variable constraint
     * @return updated partial assignment
     */
   def updatePartialAssignment(partialAssignment: PartialAssignment, varConstr: Constraint): PartialAssignment =
@@ -81,24 +90,29 @@ object PartialAssignment:
         })
 
   /** Get all SAT solutions, e.g. all Leaf nodes where the CNF has been simplified to Symbol(True).
+    *
     * @param dt DecisionTree
     * @return a set of PartialModel(s).
     */
-  def extractParAssignments(dt: DecisionTree): List[PartialAssignment] =
-    dt match
-      case Leaf(Decision(PartialAssignment(optVars), cnf)) =>
-        cnf match
-          case Symbol(True) =>
-            List(
-              PartialAssignment(
-                optVars.filter(v =>
-                  v match
-                    case OptionalVariable(name, _)
-                        if name.startsWith(tseitinVarPrefix) || name.startsWith(encodingVarPrefix) =>
-                      false
-                    case _ => true
-                )
-              )
-            )
-          case _ => Nil
-      case Branch(_, left, right) => extractParAssignments(left) ++ extractParAssignments(right)
+  @tailrec
+  def extractParAssignments(todo: List[DecisionTree],
+                            done: List[PartialAssignment] = Nil): List[PartialAssignment] =
+    todo match
+      case ::(head, next) =>
+        head match
+          case Leaf(Decision(PartialAssignment(optVars), cnf)) =>
+            cnf match
+              case Symbol(True) =>
+                done :+
+                  PartialAssignment(
+                    optVars.filter(v =>
+                      v match
+                        case OptionalVariable(name, _)
+                            if name.startsWith(tseitinVarPrefix) || name.startsWith(encodingVarPrefix) =>
+                          false
+                        case _ => true
+                    )
+                  )
+              case _ => Nil
+          case Branch(_, left, right) => extractParAssignments(todo ++ (left :: right :: Nil))
+      case Nil => done
