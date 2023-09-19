@@ -13,10 +13,10 @@ class ZippingTest extends AnyFlatSpec with Matchers:
       Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val list = zipWithSymbol(exp)
     list should contain only (
-      (Symbol("TSTN2"), Not(Symbol("b"))),
-      (Symbol("TSTN1"), And(Symbol("a"), Not(Symbol("b")))),
+      (Symbol("GEN2"), Not(Symbol("b"))),
+      (Symbol("GEN1"), And(Symbol("a"), Not(Symbol("b")))),
       (
-        Symbol("TSTN0"),
+        Symbol("GEN0"),
         Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
       )
     )
@@ -25,13 +25,13 @@ class ZippingTest extends AnyFlatSpec with Matchers:
   "In a the subexp a" should "be decomposed correctly" in {
     val exp: Expression = Symbol("a")
     val list = zipWithSymbol(exp)
-    list should contain only ((Symbol("TSTN0"), Symbol("a")))
+    list should contain only ((Symbol("GEN0"), Symbol("a")))
   }
 
   "In ¬a the subexp ¬a" should "be decomposed correctly" in {
     val exp: Expression = Not(Symbol("a"))
     val list = zipWithSymbol(exp)
-    list should contain only ((Symbol("TSTN0"), Not(Symbol("a"))))
+    list should contain only ((Symbol("GEN0"), Not(Symbol("a"))))
   }
 
   "In (c ∧ (a ∧ ¬b)) the subexp ¬b, (a ∧ ¬b) and (c ∧ (a ∧ ¬b))" should "be decomposed correctly" in {
@@ -40,11 +40,11 @@ class ZippingTest extends AnyFlatSpec with Matchers:
     val list = zipWithSymbol(exp)
     list should contain only (
       (
-        Symbol("TSTN0"),
+        Symbol("GEN0"),
         And(Symbol("c"), And(Symbol("a"), Not(Symbol("b"))))
       ),
-      (Symbol("TSTN1"), And(Symbol("a"), Not(Symbol("b")))),
-      (Symbol("TSTN2"), Not(Symbol("b")))
+      (Symbol("GEN1"), And(Symbol("a"), Not(Symbol("b")))),
+      (Symbol("GEN2"), Not(Symbol("b")))
     )
   }
 
@@ -52,7 +52,7 @@ class ZippingTest extends AnyFlatSpec with Matchers:
     val exp: Expression = And(Symbol("c"), Symbol("a"))
     val list = zipWithSymbol(exp)
     list should contain only (
-      (Symbol("TSTN0"), And(Symbol("c"), Symbol("a")))
+      (Symbol("GEN0"), And(Symbol("c"), Symbol("a")))
     )
   }
 
@@ -60,7 +60,7 @@ class ZippingTest extends AnyFlatSpec with Matchers:
     val exp: Expression = Symbol("a")
     val result = zipWithSymbol(exp)
     val expected = List(
-      (Symbol("TSTN0"), Symbol("a"))
+      (Symbol("GEN0"), Symbol("a"))
     )
     result shouldBe expected
   }
@@ -69,7 +69,7 @@ class ZippingTest extends AnyFlatSpec with Matchers:
     val exp: Expression = Not(Symbol("a"))
     val result = zipWithSymbol(exp)
     val expected = List(
-      (Symbol("TSTN0"), Not(Symbol("a")))
+      (Symbol("GEN0"), Not(Symbol("a")))
     )
     result shouldBe expected
   }
@@ -80,11 +80,11 @@ class ZippingTest extends AnyFlatSpec with Matchers:
     val result = zipWithSymbol(exp)
     val expected = List(
       (
-        Symbol("TSTN0"),
+        Symbol("GEN0"),
         And(Symbol("c"), And(Symbol("a"), Not(Symbol("b"))))
       ),
-      (Symbol("TSTN1"), And(Symbol("a"), Not(Symbol("b")))),
-      (Symbol("TSTN2"), Not(Symbol("b")))
+      (Symbol("GEN1"), And(Symbol("a"), Not(Symbol("b")))),
+      (Symbol("GEN2"), Not(Symbol("b")))
     )
     result shouldBe expected
   }
@@ -93,7 +93,7 @@ class ZippingTest extends AnyFlatSpec with Matchers:
     val exp: Expression = And(Symbol("c"), Symbol("a"))
     val result = zipWithSymbol(exp)
     val expected = List(
-      (Symbol("TSTN0"), And(Symbol("c"), Symbol("a")))
+      (Symbol("GEN0"), And(Symbol("c"), Symbol("a")))
     )
     result shouldBe expected
   }
@@ -106,15 +106,15 @@ class ZippingTest extends AnyFlatSpec with Matchers:
     val result = zipWithSymbol(exp)
     val expected = List(
       (
-        Symbol("TSTN0"),
+        Symbol("GEN0"),
         Or(
           Not(And(Symbol("p"), Symbol("q"))),
           Or(Symbol("r"), Symbol("s"))
         )
       ),
-      (Symbol("TSTN1"), Not(And(Symbol("p"), Symbol("q")))),
-      (Symbol("TSTN2"), And(Symbol("p"), Symbol("q"))),
-      (Symbol("TSTN3"), Or(Symbol("r"), Symbol("s")))
+      (Symbol("GEN1"), Not(And(Symbol("p"), Symbol("q")))),
+      (Symbol("GEN2"), And(Symbol("p"), Symbol("q"))),
+      (Symbol("GEN3"), Or(Symbol("r"), Symbol("s")))
     )
     result shouldBe expected
   }
@@ -123,8 +123,8 @@ class ZippingTest extends AnyFlatSpec with Matchers:
     val exp: Expression = Not(And(Symbol("a"), Symbol("b")))
     val result = zipWithSymbol(exp)
     val expected = List(
-      (Symbol("TSTN0"), Not(And(Symbol("a"), Symbol("b")))),
-      (Symbol("TSTN1"), And(Symbol("a"), Symbol("b")))
+      (Symbol("GEN0"), Not(And(Symbol("a"), Symbol("b")))),
+      (Symbol("GEN1"), And(Symbol("a"), Symbol("b")))
     )
     result shouldBe expected
   }
@@ -137,15 +137,15 @@ class ZippingTest extends AnyFlatSpec with Matchers:
     val result = zipWithSymbol(exp)
     val expected = List(
       (
-        Symbol("TSTN0"),
+        Symbol("GEN0"),
         Or(
           Not(And(Symbol("p"), Symbol("q"))),
           Or(Symbol("r"), Symbol("s"))
         )
       ),
-      (Symbol("TSTN1"), Not(And(Symbol("p"), Symbol("q")))),
-      (Symbol("TSTN2"), And(Symbol("p"), Symbol("q"))),
-      (Symbol("TSTN3"), Or(Symbol("r"), Symbol("s")))
+      (Symbol("GEN1"), Not(And(Symbol("p"), Symbol("q")))),
+      (Symbol("GEN2"), And(Symbol("p"), Symbol("q"))),
+      (Symbol("GEN3"), Or(Symbol("r"), Symbol("s")))
     )
     result shouldBe expected
   }
@@ -154,8 +154,8 @@ class ZippingTest extends AnyFlatSpec with Matchers:
     val exp: Expression = Not(And(Symbol("a"), Symbol("b")))
     val result = zipWithSymbol(exp)
     val expected = List(
-      (Symbol("TSTN0"), Not(And(Symbol("a"), Symbol("b")))),
-      (Symbol("TSTN1"), And(Symbol("a"), Symbol("b")))
+      (Symbol("GEN0"), Not(And(Symbol("a"), Symbol("b")))),
+      (Symbol("GEN1"), And(Symbol("a"), Symbol("b")))
     )
     result shouldBe expected
   }
@@ -171,7 +171,7 @@ class ZippingTest extends AnyFlatSpec with Matchers:
     val result = zipWithSymbol(exp)
     val expected = List(
       (
-        Symbol("TSTN0"),
+        Symbol("GEN0"),
         And(
           And(
             Or(Symbol("a"), And(Symbol("b"), Symbol("c"))),
@@ -181,18 +181,18 @@ class ZippingTest extends AnyFlatSpec with Matchers:
         )
       ),
       (
-        Symbol("TSTN1"),
+        Symbol("GEN1"),
         And(
           Or(Symbol("a"), And(Symbol("b"), Symbol("c"))),
           Symbol("d")
         )
       ),
       (
-        Symbol("TSTN2"),
+        Symbol("GEN2"),
         Or(Symbol("a"), And(Symbol("b"), Symbol("c")))
       ),
-      (Symbol("TSTN3"), And(Symbol("b"), Symbol("c"))),
-      (Symbol("TSTN4"), Or(Symbol("s"), Symbol("t")))
+      (Symbol("GEN3"), And(Symbol("b"), Symbol("c"))),
+      (Symbol("GEN4"), Or(Symbol("s"), Symbol("t")))
     )
     result shouldBe expected
   }

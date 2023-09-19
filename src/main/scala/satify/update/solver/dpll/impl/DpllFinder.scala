@@ -8,7 +8,7 @@ import satify.model.cnf.CNF.*
 import satify.model.dpll.*
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.dpll.PartialAssignment.*
-import satify.model.expression.SymbolGeneration.{encodingVarPrefix, tseitinVarPrefix}
+import satify.model.expression.SymbolGeneration.{encodingVarPrefix, converterVarPrefix}
 import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
@@ -113,7 +113,7 @@ object DpllFinder:
           optVariables.filter(v =>
             v match
               case OptionalVariable(name, _)
-                  if name.startsWith(encodingVarPrefix) || name.startsWith(tseitinVarPrefix) =>
+                  if name.startsWith(encodingVarPrefix) || name.startsWith(converterVarPrefix) =>
                 false
               case _ => true
           )

@@ -5,7 +5,7 @@ import satify.model.expression.Expression.*
 object SymbolGeneration:
 
   val encodingVarPrefix = "ENC"
-  val tseitinVarPrefix = "TSTN"
+  val converterVarPrefix = "GEN"
 
   /** A generator of new Symbols starting from a prefix. */
   trait SymbolGenerator:

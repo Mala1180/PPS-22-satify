@@ -5,12 +5,12 @@ import org.scalatest.matchers.should.Matchers.*
 import satify.model.cnf.CNF
 import satify.update.converters.{Converter, ConverterType}
 
-object TseitinTransformationSteps extends ScalaDsl with EN:
+object ConversionSteps extends ScalaDsl with EN:
 
   import DSLSteps.*
   var cnf: Option[CNF] = None
 
-  And("converted to CNF Form") {
+  And("converted to CNF Form using Tseitin transformation") {
     try cnf = Some(Converter(ConverterType.Tseitin).convert(expression.get))
     catch case e: IllegalArgumentException => error = IllegalArgumentException(e.getMessage)
   }
