@@ -15,7 +15,7 @@ object SolverSteps extends ScalaDsl with EN:
   import DSLSteps.*
   var sol: Solution = _
 
-  val assignmentsAsString: List[Assignment] => String = assignments =>
+  private val assignmentsAsString: List[Assignment] => String = assignments =>
     val assignmentList: List[String] = assignments
       .map(assignment =>
         val v = assignment.variables
@@ -24,13 +24,9 @@ object SolverSteps extends ScalaDsl with EN:
       )
     assignmentList.foldLeft("")((p, c) => s"$p$c${if assignmentList.last == c then "" else s", "}")
 
-  Then("the result should be SAT") { () =>
-    sol.result shouldBe SAT
-  }
+  Then("the result should be SAT")(() => sol.result shouldBe SAT)
 
-  Then("the result should be UNSAT") { () =>
-    sol.result shouldBe UNSAT
-  }
+  Then("the result should be UNSAT")(() => sol.result shouldBe UNSAT)
 
   And("ran using a solver that returns all the assignments")(() => sol = Solver(DPLL).solveAll(expression.get))
 

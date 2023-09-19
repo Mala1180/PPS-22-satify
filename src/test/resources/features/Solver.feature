@@ -15,7 +15,7 @@ Feature: Using a solver to decide the satisfiability of a propositional formula
     And I should obtain the assignments "(a: false, b: true)"
     And I should obtain another assignment "(a: true, b: true)"
 
-  Scenario: If the formula is UNSAT, there's no assignment
+  Scenario: If the formula is UNSAT, I want to know it
     Given the input "a and !a"
     When it is reflected to scala compiler
     And ran using a solver that returns all the assignments
