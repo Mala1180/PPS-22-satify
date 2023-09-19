@@ -16,4 +16,4 @@ Feature: Conversion to Conjunctive Normal Form
     Given the input "a and b"
     When it is reflected to scala compiler
     And converted to CNF Form using Tseitin transformation
-    Then I should obtain the CNF "TSTN0 and not(a) or not(b) or TSTN0 and a or not(TSTN0) and b or not(TSTN0)"
+    Then I should obtain the CNF "GEN0 and not(a) or not(b) or GEN0 and a or not(GEN0) and b or not(GEN0)"
