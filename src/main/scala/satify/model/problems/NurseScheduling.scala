@@ -3,10 +3,6 @@ import satify.model.{Assignment, Variable}
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
-import satify.update.solver.Solver
-import satify.update.solver.SolverType.DPLL
-
-import scala.swing.{Component, FlowPanel}
 
 case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
 
@@ -20,16 +16,18 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     yield Symbol(s"n${n}_d${d}_s$s")
 
   /** In each shift can work just one nurse */
-  val oneNursePerShift: Expression =
+  private val oneNursePerShift: Expression =
     val constraint =
       for
         d <- 0 until days
         s <- 0 until shifts
-      yield exactlyOne(variables.map(_(d)(s)): _*)
+      yield
+        val vars = for n <- 0 until nurses yield variables(n)(d)(s)
+        exactlyOne(vars: _*)
     constraint.reduceLeft(And(_, _))
 
   /** Each nurse can work no more than one shift per day */
-  val atMostOneShiftPerDay: Expression =
+  private val atMostOneShiftPerDay: Expression =
     val constraint = for
       n <- 0 until nurses
       d <- 0 until days
@@ -42,13 +40,22 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
   /** If this is not possible, because the total number of shifts is not divisible by the number of nurses,
     * some nurses will be assigned one more shift, without crossing the maximum number of shifts which can be worked by each nurse
     */
-  private val maxShiftsPerNurse: Int = minShiftsPerNurse + 1
+  private val maxShiftsPerNurse: Int =
+    if minShiftsPerNurse.isValidInt then minShiftsPerNurse.toInt else minShiftsPerNurse.toInt + 1
 
   /** Each nurse should work at least the minimum number of shifts */
-  val minShiftsPerNurseConstraint: Expression = atLeastK(minShiftsPerNurse)(variables.flatten.flatten: _*)
+  private val minShiftsPerNurseConstraint: Expression =
+    val constraint =
+      for n <- 0 until nurses
+      yield atLeastK(minShiftsPerNurse.toInt)(variables(n).flatten: _*)
+    constraint.reduceLeft(And(_, _))
 
   /** Each nurse should work at most the maximum number of shifts */
-  val maxShiftsPerNurseConstraint: Expression = atMostK(maxShiftsPerNurse)(variables.flatten.flatten: _*)
+  private val maxShiftsPerNurseConstraint: Expression =
+    val constraint =
+      for n <- 0 until nurses
+      yield atMostK(maxShiftsPerNurse)(variables(n).flatten: _*)
+    constraint.reduceLeft(And(_, _))
 
   override def toString: String = s"NurseScheduling(nurses=$nurses, days=$days, shifts=$shifts)"
   override val constraints: Set[Expression] = Set(
@@ -57,6 +64,7 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     minShiftsPerNurseConstraint,
     maxShiftsPerNurseConstraint
   )
+
   def toString(assignment: Assignment): String =
     var output = s"There are $shifts shifts a day\n" +
       "Min shifts per nurse " + minShiftsPerNurse + "\n" +
