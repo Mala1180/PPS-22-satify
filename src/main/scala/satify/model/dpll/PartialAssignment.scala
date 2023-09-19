@@ -103,18 +103,21 @@ object PartialAssignment:
             case Leaf(Decision(PartialAssignment(optVars), cnf)) =>
               cnf match
                 case Symbol(True) =>
-                  done :+
-                    PartialAssignment(
-                      optVars.filter(v =>
-                        v match
-                          case OptionalVariable(name, _)
-                              if name.startsWith(tseitinVarPrefix) || name.startsWith(encodingVarPrefix) =>
-                            false
-                          case _ => true
+                  extract(
+                    next,
+                    done :+
+                      PartialAssignment(
+                        optVars.filter(v =>
+                          v match
+                            case OptionalVariable(name, _)
+                                if name.startsWith(tseitinVarPrefix) || name.startsWith(encodingVarPrefix) =>
+                              false
+                            case _ => true
+                        )
                       )
-                    )
-                case _ => Nil
-            case Branch(_, left, right) => extract(todo ++ (left :: right :: Nil))
+                  )
+                case _ => extract(next, done)
+            case Branch(_, left, right) => extract(next ++ (left :: right :: Nil), done)
         case Nil => done
 
     extract(dt :: Nil)
