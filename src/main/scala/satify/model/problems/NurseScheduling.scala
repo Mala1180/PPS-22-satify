@@ -58,7 +58,6 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     maxShiftsPerNurseConstraint
   )
   def toString(assignment: Assignment): String =
-    val week = List("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
     var output = s"There are $shifts shifts a day\n" +
       "Min shifts per nurse " + minShiftsPerNurse + "\n" +
       "Max shifts per nurse " + maxShiftsPerNurse + "\n"
@@ -68,7 +67,7 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
         variables.filter(_.value).foreach { v =>
           val name = v.name
           val nurse = "Nurse-" + name.split("_d")(0).replace("n", "")
-          val day = "Day " + week(name.split("_s")(0).last.asDigit)
+          val day = "Day " + name.split("_s")(0).last
           val shift = name.split("_s")(1)
           output += s"$nurse works $day at the shift number $shift\n"
         }
