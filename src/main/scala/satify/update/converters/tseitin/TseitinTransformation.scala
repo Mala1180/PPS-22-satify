@@ -2,7 +2,7 @@ package satify.update.converters.tseitin
 
 import satify.model.cnf.CNF
 import satify.model.expression.Expression
-import satify.model.expression.SymbolGeneration.tseitinVarPrefix
+import satify.model.expression.SymbolGeneration.converterVarPrefix
 
 import scala.annotation.tailrec
 
@@ -100,7 +100,7 @@ private[converters] object TseitinTransformation:
     if subexpressions.size == 1 then subexpressions.head
     else
       var concatenated = subexpressions
-      concatenated = concatenated.prepended(CNFSymbol(tseitinVarPrefix + "0"))
+      concatenated = concatenated.prepended(CNFSymbol(converterVarPrefix + "0"))
       concatenated.reduceRight((s1, s2) =>
         CNFAnd(s1.asInstanceOf[CNFOr | Literal], s2.asInstanceOf[CNFAnd | CNFOr | Literal])
       )

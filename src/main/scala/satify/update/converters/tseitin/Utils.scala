@@ -4,7 +4,7 @@ import satify.model.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol a
 import satify.model.cnf.{CNF, Literal}
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
-import satify.model.expression.SymbolGeneration.{SymbolGenerator, tseitinVarPrefix}
+import satify.model.expression.SymbolGeneration.{SymbolGenerator, converterVarPrefix}
 
 private[converters] object Utils:
 
@@ -14,7 +14,7 @@ private[converters] object Utils:
     */
   def zipWithSymbol(exp: Expression): List[(Symbol, Expression)] =
     given SymbolGenerator with
-      override def prefix: String = tseitinVarPrefix
+      override def prefix: String = converterVarPrefix
     zipWith(exp)(summon[SymbolGenerator].generate)
 
   /** Method to check if an expression is in CNF form and can be converted to CNF form.
