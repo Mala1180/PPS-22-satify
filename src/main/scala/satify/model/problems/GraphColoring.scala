@@ -41,7 +41,7 @@ case class GraphColoring(edges: List[(String, String)], nodes: List[String], col
           output += s"$node -> $color\n"
         }
         output
-      case null => output
+      case _ => output
   override def toString: String =
     // print variables as a matrix
     val sb = new StringBuilder

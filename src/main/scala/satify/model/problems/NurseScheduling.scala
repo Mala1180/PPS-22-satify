@@ -72,4 +72,4 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
           output += s"$nurse works $day at the shift number $shift\n"
         }
         output
-      case null => output
+      case _ => output
