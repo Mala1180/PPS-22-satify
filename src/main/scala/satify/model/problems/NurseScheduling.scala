@@ -3,8 +3,6 @@ import satify.model.Assignment
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
-import satify.update.solver.Solver
-import satify.update.solver.SolverType.DPLL
 
 case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
 
@@ -18,7 +16,7 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     yield Symbol(s"n${n}_d${d}_s$s")
 
   /** In each shift can work just one nurse */
-  val oneNursePerShift: Expression =
+  private val oneNursePerShift: Expression =
     val constraint =
       for
         d <- 0 until days
@@ -29,7 +27,7 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     constraint.reduceLeft(And(_, _))
 
   /** Each nurse can work no more than one shift per day */
-  val atMostOneShiftPerDay: Expression =
+  private val atMostOneShiftPerDay: Expression =
     val constraint = for
       n <- 0 until nurses
       d <- 0 until days
@@ -48,14 +46,14 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
   println("Max shifts per nurse" + maxShiftsPerNurse)
 
   /** Each nurse should work at least the minimum number of shifts */
-  val minShiftsPerNurseConstraint: Expression =
+  private val minShiftsPerNurseConstraint: Expression =
     val constraint =
       for n <- 0 until nurses
       yield atLeastK(minShiftsPerNurse.toInt)(variables(n).flatten: _*)
     constraint.reduceLeft(And(_, _))
 
   /** Each nurse should work at most the maximum number of shifts */
-  val maxShiftsPerNurseConstraint: Expression =
+  private val maxShiftsPerNurseConstraint: Expression =
     val constraint =
       for n <- 0 until nurses
       yield atMostK(maxShiftsPerNurse)(variables(n).flatten: _*)
