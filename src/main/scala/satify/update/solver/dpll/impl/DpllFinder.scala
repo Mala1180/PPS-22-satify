@@ -24,7 +24,7 @@ object DpllFinder:
     * @param dt decision tree
     * @param s  solution
     */
-  case class DpllRun(dt: DecisionTree, s: Solution)
+  private case class DpllRun(dt: DecisionTree, s: Solution)
 
   val rnd: Random = Random(42)
   private var prevRun: Option[DpllRun] = None
