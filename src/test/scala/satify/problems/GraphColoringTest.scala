@@ -11,7 +11,7 @@ import satify.update.solver.{Solver, SolverType}
 
 class GraphColoringTest extends AnyFlatSpec with Matchers:
 
-  "GraphColoring 3 linked nodes with 1 color" should "be UNSAT" in {
+  "GraphColoring 3 linked nodes with 2 color and 1 auto-cycle" should "be UNSAT" in {
     // note auto-cycle
     val problem = GraphColoring(List(("n1", "n2"), ("n2", "n3"), ("n2", "n2")), List("n1", "n2", "n3"), 2)
     val sol = Solver(DPLL).solve(problem.exp)
