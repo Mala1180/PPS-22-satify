@@ -28,7 +28,7 @@ private[solver] object DpllEnumerator:
     * @param dec first decision
     * @return decision tree of the run.
     */
-  private[impl] def dpll(dec: Decision): DecisionTree =
+  private def dpll(dec: Decision): DecisionTree =
 
     case class Frame(d: Decision, done: List[DecisionTree], todos: List[Decision])
 
