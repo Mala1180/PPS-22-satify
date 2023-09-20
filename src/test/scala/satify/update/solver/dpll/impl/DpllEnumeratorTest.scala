@@ -34,17 +34,17 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
   }
 
   "Enumerator" should "return all the assignments of a satisfiable expression" in {
-    enumerate(Or(sA, Or(sA, sB))).assignments shouldBe
-      List(
-        Assignment(List(Variable("a", true), Variable("b", true))),
-        Assignment(List(Variable("a", true), Variable("b", false))),
-        Assignment(List(Variable("a", false), Variable("b", true)))
+    Set(enumerate(Or(sA, Or(sA, sB))).assignments: _*) shouldBe
+      Set(
+        Assignment(Variable("a", true) :: Variable("b", true) :: Nil),
+        Assignment(Variable("a", true) :: Variable("b", false) :: Nil),
+        Assignment(Variable("a", false) :: Variable("b", true) :: Nil)
       )
-    enumerate(And(sA, Or(sA, Or(sB, Not(sC))))).assignments shouldBe
-      List(
-        Assignment(List(Variable("a", true), Variable("b", true), Variable("c", true))),
-        Assignment(List(Variable("a", true), Variable("b", false), Variable("c", true))),
-        Assignment(List(Variable("a", true), Variable("b", true), Variable("c", false))),
-        Assignment(List(Variable("a", true), Variable("b", false), Variable("c", false)))
+    Set(enumerate(And(sA, Or(sA, Or(sB, Not(sC))))).assignments: _*) shouldBe
+      Set(
+        Assignment(Variable("a", true) :: Variable("b", true) :: Variable("c", true) :: Nil),
+        Assignment(Variable("a", true) :: Variable("b", false) :: Variable("c", true) :: Nil),
+        Assignment(Variable("a", true) :: Variable("b", true) :: Variable("c", false) :: Nil),
+        Assignment(Variable("a", true) :: Variable("b", false) :: Variable("c", false) :: Nil)
       )
   }
