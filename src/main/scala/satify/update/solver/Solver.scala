@@ -5,9 +5,10 @@ import satify.model.expression.Expression
 import satify.model.{Assignment, Solution}
 import satify.update.converters.ConverterType.*
 import satify.update.converters.{Converter, ConverterType}
-import satify.update.solver.DpllSolverMemoize.enumerate
+import satify.update.solver.DpllSolverMemoize.dpllEnumerate
 import satify.update.solver.SolverType.*
-import satify.update.solver.dpll.impl.{DpllEnumerator, DpllFinder}
+import satify.update.solver.dpll.impl.DpllEnumerator.enumerate
+import satify.update.solver.dpll.impl.DpllFinder.{find, findNext}
 
 import scala.collection.mutable
 
@@ -62,15 +63,19 @@ object Solver:
   /** Private implementation of [[Solver]] */
   private case class DpllSolver(converter: Converter) extends Solver:
 
-    override def solveAll(cnf: CNF): Solution = enumerate(cnf)
+    override def solveAll(cnf: CNF): Solution = dpllEnumerate(cnf)
+
     override def solveAll(exp: Expression): Solution = solveAll(converter.convert(exp))
-    override def solve(cnf: CNF): Solution = DpllFinder.dpll(cnf)
+
+    override def solve(cnf: CNF): Solution = find(cnf)
+
     override def solve(exp: Expression): Solution = solve(converter.convert(exp))
-    override def next(): Assignment = DpllFinder.dpll()
+
+    override def next(): Assignment = findNext()
 
 object DpllSolverMemoize:
 
-  val enumerate: CNF => Solution = memoize(cnf => DpllEnumerator.dpll(cnf))
+  val dpllEnumerate: CNF => Solution = memoize(cnf => enumerate(cnf))
 
   protected def memoize(f: CNF => Solution): CNF => Solution =
     new collection.mutable.HashMap[CNF, Solution]():

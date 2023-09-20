@@ -99,12 +99,11 @@ to easily compose the instance (which is an **Expression**).
     7. The user has to parameterize the problem selected.
     8. The user can convert the logical expression in CNF and see the transformed formula.
     9. The user can export the CNF to a text file in DIMACS format.
-    10. The user can solve the instance inserted in input.
-    11. The user can see the result of the algorithm, and all the assignments that make the expression satisfiable if
-        they exist.
-    12. The user must be able to see the assignments done by the DPLL of the variables that make the logical expression
-        satisfiable.
-    13. The user can see the time spent by the DPLL algorithm to solve the instance.
+    10. The user can solve an instance and get if it is SAT or UNSAT, given a logical expression in input.
+    11. The user can get all the satisfiable variables assignments at once if the instance is SAT.
+    12. The user can get one satisfiable variables assignment at a time if the instance is SAT, continuing to get them
+        as long as there is some.
+    13. The user can see the time spent by the search algorithm to solve the instance.
     14. The user can see the time spent by the Tseitin transformation algorithm to convert the instance.
 
 2. ### System requirements

@@ -7,7 +7,7 @@ import satify.model.dpll.{Constraint, Decision, OptionalVariable, PartialAssignm
 import scala.annotation.tailrec
 import scala.collection.immutable.{AbstractSeq, LinearSeq}
 
-object Optimizations:
+private[dpll] object Optimizations:
 
   import PureLitSearch.*
 

@@ -12,10 +12,13 @@ import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 
 import scala.annotation.tailrec
+import scala.util.Random
 
-object DpllEnumerator:
+private[solver] object DpllEnumerator:
 
-  def dpll(cnf: CNF): Solution =
+  private val rnd = Random(42)
+
+  def enumerate(cnf: CNF): Solution =
     val assignments: List[Assignment] =
       (for partialAssignment <- extractParAssignments(dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)))
       yield partialAssignment.toAssignments).flatten.distinct
@@ -25,7 +28,7 @@ object DpllEnumerator:
     * @param dec first decision
     * @return decision tree of the run.
     */
-  def dpll(dec: Decision): DecisionTree =
+  private[impl] def dpll(dec: Decision): DecisionTree =
 
     case class Frame(d: Decision, done: List[DecisionTree], todos: List[Decision])
 
@@ -42,7 +45,7 @@ object DpllEnumerator:
             step(Frame(tn, ret :: td, tt) :: more)
       case Frame(d, done, x :: xs) :: tail =>
         if isUnsat(d.cnf) || isSat(d.cnf) then step(Frame(d, Nil, Nil) :: tail)
-        else step(Frame(x, Nil, decide(x)) :: Frame(d, done, xs) :: tail)
+        else step(Frame(x, Nil, decide(x, rnd)) :: Frame(d, done, xs) :: tail)
       case Nil => throw new Error("Stack should never be empty")
 
-    step(List(Frame(dec, Nil, decide(dec))))
+    step(List(Frame(dec, Nil, decide(dec, rnd))))

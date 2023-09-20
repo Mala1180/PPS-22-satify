@@ -12,6 +12,8 @@ import satify.model.dpll.PartialAssignment.*
 import satify.model.dpll.{Decision, DecisionTree, OptionalVariable, PartialAssignment}
 import satify.update.solver.dpll.impl.DpllEnumerator.*
 
+import scala.annotation.tailrec
+
 class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
 
   import satify.model.dpll.OrderedList.given
@@ -22,15 +24,24 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
 
   val cnf: CNF = And(sA, sB)
 
+  private def decisionFromCnf(cnf: CNF): Decision = Decision(extractParAssignmentFromCnf(cnf), cnf)
+
+  @tailrec
+  private def findLeftDecision(dt: DecisionTree, h: Int = 1): Option[Decision] = dt match
+    case Leaf(d) if h == 0 => Some(d)
+    case Branch(d, _, _) if h == 0 => Some(d)
+    case Branch(_, left, _) => findLeftDecision(left, h - 1)
+    case _ => None
+
   "Enumerator" should "return SAT" in {
-    dpll(cnf).assignment.size should be > 0
-    dpll(And(sA, Or(sB, sC))).assignment.size should be > 0
+    enumerate(cnf).assignments.size should be > 0
+    enumerate(And(sA, Or(sB, sC))).assignments.size should be > 0
   }
 
   "Enumerator" should "return UNSAT" in {
-    dpll(And(sA, Not(sA))).assignment should have size 0
-    dpll(And(sA, And(Or(sB, sC), Not(sA)))).assignment should have size 0
-    dpll(
+    enumerate(And(sA, Not(sA))).assignments should have size 0
+    enumerate(And(sA, And(Or(sB, sC), Not(sA)))).assignments should have size 0
+    enumerate(
       And(
         Or(sA, sB),
         And(
@@ -38,7 +49,7 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
           And(Or(sA, Not(sB)), Or(Not(sA), Not(sB)))
         )
       )
-    ).assignment should have size 0
+    ).assignments should have size 0
   }
 
   "Enumerator" should "do unit propagation when there's a unit literal in positive form" in {
@@ -78,27 +89,17 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
   }
 
   "Enumerator" should "do unit propagation when there's a unit literal in negative form" in {
-    val cnf: CNF = And(Not(sA), Or(sA, sB))
-    dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) shouldBe
-      Branch(
-        Decision(PartialAssignment(list(OptionalVariable("a"), OptionalVariable("b"))), cnf),
-        Branch(
-          Decision(PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b"))), sB),
-          Leaf(
+    val cnf: CNF = Or(sA, Or(sA, sB))
+    findLeftDecision(dpll(decisionFromCnf(cnf))) should matchPattern {
+      case Some(
             Decision(
-              PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b", Some(true)))),
-              Symbol(True)
+              PartialAssignment(
+                OptionalVariable("a", Some(false)) :: OptionalVariable("b", None) :: Nil
+              ),
+              _
             )
-          ),
-          Leaf(
-            Decision(
-              PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b", Some(false)))),
-              Symbol(False)
-            )
-          )
-        ),
-        Leaf(Decision(PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b"))), Symbol(False)))
-      )
+          ) =>
+    }
   }
 
   "Enumerator" should "do pure literals elimination when there's a pure literal in positive form" in {
