@@ -3,8 +3,8 @@ package satify.model.expression
 enum Expression:
   case Symbol(value: String)
   case Not(branch: Expression)
-  case And(right: Expression, left: Expression)
-  case Or(right: Expression, left: Expression)
+  case And(left: Expression, right: Expression)
+  case Or(left: Expression, right: Expression)
 
 /** Object with methods to manipulate expressions */
 

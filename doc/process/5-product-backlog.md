@@ -1,30 +1,6 @@
 # Product Backlog — Sprint 5
 
-_Remaining tasks from the previous sprint:_
-
-<table>
-    <thead>
-        <tr>
-            <th>Priority</th>
-            <th>Product Backlog Item</th>
-            <th>Sprint Task</th>
-            <th>Volunteers</th>
-            <th>New Estimation</th>
-        </tr>
-    </thead>
-<tbody>
-    <tr>
-        <td>1</td>
-        <td rowspan="2">Possibility to stop execution</td>
-        <td>Stop button</td>
-        <td>Fabri</td>
-        <td>3</td>
-    </tr>
-</tbody>
-</table>
-
-_New tasks in this sprint:_
-
+_No remaining tasks from the previous sprint._
 
 <table>
     <tbody>
@@ -146,7 +122,6 @@ _New tasks in this sprint:_
 The goals of this sprint are:
 
 - Providing the user a way to get all the solutions incrementally or all at once.
-- Possibility to stop the algorithm execution.
 - Addition of some basic functionalities to the DSL like the comments.
 
 There will be the final release of the project containing all functionalities.
