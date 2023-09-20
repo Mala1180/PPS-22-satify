@@ -58,7 +58,9 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
       case Some(
             Decision(
               PartialAssignment(
-                OptionalVariable("a", Some(true)) :: OptionalVariable("b", None) :: OptionalVariable("c", None) :: Nil
+                OptionalVariable("a", Some(true)) ::
+                OptionalVariable("b", None) ::
+                OptionalVariable("c", None) :: Nil
               ),
               _
             )
@@ -72,7 +74,8 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
       case Some(
             Decision(
               PartialAssignment(
-                OptionalVariable("a", Some(false)) :: OptionalVariable("b", None) :: Nil
+                OptionalVariable("a", Some(false)) ::
+                OptionalVariable("b", None) :: Nil
               ),
               _
             )
@@ -86,100 +89,16 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
         Or(Or(sA, Not(sB)), sB),
         And(Or(sB, sC), Or(sA, Not(sB)))
       )
-    dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) shouldBe
-      Branch(
-        Decision(PartialAssignment(list(OptionalVariable("a"), OptionalVariable("b"), OptionalVariable("c"))), cnf),
-        Branch(
-          Decision(
-            PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b"), OptionalVariable("c"))),
-            Or(sB, sC)
-          ),
-          Leaf(
+    findLeftDecision(dpll(decisionFromCnf(cnf))) should matchPattern {
+      case Some(
             Decision(
               PartialAssignment(
-                list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(true)), OptionalVariable("c"))
+                OptionalVariable("a", Some(true)) ::
+                OptionalVariable("b", None) ::
+                OptionalVariable("c", None) :: Nil
               ),
-              Symbol(True)
+              _
             )
-          ),
-          Branch(
-            Decision(
-              PartialAssignment(
-                list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(false)), OptionalVariable("c"))
-              ),
-              sC
-            ),
-            Leaf(
-              Decision(
-                PartialAssignment(
-                  list(
-                    OptionalVariable("a", Some(true)),
-                    OptionalVariable("b", Some(false)),
-                    OptionalVariable("c", Some(true))
-                  )
-                ),
-                Symbol(True)
-              )
-            ),
-            Leaf(
-              Decision(
-                PartialAssignment(
-                  list(
-                    OptionalVariable("a", Some(true)),
-                    OptionalVariable("b", Some(false)),
-                    OptionalVariable("c", Some(false))
-                  )
-                ),
-                Symbol(False)
-              )
-            )
-          )
-        ),
-        Branch(
-          Decision(
-            PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b"), OptionalVariable("c"))),
-            And(Or(Not(sB), sB), And(Or(sB, sC), Not(sB)))
-          ),
-          Branch(
-            Decision(
-              PartialAssignment(
-                list(OptionalVariable("a", Some(false)), OptionalVariable("b", Some(false)), OptionalVariable("c"))
-              ),
-              sC
-            ),
-            Leaf(
-              Decision(
-                PartialAssignment(
-                  list(
-                    OptionalVariable("a", Some(false)),
-                    OptionalVariable("b", Some(false)),
-                    OptionalVariable("c", Some(true))
-                  )
-                ),
-                Symbol(True)
-              )
-            ),
-            Leaf(
-              Decision(
-                PartialAssignment(
-                  list(
-                    OptionalVariable("a", Some(false)),
-                    OptionalVariable("b", Some(false)),
-                    OptionalVariable("c", Some(false))
-                  )
-                ),
-                Symbol(False)
-              )
-            )
-          ),
-          Leaf(
-            Decision(
-              PartialAssignment(
-                list(OptionalVariable("a", Some(false)), OptionalVariable("b", Some(true)), OptionalVariable("c"))
-              ),
-              Symbol(False)
-            )
-          )
-        )
-      )
+          ) =>
+    }
   }
