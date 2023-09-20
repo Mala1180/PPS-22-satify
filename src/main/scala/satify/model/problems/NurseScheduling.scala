@@ -66,7 +66,7 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
   )
 
   def toString(assignment: Assignment): String =
-    var output = s"There are $shifts shifts a day\n" +
+    var output = s"There are $shifts shifts per day\n" +
       "Min shifts per nurse " + minShiftsPerNurse + "\n" +
       "Max shifts per nurse " + maxShiftsPerNurse + "\n"
 
@@ -75,9 +75,9 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
         variables.filter(_.value).foreach { v =>
           val name = v.name
           val nurse = "Nurse-" + name.split("_d")(0).replace("n", "")
-          val day = "Day " + name.split("_s")(0).last
+          val day = "day " + name.split("_s")(0).last
           val shift = name.split("_s")(1)
-          output += s"$nurse works $day at the shift number $shift\n"
+          output += s"$nurse works $day at the shift $shift\n"
         }
         output
       case _ => output
