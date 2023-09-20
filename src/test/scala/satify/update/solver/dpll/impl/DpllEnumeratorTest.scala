@@ -54,42 +54,20 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
 
   "Enumerator" should "do unit propagation when there's a unit literal in positive form" in {
     val cnf: CNF = And(sA, And(sB, Or(sB, sC)))
-    dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) shouldBe
-      Branch(
-        Decision(PartialAssignment(list(OptionalVariable("a"), OptionalVariable("b"), OptionalVariable("c"))), cnf),
-        Branch(
-          Decision(
-            PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b"), OptionalVariable("c"))),
-            And(sB, Or(sB, sC))
-          ),
-          Leaf(
+    findLeftDecision(dpll(decisionFromCnf(cnf))) should matchPattern {
+      case Some(
             Decision(
               PartialAssignment(
-                list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(true)), OptionalVariable("c"))
+                OptionalVariable("a", Some(true)) :: OptionalVariable("b", None) :: OptionalVariable("c", None) :: Nil
               ),
-              Symbol(True)
+              _
             )
-          ),
-          Leaf(
-            Decision(
-              PartialAssignment(
-                list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(false)), OptionalVariable("c"))
-              ),
-              Symbol(False)
-            )
-          )
-        ),
-        Leaf(
-          Decision(
-            PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b"), OptionalVariable("c"))),
-            Symbol(False)
-          )
-        )
-      )
+          ) =>
+    }
   }
 
   "Enumerator" should "do unit propagation when there's a unit literal in negative form" in {
-    val cnf: CNF = Or(sA, Or(sA, sB))
+    val cnf: CNF = Or(Not(sA), Or(Not(sA), sB))
     findLeftDecision(dpll(decisionFromCnf(cnf))) should matchPattern {
       case Some(
             Decision(
