@@ -11,7 +11,7 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
     val exp: Expression =
       Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val substitution: Expression = Not(Symbol("c"))
-    val result = replace(exp, substitution, Symbol("X0"))
+    val result = exp.replace(substitution, Symbol("X0"))
     result shouldBe exp
   }
 
@@ -19,7 +19,7 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
     val exp: Expression =
       Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val substitution: Expression = And(Symbol("a"), Symbol("b"))
-    val result = replace(exp, substitution, Symbol("X0"))
+    val result = exp.replace(substitution, Symbol("X0"))
     result shouldBe exp
   }
 
@@ -29,7 +29,7 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
     val substitution: Expression = Not(Symbol("b"))
     val expected: Expression =
       Or(And(Symbol("a"), Symbol("X0")), Symbol("c"))
-    val result = replace(exp, substitution, Symbol("X0"))
+    val result = exp.replace(substitution, Symbol("X0"))
     result shouldBe expected
   }
 
@@ -38,7 +38,7 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
       Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val substitution: Expression = And(Symbol("a"), Not(Symbol("b")))
     val expected: Expression = Or(Symbol("X0"), Symbol("c"))
-    val result = replace(exp, substitution, Symbol("X0"))
+    val result = exp.replace(substitution, Symbol("X0"))
     result shouldBe expected
   }
 
@@ -48,7 +48,7 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
     val substitution: Expression =
       Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val expected: Expression = Symbol("X0")
-    val result = replace(exp, substitution, Symbol("X0"))
+    val result = exp.replace(substitution, Symbol("X0"))
     result shouldBe expected
   }
 
@@ -58,7 +58,7 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
     val substitution: Expression = Not(Symbol("b"))
     val expected: Expression =
       Or(And(Symbol("X0"), Symbol("X0")), Symbol("X0"))
-    val result = replace(exp, substitution, Symbol("X0"))
+    val result = exp.replace(substitution, Symbol("X0"))
     result shouldBe expected
   }
 
@@ -66,13 +66,12 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
     val expression: Expression =
       Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val sub1: Expression = Not(Symbol("b"))
-    val exp1: Expression =
-      Or(And(Symbol("a"), Symbol("X0")), Symbol("c"))
-    val res1 = replace(expression, sub1, Symbol("X0"))
+    val exp1: Expression = Or(And(Symbol("a"), Symbol("X0")), Symbol("c"))
+    val res1 = expression.replace(sub1, Symbol("X0"))
     res1 shouldBe exp1
     val sub2: Expression = And(Symbol("a"), Symbol("X0"))
     val exp2: Expression = Or(Symbol("X1"), Symbol("c"))
-    val res2 = replace(exp1, sub2, Symbol("X1"))
+    val res2 = exp1.replace(sub2, Symbol("X1"))
     res2 shouldBe exp2
   }
 
@@ -81,7 +80,7 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
       Or(And(Not(Symbol("b")), Not(Symbol("b"))), Not(Symbol("b")))
     val substitution: Expression = And(Not(Symbol("b")), Not(Symbol("b")))
     val expected: Expression = Or(Symbol("X0"), Not(Symbol("b")))
-    val result = replace(exp, substitution, Symbol("X0"))
+    val result = exp.replace(substitution, Symbol("X0"))
     result shouldBe expected
   }
 
@@ -91,6 +90,6 @@ class ReplaceTest extends AnyFlatSpec with Matchers:
     val substitution: Expression = Not(Symbol("b"))
     val expected: Expression =
       Or(And(Symbol("a"), Symbol("X0")), Symbol("X0"))
-    val result = replace(exp, substitution, Symbol("X0"))
+    val result = exp.replace(substitution, Symbol("X0"))
     result shouldBe expected
   }

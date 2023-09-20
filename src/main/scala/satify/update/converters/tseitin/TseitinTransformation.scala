@@ -37,8 +37,8 @@ private[converters] object TseitinTransformation:
     ): List[(Symbol, Expression)] =
       list match {
         case Nil => acc.reverse
-        case (lit, e) :: t if contains(e, subexp) =>
-          replace(t, subexp, l, (lit, replaceExp(e, subexp, l)) :: acc)
+        case (lit, e) :: t if e.contains(subexp) =>
+          replace(t, subexp, l, (lit, e.replaceExp(subexp, l)) :: acc)
         case (lit, e) :: t => replace(t, subexp, l, (lit, e) :: acc)
       }
 

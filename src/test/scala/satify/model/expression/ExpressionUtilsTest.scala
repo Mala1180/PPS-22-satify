@@ -22,12 +22,12 @@ class ExpressionUtilsTest extends AnyFlatSpec with Matchers:
 
   "The method contains" should "return true if a subexpression is contained in the expression" in {
     val exp1: Expression = Symbol("a")
-    contains(exp1, Symbol("b")) shouldBe false
+    exp1.contains(Symbol("b")) shouldBe false
     // note, a literal cannot contain a literal
     val exp2: Expression = Not(Symbol("a"))
-    contains(exp2, Symbol("a")) shouldBe false
+    exp2.contains(Symbol("a")) shouldBe false
     val exp3: Expression = Or(Symbol("a"), Or(Symbol("b"), Symbol("c")))
-    contains(exp3, Or(Symbol("b"), Symbol("c"))) shouldBe true
+    exp3.contains(Or(Symbol("b"), Symbol("c"))) shouldBe true
     val exp4: Expression = Or(Symbol("a"), Or(Symbol("b"), Symbol("c")))
-    contains(exp4, Or(Symbol("a"), Symbol("c"))) shouldBe false
+    exp4.contains(Or(Symbol("a"), Symbol("c"))) shouldBe false
   }
