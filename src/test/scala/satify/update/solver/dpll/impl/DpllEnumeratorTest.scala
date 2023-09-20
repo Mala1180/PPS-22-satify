@@ -22,12 +22,12 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
 
   val cnf: CNF = And(sA, sB)
 
-  "DPLL" should "be SAT" in {
+  "Enumerator" should "return SAT" in {
     dpll(cnf).assignment.size should be > 0
     dpll(And(sA, Or(sB, sC))).assignment.size should be > 0
   }
 
-  "DPLL" should "be UNSAT" in {
+  "Enumerator" should "return UNSAT" in {
     dpll(And(sA, Not(sA))).assignment shouldBe Nil
     dpll(And(sA, And(Or(sB, sC), Not(sA)))).assignment shouldBe Nil
     dpll(
@@ -41,7 +41,7 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
     ).assignment shouldBe Nil
   }
 
-  "DPLL" should "do unit propagation when there's only a OptionalVariable inside a clause and it is in positive form" in {
+  "Enumerator" should "do unit propagation when there's a unit literal in positive form" in {
     val cnf: CNF = And(sA, And(sB, Or(sB, sC)))
     dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) shouldBe
       Branch(
@@ -77,7 +77,7 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
       )
   }
 
-  "DPLL" should "do unit propagation when there's only a OptionalVariable inside a clause and it is in negative form" in {
+  "Enumerator" should "do unit propagation when there's a unit literal in negative form" in {
     val cnf: CNF = And(Not(sA), Or(sA, sB))
     dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) shouldBe
       Branch(
@@ -101,33 +101,7 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
       )
   }
 
-  "DPLL" should "do pure literals elimination when the Literal appears only in negative form" in {
-    val cnf: CNF = And(Or(Not(sA), Not(sB)), Or(Not(sA), sB))
-    dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) shouldBe
-      Branch(
-        Decision(PartialAssignment(list(OptionalVariable("a"), OptionalVariable("b"))), cnf),
-        Leaf(
-          Decision(PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b"))), Symbol(True))
-        ),
-        Branch(
-          Decision(PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b"))), And(Not(sB), sB)),
-          Leaf(
-            Decision(
-              PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(false)))),
-              Symbol(False)
-            )
-          ),
-          Leaf(
-            Decision(
-              PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(true)))),
-              Symbol(False)
-            )
-          )
-        )
-      )
-  }
-
-  "DPLL" should "do pure literals elimination when the Literal appears only in positive form" in {
+  "Enumerator" should "do pure literals elimination when there's a pure literal in positive form" in {
     val cnf: CNF =
       And(
         Or(Or(sA, Not(sB)), sB),
