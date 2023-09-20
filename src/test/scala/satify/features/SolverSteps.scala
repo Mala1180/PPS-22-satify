@@ -22,17 +22,17 @@ object SolverSteps extends ScalaDsl with EN:
       )
     assignmentList.foldLeft("")((p, c) => s"$p$c${if assignmentList.last == c then "" else s", "}")
 
-  Then("the result should be SAT")(() => sol.result shouldBe SAT)
+  Then("the result should be SAT")(sol.result shouldBe SAT)
 
-  Then("the result should be UNSAT")(() => sol.result shouldBe UNSAT)
+  Then("the result should be UNSAT")(sol.result shouldBe UNSAT)
 
-  And("it is passed in input to a solver that returns all the assignments")(() =>
+  And("it is passed in input to a solver that returns all the assignments") {
     sol = Solver(DPLL).solveAll(expression.get)
-  )
+  }
 
-  And("it is passed in input to a solver that returns one assignment at a time")(() =>
+  And("it is passed in input to a solver that returns one assignment at a time") {
     sol = Solver(DPLL).solve(expression.get)
-  )
+  }
 
   And("I should obtain the assignments {string}") { (expectedAssignments: String) =>
     assignmentsAsString(sol.assignments) shouldBe expectedAssignments
@@ -41,6 +41,4 @@ object SolverSteps extends ScalaDsl with EN:
   And("I should obtain another assignment {string}") { (expectedAssignments: String) =>
     assignmentsAsString(Solver(DPLL).next() :: Nil) shouldBe expectedAssignments
   }
-  And("I should obtain no assignments") {
-    sol.assignments should have size 0
-  }
+  And("I should obtain no assignments")(sol.assignments should have size 0)

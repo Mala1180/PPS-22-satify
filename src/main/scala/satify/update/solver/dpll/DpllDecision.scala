@@ -29,6 +29,7 @@ object DpllDecision:
   /** Make random decisions based on the previous one given as parameter,
     * by choosing a random variable assigning a random value to it.
     * @param d previous decision
+    * @param rnd random generator
     * @return List of new decisions
     */
   private def randomDecisions(d: Decision, rnd: Random): List[Decision] = d match
