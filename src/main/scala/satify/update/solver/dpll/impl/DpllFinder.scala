@@ -26,6 +26,7 @@ object DpllFinder:
   private case class DpllRun(dt: DecisionTree, s: Solution)
 
   private var prevRun: Option[DpllRun] = None
+  private val rnd = Random(42)
 
   /** Runs the DPLL algorithm given a CNF in input.
     * @param cnf with the constraints to be satisfied.
@@ -84,7 +85,7 @@ object DpllFinder:
     */
   private def dpll(d: Decision): (DecisionTree, Result) =
     if !isUnsat(d.cnf) && !isSat(d.cnf) then
-      decide(d) match
+      decide(d, rnd) match
         case ::(head, next) =>
           dpll(head) match
             case (dtl, SAT) => (Branch(d, dtl, Leaf(next.head)), SAT)
