@@ -9,15 +9,15 @@ class ExpressionUtilsTest extends AnyFlatSpec with Matchers:
 
   "The method clauses" should "return the number of clauses contained in the expression" in {
     val exp1: Expression = Symbol("a")
-    clauses(exp1) shouldBe 1
+    exp1.clauses shouldBe 1
     val exp2: Expression = Not(Symbol("a"))
-    clauses(exp2) shouldBe 1
+    exp2.clauses shouldBe 1
     val exp3: Expression = Or(Symbol("a"), Symbol("b"))
-    clauses(exp3) shouldBe 1
+    exp3.clauses shouldBe 1
     val exp4: Expression = Or(Not(Symbol("a")), Symbol("b"))
-    clauses(exp4) shouldBe 2
+    exp4.clauses shouldBe 2
     val exp5: Expression = Or(Not(Symbol("a")), Not(Symbol("b")))
-    clauses(exp5) shouldBe 3
+    exp5.clauses shouldBe 3
   }
 
   "The method contains" should "return true if a subexpression is contained in the expression" in {
