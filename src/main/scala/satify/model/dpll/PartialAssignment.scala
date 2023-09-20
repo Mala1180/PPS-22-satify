@@ -49,11 +49,11 @@ object PartialAssignment:
   def extractParAssignmentFromCnf(cnf: CNF): PartialAssignment =
 
     def extractOptVars(cnf: CNF): List[OptionalVariable] = cnf match
-      case Symbol(name: String) => list(OptionalVariable(name))
-      case And(e1, e2) => list(extractOptVars(e1) ++ extractOptVars(e2): _*)
-      case Or(e1, e2) => list(extractOptVars(e1) ++ extractOptVars(e2): _*)
+      case Symbol(name: String) => List(OptionalVariable(name))
+      case And(e1, e2) => List(extractOptVars(e1) ++ extractOptVars(e2): _*)
+      case Or(e1, e2) => List(extractOptVars(e1) ++ extractOptVars(e2): _*)
       case Not(e) => extractOptVars(e)
-      case _ => list()
+      case _ => List()
 
     PartialAssignment(extractOptVars(cnf))
 
