@@ -23,14 +23,14 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
   val cnf: CNF = And(sA, sB)
 
   "DPLL" should "be SAT" in {
-    dpll(cnf).assignment.size should be > 0
-    dpll(And(sA, Or(sB, sC))).assignment.size should be > 0
+    enumerate(cnf).assignments.size should be > 0
+    enumerate(And(sA, Or(sB, sC))).assignments.size should be > 0
   }
 
   "DPLL" should "be UNSAT" in {
-    dpll(And(sA, Not(sA))).assignment shouldBe Nil
-    dpll(And(sA, And(Or(sB, sC), Not(sA)))).assignment shouldBe Nil
-    dpll(
+    enumerate(And(sA, Not(sA))).assignments shouldBe Nil
+    enumerate(And(sA, And(Or(sB, sC), Not(sA)))).assignments shouldBe Nil
+    enumerate(
       And(
         Or(sA, sB),
         And(
@@ -38,7 +38,7 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
           And(Or(sA, Not(sB)), Or(Not(sA), Not(sB)))
         )
       )
-    ).assignment shouldBe Nil
+    ).assignments shouldBe Nil
   }
 
   "DPLL" should "do unit propagation when there's only a OptionalVariable inside a clause and it is in positive form" in {

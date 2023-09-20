@@ -28,17 +28,17 @@ case class Assignment(variables: List[Variable])
 /** Represents a solution to the SAT problem. It is used by [[update.Solver]].
   * @param result The result of the SAT problem (SAT or UNSAT).
   * @param status The status (e.g. if the solution is completed or not)
-  * @param assignment The assignment of variables to values, if the problem is SAT.
+  * @param assignments The assignment of variables to values, if the problem is SAT.
   */
-case class Solution(result: Result, status: Status, assignment: List[Assignment] = Nil)
+case class Solution(result: Result, status: Status, assignments: List[Assignment] = Nil)
 
 object Solution:
 
   extension (solution: Solution)
     def print: String =
-      s"${solution.result} \n ${solution.assignment
+      s"${solution.result} \n ${solution.assignments
           .map(a =>
-            s"Solution ${solution.assignment.indexOf(a) + 1}" + "\n" +
+            s"Solution ${solution.assignments.indexOf(a) + 1}" + "\n" +
               a.variables.foldLeft("")((b, c) => b + c.name + ": " + c.value + "\n")
           )
           .foldLeft("")((p, c) => p + "\n" + c)}"

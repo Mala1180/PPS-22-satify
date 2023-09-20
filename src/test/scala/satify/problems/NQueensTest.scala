@@ -21,5 +21,5 @@ class NQueensTest extends AnyFlatSpec with Matchers:
     val problem = NQueens(4)
     val sol = Solver(DPLL).solve(problem.exp)
     sol should matchPattern { case Solution(SAT, _, _) => }
-    problem.toString(sol.assignment.head)
+    problem.toString(sol.assignments.head)
   }
