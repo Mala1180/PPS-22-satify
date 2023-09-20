@@ -19,7 +19,7 @@ class ConcatTest extends AnyFlatSpec with Matchers:
     val exps: List[CNF] = List(Symbol("a"), Symbol("b"), Symbol("c"))
     val result: CNF = concat(exps)
     val expected: CNF = And(
-      Symbol("TSTN0"),
+      Symbol("GEN0"),
       And(Symbol("a"), And(Symbol("b"), Symbol("c")))
     )
     result shouldBe expected
@@ -30,7 +30,7 @@ class ConcatTest extends AnyFlatSpec with Matchers:
       List(Or(Symbol("a"), Symbol("b")), And(Symbol("c"), Symbol("d")))
     val result: CNF = concat(exps)
     val expected: CNF = And(
-      Symbol("TSTN0"),
+      Symbol("GEN0"),
       And(
         Or(Symbol("a"), Symbol("b")),
         And(Symbol("c"), Symbol("d"))

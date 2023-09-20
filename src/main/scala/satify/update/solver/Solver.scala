@@ -1,8 +1,6 @@
 package satify.update.solver
 
-import satify.model.Result.*
 import satify.model.cnf.CNF
-import satify.model.dpll.{DecisionTree, PartialAssignment}
 import satify.model.expression.Expression
 import satify.model.{Assignment, Solution}
 import satify.update.converters.ConverterType.*
@@ -21,25 +19,26 @@ trait Solver:
 
   /** Solves the SAT problem, returning a solution with all satisfiable assignments.
     * @param cnf the input in conjunctive normal form
-    * @return the solution to the SAT problem
+    * @return the solution of the SAT problem
     */
   def solveAll(cnf: CNF): Solution
 
   /** Solves the SAT problem, returning a solution with all satisfiable assignments.
     * @param exp the input expression
-    * @return the solution to the SAT problem
+    * @return the solution of the SAT problem
     */
   def solveAll(exp: Expression): Solution
 
-  /** Solves the SAT problem returning a solution with a satisfiable assignment.
+  /** Solves the SAT problem returning a solution with the first satisfiable assignment found.
     * @param cnf the input in conjunctive normal form
-    * @return the solution to the SAT problem
+    * @return the solution of the SAT problem
     */
   def solve(cnf: CNF): Solution
 
-  /** Solves the SAT problem returning a solution with a satisfiable assignment.
+  /** Solves the SAT problem returning a solution with the first satisfiable assignment found.
+    * The input expression is converted in CNF and then is given in input to the resolution algorithm.
     * @param exp the input expression
-    * @return the solution to the SAT problem
+    * @return the solution of the SAT problem
     */
   def solve(exp: Expression): Solution
 

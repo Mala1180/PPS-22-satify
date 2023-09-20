@@ -120,12 +120,12 @@ to the DevOps tasks, so I set up Continuous Integration, SBT, ScalaTest and Scal
 ### Architecture
 
 After that, I was involved in the design and implementation of the software architecture (MVU).
-I decided to use the Cake Pattern despite there aren't too many dependencies in MVU, to still give robustness,
-substitutability and flexibility.
+Despite there aren't too many dependencies in MVU, I decided to use the Cake Pattern to still give robustness and
+flexibility.
 
 In particular, I made use of the _Self-Type Annotation_ and _Mixin_ mechanisms offered by Scala in order to
 manage dependencies between pattern components at compile-time and to create an application instance in a simple and
-readable way
+readable way.
 
 ```scala
 trait MVU extends ModelComponent with ViewComponent with UpdateComponent
@@ -137,15 +137,30 @@ object Main extends App with MVU
 
 Initially I implemented the components making use of _Abstract Modelling_,
 because at the start of the project I didn't know yet how
-Model, View and Update should have been concretely implemented.
+`Model`, `View` and `Update` should have been concretely implemented.
 This approach permitted me to focus on high-level design, architecture testing
 and to postpone the implementation details.
 
-I adopted _Abstract Modelling_ approach also when I started to implement the Model entity.
-In fact, I knew that the Model had to be an immutable data structure,
+I adopted _Abstract Modelling_ approach also when I started to implement the `Model` entity.
+In fact, I knew that the latter had to be an immutable data structure,
 but it wasn't really clear how the entities it was supposed to contain should have been implemented.
-So I started writing a trait of concepts called `State` (referring to the state of the application),
+So I started writing a _trait_ of concepts called `State` (referring to the state of the application),
 which was containing the unimplemented main model entities.
+
+### Domain-Specific Language
+
+For the Domain-Specific Language (DSL) creation, I decided to exploit the Scala's _extension methods_ and _implicit
+conversions_.
+
+Before all, I defined a preprocessing part where through the use of a regular expression I wrapped all the non-keywords
+with quotes to make them become strings.
+During this phase, I also removed all the comments and the newlines escape characters.
+
+Then, I used _reflection_ to execute the processed input string as a Scala code.
+The words previously wrapped with quotes are interpreted as strings and implicitly converted to `Symbol` objects.
+The use of the _extension methods_ allowed me to call methods and compose expressions using the infix notation.
+
+Using an Internal DSL, I obtained free and correct use of parenthesis and automatic error checking. 
 
 [//]: # (### Solver)
 

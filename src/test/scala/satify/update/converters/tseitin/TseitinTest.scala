@@ -20,10 +20,10 @@ class TseitinTest extends AnyFlatSpec with Matchers:
     val exp = Not(Symbol("b"))
     val result = tseitin(exp)
     val expected: CNF = CNFAnd(
-      CNFSymbol("TSTN0"),
+      CNFSymbol("GEN0"),
       CNFAnd(
-        CNFOr(CNFNot(CNFSymbol("b")), CNFNot(CNFSymbol("TSTN0"))),
-        CNFOr(CNFSymbol("b"), CNFSymbol("TSTN0"))
+        CNFOr(CNFNot(CNFSymbol("b")), CNFNot(CNFSymbol("GEN0"))),
+        CNFOr(CNFSymbol("b"), CNFSymbol("GEN0"))
       )
     )
     result shouldBe expected
@@ -33,15 +33,15 @@ class TseitinTest extends AnyFlatSpec with Matchers:
     val exp = Or(Symbol("a"), Symbol("b"))
     val result = tseitin(exp)
     val expected: CNF = CNFAnd(
-      CNFSymbol("TSTN0"),
+      CNFSymbol("GEN0"),
       CNFAnd(
         CNFOr(
           CNFOr(CNFSymbol("a"), CNFSymbol("b")),
-          CNFNot(CNFSymbol("TSTN0"))
+          CNFNot(CNFSymbol("GEN0"))
         ),
         CNFAnd(
-          CNFOr(CNFNot(CNFSymbol("a")), CNFSymbol("TSTN0")),
-          CNFOr(CNFNot(CNFSymbol("b")), CNFSymbol("TSTN0"))
+          CNFOr(CNFNot(CNFSymbol("a")), CNFSymbol("GEN0")),
+          CNFOr(CNFNot(CNFSymbol("b")), CNFSymbol("GEN0"))
         )
       )
     )
@@ -52,28 +52,28 @@ class TseitinTest extends AnyFlatSpec with Matchers:
     val exp = Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val result = tseitin(exp)
     val expected = CNFAnd(
-      CNFSymbol("TSTN0"),
+      CNFSymbol("GEN0"),
       CNFAnd(
         CNFOr(
-          CNFOr(CNFSymbol("TSTN1"), CNFSymbol("c")),
-          CNFNot(CNFSymbol("TSTN0"))
+          CNFOr(CNFSymbol("GEN1"), CNFSymbol("c")),
+          CNFNot(CNFSymbol("GEN0"))
         ),
         CNFAnd(
-          CNFOr(CNFNot(CNFSymbol("TSTN1")), CNFSymbol("TSTN0")),
+          CNFOr(CNFNot(CNFSymbol("GEN1")), CNFSymbol("GEN0")),
           CNFAnd(
-            CNFOr(CNFNot(CNFSymbol("c")), CNFSymbol("TSTN0")),
+            CNFOr(CNFNot(CNFSymbol("c")), CNFSymbol("GEN0")),
             CNFAnd(
               CNFOr(
-                CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("TSTN2"))),
-                CNFSymbol("TSTN1")
+                CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("GEN2"))),
+                CNFSymbol("GEN1")
               ),
               CNFAnd(
-                CNFOr(CNFSymbol("a"), CNFNot(CNFSymbol("TSTN1"))),
+                CNFOr(CNFSymbol("a"), CNFNot(CNFSymbol("GEN1"))),
                 CNFAnd(
-                  CNFOr(CNFSymbol("TSTN2"), CNFNot(CNFSymbol("TSTN1"))),
+                  CNFOr(CNFSymbol("GEN2"), CNFNot(CNFSymbol("GEN1"))),
                   CNFAnd(
-                    CNFOr(CNFNot(CNFSymbol("b")), CNFNot(CNFSymbol("TSTN2"))),
-                    CNFOr(CNFSymbol("b"), CNFSymbol("TSTN2"))
+                    CNFOr(CNFNot(CNFSymbol("b")), CNFNot(CNFSymbol("GEN2"))),
+                    CNFOr(CNFSymbol("b"), CNFSymbol("GEN2"))
                   )
                 )
               )
@@ -89,28 +89,28 @@ class TseitinTest extends AnyFlatSpec with Matchers:
     val exp = Or(Or(Not(Symbol("a")), And(Symbol("b"), Symbol("c"))), Symbol("d"))
     val result = tseitin(exp)
     val expected: CNF = CNFAnd(
-      CNFSymbol("TSTN0"),
+      CNFSymbol("GEN0"),
       CNFAnd(
-        CNFOr(CNFOr(CNFSymbol("TSTN1"), CNFSymbol("d")), CNFNot(CNFSymbol("TSTN0"))),
+        CNFOr(CNFOr(CNFSymbol("GEN1"), CNFSymbol("d")), CNFNot(CNFSymbol("GEN0"))),
         CNFAnd(
-          CNFOr(CNFNot(CNFSymbol("TSTN1")), CNFSymbol("TSTN0")),
+          CNFOr(CNFNot(CNFSymbol("GEN1")), CNFSymbol("GEN0")),
           CNFAnd(
-            CNFOr(CNFNot(CNFSymbol("d")), CNFSymbol("TSTN0")),
+            CNFOr(CNFNot(CNFSymbol("d")), CNFSymbol("GEN0")),
             CNFAnd(
-              CNFOr(CNFOr(CNFSymbol("TSTN2"), CNFSymbol("TSTN3")), CNFNot(CNFSymbol("TSTN1"))),
+              CNFOr(CNFOr(CNFSymbol("GEN2"), CNFSymbol("GEN3")), CNFNot(CNFSymbol("GEN1"))),
               CNFAnd(
-                CNFOr(CNFNot(CNFSymbol("TSTN2")), CNFSymbol("TSTN1")),
+                CNFOr(CNFNot(CNFSymbol("GEN2")), CNFSymbol("GEN1")),
                 CNFAnd(
-                  CNFOr(CNFNot(CNFSymbol("TSTN3")), CNFSymbol("TSTN1")),
+                  CNFOr(CNFNot(CNFSymbol("GEN3")), CNFSymbol("GEN1")),
                   CNFAnd(
-                    CNFOr(CNFOr(CNFNot(CNFSymbol("b")), CNFNot(CNFSymbol("c"))), CNFSymbol("TSTN3")),
+                    CNFOr(CNFOr(CNFNot(CNFSymbol("b")), CNFNot(CNFSymbol("c"))), CNFSymbol("GEN3")),
                     CNFAnd(
-                      CNFOr(CNFSymbol("b"), CNFNot(CNFSymbol("TSTN3"))),
+                      CNFOr(CNFSymbol("b"), CNFNot(CNFSymbol("GEN3"))),
                       CNFAnd(
-                        CNFOr(CNFSymbol("c"), CNFNot(CNFSymbol("TSTN3"))),
+                        CNFOr(CNFSymbol("c"), CNFNot(CNFSymbol("GEN3"))),
                         CNFAnd(
-                          CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("TSTN2"))),
-                          CNFOr(CNFSymbol("a"), CNFSymbol("TSTN2"))
+                          CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("GEN2"))),
+                          CNFOr(CNFSymbol("a"), CNFSymbol("GEN2"))
                         )
                       )
                     )
