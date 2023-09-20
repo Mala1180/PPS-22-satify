@@ -5,6 +5,7 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.Result.*
 import satify.model.Solution
 import satify.model.problems.NQueens
+import satify.model.problems.NQueens.printNQueensFromDimacs
 import satify.update.parser.DimacsCNF
 import satify.update.solver.SolverType.DPLL
 import satify.update.solver.{Solver, SolverType}
@@ -21,9 +22,8 @@ class NQueensTest extends AnyFlatSpec with Matchers:
     val problem = NQueens(4)
     val sol = Solver(DPLL).solve(problem.exp)
     sol should matchPattern { case Solution(SAT, _, _) => }
-<<<<<<< HEAD
     println("NQueens 4x4")
-    problem.printNqueens(sol.assignments.head)
+    problem.printNQueens(sol.assignments.head)
   }
 
   "NQueens 10x10" should "be SAT" in {
@@ -45,7 +45,3 @@ class NQueensTest extends AnyFlatSpec with Matchers:
     printNQueensFromDimacs(15, sol.assignment.head)
   }
  */
-=======
-    problem.toString(sol.assignment.head)
-  }
->>>>>>> develop
