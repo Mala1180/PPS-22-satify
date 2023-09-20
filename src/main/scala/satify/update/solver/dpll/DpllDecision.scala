@@ -11,10 +11,11 @@ import scala.util.Random
 
 private[dpll] object DpllDecision:
 
-  /** Make decisions based on the previous one selecting the most appropriate variable and assignment.
+  /** Make decisions based on the previous one selecting the most appropriate variable and constraint.
     * If no optimization can be applied, it makes a random decision.
     * @param d previous decision.
-    * @return List of new Decisions
+    * @param rnd random number generator.
+    * @return List of new Decisions.
     */
   def decide(d: Decision, rnd: Random): List[Decision] = d match
     case Decision(_, cnf) =>
@@ -28,9 +29,9 @@ private[dpll] object DpllDecision:
 
   /** Make random decisions based on the previous one given as parameter,
     * by choosing a random variable assigning a random value to it.
-    * @param d previous decision
-    * @param rnd random generator
-    * @return List of new decisions
+    * @param d previous decision.
+    * @param rnd random number generator.
+    * @return list of new decisions.
     */
   private def randomDecisions(d: Decision, rnd: Random): List[Decision] = d match
     case Decision(pm, cnf) =>
@@ -45,10 +46,10 @@ private[dpll] object DpllDecision:
             )
       else Nil
 
-  /** Make unit propagation decision based on the previous decision and the constraint provided.
+  /** Make unit propagation decision based on the previous one and the unit literal constraint.
     * @param d previous decision.
-    * @param c constraint.
-    * @return List of new decisions
+    * @param c constraint to the unit literal.
+    * @return list of new decisions.
     */
   private def unitPropagationDecision(d: Decision, c: Constraint): List[Decision] =
     d match
@@ -58,11 +59,11 @@ private[dpll] object DpllDecision:
           Decision(updatePartialAssignment(pm, Constraint(c.name, !c.value)), Symbol(False))
         )
 
-  /** Make pure literals elimination decisions based on the previous decision and the
-    * constraint provided.
+  /** Make pure literals elimination decisions based on the previous one and the
+    * pure literal constraint.
     * @param d previous decision.
-    * @param c constraint.
-    * @return List of new decisions
+    * @param c constraint to the pure literal.
+    * @return list of new decisions.
     */
   private def pureLiteralEliminationDecision(d: Decision, c: Constraint): List[Decision] =
     d match

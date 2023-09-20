@@ -50,8 +50,8 @@ private[dpll] object Optimizations:
   def pureLiteralIdentification(dec: Decision): Option[Constraint] =
 
     /** Get the literal type, if it is present inside the given CNF.
-      * @param name of the symbol
-      * @param cnf where to search
+      * @param name of the symbol.
+      * @param cnf where to search.
       * @return a filled Option with the literal type if it is present, an empty one otherwise.
       */
     def getLiteralType(name: String, cnf: CNF): Option[LitType] =
