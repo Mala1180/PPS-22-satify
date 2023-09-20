@@ -11,12 +11,14 @@ import scala.util.Random
 
 object DpllDecision:
 
+  private val rnd = Random(42)
+
   /** Make decisions based on the previous one selecting the most appropriate variable and assignment.
     * If no optimization can be applied, it makes a random decision.
     * @param d previous decision.
     * @return List of new Decisions
     */
-  def decide(d: Decision, rnd: Random): List[Decision] = d match
+  def decide(d: Decision): List[Decision] = d match
     case Decision(_, cnf) =>
       unitLiteralIdentification(cnf) match
         case Some(c) => unitPropagationDecision(d, c)
@@ -24,7 +26,7 @@ object DpllDecision:
           pureLiteralIdentification(d) match
             case Some(c) =>
               pureLiteralEliminationDecision(d, c)
-            case _ => randomDecisions(d, rnd)
+            case _ => randomDecisions(d)
 
   /** Make random decisions based on the previous one given as parameter,
     * by choosing a random variable assigning a random value to it.
@@ -32,7 +34,7 @@ object DpllDecision:
     * @param rnd random generator
     * @return List of new decisions
     */
-  private def randomDecisions(d: Decision, rnd: Random): List[Decision] = d match
+  private def randomDecisions(d: Decision): List[Decision] = d match
     case Decision(pm, cnf) =>
       val fv = filterUnconstrVars(pm)
       if fv.nonEmpty then

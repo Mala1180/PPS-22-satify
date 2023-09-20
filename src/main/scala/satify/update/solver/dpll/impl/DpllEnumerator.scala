@@ -45,7 +45,7 @@ object DpllEnumerator:
             step(Frame(tn, ret :: td, tt) :: more)
       case Frame(d, done, x :: xs) :: tail =>
         if isUnsat(d.cnf) || isSat(d.cnf) then step(Frame(d, Nil, Nil) :: tail)
-        else step(Frame(x, Nil, decide(x, rnd)) :: Frame(d, done, xs) :: tail)
+        else step(Frame(x, Nil, decide(x)) :: Frame(d, done, xs) :: tail)
       case Nil => throw new Error("Stack should never be empty")
 
-    step(List(Frame(dec, Nil, decide(dec, rnd))))
+    step(List(Frame(dec, Nil, decide(dec))))

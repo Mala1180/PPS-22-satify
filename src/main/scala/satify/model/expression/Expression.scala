@@ -14,8 +14,8 @@ object Expression:
   export satify.model.expression.Encodings.*
 
   extension (exp: Expression)
+
     /** Zip the subexpressions found in the given expression with a generic type A.
-      * @param exp the expression.
       * @param f the supplier of the generic type A.
       * @return a list of the subexpressions found in the given expression zipped with the generic type.
       */
@@ -35,7 +35,6 @@ object Expression:
         case _ => subexp(exp, List())(f)
 
     /** Search for subexpressions in the given expression.
-      * @param exp the expression.
       * @return a list of the subexpressions found in the given expression.
       */
     def subexpressions: List[Expression] = zipWith(() => Int).map(_._2)
@@ -48,13 +47,11 @@ object Expression:
     def contains(subexp: Expression): Boolean = exp.subexpressions.contains(subexp)
 
     /** Count the number of clauses in the given expression.
-      * @param exp the expression.
       * @return the number of clauses in the given expression.
       */
     def clauses: Int = zipWith(() => Int).size
 
     /** Replace a subexpression of an expression with the given Symbol.
-      * @param exp the expression.
       * @param subexp the subexpression to replace.
       * @param s the Symbol inserted in place of the subexpression.
       * @return the expression with the subexpression replaced.
