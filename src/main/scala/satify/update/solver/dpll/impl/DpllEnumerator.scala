@@ -14,7 +14,7 @@ import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import scala.annotation.tailrec
 import scala.util.Random
 
-object DpllEnumerator:
+private[solver] object DpllEnumerator:
 
   private val rnd = Random(42)
 
@@ -28,7 +28,7 @@ object DpllEnumerator:
     * @param dec first decision
     * @return decision tree of the run.
     */
-  def dpll(dec: Decision): DecisionTree =
+  private[impl] def dpll(dec: Decision): DecisionTree =
 
     case class Frame(d: Decision, done: List[DecisionTree], todos: List[Decision])
 

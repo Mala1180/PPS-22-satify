@@ -17,7 +17,7 @@ import satify.update.solver.dpll.impl.DpllFinder.{findNext, resume}
 
 import scala.util.Random
 
-object DpllFinder:
+private[solver] object DpllFinder:
 
   /** Save a run of DPLL algorithm.
     * @param dt decision tree
@@ -59,27 +59,10 @@ object DpllFinder:
             assignment
       case None => throw new NoSuchElementException("No previous instance of DPLL")
 
-  /** Resume the computation given an existing instance of decision tree.
-    * @param dt decision tree returned on the previous run.
-    * @return the updated decision tree along with the new result.
-    */
-  def resume(dt: DecisionTree): (DecisionTree, Result) = dt match
-    case Leaf(d @ Decision(_, cnf)) =>
-      val checkUnsat = isUnsat(cnf)
-      val checkSat = isSat(cnf)
-      if !checkSat && !checkUnsat then dpll(d)
-      else (dt, if checkSat then SAT else UNSAT)
-
-    case Branch(d, left, right) =>
-      resume(left) match
-        case (ldt, SAT) if ldt != left => (Branch(d, ldt, right), SAT)
-        case (ldt, lres) =>
-          resume(right) match
-            case (rdt, rres) => (Branch(d, ldt, rdt), if lres == SAT then SAT else rres)
-
   /** Build the decision tree given a decision in input.
     * It returns a new decision tree with a new SAT leaf, if any.
     * Otherwise, the updated decision tree with all UNSAT leafs.
+    *
     * @param d decision to be made
     * @return updated decision tree along with the result
     */
@@ -94,6 +77,24 @@ object DpllFinder:
                 case (dtr, res) => (Branch(d, dtl, dtr), res)
         case Nil => (Leaf(d), if isSat(d.cnf) then SAT else UNSAT)
     else (Leaf(d), if isSat(d.cnf) then SAT else UNSAT)
+
+  /** Resume the computation given an existing instance of decision tree.
+    * @param dt decision tree returned on the previous run.
+    * @return the updated decision tree along with the new result.
+    */
+  private def resume(dt: DecisionTree): (DecisionTree, Result) = dt match
+    case Leaf(d @ Decision(_, cnf)) =>
+      val checkUnsat = isUnsat(cnf)
+      val checkSat = isSat(cnf)
+      if !checkSat && !checkUnsat then dpll(d)
+      else (dt, if checkSat then SAT else UNSAT)
+
+    case Branch(d, left, right) =>
+      resume(left) match
+        case (ldt, SAT) if ldt != left => (Branch(d, ldt, right), SAT)
+        case (ldt, lres) =>
+          resume(right) match
+            case (rdt, rres) => (Branch(d, ldt, rdt), if lres == SAT then SAT else rres)
 
   /** Extract a new assignment from the decision tree s.t. it is not contained in the previous
     * DPLL run given in input.
