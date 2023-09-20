@@ -28,8 +28,8 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
   }
 
   "Enumerator" should "return UNSAT" in {
-    dpll(And(sA, Not(sA))).assignment shouldBe Nil
-    dpll(And(sA, And(Or(sB, sC), Not(sA)))).assignment shouldBe Nil
+    dpll(And(sA, Not(sA))).assignment should have size 0
+    dpll(And(sA, And(Or(sB, sC), Not(sA)))).assignment should have size 0
     dpll(
       And(
         Or(sA, sB),
@@ -38,7 +38,7 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
           And(Or(sA, Not(sB)), Or(Not(sA), Not(sB)))
         )
       )
-    ).assignment shouldBe Nil
+    ).assignment should have size 0
   }
 
   "Enumerator" should "do unit propagation when there's a unit literal in positive form" in {
