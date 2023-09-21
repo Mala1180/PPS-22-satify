@@ -20,7 +20,7 @@ class DpllDecisionTest extends AnyFlatSpec with Matchers:
 
   private def decisionFromCnf(cnf: CNF): Decision = Decision(extractParAssignmentFromCnf(cnf), cnf)
 
-  "A new decision" should "make an assignment to the first positive unit literal" in {
+  "The next decision" should "make an assignment to the first positive unit literal" in {
     val cnf: CNF = And(sA, And(sB, Or(sB, sC)))
     decide(decisionFromCnf(cnf), rnd) should matchPattern {
       case Decision(
@@ -34,7 +34,7 @@ class DpllDecisionTest extends AnyFlatSpec with Matchers:
     }
   }
 
-  "A new decision" should "make an assignment to the first negative unit literal" in {
+  "The next decision" should "make an assignment to the first negative unit literal" in {
     val cnf: CNF = Or(Not(sA), Or(Not(sA), sB))
     decide(decisionFromCnf(cnf), rnd) should matchPattern {
       case Decision(
@@ -47,7 +47,7 @@ class DpllDecisionTest extends AnyFlatSpec with Matchers:
     }
   }
 
-  "A new decision" should "make an assignment to the first positive pure literal" in {
+  "The next decision" should "make an assignment to the first positive pure literal" in {
     val cnf: CNF =
       And(
         Or(Or(sA, Not(sB)), sB),
@@ -65,7 +65,7 @@ class DpllDecisionTest extends AnyFlatSpec with Matchers:
     }
   }
 
-  "A new decision" should "make an assignment to the first negative pure literal" in {
+  "The next decision" should "make an assignment to the first negative pure literal" in {
     val cnf: CNF =
       And(
         Or(Or(Not(sA), Not(sB)), sB),
@@ -83,7 +83,7 @@ class DpllDecisionTest extends AnyFlatSpec with Matchers:
     }
   }
 
-  "A new decision" should "make a random assignment" in {
+  "The next decision" should "make a random assignment" in {
     val cnf: CNF = And(Or(sA, Not(sB)), Or(Not(sA), sB))
     decide(decisionFromCnf(cnf), Random(42)) should not be decide(decisionFromCnf(cnf), Random(67))
   }
