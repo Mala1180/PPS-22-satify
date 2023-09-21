@@ -39,23 +39,13 @@ The general Problem representation has been designed with a _trait_ representing
 In each case class, the **Problem** trait is extended with the constraints needed to represent the specific problem.
 Note that for each problem the expression is composed by a reduction of all constraints. 
 
-### Converter
-
-<img src="img/converter/converter.png" alt="Converter design">
-
-Converter is a _trait_ containing the method convert that will be implemented by each converter.
-In order to obtain better performances and to avoid the re-computation of same expressions, the converter keeps
-a cache of already computed expressions following the _memoization_ pattern.
-
-The Tseitin Converter is in charge of converting the expression in CNF form, using the Tseitin transformation.
-It is implemented through a _case class_ that extends the **Converter** trait implementing the convert method.
-
 ### Solver
 ### Solution
 ### CNF
-<p align="center">
-<img src="img/cnf/cnf.png" alt="CNF design">
-</p>
+
+CNF is a specific form of representing logical formulas as a conjunction of clauses, where each clause is a disjunction
+of literals (variables or their negations).
+
 
 ---
 
@@ -80,8 +70,81 @@ the needed part of the UI.
 
 ## Core
 
-### Tseitin transformation
+### Converter
 
+<img src="img/converter/converter.png" alt="Converter design">
+
+Converter is a _trait_ containing the method convert that will be implemented by each converter.
+In order to obtain better performances and to avoid the re-computation of same expressions, the converter keeps
+a cache of already computed expressions following the _memoization_ pattern.
+
+## Tseitin Algorithm
+
+The Tseitin algorithm converts a formula in propositional logic into a CNF formula.
+
+The Tseitin Converter is in charge of converting the expression in CNF form, using the Tseitin transformation.
+It is implemented through a _case class_ that extends the **Converter** trait implementing the convert method.
+
+The idea behind the Tseitin transformation is to introduce new auxiliary variables for subformulas in the original
+formula.
+These auxiliary variables are used to represent the truth values of the subformulas.
+
+By doing this, the original formula can be broken down into smaller parts, each represented in CNF, and then combined
+using the introduced auxiliary variables to maintain the overall semantics of the original formula.
+
+The Tseitin transformation follows these steps:
+
+1. Assign a unique identifier to each subformula in the original formula.
+2. Replace each subformula with an auxiliary variable representing its truth value.
+
+    <p align=center>
+        (a ∧ (b ∨ c)) -> (¬c ∧ d)<br>
+        TSTN4 <–> ¬c<br>
+        TSTN3 <–> b ∨ c<br>
+        TSTN2 <–> TSTN4 ∧ d<br>
+        TSTN1 <–> a ∧ TSTN3<br>
+        TSTN0 <–> TSTN1 –> TSTN2
+    </p>
+
+3. Express the truth conditions of the subformulas in CNF using the auxiliary variables and standard logical
+   connectives (AND, OR, NOT) following the transformations listed in the table below.
+
+    <table>
+        <thead> 
+            <tr>
+                <th>Operator</th>
+                <th>Circuit</th>
+                <th>Expression</th>
+                <th>Converted</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><b>AND</b></td>
+                <td><img src="img/AndCircuit.svg" alt="And Circuit"></td>
+                <td>X = A ∧ B</td>
+                <td>(¬A ∨ ¬B ∨ X) ∧ (A ∨ ¬X) ∧ (B ∨ ¬X)</td>
+            </tr>
+            <tr>
+                <td><b>OR</b></td>
+                <td><img src="img/OrCircuit.svg" alt="Or Circuit"></td>
+                <td>X = A ∨ B</td>
+                <td>(A ∨ B ∨ ¬X) ∧ (¬A ∨ X) ∧ (¬B ∨ X)</td>
+            </tr>
+            <tr>
+                <td><b>NOT</b></td>
+                <td><img src="img/NotCircuit.svg" alt="Not Circuit"></td>
+                <td>X = ¬A</td>
+                <td>(¬A ∨ ¬X) ∧ (A ∨ X)</td>
+            </tr>
+        </tbody>
+    </table>
+
+4. Combine the representations of the subformulas to obtain the CNF representation of the entire formula.
+
+The resulting formula is equi-satisfiable with the original formula, meaning they have the same set of satisfying
+assignments. This transformation enables the use of various CNF-based algorithms and tools to analyze and reason about
+the original logical formula efficiently.
 
 ### DPLL (Davis-Putnam-Loveland-Logemann)
 
