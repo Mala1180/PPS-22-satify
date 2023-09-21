@@ -25,8 +25,9 @@ abstract types:
 <p  align="center">
 <img src="img/expression/expression.png" alt="Expression design">
 </p>
+
 Expression is represented through a simple _enumeration_ which contains all the possible types of expression.
-Through this approach, it is possible to represent the expression as a tree, where each node is a type of expression. 
+Through this approach, it is possible to represent the expression as a tree, where each node is an `Expression`. 
 
 Symbol is the basic type of expression, containing only a string value representing the name of the expression variable.
 
@@ -35,7 +36,7 @@ Symbol is the basic type of expression, containing only a string value represent
 <img src="img/problem/problem.png" alt="Problem design">
 
 The general Problem representation has been designed with a _trait_ representing the abstract type **Problem**, for each specific problem a _case class_ has been defined. 
-In each case class, the **Problem** trait is extended with the specific constraints needed to represent the problem.
+In each case class, the **Problem** trait is extended with the constraints needed to represent the specific problem.
 Note that for each problem the expression is composed by a reduction of all constraints. 
 
 ### Converter
