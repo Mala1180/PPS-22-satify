@@ -4,8 +4,6 @@ import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
 
-import scala.swing.{Component, FlowPanel}
-
 case class GraphColoring(edges: List[(String, String)], nodes: List[String], colors: Int) extends Problem:
 
   given SymbolGenerator with
@@ -30,7 +28,7 @@ case class GraphColoring(edges: List[(String, String)], nodes: List[String], col
 
   override val constraints: Set[Expression] = Set(nodeHasExactlyOneColor, linkedNodesHasDifferentColor)
 
-  def toString(assignment: Assignment): String =
+  override def toString(assignment: Assignment): String =
     var output = ""
     assignment match
       case Assignment(variables) =>
@@ -42,10 +40,3 @@ case class GraphColoring(edges: List[(String, String)], nodes: List[String], col
         }
         output
       case _ => output
-  override def toString: String =
-    // print variables as a matrix
-    val sb = new StringBuilder
-    for i <- nodes.indices do
-      for j <- 0 until colors do sb.append(s"${variables(i)(j)} ")
-      sb.append("\n")
-    sb.toString

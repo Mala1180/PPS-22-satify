@@ -61,7 +61,8 @@ case class NQueens(n: Int) extends Problem:
     clauses.reduceLeft(And(_, _))
 
   override val constraints: Set[Expression] = Set(atLeastOneQueen, atMostOneQueen, diagConstr)
-  def toString(assignment: Assignment): String =
+  
+  override def toString(assignment: Assignment): String =
     @tailrec
     def getStringView(assignment: Assignment, acc: String): String = assignment match
       case Assignment(variables) =>
@@ -74,3 +75,5 @@ case class NQueens(n: Int) extends Problem:
         else acc
       case _ => acc
     getStringView(assignment, "")
+    
+    

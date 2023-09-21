@@ -1,5 +1,5 @@
 package satify.model.problems
-import satify.model.{Assignment, Variable}
+import satify.model.Assignment
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
@@ -65,7 +65,7 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     maxShiftsPerNurseConstraint
   )
 
-  def toString(assignment: Assignment): String =
+  override def toString(assignment: Assignment): String =
     var output = s"There are $shifts shifts per day\n" +
       "Min shifts per nurse " + minShiftsPerNurse + "\n" +
       "Max shifts per nurse " + maxShiftsPerNurse + "\n"

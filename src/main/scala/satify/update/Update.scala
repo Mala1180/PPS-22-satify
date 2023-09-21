@@ -6,9 +6,7 @@ import satify.model.cnf.CNF
 import satify.model.cnf.CNF.Symbol
 import satify.model.errors.Error
 import satify.model.errors.Error.*
-import satify.model.expression.Expression
-import satify.model.problems.NQueens.*
-import satify.model.problems.{NQueens, Problem}
+import satify.model.problems.Problem
 import satify.update.Message.*
 import satify.update.Utils.Chronometer.*
 import satify.update.converters.Converter
@@ -71,7 +69,7 @@ object Update:
         stop()
         State(input, exp, sol, elapsed())
       ,
-      InvalidInput,
+      InvalidInput(),
       Some(input)
     )
 
@@ -88,7 +86,7 @@ object Update:
         stop()
         State(input, exp, sol, elapsed())
       ,
-      InvalidInput,
+      InvalidInput(),
       Some(input)
     )
 
@@ -104,7 +102,7 @@ object Update:
         stop()
         State(sol, problem, elapsed())
       ,
-      InvalidInput
+      InvalidInput()
     )
 
   /** Update function to react to the Convert message. This function will attempt to convert the input and return a state.
@@ -120,7 +118,7 @@ object Update:
         stop()
         State(input, exp, cnf, elapsed())
       ,
-      InvalidInput,
+      InvalidInput(),
       Some(input)
     )
 
@@ -136,7 +134,7 @@ object Update:
         stop()
         State(cnf, problem, elapsed())
       ,
-      InvalidInput
+      InvalidInput()
     )
 
   /** Update function to react to the Import message. This function will attempt to import the file and return a state.
@@ -153,7 +151,7 @@ object Update:
         val input = cnf.printAsDSL()
         State(input, cnf)
       ,
-      InvalidImport
+      InvalidImport()
     )
 
   /** Update function to react to the NextSolution message. This function will attempt to find the next solution and return a state.
@@ -161,23 +159,23 @@ object Update:
     * @return a state with the input, expression, and solution if no exception is thrown, otherwise a state with the error.
     */
   private def nextSolutionUpdate(currentState: State): State =
-    start()
-    val nextAssignment: Assignment = Solver(DPLL).next()
-    stop()
-    val sol = Solution(
-      currentState.solution.get.result,
-      currentState.solution.get.status,
-      nextAssignment match
-        case Assignment(Nil) => currentState.solution.get.assignments
-        case _ => currentState.solution.get.assignments :+ nextAssignment
-    )
-    if currentState.problem.isDefined then
-      safeUpdate(
-        () => State(sol, currentState.problem.get, elapsed()),
-        EmptySolution
+    try
+      start()
+      val nextAssignment: Assignment = Solver(DPLL).next()
+      stop()
+      val sol = Solution(
+        currentState.solution.get.result,
+        currentState.solution.get.status,
+        nextAssignment match
+          case Assignment(Nil) => currentState.solution.get.assignments
+          case _ => currentState.solution.get.assignments :+ nextAssignment
       )
-    else
-      safeUpdate(
-        () => State(currentState.input.get, currentState.expression.get, sol, elapsed()),
-        EmptySolution
-      )
+      if currentState.problem.isDefined then State(sol, currentState.problem.get, elapsed())
+      else State(currentState.input.get, currentState.expression.get, sol, elapsed())
+    catch
+      case e: IllegalStateException =>
+        e.printStackTrace()
+        State(NoPreviousSolution())
+      case e: Exception =>
+        e.printStackTrace()
+        State(EmptySolution())
