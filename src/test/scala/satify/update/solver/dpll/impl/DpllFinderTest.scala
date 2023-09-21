@@ -13,7 +13,6 @@ import satify.model.{Assignment, Result, Solution, Variable}
 import satify.update.solver.dpll.impl.DpllFinder.{find, findNext, resume}
 import satify.update.solver.dpll.utils.PartialAssignmentUtils.extractParAssignmentFromCnf
 
-
 class DpllFinderTest extends AnyFlatSpec with Matchers:
 
   val sA: Symbol = Symbol("a")
