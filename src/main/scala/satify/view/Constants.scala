@@ -5,6 +5,7 @@ import scala.swing.Dimension
 
 object Constants:
   val margin = 10
+  val inputPadding = 5
   val windowSize: Dimension = Toolkit.getDefaultToolkit.getScreenSize
   val logoPath = "/img/Satify_logo-colored.png"
   val fontFamily = "Arial"
