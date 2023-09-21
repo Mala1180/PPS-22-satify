@@ -4,7 +4,6 @@ import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
 
-
 case class GraphColoring(edges: List[(String, String)], nodes: List[String], colors: Int) extends Problem:
 
   given SymbolGenerator with
