@@ -19,7 +19,9 @@ The first Sprint is dedicated to the project setup, organization, and understand
 
 During each Sprint Planning, each member of the team proposed himself to accomplish some task,
 assuring that the total work was divided equally among the team members.
+Each Sprint Planning is lasted approximately 2/3 hours of work.
 At the end of the planning, it is obtained a Product Backlog collecting every task for the current Sprint.
+
 
 At the end of the Sprint, the team members make a wrap-up of the work done, refining the Product Backlog.
 Moreover, it is produced an artifact ready to be delivered to the client, in order to show the progress of development.
@@ -31,7 +33,7 @@ Moreover, it is produced an artifact ready to be delivered to the client, in ord
 For each task implementation, a Pull Request was created in order to get a code review from the other team members.
 This allowed us to have a more controlled merge of the code, reducing the possibility of introducing bugs.
 Only after the Pull Request was reviewed and approved by all other team members, the author could merge it into the
-Develop branch
+Develop branch.
 
 ### Build and Tests
 
