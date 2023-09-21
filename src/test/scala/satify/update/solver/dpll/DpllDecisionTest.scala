@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
 import satify.model.dpll.{Decision, PartialAssignment, OptionalVariable}
-import satify.model.dpll.PartialAssignment.extractParAssignmentFromCnf
+import satify.update.solver.dpll.utils.PartialAssignmentUtils.extractParAssignmentFromCnf
 import satify.update.solver.dpll.DpllDecision.decide
 
 import scala.util.Random
