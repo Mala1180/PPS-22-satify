@@ -35,13 +35,14 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     constraint.reduceLeft(And(_, _))
 
   /** If possible, shifts should be distributed evenly and fairly, so that each nurse works the minimum amount of them. */
-  private val minShiftsPerNurse: Int = (shifts * days) / nurses
+  private val minShiftsPerNurse: Float = (shifts * days) / nurses.toFloat
 
   /** If this is not possible, because the total number of shifts is not divisible by the number of nurses,
     * some nurses will be assigned one more shift, without crossing the maximum number of shifts which can be worked by each nurse
     */
   private val maxShiftsPerNurse: Int =
-    if minShiftsPerNurse.isValidInt then minShiftsPerNurse.toInt else minShiftsPerNurse.toInt + 1
+    if minShiftsPerNurse.isWhole then minShiftsPerNurse.toInt
+    else minShiftsPerNurse.toInt + 1
 
   /** Each nurse should work at least the minimum number of shifts */
   private val minShiftsPerNurseConstraint: Expression =
