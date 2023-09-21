@@ -15,7 +15,7 @@ import satify.update.parser.DimacsCNF.*
 import satify.update.solver.Solver
 import satify.update.solver.SolverType.*
 
-import java.io.File
+import java.io.{File, FileNotFoundException}
 import scala.io.Source
 
 object Update:
@@ -42,15 +42,13 @@ object Update:
   private def safeUpdate(f: () => State, input: Option[String] = None): State =
     try f()
     catch
-      case e: IllegalArgumentException =>
+      case e: Exception =>
         e.printStackTrace()
-        State(input.getOrElse(""), InvalidInput())
-      case e: IllegalStateException =>
-        e.printStackTrace()
-        State(NoPreviousSolution())
-      case e =>
-        e.printStackTrace()
-        State(input.getOrElse(""), Unknown())
+        e match
+          case _: IllegalArgumentException => State(input.getOrElse(""), InvalidInput())
+          case _: IllegalStateException => State(NoPreviousSolution())
+          case _: FileNotFoundException => State(InvalidImport())
+          case _ => State(input.getOrElse(""), Unknown())
 
   /** Update function to react to the SolveAll message. This function will attempt to solve the input and return a state.
     * @param input input to solve
