@@ -35,7 +35,7 @@ private[solver] object DpllEnumerator:
     * @param d decision to be made
     * @return updated decision tree along with the result
     */
-  private[impl] def dpll(d: Decision): DecisionTree =
+  private def dpll(d: Decision): DecisionTree =
 
     case class Frame(d: Decision, done: List[DecisionTree], todos: List[Decision])
 
