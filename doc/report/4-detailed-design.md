@@ -78,7 +78,7 @@ Converter is a _trait_ containing the method convert that will be implemented by
 In order to obtain better performances and to avoid the re-computation of same expressions, the converter keeps
 a cache of already computed expressions following the _memoization_ pattern.
 
-## Tseitin Algorithm
+#### Tseitin Algorithm
 
 The Tseitin algorithm converts a formula in propositional logic into a CNF formula.
 
