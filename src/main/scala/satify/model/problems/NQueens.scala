@@ -35,8 +35,7 @@ case class NQueens(n: Int) extends Problem:
     atMostConstraints.reduceLeft(And(_, _))
 
   /** At most one queen on each diagonal */
-  private val diagConstr: Expression =
-    if n < 0 then throw new IllegalArgumentException("n must be positive")
+  private def diagConstr: Expression =
     val clauses =
       for i <- 0 until (n - 1)
       yield
@@ -57,7 +56,9 @@ case class NQueens(n: Int) extends Problem:
         )
     clauses.reduceLeft(And(_, _))
 
-  override val constraints: Set[Expression] = Set(atLeastOneQueen, atMostOneQueen, diagConstr)
+  override val constraints: Set[Expression] =
+    if n > 1 then Set(atLeastOneQueen, atMostOneQueen, diagConstr)
+    else Set(atLeastOneQueen, atMostOneQueen)
 
   override def toString(assignment: Assignment): String =
     @tailrec
