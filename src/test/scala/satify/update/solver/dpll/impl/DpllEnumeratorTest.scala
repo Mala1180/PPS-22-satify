@@ -3,33 +3,25 @@ package satify.update.solver.dpll.impl
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.should
-import satify.model.cnf.Bool.{False, True}
-import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
-import satify.model.dpll.DecisionTree.*
-import satify.model.dpll.OrderedList.*
-import satify.model.dpll.PartialAssignment.*
-import satify.model.dpll.{Decision, DecisionTree, OptionalVariable, PartialAssignment}
-import satify.update.solver.dpll.impl.DpllEnumerator.*
+import satify.update.solver.dpll.impl.DpllEnumerator.enumerate
+import satify.model.Result.*
+import satify.model.{Assignment, Variable}
 
 class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
-
-  import satify.model.dpll.OrderedList.given
 
   val sA: Symbol = Symbol("a")
   val sB: Symbol = Symbol("b")
   val sC: Symbol = Symbol("c")
 
-  val cnf: CNF = And(sA, sB)
-
-  "DPLL" should "be SAT" in {
-    enumerate(cnf).assignments.size should be > 0
-    enumerate(And(sA, Or(sB, sC))).assignments.size should be > 0
+  "Enumerator" should "return SAT" in {
+    enumerate(And(sA, sB)).result shouldBe SAT
+    enumerate(And(sA, Or(sB, sC))).result shouldBe SAT
   }
 
-  "DPLL" should "be UNSAT" in {
-    enumerate(And(sA, Not(sA))).assignments shouldBe Nil
-    enumerate(And(sA, And(Or(sB, sC), Not(sA)))).assignments shouldBe Nil
+  "Enumerator" should "return UNSAT" in {
+    enumerate(And(sA, Not(sA))).result shouldBe UNSAT
+    enumerate(And(sA, And(Or(sB, sC), Not(sA)))).result shouldBe UNSAT
     enumerate(
       And(
         Or(sA, sB),
@@ -38,195 +30,21 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
           And(Or(sA, Not(sB)), Or(Not(sA), Not(sB)))
         )
       )
-    ).assignments shouldBe Nil
+    ).result shouldBe UNSAT
   }
 
-  "DPLL" should "do unit propagation when there's only a OptionalVariable inside a clause and it is in positive form" in {
-    val cnf: CNF = And(sA, And(sB, Or(sB, sC)))
-    dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) shouldBe
-      Branch(
-        Decision(PartialAssignment(list(OptionalVariable("a"), OptionalVariable("b"), OptionalVariable("c"))), cnf),
-        Branch(
-          Decision(
-            PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b"), OptionalVariable("c"))),
-            And(sB, Or(sB, sC))
-          ),
-          Leaf(
-            Decision(
-              PartialAssignment(
-                list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(true)), OptionalVariable("c"))
-              ),
-              Symbol(True)
-            )
-          ),
-          Leaf(
-            Decision(
-              PartialAssignment(
-                list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(false)), OptionalVariable("c"))
-              ),
-              Symbol(False)
-            )
-          )
-        ),
-        Leaf(
-          Decision(
-            PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b"), OptionalVariable("c"))),
-            Symbol(False)
-          )
-        )
+  "Enumerator" should "return all the assignments of a satisfiable expression" in {
+    Set(enumerate(Or(sA, Or(sA, sB))).assignments: _*) shouldBe
+      Set(
+        Assignment(Variable("a", true) :: Variable("b", true) :: Nil),
+        Assignment(Variable("a", true) :: Variable("b", false) :: Nil),
+        Assignment(Variable("a", false) :: Variable("b", true) :: Nil)
       )
-  }
-
-  "DPLL" should "do unit propagation when there's only a OptionalVariable inside a clause and it is in negative form" in {
-    val cnf: CNF = And(Not(sA), Or(sA, sB))
-    dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) shouldBe
-      Branch(
-        Decision(PartialAssignment(list(OptionalVariable("a"), OptionalVariable("b"))), cnf),
-        Branch(
-          Decision(PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b"))), sB),
-          Leaf(
-            Decision(
-              PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b", Some(true)))),
-              Symbol(True)
-            )
-          ),
-          Leaf(
-            Decision(
-              PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b", Some(false)))),
-              Symbol(False)
-            )
-          )
-        ),
-        Leaf(Decision(PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b"))), Symbol(False)))
-      )
-  }
-
-  "DPLL" should "do pure literals elimination when the Literal appears only in negative form" in {
-    val cnf: CNF = And(Or(Not(sA), Not(sB)), Or(Not(sA), sB))
-    dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) shouldBe
-      Branch(
-        Decision(PartialAssignment(list(OptionalVariable("a"), OptionalVariable("b"))), cnf),
-        Leaf(
-          Decision(PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b"))), Symbol(True))
-        ),
-        Branch(
-          Decision(PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b"))), And(Not(sB), sB)),
-          Leaf(
-            Decision(
-              PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(false)))),
-              Symbol(False)
-            )
-          ),
-          Leaf(
-            Decision(
-              PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(true)))),
-              Symbol(False)
-            )
-          )
-        )
-      )
-  }
-
-  "DPLL" should "do pure literals elimination when the Literal appears only in positive form" in {
-    val cnf: CNF =
-      And(
-        Or(Or(sA, Not(sB)), sB),
-        And(Or(sB, sC), Or(sA, Not(sB)))
-      )
-    dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) shouldBe
-      Branch(
-        Decision(PartialAssignment(list(OptionalVariable("a"), OptionalVariable("b"), OptionalVariable("c"))), cnf),
-        Branch(
-          Decision(
-            PartialAssignment(list(OptionalVariable("a", Some(true)), OptionalVariable("b"), OptionalVariable("c"))),
-            Or(sB, sC)
-          ),
-          Leaf(
-            Decision(
-              PartialAssignment(
-                list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(true)), OptionalVariable("c"))
-              ),
-              Symbol(True)
-            )
-          ),
-          Branch(
-            Decision(
-              PartialAssignment(
-                list(OptionalVariable("a", Some(true)), OptionalVariable("b", Some(false)), OptionalVariable("c"))
-              ),
-              sC
-            ),
-            Leaf(
-              Decision(
-                PartialAssignment(
-                  list(
-                    OptionalVariable("a", Some(true)),
-                    OptionalVariable("b", Some(false)),
-                    OptionalVariable("c", Some(true))
-                  )
-                ),
-                Symbol(True)
-              )
-            ),
-            Leaf(
-              Decision(
-                PartialAssignment(
-                  list(
-                    OptionalVariable("a", Some(true)),
-                    OptionalVariable("b", Some(false)),
-                    OptionalVariable("c", Some(false))
-                  )
-                ),
-                Symbol(False)
-              )
-            )
-          )
-        ),
-        Branch(
-          Decision(
-            PartialAssignment(list(OptionalVariable("a", Some(false)), OptionalVariable("b"), OptionalVariable("c"))),
-            And(Or(Not(sB), sB), And(Or(sB, sC), Not(sB)))
-          ),
-          Branch(
-            Decision(
-              PartialAssignment(
-                list(OptionalVariable("a", Some(false)), OptionalVariable("b", Some(false)), OptionalVariable("c"))
-              ),
-              sC
-            ),
-            Leaf(
-              Decision(
-                PartialAssignment(
-                  list(
-                    OptionalVariable("a", Some(false)),
-                    OptionalVariable("b", Some(false)),
-                    OptionalVariable("c", Some(true))
-                  )
-                ),
-                Symbol(True)
-              )
-            ),
-            Leaf(
-              Decision(
-                PartialAssignment(
-                  list(
-                    OptionalVariable("a", Some(false)),
-                    OptionalVariable("b", Some(false)),
-                    OptionalVariable("c", Some(false))
-                  )
-                ),
-                Symbol(False)
-              )
-            )
-          ),
-          Leaf(
-            Decision(
-              PartialAssignment(
-                list(OptionalVariable("a", Some(false)), OptionalVariable("b", Some(true)), OptionalVariable("c"))
-              ),
-              Symbol(False)
-            )
-          )
-        )
+    Set(enumerate(And(sA, Or(sA, Or(sB, Not(sC))))).assignments: _*) shouldBe
+      Set(
+        Assignment(Variable("a", true) :: Variable("b", true) :: Variable("c", true) :: Nil),
+        Assignment(Variable("a", true) :: Variable("b", false) :: Variable("c", true) :: Nil),
+        Assignment(Variable("a", true) :: Variable("b", true) :: Variable("c", false) :: Nil),
+        Assignment(Variable("a", true) :: Variable("b", false) :: Variable("c", false) :: Nil)
       )
   }

@@ -4,10 +4,10 @@ import satify.model.cnf.Bool.{False, True}
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
 import satify.model.cnf.{Bool, CNF}
 
-object CNFSat:
+private[dpll] object CNFSat:
 
-  /** Check if CNF is UNSAT.
-    * @param cnf to be checked.
+  /** Check if the given CNF is UNSAT.
+    * @param cnf expression in Conjunctive Normal Form.
     * @return true if cnf is UNSAT false otherwise. Note that !UNSAT doesn't imply SAT.
     */
   def isUnsat(cnf: CNF): Boolean =
@@ -32,6 +32,10 @@ object CNFSat:
           )
         )
 
+  /** Check if the given CNF is SAT.
+    * @param cnf expression in Conjunctive Normal Form.
+    * @return true if cnf is SAT false otherwise.
+    */
   def isSat(cnf: CNF): Boolean = cnf match
     case Symbol(True) => true
     case _ => false
