@@ -14,7 +14,7 @@ import satify.model.{Assignment, Variable}
 class PartialAssignmentTest extends AnyFlatSpec with Matchers:
 
   "A set of assignments" should
-    "be extracted from a partial assignment by exploding its unconstrained variables" in {
+    "be extracted from a partial assignment with unconstrained variables by exploding it" in {
       val partialAssignment: PartialAssignment =
         PartialAssignment(
           OptionalVariable("a") ::
@@ -31,7 +31,7 @@ class PartialAssignmentTest extends AnyFlatSpec with Matchers:
     }
 
   "A unique assignment" should
-    "be extracted from a partial assignment with all variables constrained" in {
+    "be extracted from a partial assignment with all variables constrained by exploding it" in {
       val partialAssignment =
         PartialAssignment(
           OptionalVariable("a", Some(true)) ::
