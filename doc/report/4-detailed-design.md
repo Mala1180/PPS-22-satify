@@ -18,14 +18,43 @@ _abstract type members_ related to Model, View and Update.
 Concretely, the **Model** will be a private implementation of the _trait_ **State**, which contains the following
 abstract types:
 
-* **Expression**
-* **Solution**
-* **CNF**
-* **Problem**
 
-.....................
+### Symbol
 
+### Expression
+<p  align="center">
+<img src="img/expression/expression.png" alt="Expression design">
+</p>
+Expression is represented through a simple _enumeration_ which contains all the possible types of expression.
+Through this approach, it is possible to represent the expression as a tree, where each node is a type of expression. 
 
+Symbol is the basic type of expression, containing only a string value representing the name of the expression variable.
+
+### Problem
+
+<img src="img/problem/problem.png" alt="Problem design">
+
+The general Problem representation has been designed with a _trait_ representing the abstract type **Problem**, for each specific problem a _case class_ has been defined. 
+In each case class, the **Problem** trait is extended with the specific constraints needed to represent the problem.
+Note that for each problem the expression is composed by a reduction of all constraints. 
+
+### Converter
+
+<img src="img/converter/converter.png" alt="Converter design">
+
+Converter is a _trait_ containing the method convert that will be implemented by each converter.
+In order to obtain better performances and to avoid the re-computation of same expressions, the converter keeps
+a cache of already computed expressions following the _memoization_ pattern.
+
+The Tseitin Converter is in charge of converting the expression in CNF form, using the Tseitin transformation.
+It is implemented through a _case class_ that extends the **Converter** trait implementing the convert method.
+
+### Solver
+### Solution
+### CNF
+<p align="center">
+<img src="img/cnf/cnf.png" alt="CNF design">
+</p>
 
 ---
 
@@ -48,9 +77,10 @@ type.
 Following this approach, combined with the GUI component to update, every interaction with the user will refresh exactly
 the needed part of the UI.
 
----
-
 ## Core
+
+### Tseitin transformation
+
 
 ### DPLL (Davis-Putnam-Loveland-Logemann)
 
