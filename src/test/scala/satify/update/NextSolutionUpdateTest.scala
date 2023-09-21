@@ -1,4 +1,4 @@
-/*package satify.update
+package satify.update
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -13,14 +13,14 @@ class NextSolutionUpdateTest extends AnyFlatSpec with Matchers:
       val multipleAssignmentsExpression: String = "a or b"
       val currentState: State = update(State(), Solve(multipleAssignmentsExpression))
       val newState = update(currentState, NextSolution())
-      currentState.solution.get.assignment.head shouldNot be(newState.solution.get.assignment.head)
+      currentState.solution.get.assignments.head should not be newState.solution.get.assignments.head
     }
 
   "When NextSolution message is sent but only one assigment is possible it" should
     "return an empty assignment" in {
       val singleAssignmentsExpression: String = "a and b"
       val currentState: State = update(State(), Solve(singleAssignmentsExpression))
-      currentState.solution.get.assignment.head should be(Assignment(Nil))
+      currentState.solution.get.assignments.head should be(Assignment(Nil))
     }
 
   "When NextSolution message is sent but no solution are present it" should "return an Error" in {
@@ -33,4 +33,3 @@ class NextSolutionUpdateTest extends AnyFlatSpec with Matchers:
     && problem.isEmpty
     && error.isDefined shouldBe true
   }
- */

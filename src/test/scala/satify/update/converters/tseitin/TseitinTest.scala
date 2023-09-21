@@ -5,20 +5,18 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
 import satify.model.expression.Expression.*
-import satify.update.converters.tseitin.TseitinTransformation.tseitin
 
 class TseitinTest extends AnyFlatSpec with Matchers:
 
+  import satify.update.converters.tseitin.TseitinTransformation.tseitin
+
   "The CNF form of b" should "remain b" in {
     val exp = Symbol("b")
-    val result = tseitin(exp)
-    val expected: CNF = CNFSymbol("b")
-    result shouldBe expected
+    tseitin(exp) shouldBe CNFSymbol("b")
   }
 
   "The CNF form of ¬b" should "be correctly generated" in {
     val exp = Not(Symbol("b"))
-    val result = tseitin(exp)
     val expected: CNF = CNFAnd(
       CNFSymbol("GEN0"),
       CNFAnd(
@@ -26,12 +24,11 @@ class TseitinTest extends AnyFlatSpec with Matchers:
         CNFOr(CNFSymbol("b"), CNFSymbol("GEN0"))
       )
     )
-    result shouldBe expected
+    tseitin(exp) shouldBe expected
   }
 
   "For exp (a ∨ b) only the '∨' transformation" should "be applied" in {
     val exp = Or(Symbol("a"), Symbol("b"))
-    val result = tseitin(exp)
     val expected: CNF = CNFAnd(
       CNFSymbol("GEN0"),
       CNFAnd(
@@ -45,5 +42,5 @@ class TseitinTest extends AnyFlatSpec with Matchers:
         )
       )
     )
-    result shouldBe expected
+    tseitin(exp) shouldBe expected
   }
