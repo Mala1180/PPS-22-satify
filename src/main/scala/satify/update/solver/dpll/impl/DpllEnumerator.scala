@@ -11,7 +11,6 @@ import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.utils.PartialAssignmentUtils.*
 
-
 import scala.annotation.tailrec
 import scala.util.Random
 

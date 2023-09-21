@@ -16,7 +16,6 @@ import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.impl.DpllFinder.{findNext, resume}
 import satify.update.solver.dpll.utils.PartialAssignmentUtils.*
 
-
 import scala.util.Random
 
 private[solver] object DpllFinder:
