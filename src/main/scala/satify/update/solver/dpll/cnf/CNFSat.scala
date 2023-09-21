@@ -4,7 +4,7 @@ import satify.model.cnf.Bool.{False, True}
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
 import satify.model.cnf.{Bool, CNF}
 
-object CNFSat:
+private[dpll] object CNFSat:
 
   /** Check if CNF is UNSAT.
     * @param cnf to be checked.

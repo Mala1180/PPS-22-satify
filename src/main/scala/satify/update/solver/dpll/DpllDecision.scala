@@ -9,7 +9,7 @@ import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 
 import scala.util.Random
 
-object DpllDecision:
+private[dpll] object DpllDecision:
 
   /** Make decisions based on the previous one selecting the most appropriate variable and assignment.
     * If no optimization can be applied, it makes a random decision.

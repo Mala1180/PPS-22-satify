@@ -5,7 +5,7 @@ import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
 import satify.model.dpll.Constraint
 
-object CNFSimplification:
+private[dpll] object CNFSimplification:
 
   /** Simplify the CNF applying the constraint given as parameter.
     * @param cnf expression in CNF
