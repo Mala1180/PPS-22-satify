@@ -162,14 +162,14 @@ object Update:
     */
   private def nextSolutionUpdate(currentState: State): State =
     start()
-    val nextAssignment: Assignment = Solver(DPLL).next()
+    val optNextAssignment: Option[Assignment] = Solver(DPLL).next()
     stop()
     val sol = Solution(
       currentState.solution.get.result,
       currentState.solution.get.status,
-      nextAssignment match
-        case Assignment(Nil) => currentState.solution.get.assignments
-        case _ => currentState.solution.get.assignments :+ nextAssignment
+      optNextAssignment match
+        case None => currentState.solution.get.assignments
+        case Some(nextAssignment) => currentState.solution.get.assignments :+ nextAssignment
     )
     if currentState.problem.isDefined then
       safeUpdate(

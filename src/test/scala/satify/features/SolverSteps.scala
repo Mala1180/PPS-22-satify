@@ -39,6 +39,6 @@ object SolverSteps extends ScalaDsl with EN:
   }
 
   And("I should obtain another assignment {string}") { (expectedAssignments: String) =>
-    assignmentsAsString(Solver(DPLL).next() :: Nil) shouldBe expectedAssignments
+    assignmentsAsString(Solver(DPLL).next().get :: Nil) shouldBe expectedAssignments
   }
   And("I should obtain no assignments")(sol.assignments should have size 0)
