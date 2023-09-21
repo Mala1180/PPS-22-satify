@@ -19,18 +19,20 @@ import scala.util.Random
 
 private[solver] object DpllFinder:
 
-  /** Save a run of DPLL algorithm.
-    * @param dt decision tree
-    * @param s  solution
+  /** Util product type to save a run of DPLL.
+    * @param dt decision tree.
+    * @param s solution.
     */
   private case class DpllRun(dt: DecisionTree, s: Solution)
 
   private var prevRun: Option[DpllRun] = None
   private val rnd = Random(42)
 
-  /** Runs the DPLL algorithm given a CNF in input.
-    * @param cnf with the constraints to be satisfied.
-    * @return a solution with a unique assignment, if it exists
+  /** Solves the SAT problem finding a solution with a unique assignment,
+    * by running the DPLL algorithm.
+    * @param cnf expression in Conjunctive Normal Form.
+    * @return a solution with a unique assignment, filled with a list of variables if it's SAT,
+    *         an empty list otherwise.
     */
   def find(cnf: CNF): Solution =
     dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) match
@@ -40,8 +42,9 @@ private[solver] object DpllFinder:
         solution
       case (_, UNSAT) => Solution(UNSAT, COMPLETED, Nil)
 
-  /** Runs the DPLL algorithm resuming a previous run, if it exists.
-    * @return another assignment, different from the previous', if any.
+  /** Runs the DPLL algorithm resuming a previous run, if present.
+    * @return an assignment, different from the previous ones, filled with a list
+    *         of variables if there's another satisfiable, an empty list otherwise.
     */
   def findNext(): Assignment =
     prevRun match
@@ -59,10 +62,9 @@ private[solver] object DpllFinder:
             assignment
       case None => throw new NoSuchElementException("No previous instance of DPLL")
 
-  /** Build the decision tree given a decision in input.
+  /** Finder DPLL algorithm.
     * It returns a new decision tree with a new SAT leaf, if any.
     * Otherwise, the updated decision tree with all UNSAT leafs.
-    *
     * @param d decision to be made
     * @return updated decision tree along with the result
     */
@@ -78,7 +80,7 @@ private[solver] object DpllFinder:
         case Nil => (Leaf(d), if isSat(d.cnf) then SAT else UNSAT)
     else (Leaf(d), if isSat(d.cnf) then SAT else UNSAT)
 
-  /** Resume the computation given an existing instance of decision tree.
+  /** Resume the computation of DPLL given an existing instance of decision tree.
     * @param dt decision tree returned on the previous run.
     * @return the updated decision tree along with the new result.
     */
@@ -98,13 +100,13 @@ private[solver] object DpllFinder:
 
   /** Extract a new assignment from the decision tree s.t. it is not contained in the previous
     * DPLL run given in input.
-    * @param dt decision tree where to extract the solutions
-    * @param prevRun previous DPLL run with the current extracted solutions.
+    * @param dt decision tree where to extract the assignment
+    * @param prevRun previous DPLL run with the current extracted solution.
     * @return a filled assignment if it exists, or an empty one.
     */
   private def extractAssignment(dt: DecisionTree, prevRun: Option[DpllRun]): Assignment =
 
-    /** Filter generated variables (from encodings/Tseitin) and do the cartesian product
+    /** Filter generated variables (from encodings / converter) and do the cartesian product
       * of all the possible assignments
       * @param pa partial assignment
       * @return assignments
@@ -121,11 +123,11 @@ private[solver] object DpllFinder:
           )
         ).toAssignments
 
-    /** Return a filled assignment if it exists an assignment inside [[assignments]]
-      * which is not containted in [[prevRun]], an empty one otherwise.
+    /** Returns the next assignment.
       * @param assignments to filter
-      * @param prevRun filters assignments
-      * @return an assignment
+      * @param prevRun filters assignments.
+      * @return a filled assignment from the list of [[assignments]] given in input s.t. it is
+      *          not containted in [[prevRun]], an empty one otherwise.
       */
     def nextAssignment(assignments: List[Assignment], prevRun: Option[DpllRun]): Assignment =
       prevRun match

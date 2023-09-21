@@ -18,17 +18,24 @@ private[solver] object DpllEnumerator:
 
   private val rnd = Random(42)
 
+  /** Solves the SAT problem enumerating all satisfiable assignments,
+    * by running the DPLL algorithm.
+    * @param cnf expression in Conjunctive Normal Form.
+    * @return a solution filled with the list of all satisfiable assignments if it's SAT,
+    *         an empty list otherwise.
+    */
   def enumerate(cnf: CNF): Solution =
     val assignments: List[Assignment] =
       (for partialAssignment <- extractParAssignments(dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)))
       yield partialAssignment.toAssignments).flatten.distinct
     Solution(if assignments.nonEmpty then SAT else UNSAT, COMPLETED, assignments)
 
-  /** Main DPLL algorithm.
-    * @param dec first decision
-    * @return decision tree of the run.
+  /** Enumerator DPLL algorithm.
+    * It returns a new decision tree whose leafs are either SAT or UNSAT solutions.
+    * @param d decision to be made
+    * @return updated decision tree along with the result
     */
-  private def dpll(dec: Decision): DecisionTree =
+  private def dpll(d: Decision): DecisionTree =
 
     case class Frame(d: Decision, done: List[DecisionTree], todos: List[Decision])
 
@@ -48,4 +55,4 @@ private[solver] object DpllEnumerator:
         else step(Frame(x, Nil, decide(x, rnd)) :: Frame(d, done, xs) :: tail)
       case Nil => throw new Error("Stack should never be empty")
 
-    step(List(Frame(dec, Nil, decide(dec, rnd))))
+    step(List(Frame(d, Nil, decide(d, rnd))))

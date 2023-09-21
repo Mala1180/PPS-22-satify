@@ -8,9 +8,9 @@ import satify.model.dpll.Constraint
 private[dpll] object CNFSimplification:
 
   /** Simplify the CNF applying the constraint given as parameter.
-    * @param cnf expression in CNF
-    * @param constr constraint
-    * @return simplified CNF
+    * @param cnf expression in CNF.
+    * @param constr constraint.
+    * @return simplified CNF.
     */
   def simplifyCnf(cnf: CNF, constr: Constraint): CNF =
     simplifyClosestAnd(simplifyClosestOr(simplifyUppermostOr(updateCnf(cnf, constr), constr), constr))
