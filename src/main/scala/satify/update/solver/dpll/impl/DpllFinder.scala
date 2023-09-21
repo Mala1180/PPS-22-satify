@@ -19,7 +19,7 @@ import scala.util.Random
 
 private[solver] object DpllFinder:
 
-  /** Util enum to save a run of DPLL.
+  /** Util product type to save a run of DPLL.
     * @param dt decision tree.
     * @param s solution.
     */
