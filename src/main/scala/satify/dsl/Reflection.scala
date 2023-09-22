@@ -12,7 +12,8 @@ object Reflection:
   private val symbolsRegexPattern: Regex = s"""((?!$excludedWords\\b)\\b(?![0-9]+\\b)\\w+)""".r
   private val commentsRegexPattern: Regex = """(//.*)|(/\*[^*]*\*+(?:[^/*][^*]*\*+)*/)""".r
   private val privateVariablesPattern: Regex = "\\b(ENC|TSTN)\\w*".r
-  private def getDSLKeywords: List[String] =
+
+  def getDSLKeywords: List[String] =
     val operators = classOf[Operators.type].getMethods.map(_.getName).toList
     val encodings = classOf[Encodings.type].getMethods.map(_.getName).toList
     val numbers = classOf[Numbers.type].getMethods.map(_.getName).toList
