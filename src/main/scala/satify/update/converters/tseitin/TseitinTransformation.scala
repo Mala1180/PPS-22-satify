@@ -19,10 +19,7 @@ private[converters] object TseitinTransformation:
     * @return the CNF expression.
     */
   def tseitin(exp: Expression): CNF =
-//   concat(symbolsReplace(exp).flatMap(transform))
-    var transformations: List[CNF] = List()
-    symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
-    concat(transformations)
+    concat(symbolsReplace(exp).flatMap(transform))
 
   /** Substitute Symbols of nested subexpressions in all others expressions
     * @param exp the expression where to substitute Symbols
