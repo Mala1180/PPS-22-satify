@@ -2,24 +2,22 @@ package satify.update.solver.dpll
 
 import satify.model.cnf.Bool.False
 import satify.model.cnf.CNF.Symbol
-import satify.model.dpll.PartialAssignment.{filterUnconstrVars, updatePartialAssignment}
 import satify.model.dpll.{Constraint, Decision, OptionalVariable}
 import satify.update.solver.dpll.Optimizations.{pureLiteralIdentification, unitLiteralIdentification}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
+import satify.update.solver.dpll.utils.PartialAssignmentUtils.{filterUnconstrVars, updatePartialAssignment}
 
 import scala.util.Random
 
-object DpllDecision:
-
-  private val rnd = Random(42)
+private[dpll] object DpllDecision:
 
   /** Make decisions based on the previous one selecting the most appropriate variable and assignment.
     * If no optimization can be applied, it makes a random decision.
-    *
     * @param d previous decision.
-    * @return List of new Decisions
+    * @param rnd random number generator.
+    * @return List of new Decisions.
     */
-  def decide(d: Decision): List[Decision] = d match
+  def decide(d: Decision, rnd: Random): List[Decision] = d match
     case Decision(_, cnf) =>
       unitLiteralIdentification(cnf) match
         case Some(c) => unitPropagationDecision(d, c)
@@ -27,15 +25,15 @@ object DpllDecision:
           pureLiteralIdentification(d) match
             case Some(c) =>
               pureLiteralEliminationDecision(d, c)
-            case _ => randomDecisions(d)
+            case _ => randomDecisions(d, rnd)
 
   /** Make random decisions based on the previous one given as parameter,
     * by choosing a random variable assigning a random value to it.
-    *
-    * @param d previous decision
-    * @return List of new decisions
+    * @param d previous decision.
+    * @param rnd random number generator.
+    * @return list of new decisions.
     */
-  private def randomDecisions(d: Decision): List[Decision] = d match
+  private def randomDecisions(d: Decision, rnd: Random): List[Decision] = d match
     case Decision(pm, cnf) =>
       val fv = filterUnconstrVars(pm)
       if fv.nonEmpty then
@@ -48,11 +46,10 @@ object DpllDecision:
             )
       else Nil
 
-  /** Make unit propagation decision based on the previous decision and the constraint provided.
-    *
+  /** Make unit propagation decision based on the previous one and the unit literal constraint.
     * @param d previous decision.
-    * @param c constraint.
-    * @return List of new decisions
+    * @param c constraint to the unit literal.
+    * @return list of new decisions.
     */
   private def unitPropagationDecision(d: Decision, c: Constraint): List[Decision] =
     d match
@@ -62,12 +59,11 @@ object DpllDecision:
           Decision(updatePartialAssignment(pm, Constraint(c.name, !c.value)), Symbol(False))
         )
 
-  /** Make pure literals elimination decisions based on the previous decision and the
-    * constraint provided.
-    *
+  /** Make pure literals elimination decisions based on the previous one and the
+    * pure literal constraint.
     * @param d previous decision.
-    * @param c constraint.
-    * @return List of new decisions
+    * @param c constraint to the pure literal.
+    * @return list of new decisions.
     */
   private def pureLiteralEliminationDecision(d: Decision, c: Constraint): List[Decision] =
     d match

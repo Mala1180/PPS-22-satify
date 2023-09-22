@@ -18,9 +18,8 @@ class ProcessInputTest extends AnyFlatSpec:
   }
 
   "processInput" should "work also works with SAT encodings" in {
-    processInput(
-      """atLeast(1)(a, b, c) and atMostOne(a, b)"""
-    ) shouldBe """atLeast(1)("a", "b", "c") and atMostOne("a", "b")"""
+    processInput("""atLeast(1)(a, b, c) and atMostOne(a, b)""") shouldBe
+      """atLeast(1)("a", "b", "c") and atMostOne("a", "b")"""
   }
 
   "processInput" should "ignore number constants" in {
@@ -30,4 +29,16 @@ class ProcessInputTest extends AnyFlatSpec:
 
   "processInput" should "replace \\n with space" in {
     processInput("a\nand b") shouldBe """"a" and "b""""
+  }
+
+  "processInput" should "remove line comments" in {
+    processInput("//use of AND operator\na and b") shouldBe """"a" and "b""""
+    processInput("a and b\n// use of AND operator") shouldBe """"a" and "b""""
+    processInput("// only a comment") shouldBe ""
+  }
+
+  "processInput" should "remove multi line comments" in {
+    processInput("/*use of AND operator*/\na and b") shouldBe """"a" and "b""""
+    processInput("/*use of\n AND\n operator*/\na and b") shouldBe """"a" and "b""""
+    processInput("/* only a comment */") shouldBe ""
   }

@@ -12,9 +12,8 @@ class CNFConverter extends AnyFlatSpec with Matchers:
 
   "The exp a and b" should "be converted to CNF" in {
     val exp: Expression = And(Symbol("a"), Symbol("b"))
-    val result: CNF = convertToCNF(exp)
-    val expected: CNF = CNFAnd(CNFSymbol("a"), CNFSymbol("b"))
-    result shouldBe expected
+    val convertedExp: CNF = convertToCNF(exp)
+    convertedExp shouldBe CNFAnd(CNFSymbol("a"), CNFSymbol("b"))
   }
 
   "The exp a and b and c and d and e" should "be converted to CNF" in {
@@ -39,34 +38,34 @@ class CNFConverter extends AnyFlatSpec with Matchers:
   "The exp" should "be converted to CNF" in {
     val exp = And(
       Or(
-        Or(Symbol("TSTN1"), Symbol("d")),
-        Not(Symbol("TSTN0"))
+        Or(Symbol("GEN1"), Symbol("d")),
+        Not(Symbol("GEN0"))
       ),
       And(
-        Or(Not(Symbol("TSTN1")), Symbol("TSTN0")),
+        Or(Not(Symbol("GEN1")), Symbol("GEN0")),
         And(
-          Or(Not(Symbol("d")), Symbol("TSTN0")),
+          Or(Not(Symbol("d")), Symbol("GEN0")),
           And(
             Or(
-              Or(Symbol("TSTN2"), Symbol("TSTN3")),
-              Not(Symbol("TSTN1"))
+              Or(Symbol("GEN2"), Symbol("GEN3")),
+              Not(Symbol("GEN1"))
             ),
             And(
-              Or(Not(Symbol("TSTN2")), Symbol("TSTN1")),
+              Or(Not(Symbol("GEN2")), Symbol("GEN1")),
               And(
-                Or(Not(Symbol("TSTN3")), Symbol("TSTN1")),
+                Or(Not(Symbol("GEN3")), Symbol("GEN1")),
                 And(
-                  Or(Not(Symbol("a")), Not(Symbol("TSTN2"))),
+                  Or(Not(Symbol("a")), Not(Symbol("GEN2"))),
                   And(
-                    Or(Symbol("a"), Symbol("TSTN2")),
+                    Or(Symbol("a"), Symbol("GEN2")),
                     And(
                       Or(
                         Or(Not(Symbol("b")), Not(Symbol("c"))),
-                        Symbol("TSTN3")
+                        Symbol("GEN3")
                       ),
                       And(
-                        Or(Symbol("b"), Not(Symbol("TSTN3"))),
-                        Or(Symbol("c"), Not(Symbol("TSTN3")))
+                        Or(Symbol("b"), Not(Symbol("GEN3"))),
+                        Or(Symbol("c"), Not(Symbol("GEN3")))
                       )
                     )
                   )
@@ -81,34 +80,34 @@ class CNFConverter extends AnyFlatSpec with Matchers:
     val result: CNF = convertToCNF(exp)
     val expected = CNFAnd(
       CNFOr(
-        CNFOr(CNFSymbol("TSTN1"), CNFSymbol("d")),
-        CNFNot(CNFSymbol("TSTN0"))
+        CNFOr(CNFSymbol("GEN1"), CNFSymbol("d")),
+        CNFNot(CNFSymbol("GEN0"))
       ),
       CNFAnd(
-        CNFOr(CNFNot(CNFSymbol("TSTN1")), CNFSymbol("TSTN0")),
+        CNFOr(CNFNot(CNFSymbol("GEN1")), CNFSymbol("GEN0")),
         CNFAnd(
-          CNFOr(CNFNot(CNFSymbol("d")), CNFSymbol("TSTN0")),
+          CNFOr(CNFNot(CNFSymbol("d")), CNFSymbol("GEN0")),
           CNFAnd(
             CNFOr(
-              CNFOr(CNFSymbol("TSTN2"), CNFSymbol("TSTN3")),
-              CNFNot(CNFSymbol("TSTN1"))
+              CNFOr(CNFSymbol("GEN2"), CNFSymbol("GEN3")),
+              CNFNot(CNFSymbol("GEN1"))
             ),
             CNFAnd(
-              CNFOr(CNFNot(CNFSymbol("TSTN2")), CNFSymbol("TSTN1")),
+              CNFOr(CNFNot(CNFSymbol("GEN2")), CNFSymbol("GEN1")),
               CNFAnd(
-                CNFOr(CNFNot(CNFSymbol("TSTN3")), CNFSymbol("TSTN1")),
+                CNFOr(CNFNot(CNFSymbol("GEN3")), CNFSymbol("GEN1")),
                 CNFAnd(
-                  CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("TSTN2"))),
+                  CNFOr(CNFNot(CNFSymbol("a")), CNFNot(CNFSymbol("GEN2"))),
                   CNFAnd(
-                    CNFOr(CNFSymbol("a"), CNFSymbol("TSTN2")),
+                    CNFOr(CNFSymbol("a"), CNFSymbol("GEN2")),
                     CNFAnd(
                       CNFOr(
                         CNFOr(CNFNot(CNFSymbol("b")), CNFNot(CNFSymbol("c"))),
-                        CNFSymbol("TSTN3")
+                        CNFSymbol("GEN3")
                       ),
                       CNFAnd(
-                        CNFOr(CNFSymbol("b"), CNFNot(CNFSymbol("TSTN3"))),
-                        CNFOr(CNFSymbol("c"), CNFNot(CNFSymbol("TSTN3")))
+                        CNFOr(CNFSymbol("b"), CNFNot(CNFSymbol("GEN3"))),
+                        CNFOr(CNFSymbol("c"), CNFNot(CNFSymbol("GEN3")))
                       )
                     )
                   )

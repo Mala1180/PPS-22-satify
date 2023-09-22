@@ -5,6 +5,7 @@ import scala.swing.Dimension
 
 object Constants:
   val margin = 10
+  val inputPadding = 5
   val windowSize: Dimension = Toolkit.getDefaultToolkit.getScreenSize
   val logoPath = "/img/Satify_logo-colored.png"
   val fontFamily = "Arial"
@@ -15,15 +16,12 @@ object Constants:
   val parameterInputName = "parTextField"
   val cnfOutputDialogName = "cnfOutputDialog"
   val solOutputDialogName = "solOutputDialog"
+  val problemOutputDialogName = "problemOutputDialog"
   val nextBtnName = "nextButton"
-
-  // TO MOVE IN PROBLEMS OR PROBLEM UTILS
-  val nqQueens = "nQueens"
-
+  val nQueens = "nQueens"
   val gcNodes = "nodes"
   val gcEdges = "edges"
   val gcColors = "colors"
-
   val nsNurses = "nurses"
   val nsDays = "days"
   val nsShifts = "shifts"

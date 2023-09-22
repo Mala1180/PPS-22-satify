@@ -120,12 +120,12 @@ to the DevOps tasks, so I set up Continuous Integration, SBT, ScalaTest and Scal
 ### Architecture
 
 After that, I was involved in the design and implementation of the software architecture (MVU).
-I decided to use the Cake Pattern despite there aren't too many dependencies in MVU, to still give robustness,
-substitutability and flexibility.
+Despite there aren't too many dependencies in MVU, I decided to use the Cake Pattern to still give robustness and
+flexibility.
 
 In particular, I made use of the _Self-Type Annotation_ and _Mixin_ mechanisms offered by Scala in order to
 manage dependencies between pattern components at compile-time and to create an application instance in a simple and
-readable way
+readable way.
 
 ```scala
 trait MVU extends ModelComponent with ViewComponent with UpdateComponent
@@ -137,15 +137,30 @@ object Main extends App with MVU
 
 Initially I implemented the components making use of _Abstract Modelling_,
 because at the start of the project I didn't know yet how
-Model, View and Update should have been concretely implemented.
+`Model`, `View` and `Update` should have been concretely implemented.
 This approach permitted me to focus on high-level design, architecture testing
 and to postpone the implementation details.
 
-I adopted _Abstract Modelling_ approach also when I started to implement the Model entity.
-In fact, I knew that the Model had to be an immutable data structure,
+I adopted _Abstract Modelling_ approach also when I started to implement the `Model` entity.
+In fact, I knew that the latter had to be an immutable data structure,
 but it wasn't really clear how the entities it was supposed to contain should have been implemented.
-So I started writing a trait of concepts called `State` (referring to the state of the application),
+So I started writing a _trait_ of concepts called `State` (referring to the state of the application),
 which was containing the unimplemented main model entities.
+
+### Domain-Specific Language
+
+For the Domain-Specific Language (DSL) creation, I decided to exploit the Scala's _extension methods_ and _implicit
+conversions_.
+
+Before all, I defined a preprocessing part where through the use of a regular expression I wrapped all the non-keywords
+with quotes to make them become strings.
+During this phase, I also removed all the comments and the newlines escape characters.
+
+Then, I used _reflection_ to execute the processed input string as a Scala code.
+The words previously wrapped with quotes are interpreted as strings and implicitly converted to `Symbol` objects.
+The use of the _extension methods_ allowed me to call methods and compose expressions using the infix notation.
+
+Using an Internal DSL, I obtained free and correct use of parenthesis and automatic error checking. 
 
 [//]: # (### Solver)
 
@@ -173,73 +188,6 @@ The idea was to use the functional programming, so I defined the `Tseitin` objec
 the algorithm's phases and exposing only the `Tseitin` method that is the entry point of the algorithm.
 
 I followed the TDD approach for the core of the algorithm and for the utils methods.
-
-## Tseitin Algorithm
-
-The Tseitin algorithm converts a formula in propositional logic into a CNF formula.
-
-CNF is a specific form of representing logical formulas as a conjunction of clauses, where each clause is a disjunction
-of literals (variables or their negations).
-
-The idea behind the Tseitin transformation is to introduce new auxiliary variables for subformulas in the original
-formula. These auxiliary variables are used to represent the truth values of the subformulas.
-
-By doing this, the original formula can be broken down into smaller parts, each represented in CNF, and then combined
-using the introduced auxiliary variables to maintain the overall semantics of the original formula.
-
-The Tseitin transformation follows these steps:
-
-1. Assign a unique identifier to each subformula in the original formula.
-2. Replace each subformula with an auxiliary variable representing its truth value.
-
-    <p align=center>
-        (a ∧ (b ∨ c)) -> (¬c ∧ d)<br>
-        TSTN4 <–> ¬c<br>
-        TSTN3 <–> b ∨ c<br>
-        TSTN2 <–> TSTN4 ∧ d<br>
-        TSTN1 <–> a ∧ TSTN3<br>
-        TSTN0 <–> TSTN1 –> TSTN2
-    </p>
-
-3. Express the truth conditions of the subformulas in CNF using the auxiliary variables and standard logical
-   connectives (AND, OR, NOT) following the transformations listed in the table below.
-
-    <table>
-        <thead> 
-            <tr>
-                <th>Operator</th>
-                <th>Circuit</th>
-                <th>Expression</th>
-                <th>Converted</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><b>AND</b></td>
-                <td><img src="img/AndCircuit.svg" alt="And Circuit"></td>
-                <td>X = A ∧ B</td>
-                <td>(¬A ∨ ¬B ∨ X) ∧ (A ∨ ¬X) ∧ (B ∨ ¬X)</td>
-            </tr>
-            <tr>
-                <td><b>OR</b></td>
-                <td><img src="img/OrCircuit.svg" alt="Or Circuit"></td>
-                <td>X = A ∨ B</td>
-                <td>(A ∨ B ∨ ¬X) ∧ (¬A ∨ X) ∧ (¬B ∨ X)</td>
-            </tr>
-            <tr>
-                <td><b>NOT</b></td>
-                <td><img src="img/NotCircuit.svg" alt="Not Circuit"></td>
-                <td>X = ¬A</td>
-                <td>(¬A ∨ ¬X) ∧ (A ∨ X)</td>
-            </tr>
-        </tbody>
-    </table>
-
-4. Combine the representations of the subformulas to obtain the CNF representation of the entire formula.
-
-The resulting formula is equi-satisfiable with the original formula, meaning they have the same set of satisfying
-assignments. This transformation enables the use of various CNF-based algorithms and tools to analyze and reason about
-the original logical formula efficiently.
 
 
 ---
