@@ -150,8 +150,8 @@ object ComponentUtils:
   def createNextSection(model: State): BoxPanel =
     val nextSolutionButton = createButton(Next.title, 100, 40)
     nextSolutionButton.reactions += { case ButtonClicked(_) =>
-      Swing.onEDT(enableInteractions())
       Executors.newSingleThreadExecutor().execute(() => nextSolutionReaction(model))
+      nextSolutionButton.enabled = false
     }
     createCenteredBox(nextSolutionButton)
 
