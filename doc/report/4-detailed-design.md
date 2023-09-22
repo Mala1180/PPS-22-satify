@@ -67,7 +67,7 @@ Under partial model $m$,
 
 - a literal $l$ is true if $m(l) = 1$;
 - $l$ is false if $m(l) = 0$;
-- otherwise $l$ is unassigned.
+- otherwise, $l$ is unassigned.
 
 ##### State of the clause
 

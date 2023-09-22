@@ -19,7 +19,7 @@ The first Sprint is dedicated to the project setup, organization, and understand
 
 During each Sprint Planning, each member of the team proposed himself to accomplish some task,
 assuring that the total work was divided equally among the team members.
-Each Sprint Planning is lasted approximately 2/3 hours of work.
+Each Sprint Planning lasted approximately 2/3 hours of work.
 At the end of the planning, it is obtained a Product Backlog collecting every task for the current Sprint.
 
 
