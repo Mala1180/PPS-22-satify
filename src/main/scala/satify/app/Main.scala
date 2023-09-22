@@ -1,12 +1,13 @@
-package satify
+package satify.app
 
-import satify.Architecture.MVU
-import satify.Main.model
+import satify.app.Architecture.MVU
+import satify.app.Main.model
 import satify.dsl.Reflection.startRepl
+import satify.view.Components.*
 import satify.view.Constants.windowSize
-import satify.view.GUI.*
 import satify.view.Reactions.*
-import satify.view.utils.Title.App
+import satify.view.utils.Title.*
+
 import java.util.concurrent.Executors
 import scala.swing.event.ButtonClicked
 import scala.swing.{Dimension, FileChooser, MainFrame, Swing}
@@ -14,6 +15,7 @@ import scala.swing.{Dimension, FileChooser, MainFrame, Swing}
 /** Entry point of the application. */
 object Main extends App with MVU:
   startRepl()
+
   new MainFrame:
     title = App.title
 

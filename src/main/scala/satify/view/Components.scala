@@ -11,7 +11,7 @@ import javax.swing.{ImageIcon, JFileChooser}
 import scala.swing.*
 import scala.swing.TabbedPane.Page
 
-object GUI:
+object Components:
   private val logoIcon: ImageIcon = createImage(logoPath, 5)
   private val logoLabel: Label = new Label:
     icon = logoIcon
