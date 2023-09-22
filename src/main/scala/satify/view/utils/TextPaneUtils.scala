@@ -11,6 +11,7 @@ object TextPaneUtils:
 
   var textPaneText: String = ""
   private val opAttr: SimpleAttributeSet = createKeywordsAttribute()
+  private val defaultAttr: SimpleAttributeSet = createDefaultKeywordsAttribute()
 
   given Ordering[Int] = (x, y) => {
     if x > y then 1
@@ -37,6 +38,11 @@ object TextPaneUtils:
       if start != -1 then occurrencesIndex(findIndex, from + length, length) :+ start
       else Nil
 
+    /** Set default style to all the text pane text. */
+    def setDefaultTextAttibute(): Unit = Swing.onEDT {
+      t.styledDocument.setCharacterAttributes(0, text.length, defaultAttr, true)
+    }
+
     /** Sets character attribute foreach offset inside the input list
       * @param l      list of offsets
       * @param length length of each String
@@ -46,6 +52,7 @@ object TextPaneUtils:
       do t.styledDocument.setCharacterAttributes(off, length, opAttr, true)
     }
 
+    setDefaultTextAttibute()
     val keywords = getDSLKeywords
     val lengths = keywords.map(_.length).distinct
     // Update all keyword style
@@ -81,7 +88,6 @@ object TextPaneUtils:
     attribute
 
   /** Creates a simple attribute set to set the default font style or input operators.
-    *
     * @return a [[SimpleAttributeSet]]
     */
   private def createDefaultKeywordsAttribute(): SimpleAttributeSet =
