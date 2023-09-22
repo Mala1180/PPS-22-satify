@@ -18,13 +18,13 @@ private[converters] object TseitinTransformation:
     * @param exp the expression to transform.
     * @return the CNF expression.
     */
-  def tseitin(exp: Expression): CNF = concat(symbolsReplace(exp).flatMap(transform))
+  def tseitin(exp: Expression): CNF = concat(substitutions(exp).flatMap(transform))
 
   /** Substitute Symbols of nested subexpressions in all others expressions
     * @param exp the expression where to substitute Symbols
     * @return the decomposed expression in subexpressions with Symbols correctly substituted.
     */
-  def symbolsReplace(exp: Expression): List[(Symbol, Expression)] = {
+  def substitutions(exp: Expression): List[(Symbol, Expression)] = {
     @tailrec
     def replace(
         list: List[(Symbol, Expression)],
