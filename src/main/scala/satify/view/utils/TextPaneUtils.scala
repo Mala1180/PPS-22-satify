@@ -66,7 +66,6 @@ object TextPaneUtils:
     */
   private def createOperatorsAttribute(): SimpleAttributeSet =
     val attribute = new SimpleAttributeSet()
-    StyleConstants.setFontSize(attribute, 16)
     StyleConstants.setBold(attribute, true)
     StyleConstants.setForeground(attribute, Color(50, 50, 150))
     attribute

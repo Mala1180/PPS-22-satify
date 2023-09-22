@@ -66,7 +66,7 @@ object Encodings:
     requireVariables(X, 1, "atMostK")
     val n = X.length
     require(0 < k && k <= X.length, "atMostK encoding requires 0 < k <= n (n = variables number)")
-
+    if n == 1 then return Or(Not(X.head), X.head)
     val S: Seq[Seq[Symbol]] = (1 until n).map(_ => (1 to k).map(_ => generator.generate())).toList
     if generator.hasToReset then generator.reset()
     // (¬s1,j) for 1 < j <= k

@@ -27,8 +27,7 @@ class ReplacingTest extends AnyFlatSpec with Matchers:
   }
 
   "In ((a ∧ ¬b) ∨ c) the replacement of subexpressions with variables" should "follow the nesting level" in {
-    val exp: Expression =
-      Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
+    val exp: Expression = Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val list: List[(Symbol, Expression)] = symbolsReplace(exp)
 
     val expectedList: List[(Symbol, Expression)] = List(
@@ -40,14 +39,13 @@ class ReplacingTest extends AnyFlatSpec with Matchers:
   }
 
   "In ((a ∧ b) ∨ (c ∧ d) ∧ (e ∧ f)) the replacement of subexpressions with variables" should "follow the nesting level" in {
-    val exp: Expression =
-      And(
-        Or(
-          And(Symbol("a"), Symbol("b")),
-          And(Symbol("c"), Symbol("d"))
-        ),
-        And(Symbol("e"), Symbol("f"))
-      )
+    val exp: Expression = And(
+      Or(
+        And(Symbol("a"), Symbol("b")),
+        And(Symbol("c"), Symbol("d"))
+      ),
+      And(Symbol("e"), Symbol("f"))
+    )
 
     val result: List[(Symbol, Expression)] = symbolsReplace(exp)
     val expected: List[(Symbol, Expression)] = List(
@@ -61,11 +59,10 @@ class ReplacingTest extends AnyFlatSpec with Matchers:
   }
 
   "In ((a ∧ (a ∨ b)) ∨ (¬c ∧ d)) the replacement of subexpressions with variables" should "follow the nesting level and considering the not subexpression" in {
-    val exp: Expression =
-      Or(
-        And(Symbol("a"), Or(Symbol("a"), Symbol("b"))),
-        And(Not(Symbol("c")), Symbol("d"))
-      )
+    val exp: Expression = Or(
+      And(Symbol("a"), Or(Symbol("a"), Symbol("b"))),
+      And(Not(Symbol("c")), Symbol("d"))
+    )
 
     val result: List[(Symbol, Expression)] = symbolsReplace(exp)
     val expected: List[(Symbol, Expression)] = List(

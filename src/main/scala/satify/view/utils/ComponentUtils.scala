@@ -38,6 +38,7 @@ object ComponentUtils:
   def createInputTextPane(txt: String = ""): TextPane =
     val textPane = new TextPane():
       name = expTextPaneName
+      border = Swing.EmptyBorder(inputPadding, inputPadding, inputPadding, inputPadding)
     textPane.text = txt
     textPane.font = Font(fontFamily, Font.PLAIN, 18)
     updateStyle(textPane)
