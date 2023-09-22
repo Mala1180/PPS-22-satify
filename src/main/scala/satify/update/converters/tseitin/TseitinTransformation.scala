@@ -14,7 +14,7 @@ private[converters] object TseitinTransformation:
   import satify.model.cnf.Literal
   import satify.model.expression.Expression.{replace as replaceExp, *}
 
-  /** Applies the Tseitin transformation to the gt iven expression in order to convert it into CNF.
+  /** Applies the Tseitin transformation to the given expression in order to convert it into CNF.
     * @param exp the expression to transform.
     * @return the CNF expression.
     */
