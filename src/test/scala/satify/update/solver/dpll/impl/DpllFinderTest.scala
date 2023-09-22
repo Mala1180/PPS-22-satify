@@ -19,13 +19,6 @@ class DpllFinderTest extends AnyFlatSpec with Matchers:
   val sB: Symbol = Symbol("b")
   val sC: Symbol = Symbol("c")
 
-  val filterAssignments: (List[Assignment], List[Assignment]) => List[Assignment] =
-    (assignments, done) =>
-      for
-        assignment <- assignments
-        if !(done contains assignment)
-      yield assignment
-
   "Finder" should "return SAT" in {
     find(And(sA, sB)).result shouldBe SAT
     find(And(sA, Or(sB, sC))).result shouldBe SAT
@@ -55,8 +48,18 @@ class DpllFinderTest extends AnyFlatSpec with Matchers:
     val firstAssignment = find(cnf).assignments.head
     assignments contains firstAssignment shouldBe true
     val secondAssignment = findNext()
-    filterAssignments(assignments, firstAssignment :: Nil) contains secondAssignment shouldBe true
-    val thirdAssignment = findNext()
-    filterAssignments(assignments, firstAssignment :: secondAssignment :: Nil) contains thirdAssignment shouldBe true
-    findNext() shouldBe Assignment(Nil)
+    secondAssignment should matchPattern { case Some(_) => }
+    (assignments filter (a => a != firstAssignment)) contains secondAssignment.get shouldBe true
+    findNext() should matchPattern { case Some(_) => }
+    findNext() shouldBe None
+  }
+
+  "Finder" should "return the same assignments in the same order between two different runs" in {
+    def findAll(cnf: CNF): List[Assignment] =
+      def findOthers: List[Assignment] =
+        findNext().fold(Nil)(a => a +: findOthers)
+      find(cnf).assignments ++ findOthers
+
+    val cnf = Or(Or(sA, sB), Or(sB, sC))
+    findAll(cnf) shouldBe findAll(cnf)
   }
