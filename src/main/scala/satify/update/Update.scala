@@ -55,7 +55,7 @@ object Update:
     * @return a state with the input, expression, and solution if no exception is thrown, otherwise a state with the input and the occurred error
     */
   private def solveAllUpdate(input: String): State =
-    val update = () =>
+    val update: () => State = () =>
       val exp = reflect(input)
       start()
       val sol: Solution = Solver(DPLL).solveAll(exp)
@@ -68,7 +68,7 @@ object Update:
     * @return a state with the input, expression, and solution if no exception is thrown, otherwise a state with the input and the occurred error
     */
   private def solveUpdate(input: String): State =
-    val update = () =>
+    val update: () => State = () =>
       val exp = reflect(input)
       start()
       val sol: Solution = Solver(DPLL).solve(exp)
@@ -81,7 +81,7 @@ object Update:
     * @return a state with the cnf and solution if no exception is thrown, otherwise a state with the error.
     */
   private def problemUpdate(problem: Problem): State =
-    val update = () =>
+    val update: () => State = () =>
       start()
       val sol = Solver(DPLL).solve(problem.exp)
       stop()
@@ -93,7 +93,7 @@ object Update:
     * @return a state with the input, expression, and cnf if no exception is thrown, otherwise a state with the input and the occurred error
     */
   private def converterUpdate(input: String): State =
-    val update = () =>
+    val update: () => State = () =>
       val exp = reflect(input)
       start()
       val cnf: CNF = Converter(Tseitin).convert(exp)
@@ -106,7 +106,7 @@ object Update:
     * @return a state with the input, expression, and cnf if no exception is thrown, otherwise a state with the input and the occurred error
     */
   private def converterProblemUpdate(problem: Problem): State =
-    val update = () =>
+    val update: () => State = () =>
       start()
       val cnf: CNF = Converter(Tseitin).convert(problem.exp)
       stop()
@@ -118,7 +118,7 @@ object Update:
     * @return a state with the input and cnf if no exception is thrown, otherwise a state with the error.
     */
   private def importUpdate(file: File): State =
-    val update = () =>
+    val update: () => State = () =>
       val s: Source = Source.fromFile(file)
       val lines = s.getLines.toSeq
       s.close()
