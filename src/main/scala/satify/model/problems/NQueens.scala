@@ -1,15 +1,12 @@
 package satify.model.problems
 
+import satify.model.Assignment
 import satify.model.expression.Encodings.{atLeastOne, atMostOne}
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
-import satify.model.{Assignment, Variable}
-import satify.view.utils.ComponentUtils.createOutputTextArea
-import satify.view.Constants.problemOutputDialogName
 
 import scala.annotation.tailrec
-import scala.swing.{BoxPanel, Component, FlowPanel, Orientation}
 
 case class NQueens(n: Int) extends Problem:
 
@@ -17,7 +14,7 @@ case class NQueens(n: Int) extends Problem:
     def prefix: String = encodingVarPrefix
 
   private val variables: Seq[Seq[Symbol]] =
-    if n < 0 then throw new IllegalArgumentException("n must be positive")
+    if n <= 0 then throw new IllegalArgumentException("n must be positive")
     else
       for i <- 0 until n
       yield for j <- 0 until n
@@ -38,8 +35,7 @@ case class NQueens(n: Int) extends Problem:
     atMostConstraints.reduceLeft(And(_, _))
 
   /** At most one queen on each diagonal */
-  private val diagConstr: Expression =
-    if n < 0 then throw new IllegalArgumentException("n must be positive")
+  private def diagConstr: Expression =
     val clauses =
       for i <- 0 until (n - 1)
       yield
@@ -60,8 +56,11 @@ case class NQueens(n: Int) extends Problem:
         )
     clauses.reduceLeft(And(_, _))
 
-  override val constraints: Set[Expression] = Set(atLeastOneQueen, atMostOneQueen, diagConstr)
-  def toString(assignment: Assignment): String =
+  override val constraints: Set[Expression] =
+    if n > 1 then Set(atLeastOneQueen, atMostOneQueen, diagConstr)
+    else Set(atLeastOneQueen, atMostOneQueen)
+
+  override def toString(assignment: Assignment): String =
     @tailrec
     def getStringView(assignment: Assignment, acc: String): String = assignment match
       case Assignment(variables) =>

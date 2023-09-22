@@ -20,6 +20,8 @@ import scala.util.Random
 
 private[solver] object DpllFinder:
 
+  private val rnd = Random(42)
+
   /** Util product type to save a run of DPLL.
     * @param dt decision tree.
     * @param s solution.
@@ -27,7 +29,6 @@ private[solver] object DpllFinder:
   private case class DpllRun(dt: DecisionTree, s: Solution)
 
   private var prevRun: Option[DpllRun] = None
-  private val rnd = Random(42)
 
   /** Solves the SAT problem finding a solution with a unique assignment,
     * by running the DPLL algorithm.
@@ -128,7 +129,7 @@ private[solver] object DpllFinder:
       * @param assignments to filter
       * @param prevRun filters assignments.
       * @return a filled assignment from the list of [[assignments]] given in input s.t. it is
-      *          not containted in [[prevRun]], an empty one otherwise.
+      *        not containted in [[prevRun]], an empty one otherwise.
       */
     def nextAssignment(assignments: List[Assignment], prevRun: Option[DpllRun]): Assignment =
       prevRun match

@@ -11,7 +11,7 @@ import scala.util.Random
 
 private[dpll] object DpllDecision:
 
-  /** Make decisions based on the previous one selecting the most appropriate variable and constraint.
+  /** Make decisions based on the previous one selecting the most appropriate variable and assignment.
     * If no optimization can be applied, it makes a random decision.
     * @param d previous decision.
     * @param rnd random number generator.
