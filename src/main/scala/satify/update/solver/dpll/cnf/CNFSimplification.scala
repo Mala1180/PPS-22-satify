@@ -172,7 +172,7 @@ private[dpll] object CNFSimplification:
     * @param constr constraint to apply
     * @return Updated CNF
     */
-  /*private def updateCnf[T <: CNF](cnf: T, constr: Constraint): T =
+  private def updateCnf[T <: CNF](cnf: T, constr: Constraint): T =
 
     case class Frame(cnf: CNF, done: List[CNF], todos: List[CNF])
 
@@ -214,9 +214,9 @@ private[dpll] object CNFSimplification:
         throw new Error("Stack should never be empty")
 
     step(List(Frame(cnf, Nil, childAsList(cnf)))).asInstanceOf[T]
-   */
 
-  private def updateCnf[T <: CNF](cnf: T, constr: Constraint): T =
+
+  /*private def updateCnf[T <: CNF](cnf: T, constr: Constraint): T =
     (cnf match
       case Symbol(name: String) if name == constr.name =>
         if constr.value then Symbol(True)
@@ -226,3 +226,4 @@ private[dpll] object CNFSimplification:
       case Not(symbol) => Not(updateCnf(symbol, constr))
       case _ => cnf
     ).asInstanceOf[T]
+  */

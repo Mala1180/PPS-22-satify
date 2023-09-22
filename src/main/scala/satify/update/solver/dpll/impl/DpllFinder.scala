@@ -109,44 +109,54 @@ private[solver] object DpllFinder:
     * @return a filled assignment if it exists, or an empty one.
     */
   private def extractAssignment(dt: DecisionTree, prevRun: Option[DpllRun]): Option[Assignment] =
+    (for
+      pa <- extractParAssignments(dt)
+      assignment <- pa.toAssignments
+      if prevRun.fold(true)(run => !(run.s.assignments contains assignment))
+    yield assignment) match
+      case ::(head, _) => Some(head)
+      case Nil => None
 
-    /** Filter generated variables (from encodings / converter) and do the cartesian product
-      * of all the possible assignments
-      * @param pa partial assignment
-      * @return assignments
-      */
-    def filterAndExplore(pa: PartialAssignment): List[Assignment] = pa match
-      case PartialAssignment(optVariables) =>
-        PartialAssignment(
-          optVariables.filter(v =>
-            v match
-              case OptionalVariable(name, _)
-                  if name.startsWith(encodingVarPrefix) || name.startsWith(converterVarPrefix) =>
-                false
-              case _ => true
-          )
-        ).toAssignments
+      /*    /** Filter generated variables (from encodings / converter) and do the cartesian product
+       * of all the possible assignments
+       *
+       * @param pa partial assignment
+       * @return assignments
+       */
+        def filterAndExplore(pa: PartialAssignment): List[Assignment] = pa match
+          case PartialAssignment(optVariables) =>
+            PartialAssignment(
+              optVariables.filter(v =>
+                v match
+                  case OptionalVariable(name, _)
+                    if name.startsWith(encodingVarPrefix) || name.startsWith(converterVarPrefix) =>
+                    false
+                  case _ => true
+              )
+            ).toAssignments
 
-    /** Returns the next assignment.
-      * @param assignments to filter
-      * @param prevRun filters assignments.
-      * @return a filled assignment from the list of [[assignments]] given in input s.t. it is
-      *        not containted in [[prevRun]], an empty one otherwise.
-      */
-    def nextAssignment(assignments: List[Assignment], prevRun: Option[DpllRun]): Option[Assignment] =
-      prevRun match
-        case Some(pr) =>
-          val newAssignments = assignments.filter(a => !(pr.s.assignments contains a))
-          if newAssignments.nonEmpty then Some(newAssignments.head) else None
-        case None if assignments.nonEmpty => Some(assignments.head)
-        case _ => None
+        /** Returns the next assignment.
+       *
+       * @param assignments to filter
+       * @param prevRun     filters assignments.
+       * @return a filled assignment from the list of [[assignments]] given in input s.t. it is
+       *         not containted in [[prevRun]], an empty one otherwise.
+       */
+        def nextAssignment(assignments: List[Assignment], prevRun: Option[DpllRun]): Option[Assignment] =
+          prevRun match
+            case Some(pr) =>
+              val newAssignments = assignments.filter(a => !(pr.s.assignments contains a))
+              newAssignments.headOption
+            case None if assignments.nonEmpty => Some(assignments.head)
+            case _ => None
 
-    dt match
-      case Leaf(Decision(s @ PartialAssignment(_), cnf)) =>
-        cnf match
-          case Symbol(True) => nextAssignment(filterAndExplore(s), prevRun)
-          case _ => None
-      case Branch(_, left, right) =>
-        extractAssignment(left, prevRun) match
-          case a @ Some(_) => a
-          case _ => extractAssignment(right, prevRun)
+        dt match
+          case Leaf(Decision(s@PartialAssignment(_), cnf)) =>
+            cnf match
+              case Symbol(True) => nextAssignment(filterAndExplore(s), prevRun)
+              case _ => None
+          case Branch(_, left, right) =>
+            extractAssignment(left, prevRun) match
+              case a@Some(_) => a
+              case _ => extractAssignment(right, prevRun)
+       */
