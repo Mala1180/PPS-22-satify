@@ -7,11 +7,14 @@ import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
 import satify.model.dpll.*
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.PartialAssignment.*
-import satify.model.expression.SymbolGeneration.{converterVarPrefix, encodingVarPrefix}
+import satify.model.dpll.PartialAssignment
+import satify.model.expression.SymbolGeneration.{encodingVarPrefix, converterVarPrefix}
 import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
+import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
+import satify.update.solver.dpll.impl.DpllFinder.{findNext, resume}
+import satify.update.solver.dpll.utils.PartialAssignmentUtils.*
 
 import scala.util.Random
 
