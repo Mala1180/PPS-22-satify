@@ -53,7 +53,8 @@ object Encodings:
     * 3) (&not;si−1,1 &or; si,1) for 1 &lt; i < n<br>
     * 4) (&not;xi &or; &not;si−1,j−1 &or; si,j) for 1 &lt; i < n and for 1 &lt; j &le; k<br>
     * 5) (&not;si−1,j &or; si,j) for 1 &lt; i < n and for 1 &le; j &le; k<br>
-    * 6) (&not;xi &or; &not;si−1,k) for 1 &lt; i < n
+    * 6) (&not;xi &or; &not;si−1,k) for 1 &lt; i < n <br>
+    * Paper reference: [https://link.springer.com/book/10.1007/11564751](https://link.springer.com/book/10.1007/11564751)
     *
     * @param k         the number of variables that must be true
     * @param variables the input variables
@@ -65,7 +66,7 @@ object Encodings:
     requireVariables(X, 1, "atMostK")
     val n = X.length
     require(0 < k && k <= X.length, "atMostK encoding requires 0 < k <= n (n = variables number)")
-
+    if n == 1 then return Or(Not(X.head), X.head)
     val S: Seq[Seq[Symbol]] = (1 until n).map(_ => (1 to k).map(_ => generator.generate())).toList
     if generator.hasToReset then generator.reset()
     // (¬s1,j) for 1 < j <= k

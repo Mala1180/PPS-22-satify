@@ -6,31 +6,30 @@ import satify.model.cnf.{Bool, CNF}
 
 import scala.annotation.tailrec
 
-object CNFSat:
-  
-  
-  /** Check if CNF is UNSAT.
-    * @param cnf to be checked.
+private[dpll] object CNFSat:
+
+  /** Check if the given CNF is UNSAT.
+    * @param cnf expression in Conjunctive Normal Form.
     * @return true if cnf is UNSAT false otherwise. Note that !UNSAT doesn't imply SAT.
     */
   def isUnsat(cnf: CNF): Boolean =
-  
+
     @tailrec
-    def loop(todo: List[CNF], done: Boolean = false): Boolean =
-      todo match
-        case Nil => false
-        case And(left, right) :: tail => loop(left :: right :: tail, false)
+    def loop(cnfList: List[CNF], result: Boolean = false): Boolean =
+      cnfList match
+        case Nil => result
+        case And(left, right) :: tail => loop(left :: right :: tail)
         case head :: tail =>
           head match
-            case Not(Symbol(_: String)) | Symbol(_: String) | Not(Symbol(False)) | Symbol(True) | Or(_, _) =>
-              loop(tail, false)
             case Not(Symbol(True)) | Symbol(False) => true
-            case _ => false
-
+            case _ => loop(tail)
+    
     loop(cnf :: Nil)
 
+  /** Check if the given CNF is SAT.
+    * @param cnf expression in Conjunctive Normal Form.
+    * @return true if cnf is SAT false otherwise.
+    */
   def isSat(cnf: CNF): Boolean = cnf match
     case Symbol(True) => true
     case _ => false
-
-

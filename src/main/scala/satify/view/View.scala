@@ -34,7 +34,7 @@ object View:
           contents += new BoxPanel(Orientation.Vertical):
             contents += new ScrollPane(createOutputTextArea(sol.print, 30, 35))
             if model.problem.isDefined && model.solution.get.result == Result.SAT then
-              contents += createShowSection(model.problem.get, model.solution.get.assignment.head)
+              contents += createShowSection(model.problem.get, model.solution.get.assignments.last)
             sol.status match
               case PARTIAL => contents += createNextSection(model)
               case _ =>
@@ -59,7 +59,7 @@ object View:
             DimacsCNF.write(exportFileChooser.selectedFile.getPath, cnf.get)
             exportButton.text = Exported.title
             exportButton.enabled = false
-          case _ => createErrorDialog(InvalidExport.description).open()
+          case _ => createErrorDialog(InvalidExport().description).open()
       }
       val fp: BoxPanel = new BoxPanel(Orientation.Vertical):
         name = cnfOutputDialogName

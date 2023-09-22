@@ -6,7 +6,7 @@ import satify.model.cnf.CNF.*
 import satify.model.dpll.*
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
 import satify.model.dpll.OrderedList.list
-import satify.model.expression.SymbolGeneration.{encodingVarPrefix, tseitinVarPrefix}
+import satify.model.expression.SymbolGeneration.{encodingVarPrefix, converterVarPrefix}
 import satify.model.{Assignment, Variable}
 
 import scala.annotation.tailrec
@@ -28,96 +28,14 @@ case class PartialAssignment(optVariables: List[OptionalVariable]):
           head match
             case OptionalVariable(name, None) =>
               if next.nonEmpty then
-                val assignments = PartialAssignment(next).toAssignments
+                val assignments = explodeAssignments(PartialAssignment(next))
                 assignments.flatMap { case Assignment(v) =>
                   Assignment(Variable(name, true) +: v) :: Assignment(Variable(name, false) +: v) :: Nil
                 }
               else Assignment(List(Variable(name, true))) :: Assignment(List(Variable(name, false))) :: Nil
             case v @ OptionalVariable(_, Some(_)) =>
               if next.nonEmpty then
-                PartialAssignment(next).toAssignments
+                explodeAssignments(PartialAssignment(next))
                   .map { case Assignment(variables) => Assignment(v.toVariable +: variables) }
               else List(Assignment(List(v.toVariable)))
         case Nil => Nil
-
-object PartialAssignment:
-
-  import satify.model.dpll.OrderedList.given
-
-  /** Extract a partial assignment from an expression in CNF.
-    * @param cnf where to extract a Model
-    * @return correspondent partial assignment from CNF given as parameter.
-    */
-  def extractParAssignmentFromCnf(cnf: CNF): PartialAssignment =
-
-    @tailrec
-    def extractOptVars(todo: List[CNF], done: List[OptionalVariable] = Nil): List[OptionalVariable] = todo match
-      case ::(head, next) =>
-        head match
-          case Symbol(name: String) => extractOptVars(next, list(OptionalVariable(name) +: done: _*))
-          case And(e1, e2) => extractOptVars(next ++ (e1 :: e2 :: Nil), done)
-          case Or(e1, e2) => extractOptVars(next ++ (e1 :: e2 :: Nil), done)
-          case Not(e) => extractOptVars(next :+ e, done)
-          case _ => Nil
-      case Nil => done
-
-    PartialAssignment(extractOptVars(cnf :: Nil))
-
-  /** Filters unconstrained variables from the partial model
-    *
-    * @param partialAssignment partial model
-    * @return filtered partial model
-    */
-  def filterUnconstrVars(partialAssignment: PartialAssignment): List[OptionalVariable] =
-    partialAssignment match
-      case PartialAssignment(optVariables) =>
-        optVariables.filter { case OptionalVariable(_, o) => o.isEmpty }
-
-  /** Update a partial assignment given a constraint as parameter
-    *
-    * @param partialAssignment partial model
-    * @param varConstr         variable constraint
-    * @return updated partial assignment
-    */
-  def updatePartialAssignment(partialAssignment: PartialAssignment, varConstr: Constraint): PartialAssignment =
-    partialAssignment match
-      case PartialAssignment(optVariables) =>
-        PartialAssignment(optVariables.map {
-          case OptionalVariable(name, _) if name == varConstr.name =>
-            OptionalVariable(name, Some(varConstr.value))
-          case v => v
-        })
-
-  /** Get all SAT solutions, e.g. all Leaf nodes where the CNF has been simplified to Symbol(True).
-    *
-    * @param dt DecisionTree
-    * @return a set of PartialModel(s).
-    */
-  def extractParAssignments(dt: DecisionTree): List[PartialAssignment] =
-
-    @tailrec
-    def extract(todo: List[DecisionTree], done: List[PartialAssignment] = Nil): List[PartialAssignment] =
-      todo match
-        case ::(head, next) =>
-          head match
-            case Leaf(Decision(PartialAssignment(optVars), cnf)) =>
-              cnf match
-                case Symbol(True) =>
-                  extract(
-                    next,
-                    done :+
-                      PartialAssignment(
-                        optVars.filter(v =>
-                          v match
-                            case OptionalVariable(name, _)
-                                if name.startsWith(tseitinVarPrefix) || name.startsWith(encodingVarPrefix) =>
-                              false
-                            case _ => true
-                        )
-                      )
-                  )
-                case _ => extract(next, done)
-            case Branch(_, left, right) => extract(next ++ (left :: right :: Nil), done)
-        case Nil => done
-
-    extract(dt :: Nil)

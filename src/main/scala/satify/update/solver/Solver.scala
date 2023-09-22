@@ -1,15 +1,14 @@
 package satify.update.solver
 
-import satify.model.Result.*
 import satify.model.cnf.CNF
-import satify.model.dpll.{DecisionTree, PartialAssignment}
 import satify.model.expression.Expression
 import satify.model.{Assignment, Solution}
 import satify.update.converters.ConverterType.*
 import satify.update.converters.{Converter, ConverterType}
-import satify.update.solver.DpllSolverMemoize.enumerate
+import satify.update.solver.DpllSolverMemoize.dpllEnumerate
 import satify.update.solver.SolverType.*
-import satify.update.solver.dpll.impl.{DpllEnumerator, DpllFinder}
+import satify.update.solver.dpll.impl.DpllEnumerator.enumerate
+import satify.update.solver.dpll.impl.DpllFinder.{find, findNext}
 
 import scala.collection.mutable
 
@@ -20,25 +19,26 @@ trait Solver:
 
   /** Solves the SAT problem, returning a solution with all satisfiable assignments.
     * @param cnf the input in conjunctive normal form
-    * @return the solution to the SAT problem
+    * @return the solution of the SAT problem
     */
   def solveAll(cnf: CNF): Solution
 
   /** Solves the SAT problem, returning a solution with all satisfiable assignments.
     * @param exp the input expression
-    * @return the solution to the SAT problem
+    * @return the solution of the SAT problem
     */
   def solveAll(exp: Expression): Solution
 
-  /** Solves the SAT problem returning a solution with a satisfiable assignment.
+  /** Solves the SAT problem returning a solution with the first satisfiable assignment found.
     * @param cnf the input in conjunctive normal form
-    * @return the solution to the SAT problem
+    * @return the solution of the SAT problem
     */
   def solve(cnf: CNF): Solution
 
-  /** Solves the SAT problem returning a solution with a satisfiable assignment.
+  /** Solves the SAT problem returning a solution with the first satisfiable assignment found.
+    * The input expression is converted in CNF and then is given in input to the resolution algorithm.
     * @param exp the input expression
-    * @return the solution to the SAT problem
+    * @return the solution of the SAT problem
     */
   def solve(exp: Expression): Solution
 
@@ -46,7 +46,7 @@ trait Solver:
     * @return a filled assignment if there is another satisfiable, an empty one otherwise.
     * @throws IllegalStateException if a previous run was not found
     */
-  def next(): Assignment
+  def next(): Option[Assignment]
 
 /** Factory for [[Solver]] instances. */
 object Solver:
@@ -63,19 +63,19 @@ object Solver:
   /** Private implementation of [[Solver]] */
   private case class DpllSolver(converter: Converter) extends Solver:
 
-    override def solveAll(cnf: CNF): Solution = enumerate(cnf)
+    override def solveAll(cnf: CNF): Solution = dpllEnumerate(cnf)
 
     override def solveAll(exp: Expression): Solution = solveAll(converter.convert(exp))
 
-    override def solve(cnf: CNF): Solution = DpllFinder.dpll(cnf)
+    override def solve(cnf: CNF): Solution = find(cnf)
 
     override def solve(exp: Expression): Solution = solve(converter.convert(exp))
 
-    override def next(): Assignment = DpllFinder.dpll()
+    override def next(): Option[Assignment] = findNext()
 
 object DpllSolverMemoize:
 
-  val enumerate: CNF => Solution = memoize(cnf => DpllEnumerator.dpll(cnf))
+  val dpllEnumerate: CNF => Solution = memoize(cnf => enumerate(cnf))
 
   protected def memoize(f: CNF => Solution): CNF => Solution =
     new collection.mutable.HashMap[CNF, Solution]():

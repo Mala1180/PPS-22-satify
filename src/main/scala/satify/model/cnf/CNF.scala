@@ -12,9 +12,9 @@ type Literal = Symbol | Not
 
 enum CNF:
   case Symbol(value: String | Bool)
+  case Not(branch: Symbol)
   case And(left: Or | Literal, right: And | Or | Literal)
   case Or(left: Or | Literal, right: Or | Literal)
-  case Not(branch: Symbol)
 
 object CNF:
   extension (cnf: CNF)

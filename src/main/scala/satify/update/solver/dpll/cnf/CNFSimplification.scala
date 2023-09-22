@@ -7,12 +7,12 @@ import satify.model.dpll.Constraint
 
 import scala.annotation.tailrec
 
-object CNFSimplification:
+private[dpll] object CNFSimplification:
 
   /** Simplify the CNF applying the constraint given as parameter.
-    * @param cnf expression in CNF
-    * @param constr constraint
-    * @return simplified CNF
+    * @param cnf expression in CNF.
+    * @param constr constraint.
+    * @return simplified CNF.
     */
   def simplifyCnf(cnf: CNF, constr: Constraint): CNF =
     simplifyClosestAnd(simplifyClosestOr(simplifyUppermostOr(updateCnf(cnf, constr), constr), constr))
@@ -172,18 +172,7 @@ object CNFSimplification:
     * @param constr constraint to apply
     * @return Updated CNF
     */
-  private def updateCNF[T <: CNF](cnf: T, constr: Constraint): T =
-    (cnf match
-      case Symbol(name: String) if name == constr.name =>
-        if constr.value then Symbol(True)
-        else Symbol(False)
-      case And(left, right) => And(updateCnf(left, constr), updateCnf(right, constr))
-      case Or(left, right) => Or(updateCnf(left, constr), updateCnf(right, constr))
-      case Not(symbol) => Not(updateCnf(symbol, constr))
-      case _ => cnf
-    ).asInstanceOf[T]
-
-  private def updateCnf[T <: CNF](cnf: T, constr: Constraint): T =
+  /*private def updateCnf[T <: CNF](cnf: T, constr: Constraint): T =
 
     case class Frame(cnf: CNF, done: List[CNF], todos: List[CNF])
 
@@ -210,7 +199,7 @@ object CNFSimplification:
                 case Symbol(name: String) if name == constr.name =>
                   if constr.value then Symbol(True)
                   else Symbol(False)
-                case s@Symbol(value) => Symbol(value)
+                case s @ Symbol(value) => Symbol(value)
                 case _ => throw new IllegalStateException(s"Error $cnf")
 
         tail match
@@ -220,8 +209,20 @@ object CNFSimplification:
       case Frame(label, done, x :: xs) :: tail =>
         childAsList(x) match
           case Nil => step(Frame(x, Nil, Nil) :: Frame(label, done, xs) :: tail)
-          case children@_ => step(Frame(x, Nil, children) :: Frame(label, done, xs) :: tail)
+          case children @ _ => step(Frame(x, Nil, children) :: Frame(label, done, xs) :: tail)
       case Nil =>
         throw new Error("Stack should never be empty")
 
     step(List(Frame(cnf, Nil, childAsList(cnf)))).asInstanceOf[T]
+   */
+
+  private def updateCnf[T <: CNF](cnf: T, constr: Constraint): T =
+    (cnf match
+      case Symbol(name: String) if name == constr.name =>
+        if constr.value then Symbol(True)
+        else Symbol(False)
+      case And(left, right) => And(updateCnf(left, constr), updateCnf(right, constr))
+      case Or(left, right) => Or(updateCnf(left, constr), updateCnf(right, constr))
+      case Not(symbol) => Not(updateCnf(symbol, constr))
+      case _ => cnf
+    ).asInstanceOf[T]

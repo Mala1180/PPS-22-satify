@@ -4,14 +4,13 @@ import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, encodingVarPrefix}
 
-import scala.swing.{Component, FlowPanel}
-
 case class GraphColoring(edges: List[(String, String)], nodes: List[String], colors: Int) extends Problem:
 
   given SymbolGenerator with
     def prefix: String = encodingVarPrefix
 
   val variables: Seq[Seq[Symbol]] =
+    edges.foreach(e => require(nodes.contains(e._1) && nodes.contains(e._2)))
     for i <- nodes.indices yield for j <- 0 until colors yield Symbol(s"${nodes(i)}_c$j")
 
   /** Each node has exactly one color */
@@ -30,7 +29,7 @@ case class GraphColoring(edges: List[(String, String)], nodes: List[String], col
 
   override val constraints: Set[Expression] = Set(nodeHasExactlyOneColor, linkedNodesHasDifferentColor)
 
-  def toString(assignment: Assignment): String =
+  override def toString(assignment: Assignment): String =
     var output = ""
     assignment match
       case Assignment(variables) =>
@@ -41,11 +40,4 @@ case class GraphColoring(edges: List[(String, String)], nodes: List[String], col
           output += s"$node -> $color\n"
         }
         output
-      case null => output
-  override def toString: String =
-    // print variables as a matrix
-    val sb = new StringBuilder
-    for i <- nodes.indices do
-      for j <- 0 until colors do sb.append(s"${variables(i)(j)} ")
-      sb.append("\n")
-    sb.toString
+      case _ => output
