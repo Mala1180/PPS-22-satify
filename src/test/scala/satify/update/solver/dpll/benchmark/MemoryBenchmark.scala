@@ -1,4 +1,4 @@
-package satify.scalameter.problems.nqueens
+package satify.update.solver.dpll.benchmark
 
 import org.scalameter.api.*
 import satify.model.problems.NQueens

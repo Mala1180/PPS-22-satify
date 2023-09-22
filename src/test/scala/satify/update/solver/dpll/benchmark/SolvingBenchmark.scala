@@ -1,4 +1,4 @@
-package satify.scalameter.problems.nqueens
+package satify.update.solver.dpll.benchmark
 
 import org.scalameter.api.*
 import satify.model.problems.NQueens
@@ -6,7 +6,7 @@ import satify.update.solver.Solver
 import satify.update.solver.SolverType.*
 
 object SolvingBenchmark extends Bench.LocalTime:
-  val sizes: Gen[Int] = Gen.range("size")(2, 5, 1)
+  val sizes: Gen[Int] = Gen.range("size")(2, 4, 1)
 
   /** Benchmark for NQueens creation and solving time */
   performance of "NQueens time" in {
