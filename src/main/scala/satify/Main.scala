@@ -1,7 +1,7 @@
-package satify.app
+package satify
 
-import satify.app.Architecture.MVU
-import satify.app.Main.model
+import satify.Architecture.MVU
+import satify.Main.model
 import satify.dsl.Reflection.startRepl
 import satify.view.Components.*
 import satify.view.Constants.windowSize

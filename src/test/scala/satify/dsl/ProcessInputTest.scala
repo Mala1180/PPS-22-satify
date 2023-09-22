@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers.shouldBe
 
 class ProcessInputTest extends AnyFlatSpec:
 
-  import satify.dsl.Reflection.*
+  import satify.dsl.Reflection.processInput
 
   "processInput" should "add \"\" to all variables, excluding operators" in {
     processInput("a or not(B) and c") shouldBe """"a" or not("B") and "c""""

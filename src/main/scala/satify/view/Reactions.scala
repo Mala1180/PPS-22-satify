@@ -1,6 +1,6 @@
 package satify.view
 
-import satify.app.Main.{Model, view}
+import satify.Main.{Model, view}
 import satify.model.problems.{GraphColoring, NQueens, NurseScheduling, Problem}
 import satify.update.Message.*
 import satify.update.Update.update
