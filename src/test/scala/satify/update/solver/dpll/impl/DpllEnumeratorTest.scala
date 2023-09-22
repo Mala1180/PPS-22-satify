@@ -48,3 +48,8 @@ class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
         Assignment(Variable("a", true) :: Variable("b", false) :: Variable("c", false) :: Nil)
       )
   }
+
+  "Enumerator" should "return the same assignments in the same order between two different runs" in {
+    val cnf = Or(Or(sA, sB), Or(sB, sC))
+    enumerate(cnf).assignments shouldBe enumerate(cnf).assignments
+  }

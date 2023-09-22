@@ -53,3 +53,13 @@ class DpllFinderTest extends AnyFlatSpec with Matchers:
     findNext() should matchPattern { case Some(_) => }
     findNext() shouldBe None
   }
+
+  "Finder" should "return the same assignments in the same order between two different runs" in {
+    def findAll(cnf: CNF): List[Assignment] =
+      def findOthers: List[Assignment] =
+        findNext().fold(Nil)(a => a +: findOthers)
+      find(cnf).assignments ++ findOthers
+
+    val cnf = Or(Or(sA, sB), Or(sB, sC))
+    findAll(cnf) shouldBe findAll(cnf)
+  }
