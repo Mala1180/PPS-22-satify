@@ -10,28 +10,22 @@ class CNFValidator extends AnyFlatSpec with Matchers:
 
   "The transformation of ¬(a ∨ b)" should "throw an exception" in {
     val exp: Expression = Not(Or(Symbol("a"), Symbol("b")))
-    val result: Boolean = isCNF(exp)
-    result shouldBe false
+    isCNF(exp) shouldBe false
   }
 
   "The symbol a" should "be validated as CNF" in {
     val exp: Expression = Symbol("a")
-    val result: Boolean = isCNF(exp)
-    result shouldBe true
+    isCNF(exp) shouldBe true
   }
 
   "The exp a ∧ b ∧ c ∧ d ∧ e" should "be validated as CNF" in {
     val exp: Expression = And(Symbol("a"), And(Symbol("b"), And(Symbol("c"), And(Symbol("d"), Symbol("e")))))
-    val result: Boolean = isCNF(exp)
-    result shouldBe true
+    isCNF(exp) shouldBe true
   }
 
   "The exp ((a ∧ ¬b) ∨ c)" should "not be validated as CNF" in {
-    val exp: Expression =
-      Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
-
-    val result: Boolean = isCNF(exp)
-    result shouldBe false
+    val exp: Expression = Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
+    isCNF(exp) shouldBe false
   }
 
   "The exp ((a ∧ ¬b) ∨ c)" should "be validated as CNF" in {
@@ -75,6 +69,5 @@ class CNFValidator extends AnyFlatSpec with Matchers:
         )
       )
     )
-    val result: Boolean = isCNF(exp)
-    result shouldBe true
+    isCNF(exp) shouldBe true
   }

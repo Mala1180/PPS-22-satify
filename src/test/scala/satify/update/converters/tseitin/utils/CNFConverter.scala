@@ -12,9 +12,8 @@ class CNFConverter extends AnyFlatSpec with Matchers:
 
   "The exp a and b" should "be converted to CNF" in {
     val exp: Expression = And(Symbol("a"), Symbol("b"))
-    val result: CNF = convertToCNF(exp)
-    val expected: CNF = CNFAnd(CNFSymbol("a"), CNFSymbol("b"))
-    result shouldBe expected
+    val convertedExp: CNF = convertToCNF(exp)
+    convertedExp shouldBe CNFAnd(CNFSymbol("a"), CNFSymbol("b"))
   }
 
   "The exp a and b and c and d and e" should "be converted to CNF" in {

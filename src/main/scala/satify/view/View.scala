@@ -59,7 +59,7 @@ object View:
             DimacsCNF.write(exportFileChooser.selectedFile.getPath, cnf.get)
             exportButton.text = Exported.title
             exportButton.enabled = false
-          case _ => createErrorDialog(InvalidExport.description).open()
+          case _ => createErrorDialog(InvalidExport().description).open()
       }
       val fp: BoxPanel = new BoxPanel(Orientation.Vertical):
         name = cnfOutputDialogName

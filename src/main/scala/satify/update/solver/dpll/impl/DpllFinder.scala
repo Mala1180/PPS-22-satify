@@ -7,13 +7,14 @@ import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
 import satify.model.dpll.*
 import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.PartialAssignment.*
+import satify.model.dpll.PartialAssignment
 import satify.model.expression.SymbolGeneration.{encodingVarPrefix, converterVarPrefix}
 import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 import satify.update.solver.dpll.impl.DpllFinder.{findNext, resume}
+import satify.update.solver.dpll.utils.PartialAssignmentUtils.*
 
 import scala.util.Random
 
@@ -26,7 +27,6 @@ private[solver] object DpllFinder:
   private case class DpllRun(dt: DecisionTree, s: Solution)
 
   private var prevRun: Option[DpllRun] = None
-  private val rnd = Random(42)
 
   /** Solves the SAT problem finding a solution with a unique assignment,
     * by running the DPLL algorithm.
@@ -69,9 +69,10 @@ private[solver] object DpllFinder:
     * It returns a new decision tree with a new SAT leaf, if any.
     * Otherwise, the updated decision tree with all UNSAT leafs.
     * @param d decision to be made
+    * @param rnd random number generator to make pseudo random decisions.
     * @return updated decision tree along with the result
     */
-  private def dpll(d: Decision): (DecisionTree, Result) =
+  private def dpll(d: Decision, rnd: Random = Random(42)): (DecisionTree, Result) =
     if !isUnsat(d.cnf) && !isSat(d.cnf) then
       decide(d, rnd) match
         case ::(head, next) =>
@@ -130,7 +131,7 @@ private[solver] object DpllFinder:
       * @param assignments to filter
       * @param prevRun filters assignments.
       * @return a filled assignment from the list of [[assignments]] given in input s.t. it is
-      *          not containted in [[prevRun]], an empty one otherwise.
+      *        not containted in [[prevRun]], an empty one otherwise.
       */
     def nextAssignment(assignments: List[Assignment], prevRun: Option[DpllRun]): Option[Assignment] =
       prevRun match

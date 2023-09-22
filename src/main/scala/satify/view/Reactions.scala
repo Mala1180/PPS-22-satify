@@ -94,7 +94,7 @@ object Reactions:
     var p: Problem = null
     def checkInt(input: String): Int =
       if !input.equals("") && input.forall(_.isDigit) && input.toInt > 0 then input.toInt
-      else throw new IllegalArgumentException(InvalidInput.description)
+      else throw new IllegalArgumentException(InvalidInput().description)
     def getInput(name: String): TextArea = problemParameterPanel.contents
       .filter(c => c.isInstanceOf[TextArea] && c.name.equals(name))
       .head
@@ -120,5 +120,5 @@ object Reactions:
     catch
       case e: Exception =>
         e.printStackTrace()
-        createErrorDialog(InvalidInput.description).open()
+        createErrorDialog(InvalidInput().description).open()
     p

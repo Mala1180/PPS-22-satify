@@ -117,14 +117,8 @@ _New tasks in this sprint:_
         </tr>
         <tr>
             <td>2</td>
-            <td rowspan="2">DPLL improvement</td>
             <td>Next solution mechanism</td>
-            <td>Fabri</td>
-            <td>3</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>Stop algorithm</td>
+            <td></td>
             <td>Fabri</td>
             <td>3</td>
         </tr>

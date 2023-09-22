@@ -2,16 +2,16 @@ package satify.update.solver.dpll
 
 import satify.model.cnf.Bool.False
 import satify.model.cnf.CNF.Symbol
-import satify.model.dpll.PartialAssignment.{filterUnconstrVars, updatePartialAssignment}
 import satify.model.dpll.{Constraint, Decision, OptionalVariable}
 import satify.update.solver.dpll.Optimizations.{pureLiteralIdentification, unitLiteralIdentification}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
+import satify.update.solver.dpll.utils.PartialAssignmentUtils.{filterUnconstrVars, updatePartialAssignment}
 
 import scala.util.Random
 
 private[dpll] object DpllDecision:
 
-  /** Make decisions based on the previous one selecting the most appropriate variable and constraint.
+  /** Make decisions based on the previous one selecting the most appropriate variable and assignment.
     * If no optimization can be applied, it makes a random decision.
     * @param d previous decision.
     * @param rnd random number generator.
