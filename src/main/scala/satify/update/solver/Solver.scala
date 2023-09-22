@@ -46,7 +46,7 @@ trait Solver:
     * @return a filled assignment if there is another satisfiable, an empty one otherwise.
     * @throws IllegalStateException if a previous run was not found
     */
-  def next(): Assignment
+  def next(): Option[Assignment]
 
 /** Factory for [[Solver]] instances. */
 object Solver:
@@ -71,7 +71,7 @@ object Solver:
 
     override def solve(exp: Expression): Solution = solve(converter.convert(exp))
 
-    override def next(): Assignment = findNext()
+    override def next(): Option[Assignment] = findNext()
 
 object DpllSolverMemoize:
 

@@ -16,8 +16,6 @@ import scala.util.Random
 
 private[solver] object DpllEnumerator:
 
-  private val rnd = Random(42)
-
   /** Solves the SAT problem enumerating all satisfiable assignments,
     * by running the DPLL algorithm.
     * @param cnf expression in Conjunctive Normal Form.
@@ -32,10 +30,11 @@ private[solver] object DpllEnumerator:
 
   /** Enumerator DPLL algorithm.
     * It returns a new decision tree whose leafs are either SAT or UNSAT solutions.
-    * @param d decision to be made
-    * @return updated decision tree along with the result
+    * @param d decision to be made.
+    * @param rnd random number generator to make pseudo random decisions.
+    * @return updated decision tree along with the result.
     */
-  private def dpll(d: Decision): DecisionTree =
+  private def dpll(d: Decision, rnd: Random = Random(42)): DecisionTree =
 
     case class Frame(d: Decision, done: List[DecisionTree], todos: List[Decision])
 
