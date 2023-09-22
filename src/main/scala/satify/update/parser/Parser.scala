@@ -23,4 +23,3 @@ trait Parser[T]:
     val writer = new PrintWriter(new File(path + separator + fileName))
     try dump(obj).foreach(writer.println)
     finally writer.close()
-

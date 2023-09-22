@@ -1,14 +1,14 @@
 package satify.update.parser
 
-import satify.model.cnf.{CNF, Literal}
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
+import satify.model.cnf.{CNF, Literal}
 
 import scala.collection.mutable
 
 object DimacsParser extends Parser[CNF]:
 
   private val Header = "p cnf (\\d+) (\\d+)".r
-  
+
   def parse(lines: Seq[String]): Option[CNF] =
     stripComments(lines) match
       case Nil => None
@@ -72,5 +72,5 @@ object DimacsParser extends Parser[CNF]:
   private def buildAndCNF(cnf: Seq[Or | Literal]): And | Or | Literal =
     cnf.tail.foldLeft[And | Or | Literal](cnf.head)((p, c) => And(c, p))
 
-  protected def stripComments(lines: Seq[String]): Seq[String] =
+  private def stripComments(lines: Seq[String]): Seq[String] =
     lines.filterNot(_.startsWith("c"))
