@@ -1,44 +1,14 @@
 package satify.update.parser
 
-import satify.model.cnf.CNF.*
 import satify.model.cnf.{CNF, Literal}
+import satify.model.cnf.CNF.{And, Not, Or, Symbol}
 
-import java.io.{File, PrintWriter}
-import scala.annotation.tailrec
 import scala.collection.mutable
-import scala.io.Source
 
-/** Read/write objects in DIMACS format. */
-trait Dimacs[T]:
-
-  def parse(lines: Seq[String]): Option[T]
-
-  def dump(obj: T): Seq[String]
-
-  def read(path: String): Option[T] = readSource(Source.fromFile(path))
-
-  def read: Option[T] = readSource(Source.stdin)
-
-  private def readSource(source: Source) =
-    try parse(source.getLines.toList)
-    finally source.close()
-
-  protected def writeSource(path: String, obj: T): Unit =
-    val fileName: String = "satify_cnf_export.txt"
-    val separator = System.getProperty("file.separator")
-    val writer = new PrintWriter(new File(path + separator + fileName))
-    try dump(obj).foreach(writer.println)
-    finally writer.close()
-
-  protected def stripComments(lines: Seq[String]): Seq[String] =
-    lines.filterNot(_.startsWith("c"))
-
-object DimacsCNF extends Dimacs[CNF]:
+object DimacsParser extends Parser[CNF]:
 
   private val Header = "p cnf (\\d+) (\\d+)".r
-
-  def write(path: String, cnf: CNF): Unit = writeSource(path, cnf)
-
+  
   def parse(lines: Seq[String]): Option[CNF] =
     stripComments(lines) match
       case Nil => None
@@ -101,3 +71,6 @@ object DimacsCNF extends Dimacs[CNF]:
 
   private def buildAndCNF(cnf: Seq[Or | Literal]): And | Or | Literal =
     cnf.tail.foldLeft[And | Or | Literal](cnf.head)((p, c) => And(c, p))
+
+  protected def stripComments(lines: Seq[String]): Seq[String] =
+    lines.filterNot(_.startsWith("c"))

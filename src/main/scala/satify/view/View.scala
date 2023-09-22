@@ -6,7 +6,7 @@ import satify.model.errors.Error
 import satify.model.errors.Error.*
 import satify.model.problems.NQueens
 import satify.model.{Assignment, Result, Solution, State}
-import satify.update.parser.DimacsCNF
+import satify.update.parser.DimacsParser
 import satify.view.Constants.{cnfOutputDialogName, problemOutputDialogName, solOutputDialogName}
 import satify.view.GUI.{cnfOutputDialog, createExportFileChooser, exportFileChooser, problemParameterPanel}
 import satify.view.utils.ComponentUtils.*
@@ -56,7 +56,7 @@ object View:
       exportButton.reactions += { case _: event.ButtonClicked =>
         exportFileChooser.showOpenDialog(cnfOutputDialog) match
           case FileChooser.Result.Approve =>
-            DimacsCNF.write(exportFileChooser.selectedFile.getPath, cnf.get)
+            DimacsParser.write(exportFileChooser.selectedFile.getPath, cnf.get)
             exportButton.text = Exported.title
             exportButton.enabled = false
           case _ => createErrorDialog(InvalidExport().description).open()

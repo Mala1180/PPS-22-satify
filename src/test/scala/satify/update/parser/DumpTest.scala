@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers
 import satify.model.*
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
-import satify.update.parser.DimacsCNF
+import satify.update.parser.DimacsParser
 
 import scala.io.Source
 import scala.util.Using
@@ -25,7 +25,7 @@ class DumpTest extends AnyFlatSpec with Matchers {
       "1 2 0",
       "3 4 0"
     )
-    val result = DimacsCNF.dump(cnf)
+    val result = DimacsParser.dump(cnf)
     result shouldEqual expected
   }
 
@@ -37,7 +37,7 @@ class DumpTest extends AnyFlatSpec with Matchers {
       "-1 2 0",
       "3 -1 0"
     )
-    val result = DimacsCNF.dump(cnf)
+    val result = DimacsParser.dump(cnf)
     result shouldEqual expected
   }
 
@@ -49,7 +49,7 @@ class DumpTest extends AnyFlatSpec with Matchers {
       "1 2 0",
       "3 -1 0"
     )
-    val result = DimacsCNF.dump(cnf)
+    val result = DimacsParser.dump(cnf)
     result shouldEqual expected
   }
 }
