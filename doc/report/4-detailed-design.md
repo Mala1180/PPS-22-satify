@@ -10,7 +10,10 @@ Moreover, the **Cake Pattern** has been introduced to improve the modeling of th
 Some _trait_ has been designed to represent the components of the MVU pattern, which encapsulate within them some
 _abstract type members_ related to Model, View and Update.
 
-<img src="../diagrams/mvu/mvu-detailed.png" alt=" Model-View-Update detailed diagram">
+<p align=center>
+  <img src="../diagrams/mvu/mvu-detailed.svg" alt=" Model-View-Update detailed diagram">
+</p>
+
 
 ## Model
 
@@ -27,7 +30,13 @@ while And, Or and Not represent the basic boolean operators.
 
 ### Problem
 
-<img src="img/problem/problem.png" alt="Problem design">
+
+<p align="center">
+<img src="img/problem/problem.svg" alt="Problem design">
+
+</p>
+
+
 
 The general Problem representation has been designed with a _trait_ representing the abstract type **Problem**,
 for each problem a _case class_ has been defined.
@@ -68,7 +77,9 @@ the needed part of the UI.
 
 ### Converter
 
-<img src="img/converter/converter.png" alt="Converter design">
+<p align="center">
+<img src="img/converter/converter.svg" alt="Converter design">
+</p>
 
 Converter is a _trait_ containing the method convert that will be implemented by each converter.
 In order to obtain better performances and to avoid the re-computation of same expressions, the converter keeps
@@ -97,48 +108,24 @@ So, the best way to design it is decomposing the algorithm following the steps b
 2. Replace each subformula with an auxiliary variable representing its truth value.
    e.g.
 
-    <p align=center>
-        (a ∧ (b ∨ c)) -> (¬c ∧ d)<br>
-        TSTN4 <–> ¬c<br>
-        TSTN3 <–> b ∨ c<br>
-        TSTN2 <–> TSTN4 ∧ d<br>
-        TSTN1 <–> a ∧ TSTN3<br>
-        TSTN0 <–> TSTN1 –> TSTN2
-    </p>
+    
+    $$(a \land (b \lor c)) \implies (\lnot c \land d)$$
+    $$TSTN_4 \Longleftrightarrow \lnot c$$
+    $$TSTN_3 \Longleftrightarrow b \lor c$$
+    $$TSTN_2 \Longleftrightarrow TSTN_4 \land d$$
+    $$TSTN_1 \Longleftrightarrow a \land TSTN_3$$
+    $$TSTN_0 \Longleftrightarrow TSTN_1 \implies TSTN_2$$
+    
 
 3. Express the truth conditions of the subformulas in CNF using the auxiliary variables and standard logical
    connectives (AND, OR, NOT) following the transformations listed in the table below.
 
-    <table>
-        <thead> 
-            <tr>
-                <th>Operator</th>
-                <th>Circuit</th>
-                <th>Expression</th>
-                <th>Converted</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><b>AND</b></td>
-                <td><img src="img/AndCircuit.svg" alt="And Circuit"></td>
-                <td>X = A ∧ B</td>
-                <td>(¬A ∨ ¬B ∨ X) ∧ (A ∨ ¬X) ∧ (B ∨ ¬X)</td>
-            </tr>
-            <tr>
-                <td><b>OR</b></td>
-                <td><img src="img/OrCircuit.svg" alt="Or Circuit"></td>
-                <td>X = A ∨ B</td>
-                <td>(A ∨ B ∨ ¬X) ∧ (¬A ∨ X) ∧ (¬B ∨ X)</td>
-            </tr>
-            <tr>
-                <td><b>NOT</b></td>
-                <td><img src="img/NotCircuit.svg" alt="Not Circuit"></td>
-                <td>X = ¬A</td>
-                <td>(¬A ∨ ¬X) ∧ (A ∨ X)</td>
-            </tr>
-        </tbody>
-    </table>
+    | Operator  | Circuit                   | Expression    | Converted |
+    | --------  | -------                   | -------       | -------   |
+    | AND       | ![](img/AndCircuit.svg)   | $X = A \land B$   | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$   |
+    | OR        | ![](img/OrCircuit.svg)   | $X = A \lor B$   | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$   |
+    | NOT       | ![](img/NotCircuit.svg)   | $X = \lnot A$      | $(\lnot A \lor \lnot X) \land (A \lor X)$   |
+    
 
 4. Combine the representations of the subformulas to obtain the CNF representation of the entire formula.
 
@@ -148,14 +135,20 @@ the original logical formula efficiently.
 
 ### Solver
 
+<p align="center">
+<img src="img/solver/solver.svg" alt="Solver design">
+</p>
+
 Solver is a _trait_ containing the methods useful to solve SAT problem encoded in CNF form.
 There are two main possibility to solve a SAT problem instance, one is starting from the CNF form, and the other is
 starting directly from the expression.
 Furthermore, it is possible to solve the problem looking for all the possible
 solutions or only one at a time.
 In the last case the solver will convert the expression in CNF with the Converter specified before compute the solution.
+
 In order to obtain better performances and to avoid the re-computation of same expressions,
 also the solver make use of _memoization_ pattern.
+
 
 #### DPLL (Davis-Putnam-Loveland-Logemann)
 
