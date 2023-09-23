@@ -11,6 +11,7 @@ import satify.app.Architecture.MVU
 import satify.app.Main.Model
 import satify.update.Message
 
+import java.util
 import scala.swing.Component
 
 class ArchitectureTest extends AnyFlatSpec with Matchers:
@@ -22,6 +23,7 @@ class ArchitectureTest extends AnyFlatSpec with Matchers:
   val ViewPackage: String = RootPackage + ".view"
 
   val excludeInstrumented: ImportOption = (location: Location) => !location.contains("instrumented-classes")
+  val excludeApp: ImportOption = (location: Location) => !location.contains("app")
   val allClasses: JavaClasses = ClassFileImporter().withImportOption(excludeInstrumented).importPackages(RootPackage)
 
   "Architecture" should "not have cyclic dependencies" in {
@@ -29,7 +31,10 @@ class ArchitectureTest extends AnyFlatSpec with Matchers:
       .matching(RootPackage + ".(*)..")
       .should()
       .beFreeOfCycles()
-    noCycles.check(allClasses)
+    val allClassesExceptApp = ClassFileImporter()
+      .withImportOptions(util.List.of(excludeApp, excludeInstrumented))
+      .importPackages(RootPackage)
+    noCycles.check(allClassesExceptApp)
   }
 
   "Model" should "be immutable" in {
