@@ -3,6 +3,9 @@
 ---
 ## Code organization
 
+<p align=center>
+  <img src="img/packages.svg" alt=" Model-View-Update detailed diagram">
+</p>
 
 
 ## Architecture
