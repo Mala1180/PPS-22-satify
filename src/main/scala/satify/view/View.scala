@@ -32,7 +32,7 @@ object View:
         val fp: FlowPanel = new FlowPanel():
           name = solOutputDialogName
           contents += new BoxPanel(Orientation.Vertical):
-            contents += new ScrollPane(createOutputTextArea(sol.print, 30, 35))
+            contents += new ScrollPane(createOutputTextArea(sol.string, 30, 35))
             if model.problem.isDefined && model.solution.get.result == Result.SAT then
               contents += createShowSection(model.problem.get, model.solution.get.assignments.last)
             sol.status match
