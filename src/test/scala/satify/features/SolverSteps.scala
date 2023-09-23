@@ -44,7 +44,7 @@ object SolverSteps extends ScalaDsl with EN:
   }
 
   And("I should obtain another assignment different from the previous one") {
-    Solver(DPLL).next() should not be sol.assignments.head
+    Solver(DPLL).next should not be sol.assignments.head
   }
 
   And("I should obtain no assignments")(sol.assignments should have size 0)

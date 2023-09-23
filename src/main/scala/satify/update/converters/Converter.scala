@@ -1,7 +1,9 @@
 package satify.update.converters
 
+import satify.model.Solution
 import satify.model.cnf.CNF
 import satify.model.expression.Expression
+import satify.update.converters.ConverterMemoization.cachedConversion
 import satify.update.converters.ConverterType.*
 import satify.update.converters.tseitin.TseitinTransformation.tseitin
 
@@ -14,16 +16,8 @@ trait Converter:
     * @param exp the expression to convert.
     * @return the CNF expression.
     */
-  def convert(exp: Expression): CNF
+  def convert(exp: Expression, cache: Boolean = true): CNF
 
-  /** Memoize a function f: Expression => CNF to avoid recomputing the same CNF for the same expression.
-    * @param f the function to memoize.
-    * @return
-    */
-  protected def memoize(f: Expression => CNF): Expression => CNF =
-    new mutable.HashMap[Expression, CNF]() {
-      override def apply(key: Expression): CNF = getOrElseUpdate(key, f(key))
-    }
 
 /** Factory for [[Converter]] instances. */
 object Converter:
@@ -32,10 +26,23 @@ object Converter:
     * @param converterType the type of converter to create.
     * @return the converter.
     */
-  def apply(converterType: ConverterType, cache: Boolean = true): Converter = converterType match
-    case Tseitin => TseitinConverter(cache)
+  def apply(converterType: ConverterType): Converter = converterType match
+    case Tseitin => TseitinConverter()
 
   /** Private implementation of [[Converter]] */
-  private case class TseitinConverter(cache: Boolean = true) extends Converter:
+  private case class TseitinConverter() extends Converter:
 
-    override def convert(exp: Expression): CNF = if cache then memoize(tseitin)(exp) else tseitin(exp)
+    override def convert(exp: Expression, cache: Boolean = true): CNF = if cache then cachedConversion(exp) else tseitin(exp)
+
+object ConverterMemoization:
+
+  val cachedConversion: Expression => CNF = memoize(exp => tseitin(exp))
+
+  /** Memoize a function f: Expression => CNF to avoid recomputing the same CNF for the same expression.
+   * @param f the function to memoize.
+   * @return
+   */
+  protected def memoize(f: Expression => CNF): Expression => CNF =
+    new mutable.HashMap[Expression, CNF]() {
+      override def apply(key: Expression): CNF = getOrElseUpdate(key, f(key))
+    }
