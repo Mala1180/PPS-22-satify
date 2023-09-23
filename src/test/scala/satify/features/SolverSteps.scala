@@ -25,7 +25,7 @@ object SolverSteps extends ScalaDsl with EN:
   Then("the result should be UNSAT")(sol.result shouldBe UNSAT)
 
   And("it is passed in input to a solver that returns all the assignments") {
-    sol = Solver(DPLL).solveAll(expression.get)
+    sol = Solver(DPLL).solveAll(expression.get, true)
   }
 
   And("it is passed in input to a solver that returns one assignment at a time") {
@@ -44,7 +44,7 @@ object SolverSteps extends ScalaDsl with EN:
   }
 
   And("I should obtain another assignment different from the previous one") {
-    Solver(DPLL).next() should not be sol.assignments.head
+    Solver(DPLL).next should not be sol.assignments.head
   }
 
   And("I should obtain no assignments")(sol.assignments should have size 0)

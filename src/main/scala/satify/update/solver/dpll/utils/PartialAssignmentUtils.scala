@@ -3,10 +3,10 @@ package satify.update.solver.dpll.utils
 import satify.model.cnf.Bool.True
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
+import satify.model.expression.SymbolGeneration.{converterVarPrefix, encodingVarPrefix}
 import satify.model.solver.DecisionTree.{Branch, Leaf}
 import satify.model.solver.OrderedList.list
-import satify.model.solver.{Constraint, Decision, DecisionTree, OptionalVariable, PartialAssignment}
-import satify.model.expression.SymbolGeneration.{converterVarPrefix, encodingVarPrefix}
+import satify.model.solver.*
 object PartialAssignmentUtils:
 
   import satify.model.solver.OrderedList.given

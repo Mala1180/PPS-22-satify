@@ -2,13 +2,13 @@ package satify.update.solver.dpll.utils
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.{Assignment, Variable}
 import satify.model.cnf.Bool.{False, True}
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
+import satify.model.solver.*
 import satify.model.solver.DecisionTree.{Branch, Leaf}
 import satify.model.solver.OrderedList.list
-import satify.model.solver.{Constraint, Decision, DecisionTree, OptionalVariable, PartialAssignment}
+import satify.model.{Assignment, Variable}
 import satify.update.solver.dpll.utils.PartialAssignmentUtils.*
 
 class PartialAssignmentUtilsTest extends AnyFlatSpec with Matchers:

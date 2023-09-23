@@ -58,7 +58,7 @@ object Update:
     val update: () => State = () =>
       val exp = reflect(input)
       start()
-      val sol: Solution = Solver(DPLL).solveAll(exp)
+      val sol: Solution = Solver(DPLL).solveAll(exp, true)
       stop()
       State(input, exp, sol, elapsed())
     safeUpdate(update, Some(input))
@@ -134,7 +134,7 @@ object Update:
   private def nextSolutionUpdate(currentState: State): State =
     val update: () => State = () =>
       start()
-      val optNext: Option[Assignment] = Solver(DPLL).next()
+      val optNext: Option[Assignment] = Solver(DPLL).next
       stop()
       optNext match
         case None => currentState

@@ -3,10 +3,10 @@ package satify.update.solver.dpll.impl
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.matchers.should.Matchers.should
-import satify.model.cnf.CNF.*
-import satify.update.solver.dpll.impl.DpllEnumerator.enumerate
 import satify.model.Result.*
+import satify.model.cnf.CNF.*
 import satify.model.{Assignment, Variable}
+import satify.update.solver.dpll.impl.DpllEnumerator.enumerate
 
 class DpllEnumeratorTest extends AnyFlatSpec with Matchers:
 

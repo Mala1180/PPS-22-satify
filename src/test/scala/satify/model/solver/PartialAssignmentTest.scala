@@ -7,7 +7,6 @@ import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
 import satify.model.solver.DecisionTree.{Branch, Leaf}
 import satify.model.solver.OrderedList.list
-import satify.model.solver.PartialAssignment
 import satify.model.solver.{Constraint, Decision, OptionalVariable, PartialAssignment}
 import satify.model.{Assignment, Variable}
 
