@@ -7,7 +7,11 @@ import satify.update.Message.*
 import satify.view.components.Components.*
 import satify.view.utils.ComponentUtils.createErrorDialog
 import satify.view.utils.Constants.*
-import satify.view.utils.ProblemTitle.{GraphColoring as GUIGraphColoring, NQueens as GUINQueens, NurseScheduling as GUINurseScheduling}
+import satify.view.utils.ProblemTitle.{
+  GraphColoring as GUIGraphColoring,
+  NQueens as GUINQueens,
+  NurseScheduling as GUINurseScheduling
+}
 
 import java.io.File
 import scala.swing.{Component, Swing, TextArea}
