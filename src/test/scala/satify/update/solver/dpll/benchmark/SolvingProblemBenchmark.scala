@@ -8,7 +8,7 @@ import satify.update.solver.SolverType.*
 object SolvingProblemBenchmark extends Bench.LocalTime:
   import satify.update.converters.ConverterType.Tseitin
 
- /** Benchmark for NQueens creation and solving time */
+  /** Benchmark for NQueens creation and solving time */
   performance of "N-Queens solving time" in {
     val sizes: Gen[Int] = Gen.range("size")(2, 5, 1)
     measure method "N-Queens Solving" in {

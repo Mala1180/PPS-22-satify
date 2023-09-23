@@ -10,7 +10,7 @@ object ConversionMemoryBenchmark extends Bench.OfflineReport:
 
   /** Benchmark for NQueens creation and conversion memory footprint */
   performance of "N-Queens conversion memory" in {
-    val sizes: Gen[Int] = Gen.range("size")(2, 5, 1)
+    val sizes: Gen[Int] = Gen.range("size")(2, 10, 1)
     measure method "N-Queens Conversion" in {
       using(sizes) in { size =>
         val cnf = Converter(Tseitin).convert(NQueens(size).exp, false)
