@@ -8,7 +8,7 @@ import satify.model.errors.Error
 import satify.model.errors.Error.*
 import satify.model.problems.Problem
 import satify.update.Message.*
-import satify.update.Utils.Chronometer.*
+import satify.update.Utils.Chronometer
 import satify.update.converters.Converter
 import satify.update.converters.ConverterType.*
 import satify.update.parser.DimacsParser.*
@@ -57,10 +57,10 @@ object Update:
   private def solveAllUpdate(input: String): State =
     val update: () => State = () =>
       val exp = reflect(input)
-      start()
+      Chronometer.start()
       val sol: Solution = Solver(DPLL).solveAll(exp, true)
-      stop()
-      State(input, exp, sol, elapsed())
+      Chronometer.stop()
+      State(input, exp, sol, Chronometer.elapsed())
     safeUpdate(update, Some(input))
 
   /** Update function to react to the Solve message. This function will attempt to solve the input and return a state.
@@ -70,10 +70,10 @@ object Update:
   private def solveUpdate(input: String): State =
     val update: () => State = () =>
       val exp = reflect(input)
-      start()
+      Chronometer.start()
       val sol: Solution = Solver(DPLL).solve(exp)
-      stop()
-      State(input, exp, sol, elapsed())
+      Chronometer.stop()
+      State(input, exp, sol, Chronometer.elapsed())
     safeUpdate(update, Some(input))
 
   /** Update function to react to the SolveProblem message. This function will attempt to solve the problem and return a state.
@@ -82,10 +82,10 @@ object Update:
     */
   private def problemUpdate(problem: Problem): State =
     val update: () => State = () =>
-      start()
+      Chronometer.start()
       val sol = Solver(DPLL).solve(problem.exp)
-      stop()
-      State(sol, problem, elapsed())
+      Chronometer.stop()
+      State(sol, problem, Chronometer.elapsed())
     safeUpdate(update)
 
   /** Update function to react to the Convert message. This function will attempt to convert the input and return a state.
@@ -95,10 +95,10 @@ object Update:
   private def converterUpdate(input: String): State =
     val update: () => State = () =>
       val exp = reflect(input)
-      start()
+      Chronometer.start()
       val cnf: CNF = Converter(Tseitin).convert(exp)
-      stop()
-      State(input, exp, cnf, elapsed())
+      Chronometer.stop()
+      State(input, exp, cnf, Chronometer.elapsed())
     safeUpdate(update, Some(input))
 
   /** Update function to react to the ConvertProblem message. This function will attempt to convert the selected problem and return a state.
@@ -107,10 +107,10 @@ object Update:
     */
   private def converterProblemUpdate(problem: Problem): State =
     val update: () => State = () =>
-      start()
+      Chronometer.start()
       val cnf: CNF = Converter(Tseitin).convert(problem.exp)
-      stop()
-      State(cnf, problem, elapsed())
+      Chronometer.stop()
+      State(cnf, problem, Chronometer.elapsed())
     safeUpdate(update)
 
   /** Update function to react to the Import message. This function will attempt to import the file and return a state.
@@ -133,9 +133,9 @@ object Update:
     */
   private def nextSolutionUpdate(currentState: State): State =
     val update: () => State = () =>
-      start()
+      Chronometer.start()
       val optNext: Option[Assignment] = Solver(DPLL).next
-      stop()
+      Chronometer.stop()
       optNext match
         case None => currentState
         case Some(next) =>
@@ -144,6 +144,6 @@ object Update:
             currentState.solution.get.status,
             currentState.solution.get.assignments :+ next
           )
-          if currentState.problem.isDefined then State(sol, currentState.problem.get, elapsed())
-          else State(currentState.input.get, currentState.expression.get, sol, elapsed())
+          if currentState.problem.isDefined then State(sol, currentState.problem.get, Chronometer.elapsed())
+          else State(currentState.input.get, currentState.expression.get, sol, Chronometer.elapsed())
     safeUpdate(update)
