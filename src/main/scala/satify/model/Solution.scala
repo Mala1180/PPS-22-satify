@@ -1,7 +1,5 @@
 package satify.model
 
-import satify.model.dpll.PartialAssignment
-
 /** Sum Type representing the two possible results of SAT problem. */
 enum Result:
   case SAT
@@ -35,10 +33,9 @@ case class Solution(result: Result, status: Status, assignments: List[Assignment
 object Solution:
 
   extension (solution: Solution)
-    def print: String =
-      s"${solution.result} \n ${solution.assignments
-          .map(a =>
-            s"Solution ${solution.assignments.indexOf(a) + 1}" + "\n" +
-              a.variables.foldLeft("")((b, c) => b + c.name + ": " + c.value + "\n")
-          )
-          .foldLeft("")((p, c) => p + "\n" + c)}"
+    def string: String = s"${solution.result} \n ${solution.assignments
+        .map(a =>
+          s"Solution ${solution.assignments.indexOf(a) + 1}" + "\n" +
+            a.variables.foldLeft("")((b, c) => b + c.name + ": " + c.value + "\n")
+        )
+        .foldLeft("")((p, c) => p + "\n" + c)}"

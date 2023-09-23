@@ -5,9 +5,9 @@ import satify.model.Status.*
 import satify.model.cnf.Bool.True
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
-import satify.model.dpll.*
-import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.PartialAssignment
+import satify.model.solver.*
+import satify.model.solver.DecisionTree.{Branch, Leaf}
+import satify.model.solver.PartialAssignment
 import satify.model.expression.SymbolGeneration.{encodingVarPrefix, converterVarPrefix}
 import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide

@@ -7,8 +7,8 @@ import satify.model.Status.*
 import satify.model.cnf.Bool.{False, True}
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
-import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.{Decision, DecisionTree}
+import satify.model.solver.DecisionTree.{Branch, Leaf}
+import satify.model.solver.{Decision, DecisionTree}
 import satify.model.{Assignment, Result, Solution, Variable}
 import satify.update.solver.dpll.impl.DpllFinder.{find, findNext, resume}
 import satify.update.solver.dpll.utils.PartialAssignmentUtils.extractParAssignmentFromCnf

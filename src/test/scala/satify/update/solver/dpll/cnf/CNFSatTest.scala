@@ -4,7 +4,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
-import satify.model.dpll.Constraint
+import satify.model.solver.Constraint
 import satify.update.solver.dpll.cnf.CNFSat.isUnsat
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
 

@@ -6,9 +6,9 @@ import satify.model.{Assignment, Variable}
 import satify.model.cnf.Bool.{False, True}
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
-import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.OrderedList.list
-import satify.model.dpll.{Constraint, Decision, DecisionTree, OptionalVariable, PartialAssignment}
+import satify.model.solver.DecisionTree.{Branch, Leaf}
+import satify.model.solver.OrderedList.list
+import satify.model.solver.{Constraint, Decision, DecisionTree, OptionalVariable, PartialAssignment}
 import satify.update.solver.dpll.utils.PartialAssignmentUtils.*
 
 class PartialAssignmentUtilsTest extends AnyFlatSpec with Matchers:

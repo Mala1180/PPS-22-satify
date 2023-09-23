@@ -6,7 +6,7 @@ import satify.update.Message.*
 import satify.update.Update.update
 import satify.view.utils.ComponentUtils.createErrorDialog
 import satify.view.Constants.*
-import satify.view.GUI.*
+import satify.view.Components.*
 import satify.model.errors.Error.InvalidInput
 import satify.view.utils.ProblemTitle.{
   NQueens as GUINQueens,

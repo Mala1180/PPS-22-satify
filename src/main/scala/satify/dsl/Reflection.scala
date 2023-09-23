@@ -2,6 +2,7 @@ package satify.dsl
 
 import satify.model.expression.Expression
 import satify.model.expression.Expression.Symbol
+import satify.model.expression.SymbolGeneration.{converterVarPrefix, encodingVarPrefix}
 
 import java.util.concurrent.Executors
 import scala.util.matching.Regex
@@ -11,7 +12,7 @@ object Reflection:
   private val excludedWords = getDSLKeywords.mkString("|")
   private val symbolsRegexPattern: Regex = s"""((?!$excludedWords\\b)\\b(?![0-9]+\\b)\\w+)""".r
   private val commentsRegexPattern: Regex = """(//.*)|(/\*[^*]*\*+(?:[^/*][^*]*\*+)*/)""".r
-  private val privateVariablesPattern: Regex = "\\b(ENC|TSTN)\\w*".r
+  private val privateVariablesPattern: Regex = s"\\b($encodingVarPrefix|$converterVarPrefix)\\w*".r
 
   def getDSLKeywords: List[String] =
     val operators = classOf[Operators.type].getMethods.map(_.getName).toList

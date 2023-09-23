@@ -3,7 +3,7 @@ package satify.view.utils
 import satify.model.{Assignment, State}
 import satify.model.problems.Problem
 import satify.view.Constants.*
-import satify.view.GUI.{enableInteractions, problemOutputDialog, problemParameterPanel, solutionOutputDialog}
+import satify.view.Components.{enableInteractions, problemOutputDialog, problemParameterPanel, solutionOutputDialog}
 import satify.view.Reactions.{nextSolutionReaction, problemSolutionReaction}
 import satify.view.utils.TextPaneUtils.{textPaneText, updateStyle}
 import satify.view.utils.Title.*
@@ -124,6 +124,7 @@ object ComponentUtils:
     * @return the button
     */
   def createButton(text: String, width: Int, height: Int, color: Color = Color.black): Button = new Button(text):
+    name = this.text
     font = Font(fontFamily, Font.ITALIC, 20)
     preferredSize = new Dimension(width, height)
     foreground = color

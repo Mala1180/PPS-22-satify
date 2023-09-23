@@ -11,7 +11,7 @@ import satify.update.Message.*
 import satify.update.Utils.Chronometer.*
 import satify.update.converters.Converter
 import satify.update.converters.ConverterType.*
-import satify.update.parser.DimacsCNF.*
+import satify.update.parser.DimacsParser.*
 import satify.update.solver.Solver
 import satify.update.solver.SolverType.*
 
