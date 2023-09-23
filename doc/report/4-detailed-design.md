@@ -1,6 +1,9 @@
 # Detailed Design
 
 ---
+## Code organization
+
+
 
 ## Architecture
 
@@ -58,7 +61,7 @@ CNF is a specific form of representing logical formulas as a *conjunction* of cl
 *disjunction*
 of literals (variables or their negations). For example:
 
-$$(a \lor c) \land (a \lor \lnot d)$$
+$$ (a \lor c) \land (a \lor \lnot d) $$
 
 CNF has been modeled a specific type of __Expression__ where:
 
@@ -124,21 +127,21 @@ So, the best way to design it is decomposing the algorithm following the steps b
 2. Replace each subformula with an auxiliary variable representing its truth value.
    e.g.
 
-    $$(a \land (b \lor c)) \implies (\lnot c \land d)$$
-    $$TSTN_4 \Longleftrightarrow \lnot c$$
-    $$TSTN_3 \Longleftrightarrow b \lor c$$
-    $$TSTN_2 \Longleftrightarrow TSTN_4 \land d$$
-    $$TSTN_1 \Longleftrightarrow a \land TSTN_3$$
-    $$TSTN_0 \Longleftrightarrow TSTN_1 \implies TSTN_2$$
+   $$(a \land (b \lor c)) \implies (\lnot c \land d)$$
+   $$TSTN_4 \Longleftrightarrow \lnot c$$
+   $$TSTN_3 \Longleftrightarrow b \lor c$$
+   $$TSTN_2 \Longleftrightarrow TSTN_4 \land d$$
+   $$TSTN_1 \Longleftrightarrow a \land TSTN_3$$
+   $$TSTN_0 \Longleftrightarrow TSTN_1 \implies TSTN_2$$
 
 3. Express the truth conditions of the subformulas in CNF using the auxiliary variables and standard logical
    connectives (AND, OR, NOT) following the transformations listed in the table below.
 
-   | Operator  | Circuit                   | Expression    | Converted |
-       | --------  | -------                   | -------       | -------   |
-   | AND       | ![](img/AndCircuit.svg)   | $X = A \land B$   | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$   |
-   | OR        | ![](img/OrCircuit.svg)   | $X = A \lor B$   | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$   |
-   | NOT       | ![](img/NotCircuit.svg)   | $X = \lnot A$      | $(\lnot A \lor \lnot X) \land (A \lor X)$   |
+   | Operator | Circuit                 | Expression      | Converted                                                                     |
+   |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
+   | AND      | ![](img/AndCircuit.svg) | $X = A \land B$ | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$ |
+   | OR       | ![](img/OrCircuit.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
+   | NOT      | ![](img/NotCircuit.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |
 
 
 4. Combine the representations of the subformulas to obtain the CNF representation of the entire formula.
@@ -161,16 +164,17 @@ solutions or only one at a time.
 In the last case the solver will convert the expression in CNF with the Converter specified before compute the solution.
 
 In order to obtain better performances and to avoid the re-computation of same expressions,
-also the solver make use of _memoization_ pattern.
+also the solver makes use of _memoization_ pattern.
 
 ### DPLL (Davis-Putnam-Loveland-Logemann)
 
-The DPLL algorithm is a search algorithm for deciding the satisfability of a propositional formula in Conjunctive Normal
+The DPLL algorithm is a search algorithm for deciding the satisfiability of a propositional formula in Conjunctive
+Normal
 Form.
 
 Compared to a simple exhaustive search of all the possible variable assignments, DPLL makes use of determined strategies
 to guide the search, making it more efficient.
-It was introduced in 1961 by Martin Davis, George Logemann and Donald W. Loveland and is a refinement of the earlier
+It was introduced in 1961 by Martin Davis, George Logemann and Donald W.Loveland and is a refinement of the earlier
 Davis–Putnam algorithm.
 
 In this case, the _Solver_ is in charge of solving the propositional expression using the DPLL algorithm.
@@ -181,8 +185,8 @@ Following the functional approach, the implementation is hidden inside a private
 
 ##### Definition of partial model
 
-We will call elements of $Vars \rightarrow \mathcal{B}$ as partial model, e.g. not all variables are assigned at a given
-point of the algorithm.
+We will call elements of $Vars \rightarrow \mathcal{B}$ as a partial model, e.g., not all variables are assigned at a
+given point of the algorithm.
 
 ##### State of the literal
 
@@ -190,7 +194,7 @@ Under partial model $m$,
 
 - a literal $l$ is true if $m(l) = 1$;
 - $l$ is false if $m(l) = 0$;
-- otherwise $l$ is unassigned.
+- otherwise, $l$ is unassigned.
 
 ##### State of the clause
 
@@ -198,7 +202,7 @@ Under a partial model $m$,
 
 - a clause (literals put in $\lor$) is true if there is $l \in C$ such that $l$ is true;
 - $C$ is false if for each $l \in C$, $l$ is false;
-- otherwise $C$ is unassigned.
+- otherwise, $C$ is unassigned.
 
 ##### State of a formula
 
@@ -240,7 +244,7 @@ For example:
 
 $$(b \lor c) \land (\lnot c \lor d) \land (a \lor b \lor e) \land (d \lor b)$$
 
-In this case $b$ appears only in positive form, then assigning $b = true$ no other clause will be "penalized", therefore
+In this case, $b$ appears only in positive form, then assigning $b = true$ no other clause will be "penalized", therefore
 delete all the other clauses where $b$ is included.
 
 In other words: if $b$ doesn't appear in negative form inside the formula $F$, assigning $b = true$, the satisfability
