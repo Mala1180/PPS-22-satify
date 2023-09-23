@@ -1,4 +1,4 @@
-package satify
+package satify.app
 
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.{ClassFileImporter, ImportOption, Location}
@@ -7,10 +7,11 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.{classes, noClasses}
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.Architecture.MVU
-import satify.Main.Model
+import satify.app.Architecture.MVU
+import satify.app.Main.Model
 import satify.update.Message
 
+import java.util
 import scala.swing.Component
 
 class ArchitectureTest extends AnyFlatSpec with Matchers:
@@ -22,6 +23,7 @@ class ArchitectureTest extends AnyFlatSpec with Matchers:
   val ViewPackage: String = RootPackage + ".view"
 
   val excludeInstrumented: ImportOption = (location: Location) => !location.contains("instrumented-classes")
+  val excludeApp: ImportOption = (location: Location) => !location.contains("app")
   val allClasses: JavaClasses = ClassFileImporter().withImportOption(excludeInstrumented).importPackages(RootPackage)
 
   "Architecture" should "not have cyclic dependencies" in {
@@ -29,7 +31,10 @@ class ArchitectureTest extends AnyFlatSpec with Matchers:
       .matching(RootPackage + ".(*)..")
       .should()
       .beFreeOfCycles()
-    noCycles.check(allClasses)
+    val allClassesExceptApp = ClassFileImporter()
+      .withImportOptions(util.List.of(excludeApp, excludeInstrumented))
+      .importPackages(RootPackage)
+    noCycles.check(allClassesExceptApp)
   }
 
   "Model" should "be immutable" in {

@@ -47,7 +47,7 @@ It is implemented through an _enumeration_
 
 ## View
 
-**View** it will be, as already said, a function that takes as input the **Model** and returns a set of components.
+**View** will be, as already said, a function that takes as input the **Model** and returns a set of components.
 Until now, we have not seen any side effect, but in order to provide a user interface it's necessary having one, so the
 **GUI** object is in charge of render the new state of application showing the new updated components.
 In this way, every time the **Model** changes, the **GUI** will be correctly updated but without reloading the entire

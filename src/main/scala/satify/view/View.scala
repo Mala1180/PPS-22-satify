@@ -4,18 +4,18 @@ import satify.model.Status.*
 import satify.model.cnf.CNF
 import satify.model.errors.Error
 import satify.model.errors.Error.*
-import satify.model.problems.NQueens
-import satify.model.{Assignment, Result, Solution, State}
+import satify.model.{Result, Solution, State}
 import satify.update.parser.DimacsParser
-import satify.view.Components.{cnfOutputDialog, createExportFileChooser, exportFileChooser, problemParameterPanel}
-import satify.view.Constants.{cnfOutputDialogName, problemOutputDialogName, solOutputDialogName}
+import satify.view.components.Components.{cnfOutputDialog, exportFileChooser}
 import satify.view.utils.ComponentUtils.*
+import satify.view.utils.Constants.{cnfOutputDialogName, solOutputDialogName}
 import satify.view.utils.Title.*
 
 import java.awt.Color
 import scala.swing.*
 
 object View:
+
   def view(model: State): Set[Component] =
     import model.*
     if error.isDefined then updateError(error.get, input.getOrElse(""))
@@ -23,11 +23,11 @@ object View:
 
   /** Update the solution components
     * @param model the current state
-    * @param oSol the (optional) solution to show
+    * @param optSolution the (optional) solution to show
     * @return a set of components to add to the GUI
     */
-  private def updateSolution(model: State, oSol: Option[Solution]): Set[Component] =
-    oSol match
+  private def updateSolution(model: State, optSolution: Option[Solution]): Set[Component] =
+    optSolution match
       case Some(sol) =>
         val fp: FlowPanel = new FlowPanel():
           name = solOutputDialogName

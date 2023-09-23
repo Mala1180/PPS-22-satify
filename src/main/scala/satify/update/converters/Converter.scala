@@ -29,7 +29,6 @@ object Converter:
 
   /** Private implementation of [[Converter]] */
   private case class TseitinConverter() extends Converter:
-
     override def convert(exp: Expression, cache: Boolean = true): CNF =
       if cache then cachedConversion(exp, tseitin) else tseitin(exp)
 
