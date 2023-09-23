@@ -18,7 +18,7 @@ object ConversionMemoryBenchmark extends Bench.OfflineReport:
     }
   }
 
-  /** Benchmark for GraphColoring creation and conversion time */
+  /** Benchmark for GraphColoring creation and conversion memory footprint */
   performance of "Graph-Coloring conversion memory" in {
     val nodes = List("n1", "n2", "n3")
     val edges = List(("n1", "n2"), ("n2", "n3"))
@@ -31,7 +31,7 @@ object ConversionMemoryBenchmark extends Bench.OfflineReport:
     }
   }
 
-  /** Benchmark for NurseScheduling creation and conversion time */
+  /** Benchmark for NurseScheduling creation and conversion memory footprint */
   performance of "Nurse-Scheduling conversion memory" in {
     val nurses = 3
     val days = 1

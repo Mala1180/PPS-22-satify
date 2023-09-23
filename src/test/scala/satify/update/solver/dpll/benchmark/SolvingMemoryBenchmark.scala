@@ -19,7 +19,7 @@ object SolvingMemoryBenchmark extends Bench.OfflineReport:
     }
   }
 
-  /** Benchmark for GraphColoring creation and solving time */
+  /** Benchmark for GraphColoring creation and solving memory footprint */
   performance of "Graph-Coloring solving memory" in {
     val nodes = List("n1", "n2", "n3")
     val edges = List(("n1", "n2"), ("n2", "n3"))
@@ -32,7 +32,7 @@ object SolvingMemoryBenchmark extends Bench.OfflineReport:
     }
   }
 
-  /** Benchmark for NurseScheduling creation and solving time */
+  /** Benchmark for NurseScheduling creation and solving memory footprint */
   performance of "Nurse-Scheduling solving memory" in {
     val nurses = 3
     val days = 1
