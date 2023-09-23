@@ -1,7 +1,6 @@
-package satify.model.dpll
+package satify.model.solver
 
 import satify.model.cnf.CNF
-import satify.model.dpll.PartialAssignment
 
 /** Decision is a node of [[DecisionTree]].
   * The decision represents a boolean [[Constraint]] to a [[OptionalVariable]] and it is implicitly
@@ -11,7 +10,7 @@ import satify.model.dpll.PartialAssignment
   */
 case class Decision(pa: PartialAssignment, cnf: CNF)
 
-/** Decision tree is the main data structure for the DPLL algorithm. */
+/** Decision tree is the main data structure for tree-based resolution algorithms. */
 enum DecisionTree:
   case Leaf(d: Decision)
   case Branch(d: Decision, left: DecisionTree, right: DecisionTree)

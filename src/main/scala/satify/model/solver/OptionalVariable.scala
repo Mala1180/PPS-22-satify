@@ -1,4 +1,4 @@
-package satify.model.dpll
+package satify.model.solver
 
 import satify.model.{Assignment, Variable}
 

@@ -1,11 +1,11 @@
-package satify.model.dpll
+package satify.model.solver
 
 import satify.model.cnf.Bool.True
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
-import satify.model.dpll.*
-import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.OrderedList.list
+import satify.model.solver.*
+import satify.model.solver.DecisionTree.{Branch, Leaf}
+import satify.model.solver.OrderedList.list
 import satify.model.expression.SymbolGeneration.{encodingVarPrefix, converterVarPrefix}
 import satify.model.{Assignment, Variable}
 

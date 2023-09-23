@@ -1,14 +1,14 @@
-package satify.model.dpll
+package satify.model.solver
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.cnf.Bool.{False, True}
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
-import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.OrderedList.list
-import satify.model.dpll.PartialAssignment
-import satify.model.dpll.{Constraint, Decision, OptionalVariable, PartialAssignment}
+import satify.model.solver.DecisionTree.{Branch, Leaf}
+import satify.model.solver.OrderedList.list
+import satify.model.solver.PartialAssignment
+import satify.model.solver.{Constraint, Decision, OptionalVariable, PartialAssignment}
 import satify.model.{Assignment, Variable}
 
 class PartialAssignmentTest extends AnyFlatSpec with Matchers:
