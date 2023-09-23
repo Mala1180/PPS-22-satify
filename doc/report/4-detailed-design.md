@@ -22,11 +22,13 @@ abstract types:
 
 ### Expression
 
-Expression is represented through a simple _enumeration_ which contains all the possible types of expression.
-Through this approach, it is possible to represent the expression as a tree, where each node is an `Expression`.
+Expression is represented through a simple _enumeration_ which contains all the possible types of expression:
+- **And**. It represents the logical And gate. Takes in input *left* and *right* parameters both of type Expression;
+- **Or**. It represents the logical Or gate. Like the And Expression, it takes a *left* and *right* Expressions in input;
+- **Not**. It's the logical Not gate. In this case it takes in input another Expression;
+- **Symbol**. It's the basic type of Expression, and can either represents a input variable by specifying its name or a boolean constant by using a value of type **Bool**.
 
-Symbol is the basic type of expression, containing only a string value representing the name of the expression variable,
-while And, Or and Not represent the basic boolean operators.
+Because of its recursive structure, Expression has on a tree-like shape, where the inner nodes are either **And**, **Or** or **Not**, and each leaf is a **Symbol**.
 
 ### Problem
 
@@ -37,11 +39,12 @@ while And, Or and Not represent the basic boolean operators.
 </p>
 
 
+The general Problem representation has been designed with a _trait_ **Problem**.
+It is composed by:
+- A set of constraints that must be all satisfied in the solution.
+- An expression, which is the reduction of the constraints through an And gate.
 
-The general Problem representation has been designed with a _trait_ representing the abstract type **Problem**,
-for each problem a _case class_ has been defined.
-In each case class, the **Problem** trait is extended with the constraints needed to represent the specific problem.
-Note that for each problem the expression is composed by a reduction of all constraints.
+Each problem extends **Problem** using a __case class__, the **Problem** trait is extended with the constraints needed to represent the specific problem.
 
 ### Solution
 
@@ -91,7 +94,7 @@ The Tseitin algorithm converts a formula in propositional logic into a CNF formu
 
 In this case, the _Converter_ is in charge of converting the expression in CNF form, using the Tseitin transformation.
 It is implemented through a _case class_ that extends the **Converter** trait implementing the convert method.
-Following the functional approach, the implementation is hidde inside a private object.
+Following the functional approach, the implementation is hidden inside a private object.
 
 QUI DIAG PACKAGE TSEITIN
 
@@ -125,7 +128,7 @@ So, the best way to design it is decomposing the algorithm following the steps b
     | AND       | ![](img/AndCircuit.svg)   | $X = A \land B$   | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$   |
     | OR        | ![](img/OrCircuit.svg)   | $X = A \lor B$   | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$   |
     | NOT       | ![](img/NotCircuit.svg)   | $X = \lnot A$      | $(\lnot A \lor \lnot X) \land (A \lor X)$   |
-    
+
 
 4. Combine the representations of the subformulas to obtain the CNF representation of the entire formula.
 
@@ -150,16 +153,26 @@ In order to obtain better performances and to avoid the re-computation of same e
 also the solver make use of _memoization_ pattern.
 
 
-#### DPLL (Davis-Putnam-Loveland-Logemann)
+### DPLL (Davis-Putnam-Loveland-Logemann)
 
-##### Preliminaries
+The DPLL algorithm is a search algorithm for deciding the satisfability of a propositional formula in Conjunctive Normal Form.
 
-###### Definition of partial model
+Compared to a simple exhaustive search of all the possible variable assignments, DPLL makes use of determined strategies to guide the search, making it more efficient.
+It was introduced in 1961 by Martin Davis, George Logemann and Donald W. Loveland and is a refinement of the earlier Davis–Putnam algorithm.
+
+In this case, the _Solver_ is in charge of solving the propositional expression using the DPLL algorithm.
+It is implemented through a _case class_ that extends the **Solver** trait implementing its methods.
+Following the functional approach, the implementation is hidden inside a private object.
+
+
+#### Preliminaries
+
+##### Definition of partial model
 
 We will call elements of $Vars \rightarrow \mathcal{B}$ as partial model, e.g. not all variables are assigned at a given
 point of the algorithm.
 
-###### State of the literal
+##### State of the literal
 
 Under partial model $m$,
 
@@ -167,7 +180,7 @@ Under partial model $m$,
 - $l$ is false if $m(l) = 0$;
 - otherwise $l$ is unassigned.
 
-###### State of the clause
+##### State of the clause
 
 Under a partial model $m$,
 
@@ -175,7 +188,7 @@ Under a partial model $m$,
 - $C$ is false if for each $l \in C$, $l$ is false;
 - otherwise $C$ is unassigned.
 
-###### State of a formula
+##### State of a formula
 
 Under a partial model $m$,
 
@@ -183,7 +196,7 @@ Under a partial model $m$,
 - CNF $F$ is false if there is $C \in F$, such that $C$ is false.
 - otherwise $F$ is unassigned
 
-###### Definition of unit clause and unit literal
+##### Definition of unit clause and unit literal
 
 $C$ is a unit clause under $m$ if a literal $l \in C$ in unassigned and the rest are false, $l$ is called unit literal.
 
