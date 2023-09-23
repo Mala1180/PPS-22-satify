@@ -43,8 +43,7 @@ private[dpll] object CNFSimplification:
       ).asInstanceOf[T]
 
     (f(cnf, cnf) match
-      case And(left, right) =>
-        And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr))
+      case And(left, right) => And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr))
       case Or(left, right) =>
         /*
         1. Check if left branch is a True constant or the constrained Variable:
