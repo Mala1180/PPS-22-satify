@@ -1,6 +1,9 @@
 # Detailed Design
 
 ---
+## Code organization
+
+
 
 ## Architecture
 
@@ -10,7 +13,9 @@ Moreover, the **Cake Pattern** has been introduced to improve the modeling of th
 Some _trait_ has been designed to represent the components of the MVU pattern, which encapsulate within them some
 _abstract type members_ related to Model, View and Update.
 
-<img src="../diagrams/mvu/mvu-detailed.png" alt=" Model-View-Update detailed diagram">
+<p align=center>
+  <img src="../diagrams/mvu/mvu-detailed.svg" alt=" Model-View-Update detailed diagram">
+</p>
 
 ## Model
 
@@ -19,35 +24,58 @@ abstract types:
 
 ### Expression
 
-Expression is represented through a simple _enumeration_ which contains all the possible types of expression.
-Through this approach, it is possible to represent the expression as a tree, where each node is an `Expression`.
+Expression is represented through a simple _enumeration_ which contains all the possible types of expression:
 
-Symbol is the basic type of expression, containing only a string value representing the name of the expression variable,
-while And, Or and Not represent the basic boolean operators.
+- **And**. It represents the logical And gate. Takes in input *left* and *right* parameters both of type Expression;
+- **Or**. It represents the logical Or gate. Like the And Expression, it takes a *left* and *right* Expressions in
+  input;
+- **Not**. It's the logical Not gate. In this case it takes in input another Expression;
+- **Symbol**. It's the basic type of Expression, and can either represents a input variable by specifying its name or a
+  boolean constant by using a value of type **Bool**.
+
+Because of its recursive structure, Expression is a tree data structure, where the inner nodes are either
+**And**, **Or** or **Not**, and each leaf is a **Symbol**.
 
 ### Problem
 
-<img src="img/problem/problem.png" alt="Problem design">
+<p align="center">
+<img src="img/problem/problem.svg" alt="Problem design">
 
-The general Problem representation has been designed with a _trait_ representing the abstract type **Problem**,
-for each problem a _case class_ has been defined.
-In each case class, the **Problem** trait is extended with the constraints needed to represent the specific problem.
-Note that for each problem the expression is composed by a reduction of all constraints.
+</p>
+
+
+The general Problem representation has been designed with a _trait_ **Problem**.
+It is composed by:
+
+- A set of constraints that must be all satisfied in the solution.
+- An expression, which is the reduction of the constraints through an And gate.
+
+Each problem extends **Problem** using a __case class__, and adds the constraints needed to represent the specific
+problem.
 
 ### Solution
 
 ### CNF
 
-CNF is a specific form of representing logical formulas as a conjunction of clauses, where each clause is a disjunction
-of literals (variables or their negations), differing from the _Expression_ precisely because of this constraint.
-It is implemented through an _enumeration_
+CNF is a specific form of representing logical formulas as a *conjunction* of clauses, where each clause is a
+*disjunction*
+of literals (variables or their negations). For example:
 
+$$ (a \lor c) \land (a \lor \lnot d) $$
+
+CNF has been modeled a specific type of __Expression__ where:
+
+- The **Or** gate cannot contain an **And** in either its *left* and *right* parameter;
+- The **And** gate cannot contain an **And** in its *left* parameter;
+- The **Not** gate can contain only a **Symbol** parameter;
+
+An _enumeration_ has been used for this type of entity.
 
 ---
 
 ## View
 
-**View** it will be, as already said, a function that takes as input the **Model** and returns a set of components.
+**View** will be, as already said, a function that takes as input the **Model** and returns a set of components.
 Until now, we have not seen any side effect, but in order to provide a user interface it's necessary having one, so the
 **GUI** object is in charge of render the new state of application showing the new updated components.
 In this way, every time the **Model** changes, the **GUI** will be correctly updated but without reloading the entire
@@ -68,7 +96,9 @@ the needed part of the UI.
 
 ### Converter
 
-<img src="img/converter/converter.png" alt="Converter design">
+<p align="center">
+<img src="img/converter/converter.svg" alt="Converter design">
+</p>
 
 Converter is a _trait_ containing the method convert that will be implemented by each converter.
 In order to obtain better performances and to avoid the re-computation of same expressions, the converter keeps
@@ -80,7 +110,7 @@ The Tseitin algorithm converts a formula in propositional logic into a CNF formu
 
 In this case, the _Converter_ is in charge of converting the expression in CNF form, using the Tseitin transformation.
 It is implemented through a _case class_ that extends the **Converter** trait implementing the convert method.
-Following the functional approach, the implementation is hidde inside a private object.
+Following the functional approach, the implementation is hidden inside a private object.
 
 QUI DIAG PACKAGE TSEITIN
 
@@ -97,48 +127,22 @@ So, the best way to design it is decomposing the algorithm following the steps b
 2. Replace each subformula with an auxiliary variable representing its truth value.
    e.g.
 
-    <p align=center>
-        (a ∧ (b ∨ c)) -> (¬c ∧ d)<br>
-        TSTN4 <–> ¬c<br>
-        TSTN3 <–> b ∨ c<br>
-        TSTN2 <–> TSTN4 ∧ d<br>
-        TSTN1 <–> a ∧ TSTN3<br>
-        TSTN0 <–> TSTN1 –> TSTN2
-    </p>
+   $$(a \land (b \lor c)) \implies (\lnot c \land d)$$
+   $$TSTN_4 \Longleftrightarrow \lnot c$$
+   $$TSTN_3 \Longleftrightarrow b \lor c$$
+   $$TSTN_2 \Longleftrightarrow TSTN_4 \land d$$
+   $$TSTN_1 \Longleftrightarrow a \land TSTN_3$$
+   $$TSTN_0 \Longleftrightarrow TSTN_1 \implies TSTN_2$$
 
 3. Express the truth conditions of the subformulas in CNF using the auxiliary variables and standard logical
    connectives (AND, OR, NOT) following the transformations listed in the table below.
 
-    <table>
-        <thead> 
-            <tr>
-                <th>Operator</th>
-                <th>Circuit</th>
-                <th>Expression</th>
-                <th>Converted</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><b>AND</b></td>
-                <td><img src="img/AndCircuit.svg" alt="And Circuit"></td>
-                <td>X = A ∧ B</td>
-                <td>(¬A ∨ ¬B ∨ X) ∧ (A ∨ ¬X) ∧ (B ∨ ¬X)</td>
-            </tr>
-            <tr>
-                <td><b>OR</b></td>
-                <td><img src="img/OrCircuit.svg" alt="Or Circuit"></td>
-                <td>X = A ∨ B</td>
-                <td>(A ∨ B ∨ ¬X) ∧ (¬A ∨ X) ∧ (¬B ∨ X)</td>
-            </tr>
-            <tr>
-                <td><b>NOT</b></td>
-                <td><img src="img/NotCircuit.svg" alt="Not Circuit"></td>
-                <td>X = ¬A</td>
-                <td>(¬A ∨ ¬X) ∧ (A ∨ X)</td>
-            </tr>
-        </tbody>
-    </table>
+   | Operator | Circuit                 | Expression      | Converted                                                                     |
+   |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
+   | AND      | ![](img/AndCircuit.svg) | $X = A \land B$ | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$ |
+   | OR       | ![](img/OrCircuit.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
+   | NOT      | ![](img/NotCircuit.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |
+
 
 4. Combine the representations of the subformulas to obtain the CNF representation of the entire formula.
 
@@ -148,41 +152,59 @@ the original logical formula efficiently.
 
 ### Solver
 
+<p align="center">
+<img src="img/solver/solver.svg" alt="Solver design">
+</p>
+
 Solver is a _trait_ containing the methods useful to solve SAT problem encoded in CNF form.
 There are two main possibility to solve a SAT problem instance, one is starting from the CNF form, and the other is
 starting directly from the expression.
 Furthermore, it is possible to solve the problem looking for all the possible
 solutions or only one at a time.
 In the last case the solver will convert the expression in CNF with the Converter specified before compute the solution.
+
 In order to obtain better performances and to avoid the re-computation of same expressions,
-also the solver make use of _memoization_ pattern.
+also the solver makes use of _memoization_ pattern.
 
-#### DPLL (Davis-Putnam-Loveland-Logemann)
+### DPLL (Davis-Putnam-Loveland-Logemann)
 
-##### Preliminaries
+The DPLL algorithm is a search algorithm for deciding the satisfiability of a propositional formula in Conjunctive
+Normal
+Form.
 
-###### Definition of partial model
+Compared to a simple exhaustive search of all the possible variable assignments, DPLL makes use of determined strategies
+to guide the search, making it more efficient.
+It was introduced in 1961 by Martin Davis, George Logemann and Donald W.Loveland and is a refinement of the earlier
+Davis–Putnam algorithm.
 
-We will call elements of $Vars \rightarrow \mathcal{B}$ as partial model, e.g. not all variables are assigned at a given
-point of the algorithm.
+In this case, the _Solver_ is in charge of solving the propositional expression using the DPLL algorithm.
+It is implemented through a _case class_ that extends the **Solver** trait implementing its methods.
+Following the functional approach, the implementation is hidden inside a private object.
 
-###### State of the literal
+#### Preliminaries
+
+##### Definition of partial model
+
+We will call elements of $Vars \rightarrow \mathcal{B}$ as a partial model, e.g., not all variables are assigned at a
+given point of the algorithm.
+
+##### State of the literal
 
 Under partial model $m$,
 
 - a literal $l$ is true if $m(l) = 1$;
 - $l$ is false if $m(l) = 0$;
-- otherwise $l$ is unassigned.
+- otherwise, $l$ is unassigned.
 
-###### State of the clause
+##### State of the clause
 
 Under a partial model $m$,
 
 - a clause (literals put in $\lor$) is true if there is $l \in C$ such that $l$ is true;
 - $C$ is false if for each $l \in C$, $l$ is false;
-- otherwise $C$ is unassigned.
+- otherwise, $C$ is unassigned.
 
-###### State of a formula
+##### State of a formula
 
 Under a partial model $m$,
 
@@ -190,7 +212,7 @@ Under a partial model $m$,
 - CNF $F$ is false if there is $C \in F$, such that $C$ is false.
 - otherwise $F$ is unassigned
 
-###### Definition of unit clause and unit literal
+##### Definition of unit clause and unit literal
 
 $C$ is a unit clause under $m$ if a literal $l \in C$ in unassigned and the rest are false, $l$ is called unit literal.
 
@@ -222,7 +244,7 @@ For example:
 
 $$(b \lor c) \land (\lnot c \lor d) \land (a \lor b \lor e) \land (d \lor b)$$
 
-In this case $b$ appears only in positive form, then assigning $b = true$ no other clause will be "penalized", therefore
+In this case, $b$ appears only in positive form, then assigning $b = true$ no other clause will be "penalized", therefore
 delete all the other clauses where $b$ is included.
 
 In other words: if $b$ doesn't appear in negative form inside the formula $F$, assigning $b = true$, the satisfability

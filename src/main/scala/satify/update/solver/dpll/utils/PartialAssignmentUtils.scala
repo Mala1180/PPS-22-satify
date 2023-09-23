@@ -4,7 +4,6 @@ import satify.model.cnf.Bool.True
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
 import satify.model.expression.SymbolGeneration.{converterVarPrefix, encodingVarPrefix}
-
 import scala.annotation.tailrec
 import satify.model.solver.DecisionTree.{Branch, Leaf}
 import satify.model.solver.OrderedList.list

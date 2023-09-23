@@ -2,7 +2,6 @@ package satify.model.cnf
 
 /** An enum representing a Conjunction Normal Form (CNF) expression. */
 import satify.model.cnf.CNF.*
-import satify.model.cnf.{Bool, CNF}
 
 enum Bool:
   case True

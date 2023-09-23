@@ -34,10 +34,10 @@ branch. In the literature exist a bunch of more heuristics and optimizations.
 Once I understood the problem, I implemented the decision tree data structure that will be used by the DPLL algorithm to
 find the possible assignments.
 
-```DecisionTree``` is a binary tree where each node implicitly represent the decision and the state of the algorithm
-e.g. the current ```PartialModel``` and ```CNF```.
+`DecisionTree` is a binary tree where each node implicitly represent the decision and the state of the algorithm
+e.g. the current `PartialModel` and `CNF`.
 In order to exploit at most the functional programming paradigm they've been implemented using case classes
-and ```Enum```(s) with the ultimate goal of facilitating the use of match cases.
+and `Enum`(s) with the ultimate goal of facilitating the use of match cases.
 
 Before implementing all DPLL subparts individually, I tested the data structure implementing an exhaustive search of all
 the possible assignments to the partial model.
@@ -47,13 +47,13 @@ the possible assignments to the partial model.
 The simplification of the expression in Cunjuntive-Normal-Form is very important to determine if the formula is SAT
 under the current partial model.
 
-In fact, if the CNF expression is completely simplified s.t. it is equal to a ```True``` constant, it can be asserted
+In fact, if the CNF expression is completely simplified s.t. it is equal to a `True` constant, it can be asserted
 that it is SAT.
 
 The expression in CNF is simplified according to the specific logical operator:
 
-- ```Or```
-    - When a Literal inside an ```Or``` is set to ```True``` s.t. `V = true` or `Not(V) = True` then the CNF must be
+- `Or`
+    - When a Literal inside an `Or` is set to `True` s.t. `V = true` or `Not(V) = True` then the CNF must be
       simplified on the uppermost `Or` of a sequence of consecutive `Or`s.
 
       Examples:
@@ -81,7 +81,7 @@ The expression in CNF is simplified according to the specific logical operator:
         <img src='./img/umOr4.svg' height="200" align="center">
       </p>
 
-- When a Literal in an ```Or``` branch is set to ```False``` s.t. `V = False` or `Not(V) = False` the CNF must be
+- When a Literal in an `Or` branch is set to `False` s.t. `V = False` or `Not(V) = False` the CNF must be
   simplified substituting the `Or` with the other branch.
 
   Examples:
@@ -127,11 +127,11 @@ In particular, I made use of the _Self-Type Annotation_ and _Mixin_ mechanisms o
 manage dependencies between pattern components at compile-time and to create an application instance in a simple and
 readable way.
 
-```scala
+`scala
 trait MVU extends ModelComponent with ViewComponent with UpdateComponent
 
 object Main extends App with MVU
-```
+`
 
 ### Abstract Modelling
 

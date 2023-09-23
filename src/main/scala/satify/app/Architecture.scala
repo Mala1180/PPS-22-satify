@@ -1,4 +1,4 @@
-package satify
+package satify.app
 
 import satify.model.State
 import satify.update.{Message, Update}

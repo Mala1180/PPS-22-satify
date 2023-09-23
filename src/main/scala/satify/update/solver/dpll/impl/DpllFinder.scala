@@ -6,8 +6,8 @@ import satify.model.cnf.Bool.True
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
 import satify.model.expression.SymbolGeneration.{converterVarPrefix, encodingVarPrefix}
-import satify.model.solver.DecisionTree.{Branch, Leaf}
 import satify.model.solver.*
+import satify.model.solver.DecisionTree.{Branch, Leaf}
 import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
