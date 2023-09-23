@@ -1,6 +1,7 @@
-package satify.view
+package satify.view.components
 
-import satify.view.Constants.*
+import satify.view.components.Listeners.createListeners
+import satify.view.utils.Constants.*
 import satify.view.utils.ComponentUtils.*
 import satify.view.utils.Title.*
 
@@ -49,6 +50,7 @@ object Components:
     .asInstanceOf[TextPane]
 
   def createBaseGUI(): BoxPanel =
+    createListeners()
     new BoxPanel(Orientation.Vertical):
       contents += new MenuBar():
         contents += helpMenuItem

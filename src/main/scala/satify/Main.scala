@@ -1,60 +1,18 @@
 package satify
 
 import satify.Architecture.MVU
-import satify.Main.model
 import satify.dsl.Reflection.startRepl
-import satify.view.Components.*
-import satify.view.Constants.windowSize
-import satify.view.Reactions.*
+import satify.view.components.Components.*
+import satify.view.utils.Constants.windowSize
 import satify.view.utils.Title.*
 
-import java.util.concurrent.Executors
-import scala.swing.event.ButtonClicked
-import scala.swing.{Dimension, FileChooser, MainFrame, Swing}
+import scala.swing.{Dimension, MainFrame}
 
 /** Entry point of the application. */
 object Main extends App with MVU:
   startRepl()
-
   new MainFrame:
     title = App.title
-
-    solveAllButton.reactions += { case ButtonClicked(_) =>
-      Swing.onEDT(disableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => allSolutionsReaction(model))
-    }
-
-    solveButton.reactions += { case ButtonClicked(_) =>
-      Swing.onEDT(disableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => solutionReaction(model))
-    }
-
-    solveProblemButton.reactions += { case ButtonClicked(_) =>
-      Swing.onEDT(disableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => problemSolutionReaction(model))
-    }
-
-    cnfButton.reactions += { case ButtonClicked(_) =>
-      Swing.onEDT(disableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => cnfReaction(model))
-    }
-
-    cnfProblemButton.reactions += { case ButtonClicked(_) =>
-      Swing.onEDT(disableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => problemCnfReaction(model))
-    }
-
-    helpMenuItem.reactions += { case ButtonClicked(_) =>
-      helpReaction()
-    }
-
-    importMenuItem.reactions += { case ButtonClicked(_) =>
-      val result = importFileChooser.showOpenDialog(null)
-      if result == FileChooser.Result.Approve then
-        Swing.onEDT(disableInteractions())
-        Executors.newSingleThreadExecutor().execute(() => importReaction(model))
-    }
-
     contents = createBaseGUI()
     size = new Dimension(windowSize.width / 2, windowSize.height / 3 * 2)
     centerOnScreen()

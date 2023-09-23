@@ -1,4 +1,4 @@
-package satify.view
+package satify.view.utils
 
 import java.awt.{Font, Toolkit}
 import scala.swing.Dimension
@@ -17,7 +17,6 @@ object Constants:
   val cnfOutputDialogName = "cnfOutputDialog"
   val solOutputDialogName = "solOutputDialog"
   val problemOutputDialogName = "problemOutputDialog"
-  val nextBtnName = "nextButton"
   val nQueens = "nQueens"
   val gcNodes = "nodes"
   val gcEdges = "edges"

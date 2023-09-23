@@ -5,8 +5,8 @@ import satify.model.errors.Error.InvalidInput
 import satify.model.problems.{GraphColoring, NQueens, NurseScheduling, Problem}
 import satify.update.Message.*
 import satify.update.Update.update
-import satify.view.Components.*
-import satify.view.Constants.*
+import satify.view.components.Components.*
+import satify.view.utils.Constants.*
 import satify.view.utils.ComponentUtils.createErrorDialog
 import satify.view.utils.ProblemTitle.{
   GraphColoring as GUIGraphColoring,

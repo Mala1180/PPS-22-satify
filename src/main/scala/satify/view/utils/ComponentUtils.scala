@@ -2,8 +2,8 @@ package satify.view.utils
 
 import satify.model.problems.Problem
 import satify.model.{Assignment, State}
-import satify.view.Components.{enableInteractions, problemOutputDialog, problemParameterPanel, solutionOutputDialog}
-import satify.view.Constants.*
+import satify.view.components.Components.{enableInteractions, problemOutputDialog, problemParameterPanel, solutionOutputDialog}
+import Constants.*
 import satify.view.Reactions.{nextSolutionReaction, problemSolutionReaction}
 import satify.view.utils.TextPaneUtils.{textPaneText, updateStyle}
 import satify.view.utils.Title.*
