@@ -56,12 +56,12 @@ object Solver:
     * @return the Solver
     * @see [[SolverType]]
     */
-  def apply(algorithmType: SolverType, conversionType: ConverterType = Tseitin): Solver =
+  def apply(algorithmType: SolverType, conversionType: ConverterType = Tseitin, cache: Boolean = true): Solver =
     algorithmType match
-      case DPLL => DpllSolver(Converter(conversionType))
+      case DPLL => DpllSolver(Converter(conversionType, cache), cache)
 
   /** Private implementation of [[Solver]] */
-  private case class DpllSolver(converter: Converter) extends Solver:
+  private case class DpllSolver(converter: Converter, cache: Boolean = true) extends Solver:
 
     override def solveAll(cnf: CNF): Solution = dpllEnumerate(cnf)
 
