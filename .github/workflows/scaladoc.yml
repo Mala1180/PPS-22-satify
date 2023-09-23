@@ -25,10 +25,6 @@ jobs:
       - name: Create ScalaDoc
         run: sbt doc
 
-      - name: Update SARIF file
-        if: ${{ always() }}
-        run: cp ${{ runner.temp }}/qodana/results/qodana.sarif.json .
-
       - name: Commit and push updated ScalaDoc
         uses: EndBug/add-and-commit@v9
         with:
