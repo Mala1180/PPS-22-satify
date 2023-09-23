@@ -64,7 +64,7 @@ object Solver:
   private case class DpllSolver(converter: Converter) extends Solver:
 
     override def solveAll(cnf: CNF, cache: Boolean = true): Solution =
-      if cache then cachedEnumerate(cnf) else enumerate(cnf)
+      if cache then cachedEnumerate(cnf, enumerate) else enumerate(cnf)
 
     override def solveAll(exp: Expression): Solution = solveAll(converter.convert(exp))
 
@@ -76,7 +76,7 @@ object Solver:
 
 object SolverMemoization:
 
-  val cachedEnumerate: CNF => Solution = memoize(cnf => enumerate(cnf))
+  val cachedEnumerate:  (CNF, CNF => Solution) => Solution = (cnf, algorithm) => memoize(algorithm)(cnf)
 
   protected def memoize(f: CNF => Solution): CNF => Solution =
     new collection.mutable.HashMap[CNF, Solution]():

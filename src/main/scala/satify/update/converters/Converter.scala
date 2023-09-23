@@ -1,6 +1,5 @@
 package satify.update.converters
 
-import satify.model.Solution
 import satify.model.cnf.CNF
 import satify.model.expression.Expression
 import satify.update.converters.ConverterMemoization.cachedConversion
@@ -18,7 +17,6 @@ trait Converter:
     */
   def convert(exp: Expression, cache: Boolean = true): CNF
 
-
 /** Factory for [[Converter]] instances. */
 object Converter:
 
@@ -32,17 +30,18 @@ object Converter:
   /** Private implementation of [[Converter]] */
   private case class TseitinConverter() extends Converter:
 
-    override def convert(exp: Expression, cache: Boolean = true): CNF = if cache then cachedConversion(exp) else tseitin(exp)
+    override def convert(exp: Expression, cache: Boolean = true): CNF =
+      if cache then cachedConversion(exp, tseitin) else tseitin(exp)
 
 object ConverterMemoization:
 
-  val cachedConversion: Expression => CNF = memoize(exp => tseitin(exp))
+  val cachedConversion: (Expression, Expression => CNF) => CNF = (exp, algorithm) => memoize(algorithm)(exp)
 
   /** Memoize a function f: Expression => CNF to avoid recomputing the same CNF for the same expression.
-   * @param f the function to memoize.
-   * @return
-   */
-  protected def memoize(f: Expression => CNF): Expression => CNF =
+    * @param f the function to memoize.
+    * @return
+    */
+  private def memoize(f: Expression => CNF): Expression => CNF =
     new mutable.HashMap[Expression, CNF]() {
       override def apply(key: Expression): CNF = getOrElseUpdate(key, f(key))
     }
