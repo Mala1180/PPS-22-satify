@@ -58,7 +58,7 @@ object Update:
     val update: () => State = () =>
       val exp = reflect(input)
       start()
-      val sol: Solution = Solver(DPLL).solveAll(exp)
+      val sol: Solution = Solver(DPLL).solveAll(exp, true)
       stop()
       State(input, exp, sol, elapsed())
     safeUpdate(update, Some(input))

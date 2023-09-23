@@ -4,9 +4,9 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
-import satify.model.solver.{Decision, PartialAssignment, OptionalVariable}
-import satify.update.solver.dpll.utils.PartialAssignmentUtils.extractParAssignmentFromCnf
+import satify.model.solver.{Decision, OptionalVariable, PartialAssignment}
 import satify.update.solver.dpll.DpllDecision.decide
+import satify.update.solver.dpll.utils.PartialAssignmentUtils.extractParAssignmentFromCnf
 
 import scala.util.Random
 

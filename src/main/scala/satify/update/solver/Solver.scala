@@ -19,15 +19,17 @@ trait Solver:
 
   /** Solves the SAT problem, returning a solution with all satisfiable assignments.
     * @param cnf the input in conjunctive normal form
+    * @param cache if true, the result of the computation is cached
     * @return the solution of the SAT problem
     */
-  def solveAll(cnf: CNF, cache: Boolean = true): Solution
+  def solveAll(cnf: CNF, cache: Boolean): Solution
 
   /** Solves the SAT problem, returning a solution with all satisfiable assignments.
     * @param exp the input expression
+    * @param cache if true, the result of the computation is cached
     * @return the solution of the SAT problem
     */
-  def solveAll(exp: Expression): Solution
+  def solveAll(exp: Expression, cache: Boolean): Solution
 
   /** Solves the SAT problem returning a solution with the first satisfiable assignment found.
     * @param cnf the input in conjunctive normal form
@@ -63,10 +65,10 @@ object Solver:
   /** Private implementation of [[Solver]] */
   private case class DpllSolver(converter: Converter) extends Solver:
 
-    override def solveAll(cnf: CNF, cache: Boolean = true): Solution =
+    override def solveAll(cnf: CNF, cache: Boolean): Solution =
       if cache then cachedEnumerate(cnf, enumerate) else enumerate(cnf)
 
-    override def solveAll(exp: Expression): Solution = solveAll(converter.convert(exp))
+    override def solveAll(exp: Expression, cache: Boolean): Solution = solveAll(converter.convert(exp, cache), cache)
 
     override def solve(cnf: CNF): Solution = find(cnf)
 
@@ -76,7 +78,7 @@ object Solver:
 
 object SolverMemoization:
 
-  val cachedEnumerate:  (CNF, CNF => Solution) => Solution = (cnf, algorithm) => memoize(algorithm)(cnf)
+  val cachedEnumerate: (CNF, CNF => Solution) => Solution = (cnf, algorithm) => memoize(algorithm)(cnf)
 
   protected def memoize(f: CNF => Solution): CNF => Solution =
     new collection.mutable.HashMap[CNF, Solution]():

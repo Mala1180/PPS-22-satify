@@ -7,8 +7,8 @@ import satify.model.errors.Error.*
 import satify.model.problems.NQueens
 import satify.model.{Assignment, Result, Solution, State}
 import satify.update.parser.DimacsParser
-import satify.view.Constants.{cnfOutputDialogName, problemOutputDialogName, solOutputDialogName}
 import satify.view.Components.{cnfOutputDialog, createExportFileChooser, exportFileChooser, problemParameterPanel}
+import satify.view.Constants.{cnfOutputDialogName, problemOutputDialogName, solOutputDialogName}
 import satify.view.utils.ComponentUtils.*
 import satify.view.utils.Title.*
 

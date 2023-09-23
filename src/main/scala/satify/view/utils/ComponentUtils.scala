@@ -1,9 +1,9 @@
 package satify.view.utils
 
-import satify.model.{Assignment, State}
 import satify.model.problems.Problem
-import satify.view.Constants.*
+import satify.model.{Assignment, State}
 import satify.view.Components.{enableInteractions, problemOutputDialog, problemParameterPanel, solutionOutputDialog}
+import satify.view.Constants.*
 import satify.view.Reactions.{nextSolutionReaction, problemSolutionReaction}
 import satify.view.utils.TextPaneUtils.{textPaneText, updateStyle}
 import satify.view.utils.Title.*
@@ -63,8 +63,8 @@ object ComponentUtils:
     * @return the combo box
     */
   def createProblemComboBox(): ComboBox[String] =
-    import ProblemTitle.*
     import Placeholders.*
+    import ProblemTitle.*
     new ComboBox(List("No selection", NQueens.title, GraphColoring.title, NurseScheduling.title)):
       listenTo(selection)
       maximumSize = new Dimension(200, 30)

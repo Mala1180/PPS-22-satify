@@ -1,7 +1,7 @@
 package satify.view
 
-import satify.view.utils.ComponentUtils.*
 import satify.view.Constants.*
+import satify.view.utils.ComponentUtils.*
 import satify.view.utils.Title.*
 
 import java.awt.{Color, Dimension}
