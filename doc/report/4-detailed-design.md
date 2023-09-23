@@ -44,16 +44,24 @@ It is composed by:
 - A set of constraints that must be all satisfied in the solution.
 - An expression, which is the reduction of the constraints through an And gate.
 
-Each problem extends **Problem** using a __case class__, the **Problem** trait is extended with the constraints needed to represent the specific problem.
+Each problem extends **Problem** using a __case class__, and adds the constraints needed to represent the specific problem.
 
 ### Solution
 
 ### CNF
 
-CNF is a specific form of representing logical formulas as a conjunction of clauses, where each clause is a disjunction
-of literals (variables or their negations), differing from the _Expression_ precisely because of this constraint.
-It is implemented through an _enumeration_
+CNF is a specific form of representing logical formulas as a *conjunction* of clauses, where each clause is a *disjunction*
+of literals (variables or their negations). For example:
 
+$$(a \lor c) \land (a \lor \lnot d)$$
+
+
+CNF has been modeled a specific type of __Expression__ where:
+- The **Or** gate cannot contain an **And** in either its *left* and *right* parameter;
+- The **And** gate cannot contain an **And** in its *left* parameter;
+- The **Not** gate can contain only a **Symbol** parameter;
+
+An _enumeration_ has been used for this type of entity.
 
 ---
 
