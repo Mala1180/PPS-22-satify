@@ -4,12 +4,11 @@ import satify.model.Status.*
 import satify.model.cnf.CNF
 import satify.model.errors.Error
 import satify.model.errors.Error.*
-import satify.model.problems.NQueens
-import satify.model.{Assignment, Result, Solution, State}
+import satify.model.{Result, Solution, State}
 import satify.update.parser.DimacsParser
-import satify.view.components.Components.{cnfOutputDialog, createExportFileChooser, exportFileChooser, problemParameterPanel}
-import satify.view.utils.Constants.{cnfOutputDialogName, problemOutputDialogName, solOutputDialogName}
+import satify.view.components.Components.{cnfOutputDialog, exportFileChooser}
 import satify.view.utils.ComponentUtils.*
+import satify.view.utils.Constants.{cnfOutputDialogName, solOutputDialogName}
 import satify.view.utils.Title.*
 
 import java.awt.Color

@@ -1,6 +1,6 @@
 package satify.view.components
 
-import satify.Main.model
+import satify.app.Main.model
 import satify.view.Reactions.*
 import satify.view.components.Components.*
 
@@ -36,9 +36,7 @@ object Listeners:
       Executors.newSingleThreadExecutor().execute(() => problemCnfReaction(model))
     }
 
-    helpMenuItem.reactions += { case ButtonClicked(_) =>
-      helpReaction()
-    }
+    helpMenuItem.reactions += { case ButtonClicked(_) => helpReaction() }
 
     importMenuItem.reactions += { case ButtonClicked(_) =>
       val result = importFileChooser.showOpenDialog(null)

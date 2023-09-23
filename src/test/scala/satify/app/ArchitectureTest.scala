@@ -1,4 +1,4 @@
-package satify
+package satify.app
 
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.{ClassFileImporter, ImportOption, Location}
@@ -7,8 +7,8 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.{classes, noClasses}
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.Architecture.MVU
-import satify.Main.Model
+import Main.Model
+import satify.app.Architecture.MVU
 import satify.update.Message
 
 import scala.swing.Component

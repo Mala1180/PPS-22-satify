@@ -1,10 +1,10 @@
 package satify.view.utils
 
 import satify.dsl.Reflection.getDSLKeywords
-import Constants.fontFamily
+import satify.view.utils.Constants.fontFamily
 
-import java.awt.{Color, Font}
-import javax.swing.text.{MutableAttributeSet, SimpleAttributeSet, StyleConstants}
+import java.awt.Color
+import javax.swing.text.{SimpleAttributeSet, StyleConstants}
 import scala.swing.{Swing, TextPane}
 
 object TextPaneUtils:

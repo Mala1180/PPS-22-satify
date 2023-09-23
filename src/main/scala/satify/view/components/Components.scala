@@ -1,18 +1,18 @@
 package satify.view.components
 
 import satify.view.components.Listeners.createListeners
-import satify.view.utils.Constants.*
 import satify.view.utils.ComponentUtils.*
+import satify.view.utils.Constants.*
 import satify.view.utils.Title.*
 
 import java.awt.{Color, Dimension}
+import javax.swing.ImageIcon
 import javax.swing.filechooser.FileNameExtensionFilter
-import javax.swing.text.{DefaultStyledDocument, SimpleAttributeSet, StyleConstants}
-import javax.swing.{ImageIcon, JFileChooser}
 import scala.swing.*
 import scala.swing.TabbedPane.Page
 
 object Components:
+
   private val logoIcon: ImageIcon = createImage(logoPath, 5)
   private val logoLabel: Label = new Label:
     icon = logoIcon

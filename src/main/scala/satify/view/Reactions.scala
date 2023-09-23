@@ -1,18 +1,14 @@
 package satify.view
 
-import satify.Main.{Model, view}
+import satify.app.Main.{Model, view}
 import satify.model.errors.Error.InvalidInput
 import satify.model.problems.{GraphColoring, NQueens, NurseScheduling, Problem}
 import satify.update.Message.*
 import satify.update.Update.update
 import satify.view.components.Components.*
-import satify.view.utils.Constants.*
 import satify.view.utils.ComponentUtils.createErrorDialog
-import satify.view.utils.ProblemTitle.{
-  GraphColoring as GUIGraphColoring,
-  NQueens as GUINQueens,
-  NurseScheduling as GUINurseScheduling
-}
+import satify.view.utils.Constants.*
+import satify.view.utils.ProblemTitle.{GraphColoring as GUIGraphColoring, NQueens as GUINQueens, NurseScheduling as GUINurseScheduling}
 
 import java.io.File
 import scala.swing.{Component, Swing, TextArea}
