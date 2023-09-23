@@ -8,7 +8,6 @@ import satify.update.converters.ConverterType.Tseitin
 object ConversionMemoryBenchmark extends Bench.OfflineReport:
   override def measurer = new Measurer.MemoryFootprint
 
-  /** Benchmark for NQueens creation and conversion memory footprint */
   performance of "N-Queens conversion memory" in {
     val sizes: Gen[Int] = Gen.range("size")(2, 10, 1)
     measure method "N-Queens Conversion" in {
@@ -18,7 +17,6 @@ object ConversionMemoryBenchmark extends Bench.OfflineReport:
     }
   }
 
-  /** Benchmark for GraphColoring creation and conversion memory footprint */
   performance of "Graph-Coloring conversion memory" in {
     val nodes = List("n1", "n2", "n3")
     val edges = List(("n1", "n2"), ("n2", "n3"))
@@ -31,7 +29,6 @@ object ConversionMemoryBenchmark extends Bench.OfflineReport:
     }
   }
 
-  /** Benchmark for NurseScheduling creation and conversion memory footprint */
   performance of "Nurse-Scheduling conversion memory" in {
     val nurses = 3
     val days = 1

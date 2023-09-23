@@ -8,7 +8,6 @@ import satify.update.converters.ConverterType.Tseitin
 object ConversionProblemBenchmark extends Bench.OfflineReport:
   import satify.update.converters.ConverterType.Tseitin
 
-  /** Benchmark for NQueens creation and conversion time */
   performance of "N-Queens conversion time" in {
     val sizes: Gen[Int] = Gen.range("size")(1, 10, 1)
     measure method "N-Queens Conversion" in {
@@ -18,7 +17,6 @@ object ConversionProblemBenchmark extends Bench.OfflineReport:
     }
   }
 
-  /** Benchmark for GraphColoring creation and conversion time */
   performance of "Graph-Coloring conversion time" in {
     val nodes = List("n1", "n2", "n3")
     val edges = List(("n1", "n2"), ("n2", "n3"))
@@ -31,7 +29,6 @@ object ConversionProblemBenchmark extends Bench.OfflineReport:
     }
   }
 
-  /** Benchmark for NurseScheduling creation and conversion time */
   performance of "Nurse-Scheduling conversion time" in {
     val nurses = 3
     val days = 1

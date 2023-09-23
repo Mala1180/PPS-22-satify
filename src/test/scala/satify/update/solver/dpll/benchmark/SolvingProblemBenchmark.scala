@@ -8,7 +8,6 @@ import satify.update.solver.SolverType.*
 object SolvingProblemBenchmark extends Bench.LocalTime:
   import satify.update.converters.ConverterType.Tseitin
 
-  /** Benchmark for NQueens creation and solving time */
   performance of "N-Queens solving time" in {
     val sizes: Gen[Int] = Gen.range("size")(2, 5, 1)
     measure method "N-Queens Solving" in {
@@ -18,7 +17,6 @@ object SolvingProblemBenchmark extends Bench.LocalTime:
     }
   }
 
-  /** Benchmark for GraphColoring creation and solving time */
   performance of "Graph-Coloring solving time" in {
     val nodes = List("n1", "n2", "n3")
     val edges = List(("n1", "n2"), ("n2", "n3"))
@@ -31,7 +29,6 @@ object SolvingProblemBenchmark extends Bench.LocalTime:
     }
   }
 
-  /** Benchmark for NurseScheduling creation and solving time */
   performance of "Nurse-Scheduling solving time" in {
     val nurses = 3
     val days = 1

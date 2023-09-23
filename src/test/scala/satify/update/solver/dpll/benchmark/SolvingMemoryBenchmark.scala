@@ -9,7 +9,6 @@ import satify.update.converters.ConverterType.Tseitin
 object SolvingMemoryBenchmark extends Bench.OfflineReport:
   override def measurer = new Measurer.MemoryFootprint
 
-  /** Benchmark for NQueens creation and solving memory footprint */
   performance of "N-Queens solving memory" in {
     val sizes: Gen[Int] = Gen.range("size")(2, 5, 1)
     measure method "N-Queens Solving" in {
@@ -19,7 +18,6 @@ object SolvingMemoryBenchmark extends Bench.OfflineReport:
     }
   }
 
-  /** Benchmark for GraphColoring creation and solving memory footprint */
   performance of "Graph-Coloring solving memory" in {
     val nodes = List("n1", "n2", "n3")
     val edges = List(("n1", "n2"), ("n2", "n3"))
@@ -32,7 +30,6 @@ object SolvingMemoryBenchmark extends Bench.OfflineReport:
     }
   }
 
-  /** Benchmark for NurseScheduling creation and solving memory footprint */
   performance of "Nurse-Scheduling solving memory" in {
     val nurses = 3
     val days = 1
