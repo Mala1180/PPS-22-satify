@@ -1,0 +1,36 @@
+name: Satify Release
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - 'feature/*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'sbt'
+
+      - name: Create ScalaDoc
+        run: sbt doc
+
+      - name: Update SARIF file
+        if: ${{ always() }}
+        run: cp ${{ runner.temp }}/qodana/results/qodana.sarif.json .
+
+      - name: Commit and push updated ScalaDoc
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: "docs: Update ScalaDoc"
