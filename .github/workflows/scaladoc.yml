@@ -5,7 +5,7 @@ on:
     types:
       - closed
     branches:
-      - 'feature/*'
+      - develop
 
 permissions:
   contents: write
