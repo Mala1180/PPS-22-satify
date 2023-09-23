@@ -3,13 +3,16 @@ package satify.update.solver.dpll.utils
 import satify.model.cnf.Bool.True
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
-import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.OrderedList.list
-import satify.model.dpll.{Constraint, Decision, DecisionTree, OptionalVariable, PartialAssignment}
 import satify.model.expression.SymbolGeneration.{converterVarPrefix, encodingVarPrefix}
 
 import scala.annotation.tailrec
+import satify.model.solver.DecisionTree.{Branch, Leaf}
+import satify.model.solver.OrderedList.list
+import satify.model.solver.*
+
 object PartialAssignmentUtils:
+
+  import satify.model.solver.OrderedList.given
 
   /** Get all SAT solutions, e.g. all Leaf nodes where the CNF has been simplified to Symbol(True).
     *
@@ -43,7 +46,7 @@ object PartialAssignmentUtils:
             case Branch(_, left, right) => extract(next ++ (left :: right :: Nil), done)
         case Nil => done
 
-    extract(dt :: Nil)
+    extract(dt :: Nil).distinct
 
   /** Extract a partial assignment from an expression in CNF.
     *
@@ -52,7 +55,7 @@ object PartialAssignmentUtils:
     */
   def extractParAssignmentFromCnf(cnf: CNF): PartialAssignment =
 
-    import satify.model.dpll.OrderedList.{list, given_Ordering_OptionalVariable}
+    import satify.model.solver.OrderedList.{list, given_Ordering_OptionalVariable}
 
     @tailrec
     def extractOptVars(todo: List[CNF], done: List[OptionalVariable] = Nil): List[OptionalVariable] = todo match

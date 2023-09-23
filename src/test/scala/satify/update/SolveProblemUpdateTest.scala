@@ -7,12 +7,18 @@ import satify.model.problems.{GraphColoring, NQueens, NurseScheduling}
 import satify.model.{Solution, State}
 import satify.update.Message.*
 import satify.update.Update.update
+import satify.update.solver.Solver
+import satify.update.solver.SolverType.DPLL
 
 class SolveProblemUpdateTest extends AnyFlatSpec with Matchers:
 
   val currentState: State = State()
 
   "The solving of NQueens" should "return an updated State" in {
+    //println(Solver(DPLL).solveAll(NQueens(4).exp, true).assignments.size)
+    println(Solver(DPLL).solve(NQueens(4).exp))
+    println(Solver(DPLL).next)
+
     update(currentState, SolveProblem(NQueens(4))).solution should matchPattern { case Some(Solution(SAT, _, _)) =>
     }
   }

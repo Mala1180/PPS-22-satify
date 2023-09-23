@@ -3,7 +3,7 @@ package satify.update.solver.dpll.cnf
 import satify.model.cnf.Bool.{False, True}
 import satify.model.cnf.{CNF, Literal}
 import satify.model.cnf.CNF.*
-import satify.model.dpll.Constraint
+import satify.model.solver.Constraint
 
 import scala.annotation.tailrec
 

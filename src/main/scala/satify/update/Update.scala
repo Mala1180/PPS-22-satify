@@ -11,7 +11,7 @@ import satify.update.Message.*
 import satify.update.Utils.Chronometer.*
 import satify.update.converters.Converter
 import satify.update.converters.ConverterType.*
-import satify.update.parser.DimacsCNF.*
+import satify.update.parser.DimacsParser.*
 import satify.update.solver.Solver
 import satify.update.solver.SolverType.*
 
@@ -58,7 +58,7 @@ object Update:
     val update: () => State = () =>
       val exp = reflect(input)
       start()
-      val sol: Solution = Solver(DPLL).solveAll(exp)
+      val sol: Solution = Solver(DPLL).solveAll(exp, true)
       stop()
       State(input, exp, sol, elapsed())
     safeUpdate(update, Some(input))
@@ -134,7 +134,7 @@ object Update:
   private def nextSolutionUpdate(currentState: State): State =
     val update: () => State = () =>
       start()
-      val optNext: Option[Assignment] = Solver(DPLL).next()
+      val optNext: Option[Assignment] = Solver(DPLL).next
       stop()
       optNext match
         case None => currentState

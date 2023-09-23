@@ -5,10 +5,9 @@ import satify.model.Status.*
 import satify.model.cnf.Bool.True
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
-import satify.model.dpll.*
-import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.PartialAssignment
-import satify.model.expression.SymbolGeneration.{encodingVarPrefix, converterVarPrefix}
+import satify.model.expression.SymbolGeneration.{converterVarPrefix, encodingVarPrefix}
+import satify.model.solver.DecisionTree.{Branch, Leaf}
+import satify.model.solver.*
 import satify.model.{Assignment, Result, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
@@ -48,21 +47,28 @@ private[solver] object DpllFinder:
     */
   def findNext(): Option[Assignment] =
     prevRun match
-      case Some(DpllRun(dt, s)) =>
-        extractAssignment(dt, prevRun) match
+      case Some(DpllRun(prevDt, s @ Solution(SAT, PARTIAL, _))) =>
+        extractAssignment(prevDt, prevRun) match
           case None =>
-            resume(dt) match
+            resume(prevDt) match
               case (dt, SAT) =>
                 val optAssignment = extractAssignment(dt, prevRun)
-                optAssignment match
-                  case Some(assignment) =>
-                    prevRun = Some(DpllRun(dt, Solution(SAT, PARTIAL, assignment +: s.assignments)))
-                  case _ =>
-                optAssignment
-              case (_, UNSAT) => None
+                if optAssignment == extractAssignment(prevDt, prevRun) then
+                  prevRun = Some(DpllRun(dt, s))
+                  findNext()
+                else
+                  optAssignment match
+                    case Some(assignment) =>
+                      prevRun = Some(DpllRun(dt, Solution(SAT, PARTIAL, assignment +: s.assignments)))
+                      optAssignment
+                    case _ => optAssignment
+              case (dt, UNSAT) =>
+                prevRun = Some(DpllRun(dt, Solution(SAT, COMPLETED, s.assignments)))
+                None
           case optAssignment @ Some(assignment) =>
-            prevRun = Some(DpllRun(dt, Solution(SAT, PARTIAL, assignment +: s.assignments)))
+            prevRun = Some(DpllRun(prevDt, Solution(SAT, PARTIAL, assignment +: s.assignments)))
             optAssignment
+      case Some(_) => None
       case None => throw new NoSuchElementException("No previous instance of DPLL")
 
   /** Finder DPLL algorithm.
@@ -113,7 +119,7 @@ private[solver] object DpllFinder:
       pa <- extractParAssignments(dt)
       assignment <- pa.toAssignments
       if prevRun.fold(true)(run => !(run.s.assignments contains assignment))
-    yield assignment) match
+    yield assignment).distinct match
       case ::(head, _) => Some(head)
       case Nil => None
 

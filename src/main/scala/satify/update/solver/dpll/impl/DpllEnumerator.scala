@@ -3,8 +3,8 @@ package satify.update.solver.dpll.impl
 import satify.model.Result.*
 import satify.model.Status.COMPLETED
 import satify.model.cnf.CNF
-import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.{Constraint, Decision, DecisionTree, OptionalVariable}
+import satify.model.solver.DecisionTree.{Branch, Leaf}
+import satify.model.solver.{Constraint, Decision, DecisionTree, OptionalVariable}
 import satify.model.{Assignment, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
