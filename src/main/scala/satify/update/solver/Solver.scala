@@ -63,7 +63,7 @@ object Solver:
   /** Private implementation of [[Solver]] */
   private case class DpllSolver(converter: Converter, cache: Boolean = true) extends Solver:
 
-    override def solveAll(cnf: CNF): Solution = dpllEnumerate(cnf)
+    override def solveAll(cnf: CNF): Solution = if cache then dpllEnumerate(cnf) else enumerate(cnf)
 
     override def solveAll(exp: Expression): Solution = solveAll(converter.convert(exp))
 
