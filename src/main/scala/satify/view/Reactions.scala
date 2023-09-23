@@ -1,10 +1,9 @@
 package satify.view
 
-import satify.app.Main.{Model, view}
+import satify.app.Main.{model, update, view}
 import satify.model.errors.Error.InvalidInput
 import satify.model.problems.{GraphColoring, NQueens, NurseScheduling, Problem}
 import satify.update.Message.*
-import satify.update.Update.update
 import satify.view.components.Components.*
 import satify.view.utils.ComponentUtils.createErrorDialog
 import satify.view.utils.Constants.*
@@ -15,73 +14,53 @@ import scala.swing.{Component, Swing, TextArea}
 
 object Reactions:
 
-  /** Reaction to the solve all button
-    * @param model the current model to update
-    */
-  def allSolutionsReaction(model: Model): Unit =
-    updateComponents(view(update(model, SolveAll(inputTextPane.text))))
+  /** Reaction to the solve all button */
+  def allSolutionsReaction(): Unit = updateComponents(view(update(model, SolveAll(inputTextPane.text))))
 
-  /** Reaction to the solve button
-    * @param model the current model to update
-    */
-  def solutionReaction(model: Model): Unit =
-    updateComponents(view(update(model, Solve(inputTextPane.text))))
+  /** Reaction to the solve button */
+  def solutionReaction(): Unit = updateComponents(view(update(model, Solve(inputTextPane.text))))
 
-  /** Reaction to the convert button
-    * @param model the current model to update
-    */
-  def cnfReaction(model: Model): Unit =
-    updateComponents(view(update(model, Convert(inputTextPane.text))))
+  /** Reaction to the convert button */
+  def cnfReaction(): Unit = updateComponents(view(update(model, Convert(inputTextPane.text))))
 
-  /** Reaction to the import button
-    * @param model the current model to update
-    */
-  def importReaction(model: Model): Unit =
+  /** Reaction to the import button */
+  def importReaction(): Unit =
     val file: File = importFileChooser.selectedFile
     updateComponents(view(update(model, Import(file))))
 
-  /** Reaction to the problem selection, checking also parameter and selection
-    * @param model the current model to update
-    */
-  def problemSolutionReaction(model: Model): Unit =
+  /** Reaction to the problem selection, checking also parameter and selection */
+  def problemSolutionReaction(): Unit =
     val p: Problem = readProblemSelection()
     updateComponents(view(update(model, SolveProblem(p))))
 
-  /** Reaction to the problem selection, checking also parameter and selection
-    * @param model the current model to update
-    */
-  def problemCnfReaction(model: Model): Unit =
+  /** Reaction to the problem selection, checking also parameter and selection */
+  def problemCnfReaction(): Unit =
     val p: Problem = readProblemSelection()
     updateComponents(view(update(model, ConvertProblem(p))))
 
-  /** Reaction to the next solution button
-    * @param model the current model to update to display next assignment
-    */
-  def nextSolutionReaction(model: Model): Unit =
-    updateComponents(view(update(model, NextSolution())))
+  /** Reaction to the next solution button */
+  def nextSolutionReaction(): Unit = updateComponents(view(update(model, NextSolution())))
 
   /** Reaction to the help button to show the help dialog */
-  def helpReaction(): Unit =
-    helpDialog.open()
+  def helpReaction(): Unit = helpDialog.open()
 
   /** Update the GUI only with the specific components
     * @param newComponents the new components to display
     */
-  private def updateComponents(newComponents: Set[Component]): Unit =
-    Swing.onEDT {
-      newComponents.foreach(c => {
-        c.name match
-          case n if n == solOutputDialogName =>
-            solutionOutputDialog.contents = c
-            solutionOutputDialog.open()
-          case n if n == cnfOutputDialogName =>
-            cnfOutputDialog.contents = c
-            cnfOutputDialog.open()
-          case n if n == expTextPaneName =>
-            inputScrollPane.contents = c
-      })
-      enableInteractions()
-    }
+  private def updateComponents(newComponents: Set[Component]): Unit = Swing.onEDT {
+    newComponents.foreach(c => {
+      c.name match
+        case n if n == solOutputDialogName =>
+          solutionOutputDialog.contents = c
+          solutionOutputDialog.open()
+        case n if n == cnfOutputDialogName =>
+          cnfOutputDialog.contents = c
+          cnfOutputDialog.open()
+        case n if n == expTextPaneName =>
+          inputScrollPane.contents = c
+    })
+    enableInteractions()
+  }
 
   /** Read the problem selection from the GUI, checking also the parameters.
     * @return the problem selected

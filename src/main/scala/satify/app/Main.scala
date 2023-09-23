@@ -11,6 +11,7 @@ import scala.swing.{Dimension, MainFrame}
 /** Entry point of the application. */
 object Main extends App with MVU:
   startRepl()
+
   new MainFrame:
     title = App.title
     contents = createBaseGUI()

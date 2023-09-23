@@ -7,8 +7,8 @@ import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.{classes, noClasses}
 import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import Main.Model
 import satify.app.Architecture.MVU
+import satify.app.Main.Model
 import satify.update.Message
 
 import scala.swing.Component

@@ -152,7 +152,7 @@ object ComponentUtils:
     val nextSolutionButton = createButton(Next.title, 100, 40)
     nextSolutionButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(enableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => nextSolutionReaction(model))
+      Executors.newSingleThreadExecutor().execute(() => nextSolutionReaction())
     }
     createCenteredBox(nextSolutionButton)
 

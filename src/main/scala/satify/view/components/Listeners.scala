@@ -1,6 +1,5 @@
 package satify.view.components
 
-import satify.app.Main.model
 import satify.view.Reactions.*
 import satify.view.components.Components.*
 
@@ -13,27 +12,27 @@ object Listeners:
   def createListeners(): Unit =
     solveAllButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(disableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => allSolutionsReaction(model))
+      Executors.newSingleThreadExecutor().execute(() => allSolutionsReaction())
     }
 
     solveButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(disableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => solutionReaction(model))
+      Executors.newSingleThreadExecutor().execute(() => solutionReaction())
     }
 
     solveProblemButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(disableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => problemSolutionReaction(model))
+      Executors.newSingleThreadExecutor().execute(() => problemSolutionReaction())
     }
 
     cnfButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(disableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => cnfReaction(model))
+      Executors.newSingleThreadExecutor().execute(() => cnfReaction())
     }
 
     cnfProblemButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(disableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => problemCnfReaction(model))
+      Executors.newSingleThreadExecutor().execute(() => problemCnfReaction())
     }
 
     helpMenuItem.reactions += { case ButtonClicked(_) => helpReaction() }
@@ -42,5 +41,5 @@ object Listeners:
       val result = importFileChooser.showOpenDialog(null)
       if result == FileChooser.Result.Approve then
         Swing.onEDT(disableInteractions())
-        Executors.newSingleThreadExecutor().execute(() => importReaction(model))
+        Executors.newSingleThreadExecutor().execute(() => importReaction())
     }
