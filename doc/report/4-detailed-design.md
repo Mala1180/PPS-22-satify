@@ -14,7 +14,6 @@ _abstract type members_ related to Model, View and Update.
   <img src="../diagrams/mvu/mvu-detailed.svg" alt=" Model-View-Update detailed diagram">
 </p>
 
-
 ## Model
 
 Concretely, the **Model** will be a private implementation of the _trait_ **State**, which contains the following
@@ -23,15 +22,18 @@ abstract types:
 ### Expression
 
 Expression is represented through a simple _enumeration_ which contains all the possible types of expression:
-- **And**. It represents the logical And gate. Takes in input *left* and *right* parameters both of type Expression;
-- **Or**. It represents the logical Or gate. Like the And Expression, it takes a *left* and *right* Expressions in input;
-- **Not**. It's the logical Not gate. In this case it takes in input another Expression;
-- **Symbol**. It's the basic type of Expression, and can either represents a input variable by specifying its name or a boolean constant by using a value of type **Bool**.
 
-Because of its recursive structure, Expression has on a tree-like shape, where the inner nodes are either **And**, **Or** or **Not**, and each leaf is a **Symbol**.
+- **And**. It represents the logical And gate. Takes in input *left* and *right* parameters both of type Expression;
+- **Or**. It represents the logical Or gate. Like the And Expression, it takes a *left* and *right* Expressions in
+  input;
+- **Not**. It's the logical Not gate. In this case it takes in input another Expression;
+- **Symbol**. It's the basic type of Expression, and can either represents a input variable by specifying its name or a
+  boolean constant by using a value of type **Bool**.
+
+Because of its recursive structure, Expression is a tree data structure, where the inner nodes are either
+**And**, **Or** or **Not**, and each leaf is a **Symbol**.
 
 ### Problem
-
 
 <p align="center">
 <img src="img/problem/problem.svg" alt="Problem design">
@@ -41,22 +43,25 @@ Because of its recursive structure, Expression has on a tree-like shape, where t
 
 The general Problem representation has been designed with a _trait_ **Problem**.
 It is composed by:
+
 - A set of constraints that must be all satisfied in the solution.
 - An expression, which is the reduction of the constraints through an And gate.
 
-Each problem extends **Problem** using a __case class__, and adds the constraints needed to represent the specific problem.
+Each problem extends **Problem** using a __case class__, and adds the constraints needed to represent the specific
+problem.
 
 ### Solution
 
 ### CNF
 
-CNF is a specific form of representing logical formulas as a *conjunction* of clauses, where each clause is a *disjunction*
+CNF is a specific form of representing logical formulas as a *conjunction* of clauses, where each clause is a
+*disjunction*
 of literals (variables or their negations). For example:
 
 $$(a \lor c) \land (a \lor \lnot d)$$
 
-
 CNF has been modeled a specific type of __Expression__ where:
+
 - The **Or** gate cannot contain an **And** in either its *left* and *right* parameter;
 - The **And** gate cannot contain an **And** in its *left* parameter;
 - The **Not** gate can contain only a **Symbol** parameter;
@@ -119,23 +124,21 @@ So, the best way to design it is decomposing the algorithm following the steps b
 2. Replace each subformula with an auxiliary variable representing its truth value.
    e.g.
 
-    
     $$(a \land (b \lor c)) \implies (\lnot c \land d)$$
     $$TSTN_4 \Longleftrightarrow \lnot c$$
     $$TSTN_3 \Longleftrightarrow b \lor c$$
     $$TSTN_2 \Longleftrightarrow TSTN_4 \land d$$
     $$TSTN_1 \Longleftrightarrow a \land TSTN_3$$
     $$TSTN_0 \Longleftrightarrow TSTN_1 \implies TSTN_2$$
-    
 
 3. Express the truth conditions of the subformulas in CNF using the auxiliary variables and standard logical
    connectives (AND, OR, NOT) following the transformations listed in the table below.
 
-    | Operator  | Circuit                   | Expression    | Converted |
-    | --------  | -------                   | -------       | -------   |
-    | AND       | ![](img/AndCircuit.svg)   | $X = A \land B$   | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$   |
-    | OR        | ![](img/OrCircuit.svg)   | $X = A \lor B$   | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$   |
-    | NOT       | ![](img/NotCircuit.svg)   | $X = \lnot A$      | $(\lnot A \lor \lnot X) \land (A \lor X)$   |
+   | Operator  | Circuit                   | Expression    | Converted |
+       | --------  | -------                   | -------       | -------   |
+   | AND       | ![](img/AndCircuit.svg)   | $X = A \land B$   | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$   |
+   | OR        | ![](img/OrCircuit.svg)   | $X = A \lor B$   | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$   |
+   | NOT       | ![](img/NotCircuit.svg)   | $X = \lnot A$      | $(\lnot A \lor \lnot X) \land (A \lor X)$   |
 
 
 4. Combine the representations of the subformulas to obtain the CNF representation of the entire formula.
@@ -160,18 +163,19 @@ In the last case the solver will convert the expression in CNF with the Converte
 In order to obtain better performances and to avoid the re-computation of same expressions,
 also the solver make use of _memoization_ pattern.
 
-
 ### DPLL (Davis-Putnam-Loveland-Logemann)
 
-The DPLL algorithm is a search algorithm for deciding the satisfability of a propositional formula in Conjunctive Normal Form.
+The DPLL algorithm is a search algorithm for deciding the satisfability of a propositional formula in Conjunctive Normal
+Form.
 
-Compared to a simple exhaustive search of all the possible variable assignments, DPLL makes use of determined strategies to guide the search, making it more efficient.
-It was introduced in 1961 by Martin Davis, George Logemann and Donald W. Loveland and is a refinement of the earlier Davis–Putnam algorithm.
+Compared to a simple exhaustive search of all the possible variable assignments, DPLL makes use of determined strategies
+to guide the search, making it more efficient.
+It was introduced in 1961 by Martin Davis, George Logemann and Donald W. Loveland and is a refinement of the earlier
+Davis–Putnam algorithm.
 
 In this case, the _Solver_ is in charge of solving the propositional expression using the DPLL algorithm.
 It is implemented through a _case class_ that extends the **Solver** trait implementing its methods.
 Following the functional approach, the implementation is hidden inside a private object.
-
 
 #### Preliminaries
 
