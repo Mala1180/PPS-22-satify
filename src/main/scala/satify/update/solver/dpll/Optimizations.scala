@@ -53,8 +53,7 @@ private[dpll] object Optimizations:
       * @return a filled Option with the literal type if it is present, an empty one otherwise.
       */
     @tailrec
-    def getLiteralType(name: String, cnfList: List[CNF],
-                       result: Option[LitType] = None): Option[LitType] =
+    def getLiteralType(name: String, cnfList: List[CNF], result: Option[LitType] = None): Option[LitType] =
       cnfList match
         case ::(head, tail) =>
           head match

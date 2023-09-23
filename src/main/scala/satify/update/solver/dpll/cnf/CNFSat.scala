@@ -23,7 +23,7 @@ private[dpll] object CNFSat:
           head match
             case Not(Symbol(True)) | Symbol(False) => true
             case _ => loop(tail)
-    
+
     loop(cnf :: Nil)
 
   /** Check if the given CNF is SAT.
