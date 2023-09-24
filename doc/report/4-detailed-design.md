@@ -5,7 +5,7 @@
 ## Code organization
 
 <p align=center>
-  <img src="img/packages.svg" alt=" Model-View-Update detailed diagram">
+  <img src="img/packages.svg" alt="packages diagram">
 </p>
 
 ## Architecture
@@ -59,8 +59,8 @@ problem.
 
 ### CNF
 
-`CNF` is the data structure representing logical formulas as a *conjunction* of clauses, 
-where each clause is a *disjunction* of literals (variables or their negations). 
+`CNF` is the data structure representing logical formulas as a *conjunction* of clauses,
+where each clause is a *disjunction* of literals (variables or their negations).
 
 For example:
 
@@ -141,11 +141,10 @@ So, the best way to design it is decomposing the algorithm following the steps b
    connectives (AND, OR, NOT) following the transformations listed in the table below.
 
    | Operator | Circuit                 | Expression      | Converted                                                                     |
-                     |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
+         |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
    | AND      | ![](img/AndCircuit.svg) | $X = A \land B$ | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$ |
    | OR       | ![](img/OrCircuit.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
    | NOT      | ![](img/NotCircuit.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |
-
 
 4. Combine the representations of the subformulas to obtain the CNF representation of the entire formula.
 
@@ -160,7 +159,7 @@ the original logical formula efficiently.
 </p>
 
 Solver is a _trait_ containing the methods useful to solve SAT problem encoded in CNF form.
-There are two main possibility to solve a SAT problem instance, one is starting from the CNF form, and the other is
+There are two main possibilities to solve a SAT problem instance, one is starting from the CNF form, and the other is
 starting directly from the expression.
 Furthermore, it is possible to solve the problem looking for all the possible
 solutions or only one at a time.
@@ -177,7 +176,7 @@ Form.
 
 Compared to a simple exhaustive search of all the possible variable assignments, DPLL makes use of determined strategies
 to guide the search, making it more efficient.
-It was introduced in 1961 by Martin Davis, George Logemann and Donald W.Loveland and is a refinement of the earlier
+It was introduced in 1961 by Martin Davis, George Logemann and Donald W. Loveland and is a refinement of the earlier
 Davis–Putnam algorithm.
 
 In this case, the _Solver_ is in charge of solving the propositional expression using the DPLL algorithm.
@@ -233,23 +232,22 @@ Suppose we have the following formula in CNF:
 
 $$(\lnot b \lor c) \land (\lnot c) \land (a \lor \lnot b \lor e) \land (d \lor b)$$
 
-Since $\lnot c$ is the only literal in the clause, if it is false all the formula will be false, so set $c = false$ to
+Since $\lnot c$ is the only literal in the clause, if it is false, all the formula will be false, so set $c = false$ to
 delete the clause and all the others with $\lnot c$ inside. Delete also all the $c$ where the literal appears in
 positive form.
 On the other hand, if $c$ is in positive form, do viceversa.
 
 ###### Pure literals
 
-As a choice to simplify the formula, beyond the unit propagation, it's possible to choose an assignment to a variable (
-decision) to a literal which appears only in positive form or only in negative form.
+As a choice to simplify the formula, beyond the unit propagation, it's possible to choose an assignment to a variable
+(decision) to a literal which appears only in positive form or only in negative form.
 
 For example:
 
 $$(b \lor c) \land (\lnot c \lor d) \land (a \lor b \lor e) \land (d \lor b)$$
 
 In this case, $b$ appears only in positive form, then assigning $b = true$ no other clause will be "penalized",
-therefore
-delete all the other clauses where $b$ is included.
+therefore, delete all the other clauses where $b$ is included.
 
 In other words: if $b$ doesn't appear in negative form inside the formula $F$, assigning $b = true$, the satisfability
 of $F$ is preserved.
