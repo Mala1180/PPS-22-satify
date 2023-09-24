@@ -3,16 +3,16 @@ package satify.update.converters.tseitin.benchmark
 import org.scalameter.api.*
 import satify.model.problems.{GraphColoring, NQueens, NurseScheduling}
 import satify.update.converters.Converter
-import satify.update.converters.ConverterType.Tseitin
 
 object ConversionProblemBenchmark extends Bench.OfflineReport:
+  
   import satify.update.converters.ConverterType.Tseitin
 
   performance of "N-Queens conversion time" in {
     val sizes: Gen[Int] = Gen.range("size")(1, 10, 1)
     measure method "N-Queens Conversion" in {
       using(sizes) in { size =>
-        val cnf = Converter(Tseitin).convert(NQueens(size).exp, false)
+        Converter(Tseitin).convert(NQueens(size).exp, false)
       }
     }
   }
@@ -24,7 +24,7 @@ object ConversionProblemBenchmark extends Bench.OfflineReport:
     val sizes: Gen[Int] = Gen.range("size")(0, 1, 1)
     measure method "Graph-Coloring Conversion" in {
       using(sizes) in { size =>
-        val cnf = Converter(Tseitin).convert(GraphColoring(edges, nodes, colors).exp, false)
+        Converter(Tseitin).convert(GraphColoring(edges, nodes, colors).exp, false)
       }
     }
   }
@@ -36,7 +36,7 @@ object ConversionProblemBenchmark extends Bench.OfflineReport:
     val sizes: Gen[Int] = Gen.range("size")(0, 1, 1)
     measure method "Nurse-Scheduling Conversion" in {
       using(sizes) in { size =>
-        val cnf = Converter(Tseitin).convert(NurseScheduling(nurses, days, shifts).exp, false)
+        Converter(Tseitin).convert(NurseScheduling(nurses, days, shifts).exp, false)
       }
     }
   }
