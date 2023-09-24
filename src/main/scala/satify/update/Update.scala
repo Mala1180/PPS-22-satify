@@ -36,7 +36,7 @@ object Update:
     case NextSolution() => nextSolutionUpdate(model)
 
   /** Safely update the model by catching any exceptions and returning an error state.
-    * @param f     function to execute.
+    * @param f function to execute.
     * @param input optional input to return if an exception is thrown. For example, if the input is invalid, return the input.
     * @return a state with the error and input if an exception is thrown, otherwise the state returned by f.
     */
