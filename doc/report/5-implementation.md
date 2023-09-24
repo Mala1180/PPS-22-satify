@@ -124,22 +124,23 @@ Despite there aren't too many dependencies in MVU, I decided to use the Cake Pat
 flexibility.
 
 In particular, I made use of the _Self-Type Annotation_ and _Mixin_ mechanisms offered by Scala in order to
-manage dependencies between pattern components at compile-time and to create an application instance in a simple and
+manage dependencies between architecture components at compile-time and to create an application instance in a simple
+and
 readable way.
 
-`scala
+```scala
 trait MVU extends ModelComponent with ViewComponent with UpdateComponent
 
 object Main extends App with MVU
-`
+```
 
 ### Abstract Modelling
 
-Initially I implemented the components making use of _Abstract Modelling_,
+Initially, I implemented the components using _Abstract Modelling_,
 because at the start of the project I didn't know yet how
 `Model`, `View` and `Update` should have been concretely implemented.
 This approach permitted me to focus on high-level design, architecture testing
-and to postpone the implementation details.
+and to postpone implementation details.
 
 I adopted _Abstract Modelling_ approach also when I started to implement the `Model` entity.
 In fact, I knew that the latter had to be an immutable data structure,
@@ -160,35 +161,40 @@ Then, I used _reflection_ to execute the processed input string as a Scala code.
 The words previously wrapped with quotes are interpreted as strings and implicitly converted to `Symbol` objects.
 The use of the _extension methods_ allowed me to call methods and compose expressions using the infix notation.
 
-Using an Internal DSL, I obtained free and correct use of parenthesis and automatic error checking. 
-
-[//]: # (### Solver)
-
-[//]: # (One of the main entities is the `Solver`, it is implemented as a trait containing the `solve` method )
-
-[//]: # (overloaded in order to perform also the conversion to CNF using the `Converter`, if the input is not in CNF.)
+Using an Internal DSL, I obtained free and correct use of parenthesis and automatic error checking.
 
 ## Alberto Paganelli
 
-My first task was to analyze in depth the Tseitin transformation algorithm and before the implementation defining the
-data structures collaborating with the team.
-After the definition of a data structure, I started to define the algorithm's phases.
+Initially, I was involved in the analysis of the Tseitin transformation algorithm and its phases.
+In order to obtain a better understanding of the algorithm,
+I started to analyze the algorithm's phases, keeping an eye on how to decompose them.
+Obviously, the Expression data structure was necessary to represent formulas and work with them, so, with the team, we
+defined the `Expression` data structure.
 
-The first defined data structure was the Enumeration `Expression` that represents the expression of the formula in the
-enumeration form.
-Looking to the algorithm's phases I started writing some utils method for the `Expression` object that can be used from
+Looking to the algorithm's phases, I started writing some utils method for the `Expression` object that can be used from
 all.
 
-In particular to zip the subexpressions with new variables I made use of generic type to make the code more reusable.
+In particular, to zip the subexpressions with new Symbols, I made use of a generic type to make the code more reusable.
 
 After the definition of these methods, where I have made great use of Pattern Matching, it was possible to start
 implementing the algorithm's phases.
 
-The idea was to use the functional programming, so I defined the `Tseitin` object as a singleton object that contains
-the algorithm's phases and exposing only the `Tseitin` method that is the entry point of the algorithm.
+My idea was to exploit the functional programming, so I defined the `Tseitin` object as a singleton object that contains
+the algorithm's phases and exposing only the `Tseitin` method as the entry point of the algorithm.
+In order to increase the readability of the code, I named methods as the algorithm's phases obtaining a code that is
+quite self-explanatory.
 
-I followed the TDD approach for the core of the algorithm and for the utils methods.
+```scala
+def tseitin(exp: Expression): CNF = concat(substitutions(exp).flatMap(transform))
+```
+Given that the algorithm is a fundamental part of the project, I decided to develop it following a TDD approach.
+When the algorithm was completed, I deemed it necessary to rewrite the substitution phase,
+in order to obtain better performances partly by giving up readability.
+Given that this algorithm's phase is recursive, I rewrote it in a `@tailrec` way ensuring that the compiler
+will optimize the code.
 
+While for the Expression utils and the algorithm I followed a TDD approach, for the GUI I decided to use a
+more traditional approach, testing the code manually to verify that it works as expected.
 
 ---
 [Previous](4-detailed-design.md) | [Next](6-retrospective.md)

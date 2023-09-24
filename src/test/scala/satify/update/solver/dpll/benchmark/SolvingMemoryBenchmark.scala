@@ -1,19 +1,21 @@
 package satify.update.solver.dpll.benchmark
 
 import org.scalameter.api.*
-import satify.model.problems.{NQueens, NurseScheduling, GraphColoring}
+import satify.model.problems.{GraphColoring, NQueens, NurseScheduling}
 import satify.update.solver.Solver
-import satify.update.solver.SolverType.*
-import satify.update.converters.ConverterType.Tseitin
 
 object SolvingMemoryBenchmark extends Bench.OfflineReport:
+
+  import satify.update.converters.ConverterType.Tseitin
+  import satify.update.solver.SolverType.DPLL
+
   override def measurer = new Measurer.MemoryFootprint
 
   performance of "N-Queens solving memory" in {
     val sizes: Gen[Int] = Gen.range("size")(2, 5, 1)
     measure method "N-Queens Solving" in {
       using(sizes) in { size =>
-        val s = Solver(DPLL, Tseitin).solveAll(NQueens(size).exp, false)
+        Solver(DPLL, Tseitin).solveAll(NQueens(size).exp, false)
       }
     }
   }
@@ -25,7 +27,7 @@ object SolvingMemoryBenchmark extends Bench.OfflineReport:
     val sizes: Gen[Int] = Gen.range("size")(0, 1, 1)
     measure method "Graph-Coloring Solving" in {
       using(sizes) in { size =>
-        val s = Solver(DPLL, Tseitin).solveAll(GraphColoring(edges, nodes, colors).exp, false)
+        Solver(DPLL, Tseitin).solveAll(GraphColoring(edges, nodes, colors).exp, false)
       }
     }
   }
@@ -37,7 +39,7 @@ object SolvingMemoryBenchmark extends Bench.OfflineReport:
     val sizes: Gen[Int] = Gen.range("size")(0, 1, 1)
     measure method "Nurse-Scheduling Solving" in {
       using(sizes) in { size =>
-        val s = Solver(DPLL, Tseitin).solveAll(NurseScheduling(nurses, days, shifts).exp, false)
+        Solver(DPLL, Tseitin).solveAll(NurseScheduling(nurses, days, shifts).exp, false)
       }
     }
   }

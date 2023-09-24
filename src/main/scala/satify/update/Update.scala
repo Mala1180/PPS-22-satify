@@ -17,6 +17,7 @@ import satify.update.solver.SolverType.*
 
 import java.io.{File, FileNotFoundException}
 import scala.io.Source
+import scala.util.Success
 
 object Update:
 
@@ -35,19 +36,20 @@ object Update:
     case NextSolution() => nextSolutionUpdate(model)
 
   /** Safely update the model by catching any exceptions and returning an error state.
-    * @param f     function to execute.
+    * @param f function to execute.
     * @param input optional input to return if an exception is thrown. For example, if the input is invalid, return the input.
     * @return a state with the error and input if an exception is thrown, otherwise the state returned by f.
     */
   private def safeUpdate(f: () => State, input: Option[String] = None): State =
-    try f()
+    try Success(f()).get
     catch
-      case e: Exception =>
+      case e: Throwable =>
         e.printStackTrace()
         e match
           case _: IllegalArgumentException => State(input.getOrElse(""), InvalidInput())
           case _: IllegalStateException => State(NoPreviousSolution())
           case _: FileNotFoundException => State(InvalidImport())
+          case _: StackOverflowError => State(StackOverflow())
           case _ => State(input.getOrElse(""), Unknown())
 
   /** Update function to react to the SolveAll message. This function will attempt to solve the input and return a state.
@@ -123,7 +125,7 @@ object Update:
       val lines = s.getLines.toSeq
       s.close()
       val cnf: CNF = parse(lines).getOrElse(Symbol("NO CNF"))
-      val input = cnf.printAsDSL()
+      val input = cnf.asDSL()
       State(input, cnf)
     safeUpdate(update)
 

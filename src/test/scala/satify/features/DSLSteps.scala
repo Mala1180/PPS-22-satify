@@ -20,7 +20,7 @@ object DSLSteps extends ScalaDsl with EN:
   }
 
   Then("I should obtain the expression {string}") { (expected: String) =>
-    expression.get.printAsDSL(true) shouldBe expected
+    expression.get.asDSL(true) shouldBe expected
   }
   Then("I should obtain an IllegalArgumentException") {
     error shouldBe a[IllegalArgumentException]

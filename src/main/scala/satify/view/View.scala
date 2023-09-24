@@ -63,7 +63,7 @@ object View:
       }
       val fp: BoxPanel = new BoxPanel(Orientation.Vertical):
         name = cnfOutputDialogName
-        contents += new ScrollPane(createOutputTextArea(cnf.get.printAsFormal(), 30, 35))
+        contents += new ScrollPane(createOutputTextArea(cnf.get.asFormal(), 30, 35))
         contents += new FlowPanel():
           contents += exportButton
         contents += new FlowPanel():

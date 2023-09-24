@@ -24,7 +24,7 @@ private[converters] object TseitinTransformation:
     * @param exp the expression where to substitute Symbols
     * @return the decomposed expression in subexpressions with Symbols correctly substituted.
     */
-  def substitutions(exp: Expression): List[(Symbol, Expression)] = {
+  private[tseitin] def substitutions(exp: Expression): List[(Symbol, Expression)] =
     @tailrec
     def replace(
         list: List[(Symbol, Expression)],
@@ -32,34 +32,31 @@ private[converters] object TseitinTransformation:
         l: Symbol,
         acc: List[(Symbol, Expression)]
     ): List[(Symbol, Expression)] =
-      list match {
+      list match
         case Nil => acc.reverse
         case (lit, e) :: t if e.contains(subexp) =>
           replace(t, subexp, l, (lit, e.replaceExp(subexp, l)) :: acc)
         case (lit, e) :: t => replace(t, subexp, l, (lit, e) :: acc)
-      }
 
     @tailrec
     def selector(
         list: List[(Symbol, Expression)],
         acc: List[(Symbol, Expression)]
     ): List[(Symbol, Expression)] =
-      list match {
+      list match
         case Nil => acc.reverse
         case (l, e) :: tail => selector(replace(tail, e, l, Nil), (l, e) :: acc)
-      }
 
     val zipped = zipWithSymbol(exp).distinctBy(_._2)
     if zipped.size == 1 then zipped
     else selector(zipped.sortBy((_, e) => clauses(e)), Nil)
-  }
 
   /** Transform the Symbol and the corresponding expression to CNF form
     * @param exp a Symbol and the corresponding expression
     * @return a list of Symbol and expressions in CNF form for the given Symbol and expression
     * @throws IllegalArgumentException if the expression is not a subexpression
     */
-  def transform(exp: (Expression.Symbol, Expression)): List[CNF] =
+  private[tseitin] def transform(exp: (Symbol, Expression)): List[CNF] =
     def expr(exp: Expression): Literal = exp match
       case Symbol(v) => CNFSymbol(v)
       case Not(Symbol(v)) => CNFNot(CNFSymbol(v))
@@ -93,7 +90,7 @@ private[converters] object TseitinTransformation:
     * @param subexpressions the subexpressions to concat.
     * @return the CNF expression.
     */
-  def concat(subexpressions: List[CNF]): CNF =
+  private[tseitin] def concat(subexpressions: List[CNF]): CNF =
     if subexpressions.size == 1 then subexpressions.head
     else
       var concatenated = subexpressions

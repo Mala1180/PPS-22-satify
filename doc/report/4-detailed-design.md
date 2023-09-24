@@ -1,9 +1,12 @@
 # Detailed Design
 
 ---
+
 ## Code organization
 
-
+<p align=center>
+  <img src="img/packages.svg" alt="packages diagram">
+</p>
 
 ## Architecture
 
@@ -11,15 +14,15 @@ As described in the previous section, the architectural pattern used is the **Mo
 Moreover, the **Cake Pattern** has been introduced to improve the modeling of the dependencies.
 
 Some _trait_ has been designed to represent the components of the MVU pattern, which encapsulate within them some
-_abstract type members_ related to Model, View and Update.
+_abstract type members_ related to `Model`, `View` and `Update`.
 
 <p align=center>
-  <img src="../diagrams/mvu/mvu-detailed.svg" alt=" Model-View-Update detailed diagram" style="width: 80%">
+  <img src="img/mvu-detailed.svg" alt=" Model-View-Update detailed diagram">
 </p>
 
 ## Model
 
-Concretely, the **Model** will be a private implementation of the _trait_ **State**, which contains the following
+Concretely, the **Model** is an implementation of the _trait_ **State**, which contains the following
 abstract types:
 
 ### Expression
@@ -28,13 +31,13 @@ abstract types:
   <img src="img/exp/exp.svg" alt=" Model-View-Update detailed diagram" style="width: 80%">
 </p>
 
-Expression is represented through a simple _enumeration_ which contains all the possible types of expression:
+Expression is represented through a _sum type_ which contains all the possible types of expression:
 
-- **And**. It represents the logical And gate. Takes in input *left* and *right* parameters both of type Expression;
-- **Or**. It represents the logical Or gate. Like the And Expression, it takes a *left* and *right* Expressions in
-  input;
-- **Not**. It's the logical Not gate. In this case it takes in input another Expression;
-- **Symbol**. It's the basic type of Expression. It represents an input variable and takes in input its name.
+- `And`, it represents the logical And gate. It takes in input **left** and **right** parameters both of
+  type `Expression`.
+- `Or`, it represents the logical Or gate. Like the `And`, it takes a **left** and **right** Expressions in input.
+- `Not`, it's the logical Not gate. It takes in input another `Expression`.
+- `Symbol`, it represents an input variable and takes in input its name.
 
 Because of its recursive structure, Expression is a tree data structure, where the inner nodes are either
 **And**, **Or** or **Not**, and each leaf is a **Symbol**.
@@ -45,39 +48,45 @@ Because of its recursive structure, Expression is a tree data structure, where t
   <img src="img/cnf/cnf.svg" alt=" Model-View-Update detailed diagram" style="width: 35%">
 </p>
 
+`CNF` is the data structure representing logical formulas as a *conjunction* of clauses,
+where each clause is a *disjunction* of literals (variables or their negations).
 
-CNF represents a formula in Conjunctive Normal Form. Also in this case an _enumeration_ has been used.
-
-CNF is a specific form of representing logical formulas as a *conjunction* of clauses, where each clause is a
-*disjunction*
-of literals (variables or their negations). For example:
+For example:
 
 $$ (a \lor c) \land (a \lor \lnot d) $$
 
-CNF has been modeled a specific type of __Expression__ where:
+It is a _sum type_ like `Expression`, but it has the following constraints:
 
-- The **Or** gate cannot contain an **And** in either its *left* and *right* parameter;
-- The **And** gate cannot contain an **And** in its *left* parameter;
-- The **Not** gate can contain only a **Symbol** parameter;
-- In this case, **Symbol** can either represents a input variable by specifying its name or a boolean constant by using a value of type **Bool**.
+- The `Or` gate cannot contain an `And` in either its **left** and **right** parameter.
+- The `And` gate cannot contain an `And` in its **left** parameter.
+- The `Not` gate can contain only a `Symbol` parameter.
+- In this case, `Symbol` can either represent an input variable by specifying its name or a boolean constant by using
+  a **Bool** type value.
 
 ### Solver
 
-The Solver package contains all the abstract types that are useful for SAT solver implementations, especially for tree-based search algorithms.
+The Solver package contains all the abstract types that are useful for SAT solver implementations, especially for
+tree-based search algorithms.
 
 It is composed of:
-- **DecisionTree**. It's a binary tree data structure where each node contains a **Decision**. It is constructed during the search algorithm.
+
+- **DecisionTree**. It's a binary tree data structure where each node contains a **Decision**. It is constructed during
+  the search algorithm.
 - **Decision**. A decision represents a constraint that has been applied to an input variable. In turn, it contains:
-    - A **PartialAssignment**, which is the current state of constraints applied to the variables. The decision is implicitly defined in this field. PartialAssignment is a list of **OptionalVariable**, e.g. a variable which could be either be constrained or not.
+    - A **PartialAssignment**, which is the current state of constraints applied to the variables. The decision is
+      implicitly defined in this field. PartialAssignment is a list of **OptionalVariable**, e.g. a variable which could
+      be either be constrained or not.
     - A **CNF**. It's the input CNF updated with the current set of constraints defined in **PartialAssignment**.
-- **Constraint**. It consists of the name of the variable, and the boolean constraint. It is an utility which could be useful during the solve.
+- **Constraint**. It consists of the name of the variable, and the boolean constraint. It is an utility which could be
+  useful during the solve.
 
 <p align=center>
   <img src="img/solver/solver_design.svg" alt=" Model-View-Update detailed diagram" style="width: 80%">
 </p>
 
 
-Given these ingredients, a SAT solver implementation can build its own specific **DecisionTree**, applying decisions to the variables in a certain order and assigning them a certain value that they deem most appropriate for the resolution.
+Given these ingredients, a SAT solver implementation can build its own specific **DecisionTree**, applying decisions to
+the variables in a certain order and assigning them a certain value that they deem most appropriate for the resolution.
 
 ### Solution
 
@@ -85,24 +94,20 @@ Given these ingredients, a SAT solver implementation can build its own specific 
 <img src="img/solution.svg" alt="Solution design" style="width: 70%">
 </p>
 
-
-
 ### Problem
 
 <p align="center">
 <img src="img/problem/problem.svg" alt="Problem design" style="width: 80%">
 </p>
 
-
-The general Problem representation has been designed with a _trait_ **Problem**.
+The general SAT problem representation has been designed with a _trait_ **Problem**.
 It is composed by:
 
 - A set of constraints that must be all satisfied in the solution.
-- An expression, which is the reduction of the constraints through an And gate.
+- An `Expression`, which is the reduction of the constraints using the `And` operator.
 
-Each problem extends **Problem** using a __case class__, and adds the constraints needed to represent the specific
+Each problem extends **Problem** using a _case class_, and adds the constraints needed to represent the specific
 problem.
-
 
 ---
 
@@ -134,7 +139,7 @@ the needed part of the UI.
 </p>
 
 Converter is a _trait_ containing the method convert that will be implemented by each converter.
-In order to obtain better performances and to avoid the re-computation of same expressions, the converter keeps
+In order to obtain better performances and to avoid the re-computation of same expressions, the converter can keep
 a cache of already computed expressions following the _memoization_ pattern.
 
 #### Tseitin Algorithm
@@ -144,8 +149,7 @@ The Tseitin algorithm converts a formula in propositional logic into a CNF formu
 In this case, the _Converter_ is in charge of converting the expression in CNF form, using the Tseitin transformation.
 It is implemented through a _case class_ that extends the **Converter** trait implementing the convert method.
 Following the functional approach, the implementation is hidden inside a private object.
-
-QUI DIAG PACKAGE TSEITIN
+It contains the implementation of the three main algorithm phases.
 
 The idea behind the Tseitin transformation is to introduce new auxiliary variables for subformulas in the original
 formula.
@@ -171,11 +175,10 @@ So, the best way to design it is decomposing the algorithm following the steps b
    connectives (AND, OR, NOT) following the transformations listed in the table below.
 
    | Operator | Circuit                 | Expression      | Converted                                                                     |
-   |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
+                  |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
    | AND      | ![](img/AndCircuit.svg) | $X = A \land B$ | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$ |
    | OR       | ![](img/OrCircuit.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
    | NOT      | ![](img/NotCircuit.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |
-
 
 4. Combine the representations of the subformulas to obtain the CNF representation of the entire formula.
 
@@ -190,7 +193,7 @@ the original logical formula efficiently.
 </p>
 
 Solver is a _trait_ containing the methods useful to solve SAT problem encoded in CNF form.
-There are two main possibility to solve a SAT problem instance, one is starting from the CNF form, and the other is
+There are two main possibilities to solve a SAT problem instance, one is starting from the CNF form, and the other is
 starting directly from the expression.
 Furthermore, it is possible to solve the problem looking for all the possible
 solutions or only one at a time.
@@ -207,7 +210,7 @@ Form.
 
 Compared to a simple exhaustive search of all the possible variable assignments, DPLL makes use of determined strategies
 to guide the search, making it more efficient.
-It was introduced in 1961 by Martin Davis, George Logemann and Donald W.Loveland and is a refinement of the earlier
+It was introduced in 1961 by Martin Davis, George Logemann and Donald W. Loveland and is a refinement of the earlier
 Davis–Putnam algorithm.
 
 In this case, the _Solver_ is in charge of solving the propositional expression using the DPLL algorithm.
@@ -263,22 +266,22 @@ Suppose we have the following formula in CNF:
 
 $$(\lnot b \lor c) \land (\lnot c) \land (a \lor \lnot b \lor e) \land (d \lor b)$$
 
-Since $\lnot c$ is the only literal in the clause, if it is false all the formula will be false, so set $c = false$ to
+Since $\lnot c$ is the only literal in the clause, if it is false, all the formula will be false, so set $c = false$ to
 delete the clause and all the others with $\lnot c$ inside. Delete also all the $c$ where the literal appears in
 positive form.
 On the other hand, if $c$ is in positive form, do viceversa.
 
 ###### Pure literals
 
-As a choice to simplify the formula, beyond the unit propagation, it's possible to choose an assignment to a variable (
-decision) to a literal which appears only in positive form or only in negative form.
+As a choice to simplify the formula, beyond the unit propagation, it's possible to choose an assignment to a variable
+(decision) to a literal which appears only in positive form or only in negative form.
 
 For example:
 
 $$(b \lor c) \land (\lnot c \lor d) \land (a \lor b \lor e) \land (d \lor b)$$
 
-In this case, $b$ appears only in positive form, then assigning $b = true$ no other clause will be "penalized", therefore
-delete all the other clauses where $b$ is included.
+In this case, $b$ appears only in positive form, then assigning $b = true$ no other clause will be "penalized",
+therefore, delete all the other clauses where $b$ is included.
 
 In other words: if $b$ doesn't appear in negative form inside the formula $F$, assigning $b = true$, the satisfability
 of $F$ is preserved.

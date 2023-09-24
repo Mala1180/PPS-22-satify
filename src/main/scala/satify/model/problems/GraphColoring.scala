@@ -1,4 +1,5 @@
 package satify.model.problems
+
 import satify.model.Assignment
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*

@@ -1,9 +1,11 @@
 package satify.update.solver.dpll.cnf
 
 import satify.model.cnf.Bool.{False, True}
-import satify.model.cnf.CNF
+import satify.model.cnf.{CNF, Literal}
 import satify.model.cnf.CNF.*
 import satify.model.solver.Constraint
+
+import scala.annotation.tailrec
 
 private[dpll] object CNFSimplification:
 
@@ -41,8 +43,7 @@ private[dpll] object CNFSimplification:
       ).asInstanceOf[T]
 
     (f(cnf, cnf) match
-      case And(left, right) =>
-        And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr))
+      case And(left, right) => And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr))
       case Or(left, right) =>
         /*
         1. Check if left branch is a True constant or the constrained Variable:
