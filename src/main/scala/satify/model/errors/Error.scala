@@ -6,4 +6,5 @@ enum Error(val description: String):
   case InvalidExport() extends Error("Export error, select a txt file to export the CNF")
   case EmptySolution() extends Error("Empty solution, no next assignment to show")
   case NoPreviousSolution() extends Error("Cannot find next solution without a previous one")
+  case StackOverflow() extends Error("Stack overflow error occurred")
   case Unknown() extends Error("Unknown error occurred")
