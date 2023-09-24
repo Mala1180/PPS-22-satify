@@ -49,6 +49,7 @@ object Update:
           case _: IllegalArgumentException => State(input.getOrElse(""), InvalidInput())
           case _: IllegalStateException => State(NoPreviousSolution())
           case _: FileNotFoundException => State(InvalidImport())
+          case _: StackOverflowError => State(StackOverflow())
           case _ => State(input.getOrElse(""), Unknown())
 
   /** Update function to react to the SolveAll message. This function will attempt to solve the input and return a state.
