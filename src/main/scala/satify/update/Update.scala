@@ -17,6 +17,7 @@ import satify.update.solver.SolverType.*
 
 import java.io.{File, FileNotFoundException}
 import scala.io.Source
+import scala.util.Success
 
 object Update:
 
@@ -40,9 +41,9 @@ object Update:
     * @return a state with the error and input if an exception is thrown, otherwise the state returned by f.
     */
   private def safeUpdate(f: () => State, input: Option[String] = None): State =
-    try f()
+    try Success(f()).get
     catch
-      case e: Exception =>
+      case e: Throwable =>
         e.printStackTrace()
         e match
           case _: IllegalArgumentException => State(input.getOrElse(""), InvalidInput())
