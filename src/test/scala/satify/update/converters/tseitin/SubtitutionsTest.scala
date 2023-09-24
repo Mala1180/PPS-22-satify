@@ -6,7 +6,7 @@ import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.update.converters.tseitin.TseitinTransformation.substitutions
 
-class ReplacingTest extends AnyFlatSpec with Matchers:
+class SubtitutionsTest extends AnyFlatSpec with Matchers:
 
   "In (¬b) the replacement of subexpressions with symbols" should "return only a new variable representing the input expression" in {
     val exp: Expression = Not(Symbol("b"))

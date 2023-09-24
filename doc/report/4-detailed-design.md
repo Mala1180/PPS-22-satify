@@ -13,7 +13,7 @@ Some _trait_ has been designed to represent the components of the MVU pattern, w
 _abstract type members_ related to Model, View and Update.
 
 <p align=center>
-  <img src="../diagrams/mvu/mvu-detailed.svg" alt=" Model-View-Update detailed diagram">
+  <img src="img/mvu-detailed.svg" alt=" Model-View-Update detailed diagram">
 </p>
 
 ## Model
@@ -100,7 +100,7 @@ the needed part of the UI.
 </p>
 
 Converter is a _trait_ containing the method convert that will be implemented by each converter.
-In order to obtain better performances and to avoid the re-computation of same expressions, the converter keeps
+In order to obtain better performances and to avoid the re-computation of same expressions, the converter can keep
 a cache of already computed expressions following the _memoization_ pattern.
 
 #### Tseitin Algorithm
@@ -110,8 +110,8 @@ The Tseitin algorithm converts a formula in propositional logic into a CNF formu
 In this case, the _Converter_ is in charge of converting the expression in CNF form, using the Tseitin transformation.
 It is implemented through a _case class_ that extends the **Converter** trait implementing the convert method.
 Following the functional approach, the implementation is hidden inside a private object.
+It contains the implementation of the three main algorithm phases.  
 
-QUI DIAG PACKAGE TSEITIN
 
 The idea behind the Tseitin transformation is to introduce new auxiliary variables for subformulas in the original
 formula.
