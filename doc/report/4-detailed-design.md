@@ -25,7 +25,7 @@ abstract types:
 ### Expression
 
 <p align=center>
-  <img src="img/exp/expression.svg" alt=" Model-View-Update detailed diagram" style="width: 35%">
+  <img src="img/exp/exp.svg" alt=" Model-View-Update detailed diagram" style="width: 80%">
 </p>
 
 Expression is represented through a simple _enumeration_ which contains all the possible types of expression:
@@ -63,8 +63,20 @@ CNF has been modeled a specific type of __Expression__ where:
 
 ### Solver
 
+The Solver package contains all the abstract types that are useful for SAT solver implementations, especially for tree-based search algorithms.
+
+It is composed of:
+- **DecisionTree**. It's a binary tree data structure where each node contains a **Decision**. It is constructed during the search algorithm.
+- **Decision**. A decision represents a constraint that has been applied to an input variable. In turn, it contains:
+    - A **PartialAssignment**, which is the current state of constraints applied to the variables. The decision is implicitly defined in this field. PartialAssignment is a list of **OptionalVariable**, e.g. a variable which could be either be constrained or not.
+    - A **CNF**. It's the input CNF updated with the current set of constraints defined in **PartialAssignment**.
+
+<p align=center>
+  <img src="img/solver/solver_design.svg" alt=" Model-View-Update detailed diagram" style="width: 80%">
+</p>
 
 
+Given these ingredients, a SAT solver implementation can build its own specific **DecisionTree**, applying decisions to the variables in a certain order and assigning them a certain value that they deem most appropriate for the resolution.
 
 ### Solution
 
