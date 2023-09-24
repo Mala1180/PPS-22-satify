@@ -197,5 +197,9 @@ When the algorithm was completed, I deemed it necessary to rewrite the substitut
 in order to obtain better performances partly by giving up readability.
 Given that this algorithm's phase is recursive, I rewrote it in a `@tailrec` way ensuring that the compiler
 will optimize the code.
+
+While for the Expression utils and the algorithm I followed a TDD approach, for the GUI I decided to use a
+more traditional approach, testing the code manually to verify that it works as expected.
+
 ---
 [Previous](4-detailed-design.md) | [Next](6-retrospective.md)
