@@ -39,6 +39,8 @@ Expression is represented through a simple _enumeration_ which contains all the 
 Because of its recursive structure, Expression is a tree data structure, where the inner nodes are either
 **And**, **Or** or **Not**, and each leaf is a **Symbol**.
 
+Togheter with the enumeration, a companion object has been created. It provides a set of utilities useful to explore and manipulate the expression.
+
 ### CNF
 
 <p align=center>
@@ -69,7 +71,7 @@ It is composed of:
 - **DecisionTree**. It's a binary tree data structure where each node contains a **Decision**. It is constructed during the search algorithm.
 - **Decision**. A decision represents a constraint that has been applied to an input variable. In turn, it contains:
     - A **PartialAssignment**, which is the current state of constraints applied to the variables. The decision is implicitly defined in this field. PartialAssignment is a list of **OptionalVariable**, e.g. a variable which could be either be constrained or not.
-    - A **CNF**. It's the input CNF updated with the current set of constraints defined in **PartialAssignment**.
+    - A **CNF**. It's the input CNF simplified with the current set of constraints defined in **PartialAssignment**.
 - **Constraint**. It consists of the name of the variable, and the boolean constraint. It is an utility which could be useful during the solve.
 
 <p align=center>
@@ -81,10 +83,16 @@ Given these ingredients, a SAT solver implementation can build its own specific 
 
 ### Solution
 
+**Solution** is the output of a SAT solver run.
+It is made up of three fields:
+- **Result**: SAT (satisfied) or UNSAT (unsatisfied);
+- A set of satisfied **Assignment**s. Compared to the solver modeling, an Assignment consists of a set of **Variable**s, which are necessarily constrained to a boolean value.
+- **Status**: PARTIAL or COMPLETED. A SAT solver implementation can decide either to provide all the satisfiable assignments, just one, or one at a time. Until all the assignments are provided, the Status must be PARTIAL.
+
+
 <p align="center">
 <img src="img/solution.svg" alt="Solution design" style="width: 70%">
 </p>
-
 
 
 ### Problem
