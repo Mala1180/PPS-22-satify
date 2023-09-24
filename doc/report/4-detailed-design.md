@@ -1,12 +1,12 @@
 # Detailed Design
 
 ---
+
 ## Code organization
 
 <p align=center>
   <img src="img/packages.svg" alt=" Model-View-Update detailed diagram">
 </p>
-
 
 ## Architecture
 
@@ -14,7 +14,7 @@ As described in the previous section, the architectural pattern used is the **Mo
 Moreover, the **Cake Pattern** has been introduced to improve the modeling of the dependencies.
 
 Some _trait_ has been designed to represent the components of the MVU pattern, which encapsulate within them some
-_abstract type members_ related to Model, View and Update.
+_abstract type members_ related to `Model`, `View` and `Update`.
 
 <p align=center>
   <img src="../diagrams/mvu/mvu-detailed.svg" alt=" Model-View-Update detailed diagram">
@@ -22,19 +22,18 @@ _abstract type members_ related to Model, View and Update.
 
 ## Model
 
-Concretely, the **Model** will be a private implementation of the _trait_ **State**, which contains the following
+Concretely, the **Model** is an implementation of the _trait_ **State**, which contains the following
 abstract types:
 
 ### Expression
 
-Expression is represented through a simple _enumeration_ which contains all the possible types of expression:
+Expression is represented through a _sum type_ which contains all the possible types of expression:
 
-- **And**. It represents the logical And gate. Takes in input *left* and *right* parameters both of type Expression;
-- **Or**. It represents the logical Or gate. Like the And Expression, it takes a *left* and *right* Expressions in
-  input;
-- **Not**. It's the logical Not gate. In this case it takes in input another Expression;
-- **Symbol**. It's the basic type of Expression, and can either represents a input variable by specifying its name or a
-  boolean constant by using a value of type **Bool**.
+- `And`, it represents the logical And gate. It takes in input **left** and **right** parameters both of type
+  Expression.
+- `Or`, it represents the logical Or gate. Like the `And`, it takes a **left** and **right** Expressions in input.
+- `Not`, it's the logical Not gate. It takes in input another `Expression`.
+- `Symbol`, represents an input variable by specifying its name, or a boolean constant by using boolean value.
 
 Because of its recursive structure, Expression is a tree data structure, where the inner nodes are either
 **And**, **Or** or **Not**, and each leaf is a **Symbol**.
@@ -47,30 +46,31 @@ Because of its recursive structure, Expression is a tree data structure, where t
 </p>
 
 
-The general Problem representation has been designed with a _trait_ **Problem**.
+The general SAT problem representation has been designed with a _trait_ **Problem**.
 It is composed by:
 
 - A set of constraints that must be all satisfied in the solution.
-- An expression, which is the reduction of the constraints through an And gate.
+- An `Expression`, which is the reduction of the constraints using the `And` operator.
 
-Each problem extends **Problem** using a __case class__, and adds the constraints needed to represent the specific
+Each problem extends **Problem** using a _case class_, and adds the constraints needed to represent the specific
 problem.
 
 ### Solution
 
 ### CNF
 
-CNF is a specific form of representing logical formulas as a *conjunction* of clauses, where each clause is a
-*disjunction*
-of literals (variables or their negations). For example:
+`CNF` is the data structure representing logical formulas as a *conjunction* of clauses, 
+where each clause is a *disjunction* of literals (variables or their negations). 
+
+For example:
 
 $$ (a \lor c) \land (a \lor \lnot d) $$
 
-CNF has been modeled a specific type of __Expression__ where:
+It is a _sum type_ like `Expression`, but it has the following constraints:
 
-- The **Or** gate cannot contain an **And** in either its *left* and *right* parameter;
-- The **And** gate cannot contain an **And** in its *left* parameter;
-- The **Not** gate can contain only a **Symbol** parameter;
+- The `Or` gate cannot contain an `And` in either its **left** and **right** parameter.
+- The `And` gate cannot contain an `And` in its **left** parameter.
+- The `Not` gate can contain only a `Symbol` parameter.
 
 An _enumeration_ has been used for this type of entity.
 
@@ -141,7 +141,7 @@ So, the best way to design it is decomposing the algorithm following the steps b
    connectives (AND, OR, NOT) following the transformations listed in the table below.
 
    | Operator | Circuit                 | Expression      | Converted                                                                     |
-   |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
+                     |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
    | AND      | ![](img/AndCircuit.svg) | $X = A \land B$ | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$ |
    | OR       | ![](img/OrCircuit.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
    | NOT      | ![](img/NotCircuit.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |
@@ -247,7 +247,8 @@ For example:
 
 $$(b \lor c) \land (\lnot c \lor d) \land (a \lor b \lor e) \land (d \lor b)$$
 
-In this case, $b$ appears only in positive form, then assigning $b = true$ no other clause will be "penalized", therefore
+In this case, $b$ appears only in positive form, then assigning $b = true$ no other clause will be "penalized",
+therefore
 delete all the other clauses where $b$ is included.
 
 In other words: if $b$ doesn't appear in negative form inside the formula $F$, assigning $b = true$, the satisfability

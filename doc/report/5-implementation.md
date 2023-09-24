@@ -124,22 +124,23 @@ Despite there aren't too many dependencies in MVU, I decided to use the Cake Pat
 flexibility.
 
 In particular, I made use of the _Self-Type Annotation_ and _Mixin_ mechanisms offered by Scala in order to
-manage dependencies between pattern components at compile-time and to create an application instance in a simple and
+manage dependencies between architecture components at compile-time and to create an application instance in a simple
+and
 readable way.
 
-`scala
+```scala
 trait MVU extends ModelComponent with ViewComponent with UpdateComponent
 
 object Main extends App with MVU
-`
+```
 
 ### Abstract Modelling
 
-Initially I implemented the components making use of _Abstract Modelling_,
+Initially, I implemented the components using _Abstract Modelling_,
 because at the start of the project I didn't know yet how
 `Model`, `View` and `Update` should have been concretely implemented.
 This approach permitted me to focus on high-level design, architecture testing
-and to postpone the implementation details.
+and to postpone implementation details.
 
 I adopted _Abstract Modelling_ approach also when I started to implement the `Model` entity.
 In fact, I knew that the latter had to be an immutable data structure,
@@ -160,13 +161,7 @@ Then, I used _reflection_ to execute the processed input string as a Scala code.
 The words previously wrapped with quotes are interpreted as strings and implicitly converted to `Symbol` objects.
 The use of the _extension methods_ allowed me to call methods and compose expressions using the infix notation.
 
-Using an Internal DSL, I obtained free and correct use of parenthesis and automatic error checking. 
-
-[//]: # (### Solver)
-
-[//]: # (One of the main entities is the `Solver`, it is implemented as a trait containing the `solve` method )
-
-[//]: # (overloaded in order to perform also the conversion to CNF using the `Converter`, if the input is not in CNF.)
+Using an Internal DSL, I obtained free and correct use of parenthesis and automatic error checking.
 
 ## Alberto Paganelli
 

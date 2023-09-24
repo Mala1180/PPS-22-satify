@@ -21,21 +21,21 @@ case class NQueens(n: Int) extends Problem:
       yield Symbol(s"x_${i}_$j")
 
   /** At least one queen on each row and column */
-  private val atLeastOneQueen: Expression =
+  private val atLeastOneQueenRowsColumns: Expression =
     val constraint =
       for i <- 0 until n
       yield And(atLeastOne(variables(i): _*), atLeastOne(variables.map(row => row(i)): _*))
     constraint.reduceLeft(And(_, _))
 
   /** At most one queen on each row and column */
-  private val atMostOneQueen: Expression =
+  private val atMostOneQueenRowsColumns: Expression =
     val atMostConstraints =
       for i <- 0 until n
       yield And(atMostOne(variables(i): _*), atMostOne(variables.map(row => row(i)): _*))
     atMostConstraints.reduceLeft(And(_, _))
 
   /** At most one queen on each diagonal */
-  private def diagConstr: Expression =
+  private def atMostOneQueenDiagonals: Expression =
     val clauses =
       for i <- 0 until (n - 1)
       yield
@@ -57,8 +57,8 @@ case class NQueens(n: Int) extends Problem:
     clauses.reduceLeft(And(_, _))
 
   override val constraints: Set[Expression] =
-    if n > 1 then Set(atLeastOneQueen, atMostOneQueen, diagConstr)
-    else Set(atLeastOneQueen, atMostOneQueen)
+    if n > 1 then Set(atLeastOneQueenRowsColumns, atMostOneQueenRowsColumns, atMostOneQueenDiagonals)
+    else Set(atLeastOneQueenRowsColumns, atMostOneQueenRowsColumns)
 
   override def toString(assignment: Assignment): String =
     @tailrec
