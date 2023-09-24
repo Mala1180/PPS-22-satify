@@ -47,7 +47,6 @@ private[converters] object TseitinTransformation:
         case Nil => acc.reverse
         case (l, e) :: tail => selector(replace(tail, e, l, Nil), (l, e) :: acc)
 
-
     val zipped = zipWithSymbol(exp).distinctBy(_._2)
     if zipped.size == 1 then zipped
     else selector(zipped.sortBy((_, e) => clauses(e)), Nil)
