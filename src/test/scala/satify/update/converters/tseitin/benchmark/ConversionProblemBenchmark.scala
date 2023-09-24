@@ -5,13 +5,14 @@ import satify.model.problems.{GraphColoring, NQueens, NurseScheduling}
 import satify.update.converters.Converter
 
 object ConversionProblemBenchmark extends Bench.OfflineReport:
-  
+
   import satify.update.converters.ConverterType.Tseitin
 
   performance of "N-Queens conversion time" in {
     val sizes: Gen[Int] = Gen.range("size")(1, 10, 1)
     measure method "N-Queens Conversion" in {
       using(sizes) in { size =>
+        println(reports.resultDir)
         Converter(Tseitin).convert(NQueens(size).exp, false)
       }
     }
