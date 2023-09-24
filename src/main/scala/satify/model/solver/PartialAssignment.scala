@@ -5,11 +5,13 @@ import satify.model.cnf.CNF.*
 import satify.model.solver.*
 import satify.model.{Assignment, Variable}
 
+import scala.annotation.tailrec
+
 /** Represents an [[Assignment]] where the variables could not be yet constrained by the DPLL algorithm.
   * @param optVariables optional variables.
   */
 case class PartialAssignment(optVariables: List[OptionalVariable]):
-  lazy val toAssignments: List[Assignment] = explodeAssignments(this)
+  lazy val toAssignments: List[Assignment] = explodeAssignments(this).distinct
 
   /** Cartesian product of all possible variable assignments to a partial assignment.
     * @param pa partial assignment
@@ -22,14 +24,14 @@ case class PartialAssignment(optVariables: List[OptionalVariable]):
           head match
             case OptionalVariable(name, None) =>
               if next.nonEmpty then
-                val assignments = PartialAssignment(next).toAssignments
+                val assignments = explodeAssignments(PartialAssignment(next))
                 assignments.flatMap { case Assignment(v) =>
                   Assignment(Variable(name, true) +: v) :: Assignment(Variable(name, false) +: v) :: Nil
                 }
               else Assignment(List(Variable(name, true))) :: Assignment(List(Variable(name, false))) :: Nil
             case v @ OptionalVariable(_, Some(_)) =>
               if next.nonEmpty then
-                PartialAssignment(next).toAssignments
+                explodeAssignments(PartialAssignment(next))
                   .map { case Assignment(variables) => Assignment(v.toVariable +: variables) }
               else List(Assignment(List(v.toVariable)))
         case Nil => Nil
