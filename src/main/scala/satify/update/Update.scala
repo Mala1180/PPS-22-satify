@@ -125,7 +125,7 @@ object Update:
       val lines = s.getLines.toSeq
       s.close()
       val cnf: CNF = parse(lines).getOrElse(Symbol("NO CNF"))
-      val input = cnf.printAsDSL()
+      val input = cnf.asDSL()
       State(input, cnf)
     safeUpdate(update)
 

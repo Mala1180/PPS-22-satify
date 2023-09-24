@@ -17,17 +17,17 @@ enum CNF:
 
 object CNF:
   extension (cnf: CNF)
-    def printAsDSL(flat: Boolean = false): String =
+    def asDSL(flat: Boolean = false): String =
       cnf match
         case Symbol(name) => name.toString
         case And(left, right) =>
-          if flat then s"${left.printAsDSL(flat)} and ${right.printAsDSL(flat)}"
-          else s"${left.printAsDSL(flat)} and\n${right.printAsDSL(flat)}"
-        case Or(left, right) => s"${left.printAsDSL(flat)} or ${right.printAsDSL(flat)}"
-        case Not(branch) => s"not(${branch.printAsDSL(flat)})"
+          if flat then s"${left.asDSL(flat)} and ${right.asDSL(flat)}"
+          else s"${left.asDSL(flat)} and\n${right.asDSL(flat)}"
+        case Or(left, right) => s"${left.asDSL(flat)} or ${right.asDSL(flat)}"
+        case Not(branch) => s"not(${branch.asDSL(flat)})"
 
-    def printAsFormal(flat: Boolean = false): String =
-      var r = printAsDSL(flat)
+    def asFormal(flat: Boolean = false): String =
+      var r = asDSL(flat)
         .replace("and", "∧")
         .replace("or", "∨")
         .replace("not", "¬")

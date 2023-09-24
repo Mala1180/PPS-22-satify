@@ -4,8 +4,6 @@ import satify.model.Assignment
 import satify.model.expression.Expression
 import satify.model.expression.Expression.And
 
-import scala.swing.Component
-
 /** Entity representing a SAT problem. */
 trait Problem:
 
