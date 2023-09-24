@@ -24,19 +24,29 @@ abstract types:
 
 ### Expression
 
+<p align=center>
+  <img src="img/exp/expression.svg" alt=" Model-View-Update detailed diagram" style="width: 35%">
+</p>
+
 Expression is represented through a simple _enumeration_ which contains all the possible types of expression:
 
 - **And**. It represents the logical And gate. Takes in input *left* and *right* parameters both of type Expression;
 - **Or**. It represents the logical Or gate. Like the And Expression, it takes a *left* and *right* Expressions in
   input;
 - **Not**. It's the logical Not gate. In this case it takes in input another Expression;
-- **Symbol**. It's the basic type of Expression, and can either represents a input variable by specifying its name or a
-  boolean constant by using a value of type **Bool**.
+- **Symbol**. It's the basic type of Expression. It represents an input variable and takes in input its name.
 
 Because of its recursive structure, Expression is a tree data structure, where the inner nodes are either
 **And**, **Or** or **Not**, and each leaf is a **Symbol**.
 
 ### CNF
+
+<p align=center>
+  <img src="img/cnf/cnf.svg" alt=" Model-View-Update detailed diagram" style="width: 35%">
+</p>
+
+
+CNF represents a formula in Conjunctive Normal Form. Also in this case an _enumeration_ has been used.
 
 CNF is a specific form of representing logical formulas as a *conjunction* of clauses, where each clause is a
 *disjunction*
@@ -49,8 +59,12 @@ CNF has been modeled a specific type of __Expression__ where:
 - The **Or** gate cannot contain an **And** in either its *left* and *right* parameter;
 - The **And** gate cannot contain an **And** in its *left* parameter;
 - The **Not** gate can contain only a **Symbol** parameter;
+- In this case, **Symbol** can either represents a input variable by specifying its name or a boolean constant by using a value of type **Bool**.
 
-An _enumeration_ has been used for this type of entity.
+### Solver
+
+
+
 
 ### Solution
 
