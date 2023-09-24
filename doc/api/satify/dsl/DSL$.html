@@ -1,0 +1,419 @@
+<html data-pathToRoot="../../"><head><meta charset="utf-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"></meta><title>DSL</title><link rel="shortcut icon" type="image/x-icon" href="../../favicon.ico"></link><script type="text/javascript" src="../../scripts/theme.js"></script><script type="text/javascript" src="../../scripts/searchData.js" defer="true"></script><script type="text/javascript" src="../../scripts/scastieConfiguration.js" defer="true"></script><link rel="stylesheet" href="../../styles/theme/bundle.css"></link><link rel="stylesheet" href="../../styles/theme/components/bundle.css"></link><link rel="stylesheet" href="../../styles/theme/components/button/bundle.css"></link><link rel="stylesheet" href="../../styles/theme/layout/bundle.css"></link><link rel="stylesheet" href="../../styles/nord-light.css"></link><link rel="stylesheet" href="../../styles/dotty-icons.css"></link><link rel="stylesheet" href="../../styles/filter-bar.css"></link><link rel="stylesheet" href="../../styles/code-snippets.css"></link><link rel="stylesheet" href="../../styles/searchbar.css"></link><link rel="stylesheet" href="../../styles/social-links.css"></link><link rel="stylesheet" href="../../styles/versions-dropdown.css"></link><link rel="stylesheet" href="../../styles/content-contributors.css"></link><link rel="stylesheet" href="../../styles/fontawesome.css"></link><script type="text/javascript" src="../../hljs/highlight.pack.js" defer="true"></script><script type="text/javascript" src="../../scripts/hljs-scala3.js" defer="true"></script><script type="text/javascript" src="../../scripts/ux.js" defer="true"></script><script type="text/javascript" src="../../scripts/common/component.js" defer="true"></script><script type="text/javascript" src="../../scripts/common/utils.js" defer="true"></script><script type="text/javascript" src="../../scripts/components/FilterBar.js" defer="true"></script><script type="text/javascript" src="../../scripts/components/DocumentableList.js" defer="true"></script><script type="text/javascript" src="../../scripts/components/Input.js" defer="true"></script><script type="text/javascript" src="../../scripts/components/FilterGroup.js" defer="true"></script><script type="text/javascript" src="../../scripts/components/Filter.js" defer="true"></script><script type="text/javascript" src="../../scripts/scaladoc-scalajs.js" defer="true"></script><script type="text/javascript" src="../../scripts/contributors.js" defer="true"></script><script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js" defer="true"></script><script type="text/javascript" src="https://d3js.org/d3.v6.min.js" defer="true"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/graphlib-dot@0.6.2/dist/graphlib-dot.min.js" defer="true"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dagre-d3/0.6.1/dagre-d3.min.js" defer="true"></script><script type="text/javascript" src="https://scastie.scala-lang.org/embedded.js" defer="true"></script><script type="text/javascript" src="../../scripts/data.js" defer="true"></script><link rel="stylesheet" href="../../styles/apistyles.css"></link><script>var pathToRoot = "../../";</script></head><body><div id=""><div id="header" class="body-small"><div class="header-container-left"><a href="../../" class="logo-container"><span class="project-name h300">satify</span></a><span onclick="dropdownHandler(event)" class="text-button with-arrow" id="dropdown-trigger"><a></a></span><div id="version-dropdown" class="dropdown-menu"></div></div><div class="header-container-right"><button id="search-toggle" class="icon-button"></button><span id="theme-toggle" class="icon-button"></span><span id="mobile-menu-toggle" class="icon-button hamburger"></span></div></div><div id="mobile-menu"><div class="mobile-menu-header body-small"><span class="mobile-menu-logo"><span class="project-name h300">satify</span></span><button id="mobile-menu-close" class="icon-button close"></button></div><div class="mobile-menu-container body-medium"><input id="mobile-scaladoc-searchbar-input" class="scaladoc-searchbar-input" type="search" placeholder="Find anything"></input><span id="mobile-theme-toggle" class="mobile-menu-item mode"></span></div></div><span id="mobile-sidebar-toggle" class="floating-button"></span><div id="leftColumn" class="body-small"><div class="switcher-container"><a id="api-nav-button" class="switcher h100 selected" href="../../index.html">API</a></div><nav id="api-nav" class="side-menu"><div class="ni n0 expanded"><span class="nh h100 expanded cs"><button class="ar icon-button expanded"></button><a href="../../satify.html"><span class="micon pa"></span><span>satify</span></a></span><div class="ni n1"><span class="nh "><button class="ar icon-button "></button><a href="../app.html"><span class="micon pa"></span><span>app</span></a></span><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../app/Architecture$.html"><span class="micon ob"></span><span>Architecture</span></a></span><div class="ni n3 "><span class="nh "><a href="../app/Architecture$$MVU.html"><span class="micon tr"></span><span>MVU</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../app/Architecture$$ModelComponent.html"><span class="micon tr"></span><span>ModelComponent</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../app/Architecture$$UpdateComponent.html"><span class="micon tr"></span><span>UpdateComponent</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../app/Architecture$$ViewComponent.html"><span class="micon tr"></span><span>ViewComponent</span></a></span></div></div><div class="ni n2 "><span class="nh "><a href="../app/Main$.html"><span class="micon ob"></span><span>Main</span></a></span></div></div><div class="ni n1 expanded"><span class="nh h100 expanded cs"><button class="ar icon-button expanded"></button><a href="../dsl.html"><span class="micon pa"></span><span>dsl</span></a></span><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="Conversions$.html"><span class="micon ob"></span><span>Conversions</span></a></span><div class="ni n3 "><span class="nh "><a href="Conversions$$given_Conversion_String_Symbol$.html"><span class="micon ob"></span><span>given_Conversion_String_Symbol</span></a></span></div><div class="ni n3 "><span class="nh "><a href="Conversions$$given_Conversion_Tuple_Seq$.html"><span class="micon ob"></span><span>given_Conversion_Tuple_Seq</span></a></span></div></div><div class="ni n2 expanded"><span class="nh h100 selected"><button class="ar icon-button expanded"></button><a href="#"><span class="micon ob"></span><span>DSL</span></a></span><div class="ni n3 "><span class="nh "><a href="DSL$$given_SymbolGenerator$.html"><span class="micon ob"></span><span>given_SymbolGenerator</span></a></span></div></div><div class="ni n2 "><span class="nh "><a href="Encodings$.html"><span class="micon ob"></span><span>Encodings</span></a></span></div><div class="ni n2 "><span class="nh "><a href="Numbers$.html"><span class="micon ob"></span><span>Numbers</span></a></span></div><div class="ni n2 "><span class="nh "><a href="Operators$.html"><span class="micon ob"></span><span>Operators</span></a></span></div><div class="ni n2 "><span class="nh "><a href="Reflection$.html"><span class="micon ob"></span><span>Reflection</span></a></span></div></div><div class="ni n1"><span class="nh "><button class="ar icon-button "></button><a href="../model.html"><span class="micon pa"></span><span>model</span></a></span><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../model/cnf.html"><span class="micon pa"></span><span>cnf</span></a></span><div class="ni n3 "><span class="nh "><a href="../model/cnf/Bool.html"><span class="micon en"></span><span>Bool</span></a></span></div><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../model/cnf/CNF.html"><span class="micon en"></span><span>CNF</span></a></span><div class="ni n4 "><span class="nh "><a href="../model/cnf/CNF$$Symbol.html"><span class="micon ca"></span><span>Symbol</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../model/cnf/CNF$$Not.html"><span class="micon ca"></span><span>Not</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../model/cnf/CNF$$And.html"><span class="micon ca"></span><span>And</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../model/cnf/CNF$$Or.html"><span class="micon ca"></span><span>Or</span></a></span></div></div><div class="ni n3 "><span class="nh "><a href="../model/cnf/CNF$.html"><span class="micon ob"></span><span>CNF</span></a></span></div></div><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../model/errors.html"><span class="micon pa"></span><span>errors</span></a></span><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../model/errors/Error.html"><span class="micon en"></span><span>Error</span></a></span><div class="ni n4 "><span class="nh "><a href="../model/errors/Error$$InvalidInput.html"><span class="micon ca"></span><span>InvalidInput</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../model/errors/Error$$InvalidImport.html"><span class="micon ca"></span><span>InvalidImport</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../model/errors/Error$$InvalidExport.html"><span class="micon ca"></span><span>InvalidExport</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../model/errors/Error$$EmptySolution.html"><span class="micon ca"></span><span>EmptySolution</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../model/errors/Error$$NoPreviousSolution.html"><span class="micon ca"></span><span>NoPreviousSolution</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../model/errors/Error$$Unknown.html"><span class="micon ca"></span><span>Unknown</span></a></span></div></div></div><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../model/expression.html"><span class="micon pa"></span><span>expression</span></a></span><div class="ni n3 "><span class="nh "><a href="../model/expression/Encodings$.html"><span class="micon ob"></span><span>Encodings</span></a></span></div><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../model/expression/Expression.html"><span class="micon en"></span><span>Expression</span></a></span><div class="ni n4 "><span class="nh "><a href="../model/expression/Expression$$Symbol.html"><span class="micon ca"></span><span>Symbol</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../model/expression/Expression$$Not.html"><span class="micon ca"></span><span>Not</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../model/expression/Expression$$And.html"><span class="micon ca"></span><span>And</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../model/expression/Expression$$Or.html"><span class="micon ca"></span><span>Or</span></a></span></div></div><div class="ni n3 "><span class="nh "><a href="../model/expression/Expression$.html"><span class="micon ob"></span><span>Expression</span></a></span></div><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../model/expression/SymbolGeneration$.html"><span class="micon ob"></span><span>SymbolGeneration</span></a></span><div class="ni n4 "><span class="nh "><a href="../model/expression/SymbolGeneration$$ErasableSymbolGenerator.html"><span class="micon tr"></span><span>ErasableSymbolGenerator</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../model/expression/SymbolGeneration$$SymbolGenerator.html"><span class="micon tr"></span><span>SymbolGenerator</span></a></span></div></div><div class="ni n3 "><span class="nh "><a href="../model/expression/Utils$.html"><span class="micon ob"></span><span>Utils</span></a></span></div></div><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../model/problems.html"><span class="micon pa"></span><span>problems</span></a></span><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../model/problems/GraphColoring.html"><span class="micon cl"></span><span>GraphColoring</span></a></span><div class="ni n4 "><span class="nh "><a href="../model/problems/GraphColoring$given_SymbolGenerator$.html"><span class="micon ob"></span><span>given_SymbolGenerator</span></a></span></div></div><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../model/problems/NQueens.html"><span class="micon cl"></span><span>NQueens</span></a></span><div class="ni n4 "><span class="nh "><a href="../model/problems/NQueens$given_SymbolGenerator$.html"><span class="micon ob"></span><span>given_SymbolGenerator</span></a></span></div></div><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../model/problems/NurseScheduling.html"><span class="micon cl"></span><span>NurseScheduling</span></a></span><div class="ni n4 "><span class="nh "><a href="../model/problems/NurseScheduling$given_SymbolGenerator$.html"><span class="micon ob"></span><span>given_SymbolGenerator</span></a></span></div></div><div class="ni n3 "><span class="nh "><a href="../model/problems/Problem.html"><span class="micon tr"></span><span>Problem</span></a></span></div></div><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../model/solver.html"><span class="micon pa"></span><span>solver</span></a></span><div class="ni n3 "><span class="nh "><a href="../model/solver/Constraint.html"><span class="micon cl"></span><span>Constraint</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../model/solver/Decision.html"><span class="micon cl"></span><span>Decision</span></a></span></div><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../model/solver/DecisionTree.html"><span class="micon en"></span><span>DecisionTree</span></a></span><div class="ni n4 "><span class="nh "><a href="../model/solver/DecisionTree$$Leaf.html"><span class="micon ca"></span><span>Leaf</span></a></span></div><div class="ni n4 "><span class="nh "><a href="../model/solver/DecisionTree$$Branch.html"><span class="micon ca"></span><span>Branch</span></a></span></div></div><div class="ni n3 "><span class="nh "><a href="../model/solver/OptionalVariable.html"><span class="micon cl"></span><span>OptionalVariable</span></a></span></div><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../model/solver/OrderedList$.html"><span class="micon ob"></span><span>OrderedList</span></a></span><div class="ni n4 "><span class="nh "><a href="../model/solver/OrderedList$$given_Ordering_OptionalVariable$.html"><span class="micon ob"></span><span>given_Ordering_OptionalVariable</span></a></span></div></div><div class="ni n3 "><span class="nh "><a href="../model/solver/PartialAssignment.html"><span class="micon cl"></span><span>PartialAssignment</span></a></span></div></div><div class="ni n2 "><span class="nh "><a href="../model/Assignment.html"><span class="micon cl"></span><span>Assignment</span></a></span></div><div class="ni n2 "><span class="nh "><a href="../model/Result.html"><span class="micon en"></span><span>Result</span></a></span></div><div class="ni n2 "><span class="nh "><a href="../model/Solution.html"><span class="micon cl"></span><span>Solution</span></a></span></div><div class="ni n2 "><span class="nh "><a href="../model/Solution$.html"><span class="micon ob"></span><span>Solution</span></a></span></div><div class="ni n2 "><span class="nh "><a href="../model/State.html"><span class="micon tr"></span><span>State</span></a></span></div><div class="ni n2 "><span class="nh "><a href="../model/State$.html"><span class="micon ob"></span><span>State</span></a></span></div><div class="ni n2 "><span class="nh "><a href="../model/Status.html"><span class="micon en"></span><span>Status</span></a></span></div><div class="ni n2 "><span class="nh "><a href="../model/Variable.html"><span class="micon cl"></span><span>Variable</span></a></span></div></div><div class="ni n1"><span class="nh "><button class="ar icon-button "></button><a href="../update.html"><span class="micon pa"></span><span>update</span></a></span><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../update/converters.html"><span class="micon pa"></span><span>converters</span></a></span><div class="ni n3 "><span class="nh "><a href="../update/converters/Converter.html"><span class="micon tr"></span><span>Converter</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../update/converters/Converter$.html"><span class="micon ob"></span><span>Converter</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../update/converters/ConverterMemoization$.html"><span class="micon ob"></span><span>ConverterMemoization</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../update/converters/ConverterType.html"><span class="micon en"></span><span>ConverterType</span></a></span></div></div><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../update/parser.html"><span class="micon pa"></span><span>parser</span></a></span><div class="ni n3 "><span class="nh "><a href="../update/parser/DimacsParser$.html"><span class="micon ob"></span><span>DimacsParser</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../update/parser/Parser.html"><span class="micon tr"></span><span>Parser</span></a></span></div></div><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../update/solver.html"><span class="micon pa"></span><span>solver</span></a></span><div class="ni n3"><span class="nh "><button class="ar icon-button "></button><a href="../update/solver/dpll/utils.html"><span class="micon pa"></span><span>dpll.utils</span></a></span><div class="ni n4 "><span class="nh "><a href="../update/solver/dpll/utils/PartialAssignmentUtils$.html"><span class="micon ob"></span><span>PartialAssignmentUtils</span></a></span></div></div><div class="ni n3 "><span class="nh "><a href="../update/solver/Solver.html"><span class="micon tr"></span><span>Solver</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../update/solver/Solver$.html"><span class="micon ob"></span><span>Solver</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../update/solver/SolverMemoization$.html"><span class="micon ob"></span><span>SolverMemoization</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../update/solver/SolverType.html"><span class="micon en"></span><span>SolverType</span></a></span></div></div><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../update/Message.html"><span class="micon en"></span><span>Message</span></a></span><div class="ni n3 "><span class="nh "><a href="../update/Message$$SolveAll.html"><span class="micon ca"></span><span>SolveAll</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../update/Message$$Solve.html"><span class="micon ca"></span><span>Solve</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../update/Message$$NextSolution.html"><span class="micon ca"></span><span>NextSolution</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../update/Message$$SolveProblem.html"><span class="micon ca"></span><span>SolveProblem</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../update/Message$$Convert.html"><span class="micon ca"></span><span>Convert</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../update/Message$$ConvertProblem.html"><span class="micon ca"></span><span>ConvertProblem</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../update/Message$$Import.html"><span class="micon ca"></span><span>Import</span></a></span></div></div><div class="ni n2 "><span class="nh "><a href="../update/Update$.html"><span class="micon ob"></span><span>Update</span></a></span></div><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../update/Utils$.html"><span class="micon ob"></span><span>Utils</span></a></span><div class="ni n3 "><span class="nh "><a href="../update/Utils$$Chronometer$.html"><span class="micon ob"></span><span>Chronometer</span></a></span></div></div></div><div class="ni n1"><span class="nh "><button class="ar icon-button "></button><a href="../view.html"><span class="micon pa"></span><span>view</span></a></span><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../view/components.html"><span class="micon pa"></span><span>components</span></a></span><div class="ni n3 "><span class="nh "><a href="../view/components/Components$.html"><span class="micon ob"></span><span>Components</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../view/components/Listeners$.html"><span class="micon ob"></span><span>Listeners</span></a></span></div></div><div class="ni n2"><span class="nh "><button class="ar icon-button "></button><a href="../view/utils.html"><span class="micon pa"></span><span>utils</span></a></span><div class="ni n3 "><span class="nh "><a href="../view/utils/ComponentUtils$.html"><span class="micon ob"></span><span>ComponentUtils</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../view/utils/Constants$.html"><span class="micon ob"></span><span>Constants</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../view/utils/Placeholders.html"><span class="micon en"></span><span>Placeholders</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../view/utils/ProblemTitle.html"><span class="micon en"></span><span>ProblemTitle</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../view/utils/TextPaneUtils$.html"><span class="micon ob"></span><span>TextPaneUtils</span></a></span></div><div class="ni n3 "><span class="nh "><a href="../view/utils/Title.html"><span class="micon en"></span><span>Title</span></a></span></div></div><div class="ni n2 "><span class="nh "><a href="../view/Reactions$.html"><span class="micon ob"></span><span>Reactions</span></a></span></div><div class="ni n2 "><span class="nh "><a href="../view/View$.html"><span class="micon ob"></span><span>View</span></a></span></div></div></div></nav></div><div id="footer" class="body-small"><div class="left-container">Generated with</div><div class="right-container"><div class="text"></div></div><div class="text-mobile"></div></div><div id="scaladoc-searchBar"></div><div id="main"><div class="breadcrumbs container"><a href="../../index.html">satify</a>/<a href="../../satify.html">satify</a>/<a href="../dsl.html">satify.dsl</a>/<a href="DSL$.html">DSL</a></div><div id="content" class="body-medium"><div><div class="cover-header">
+ <span class="icon"><span class="micon ob"></span></span>
+ <h1 class="h600 single">DSL</h1>
+</div>
+<div class="fqname body-large">
+ <span>satify.dsl.DSL$</span>
+</div>
+<div class="main-signature mono-small-block">
+ <div class="signature">
+  <span class="modifiers"></span><span class="kind"><span t="k">object </span></span><a href="DSL$.html" t="n" class="documentableName ">DSL</a>
+ </div>
+</div>
+<div class="cover">
+ <div class="doc"></div>
+ <section id="attributes">
+  <h2 class="h500">Attributes</h2>
+  <dl class="attributes">
+   <dt class="body-small">
+    Graph
+   </dt>
+   <dd class="body-medium">
+    <div id="inheritance-diagram" class="diagram-class showGraph">
+     <button type="button" class="label-only-button" onclick="zoomOut()">Reset zoom</button><button type="button" class="label-only-button" onclick="hideGraph()">Hide graph</button><button type="button" class="label-only-button" onclick="showGraph()">Show graph</button>
+     <svg id="graph"></svg>
+     <script type="text/dot" id="dot"> digraph g {
+ node0 [id=node0, label="<span style=\"color: #FFFFFF;\">object <a href=\"DSL$.html\" t=\"n\">DSL</a>.type</span>", class="object vertex"];
+node1 [id=node1, label="<span style=\"color: #FFFFFF;\">class <span data-unresolved-link=\"\" t=\"n\">Object</span></span>", class="class vertex"];
+node2 [id=node2, label="<span style=\"color: #FFFFFF;\">class <span data-unresolved-link=\"\" t=\"n\">Any</span></span>", class="class vertex"];
+node3 [id=node3, label="<span style=\"color: #FFFFFF;\">trait <span data-unresolved-link=\"\" t=\"n\">Matchable</span></span>", class="trait vertex"];
+
+
+ node0 -> node1;
+node1 -> node2;
+node1 -> node3;
+node3 -> node2;
+
+}
+</script>
+    </div>
+   </dd>
+   <dt class="body-small">
+    Supertypes
+   </dt>
+   <dd class="body-medium">
+    <div class="mono-small-block supertypes">
+     <div>
+      class <span data-unresolved-link="" t="n">Object</span>
+     </div>
+     <div>
+      trait <span data-unresolved-link="" t="n">Matchable</span>
+     </div>
+     <div>
+      class <span data-unresolved-link="" t="n">Any</span>
+     </div><span></span>
+    </div>
+   </dd>
+   <dt class="body-small">
+    Self type
+   </dt>
+   <dd class="body-medium">
+    <div class="mono-small-block supertypes">
+     <span></span>
+     <div>
+      <a href="DSL$.html" t="n">DSL</a>.type
+     </div>
+    </div>
+   </dd>
+  </dl>
+ </section>
+</div>
+<section id="members-list">
+ <h2 class="h500">Members list</h2>
+ <div class="documentableFilter">
+  <div class="filtersContainer"></div>
+  <input class="filterableInput" placeholder="Filter by any phrase" data-test-id="filterBarInput" type="search"><button class="clearButton label-only-button" data-test-id="filterBarClearButton">Clear all</button>
+ </div>
+ <div class="membersList expand">
+  <div class="tabs">
+   <div class="contents">
+    <section id="Type-members">
+     <div data-togglable="Type members" class="tab expand">
+      <div class="member-group-header">
+       <h3 data-togglable="Type members" class="h400">Type members</h3>
+      </div>
+      <section id="Classlikes">
+       <div class="documentableList expand">
+        <div class="documentableList-expander">
+         <button class="icon-button show-content expand"></button>
+         <h4 class="groupHeader h200">Classlikes</h4>
+        </div>
+        <div class="documentableElement">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="signature-short"><span class="modifiers"></span><span class="kind"><span t="k">object </span></span><a href="DSL$$given_SymbolGenerator$.html" t="n" class="documentableName ">given_SymbolGenerator</a><span t="k"> extends </span><a href="../model/expression/SymbolGeneration$$SymbolGenerator.html" t="t">SymbolGenerator</a></span><span class="signature-long"></span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo"></div>
+           <div class="memberDocumentation">
+            <div class="cover">
+             <div class="doc"></div>
+             <h2 class="h200">Attributes</h2>
+             <dl class="attributes attributes-small">
+              <dt class="body-small">
+               Supertypes
+              </dt>
+              <dd class="body-medium">
+               <div class="mono-small-block supertypes">
+                <div>
+                 trait <a href="../model/expression/SymbolGeneration$$SymbolGenerator.html" t="n">SymbolGenerator</a>
+                </div>
+                <div>
+                 class <span data-unresolved-link="" t="n">Object</span>
+                </div>
+                <div>
+                 trait <span data-unresolved-link="" t="n">Matchable</span>
+                </div>
+                <div>
+                 class <span data-unresolved-link="" t="n">Any</span>
+                </div><span></span>
+               </div>
+              </dd>
+              <dt class="body-small">
+               Self type
+              </dt>
+              <dd class="body-medium">
+               <div class="mono-small-block supertypes">
+                <span></span>
+                <div>
+                 <a href="DSL$$given_SymbolGenerator$.html" t="n">given_SymbolGenerator</a>.type
+                </div>
+               </div>
+              </dd>
+             </dl>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </section>
+     </div>
+    </section>
+    <section id="Givens">
+     <div data-togglable="Givens" class="tab expand">
+      <div class="member-group-header">
+       <h3 data-togglable="Givens" class="h400">Givens</h3>
+      </div>
+      <section id="Givens">
+       <div class="documentableList expand">
+        <div class="documentableList-expander">
+         <button class="icon-button show-content expand"></button>
+         <h4 class="groupHeader h200">Givens</h4>
+        </div>
+        <div class="documentableElement" id="given_SymbolGenerator-0">
+         <div class="documentableElement-expander">
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">given </span></span><a href="DSL$.html#given_SymbolGenerator-0" t="n" class="documentableName ">given_SymbolGenerator</a>: <a href="DSL$$given_SymbolGenerator$.html" t="t">given_SymbolGenerator</a>.type
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </section>
+     </div>
+    </section>
+    <section id="Exports">
+     <div data-togglable="Exports" class="tab expand">
+      <div class="member-group-header">
+       <h3 data-togglable="Exports" class="h400">Exports</h3>
+      </div>
+      <section id="Defined-exports">
+       <div class="documentableList expand">
+        <div class="documentableList-expander">
+         <button class="icon-button show-content expand"></button>
+         <h4 class="groupHeader h200">Defined exports</h4>
+        </div>
+        <div class="documentableElement" id="eight-0" data-f-export="from Numbers}">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">val </span></span><a href="DSL$.html#eight-0" t="n" class="documentableName ">eight</a>: <span data-unresolved-link="" t="t">Int</span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo">
+            Exported from <a href="Numbers$.html">Numbers</a>
+           </div>
+           <div class="memberDocumentation"></div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement" id="five-0" data-f-export="from Numbers}">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">val </span></span><a href="DSL$.html#five-0" t="n" class="documentableName ">five</a>: <span data-unresolved-link="" t="t">Int</span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo">
+            Exported from <a href="Numbers$.html">Numbers</a>
+           </div>
+           <div class="memberDocumentation"></div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement" id="four-0" data-f-export="from Numbers}">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">val </span></span><a href="DSL$.html#four-0" t="n" class="documentableName ">four</a>: <span data-unresolved-link="" t="t">Int</span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo">
+            Exported from <a href="Numbers$.html">Numbers</a>
+           </div>
+           <div class="memberDocumentation"></div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement" id="given_Conversion_String_Symbol-0" data-f-export="from Conversions}" data-f-keywords="final">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"><span t="k">final </span></span><span class="kind"><span t="k">val </span></span><a href="DSL$.html#given_Conversion_String_Symbol-0" t="n" class="documentableName ">given_Conversion_String_Symbol</a>: <a href="Conversions$$given_Conversion_String_Symbol$.html" t="t">given_Conversion_String_Symbol</a>.type
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo">
+            Exported from <a href="Conversions$.html">Conversions</a>
+           </div>
+           <div class="memberDocumentation"></div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement" id="given_Conversion_Tuple_Seq-0" data-f-export="from Conversions}" data-f-keywords="final">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"><span t="k">final </span></span><span class="kind"><span t="k">val </span></span><a href="DSL$.html#given_Conversion_Tuple_Seq-0" t="n" class="documentableName ">given_Conversion_Tuple_Seq</a>: <a href="Conversions$$given_Conversion_Tuple_Seq$.html" t="t">given_Conversion_Tuple_Seq</a>.type
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo">
+            Exported from <a href="Conversions$.html">Conversions</a>
+           </div>
+           <div class="memberDocumentation"></div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement" id="nine-0" data-f-export="from Numbers}">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">val </span></span><a href="DSL$.html#nine-0" t="n" class="documentableName ">nine</a>: <span data-unresolved-link="" t="t">Int</span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo">
+            Exported from <a href="Numbers$.html">Numbers</a>
+           </div>
+           <div class="memberDocumentation"></div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement" id="one-0" data-f-export="from Numbers}">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">val </span></span><a href="DSL$.html#one-0" t="n" class="documentableName ">one</a>: <span data-unresolved-link="" t="t">Int</span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo">
+            Exported from <a href="Numbers$.html">Numbers</a>
+           </div>
+           <div class="memberDocumentation"></div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement" id="seven-0" data-f-export="from Numbers}">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">val </span></span><a href="DSL$.html#seven-0" t="n" class="documentableName ">seven</a>: <span data-unresolved-link="" t="t">Int</span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo">
+            Exported from <a href="Numbers$.html">Numbers</a>
+           </div>
+           <div class="memberDocumentation"></div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement" id="six-0" data-f-export="from Numbers}">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">val </span></span><a href="DSL$.html#six-0" t="n" class="documentableName ">six</a>: <span data-unresolved-link="" t="t">Int</span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo">
+            Exported from <a href="Numbers$.html">Numbers</a>
+           </div>
+           <div class="memberDocumentation"></div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement" id="ten-0" data-f-export="from Numbers}">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">val </span></span><a href="DSL$.html#ten-0" t="n" class="documentableName ">ten</a>: <span data-unresolved-link="" t="t">Int</span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo">
+            Exported from <a href="Numbers$.html">Numbers</a>
+           </div>
+           <div class="memberDocumentation"></div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement" id="three-0" data-f-export="from Numbers}">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">val </span></span><a href="DSL$.html#three-0" t="n" class="documentableName ">three</a>: <span data-unresolved-link="" t="t">Int</span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo">
+            Exported from <a href="Numbers$.html">Numbers</a>
+           </div>
+           <div class="memberDocumentation"></div>
+          </div>
+         </div>
+        </div>
+        <div class="documentableElement" id="two-0" data-f-export="from Numbers}">
+         <div class="documentableElement-expander">
+          <button class="icon-button ar show-content"></button>
+          <div class="header monospace mono-medium">
+           <div class="signature">
+            <span class="modifiers"></span><span class="kind"><span t="k">val </span></span><a href="DSL$.html#two-0" t="n" class="documentableName ">two</a>: <span data-unresolved-link="" t="t">Int</span>
+           </div>
+          </div>
+         </div>
+         <div class="docs">
+          <span class="modifiers"></span>
+          <div>
+           <div class="originInfo">
+            Exported from <a href="Numbers$.html">Numbers</a>
+           </div>
+           <div class="memberDocumentation"></div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </section>
+     </div>
+    </section>
+   </div>
+  </div>
+ </div>
+</section></div><div id="toc" class="body-small"><div id="toc-container"><span class="toc-title h200">In this article</span><nav class="toc-nav"><ul class="toc-list"><li><a href="#attributes">Attributes</a></li><li><a href="#members-list">Members list</a><ul><li><a href="#Type-members">Type members</a><ul><li><a href="#Classlikes">Classlikes</a></li></ul></li><li><a href="#Givens">Givens</a><ul><li><a href="#Givens">Givens</a></li></ul></li><li><a href="#Exports">Exports</a><ul><li><a href="#Defined-exports">Defined exports</a></li></ul></li></ul></li></ul></nav></div></div></div><div id="footer" class="body-small mobile-footer"><div class="left-container">Generated with</div><div class="right-container"><a href="https://github.com/lampepfl/dotty"><button class="icon-button gh"></button></a><a href="https://twitter.com/scala_lang"><button class="icon-button twitter"></button></a><a href="https://discord.com/invite/scala"><button class="icon-button discord"></button></a><a href="https://gitter.im/scala/scala"><button class="icon-button gitter"></button></a><div class="text"></div></div><div class="text-mobile"></div></div></div></div></body></html>
