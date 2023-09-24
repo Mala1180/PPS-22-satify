@@ -115,10 +115,8 @@ A problem is represented by a set of constraints which, composed together, form 
     2. The system has to be user-friendly, providing few and intuitive buttons, help section and flexible input.
     3. The system has to be easily extensible with other algorithms for conversion and solving.
     4. The system has to be secure, avoiding any kind of code injection through the input.
-    5. The system performs efficiently, completing satisfiability checks for various problem instances within acceptable
-       time limits and depending on the instance dimension.
-    6. // TODO: look at req number 5, i think it's ok if linked to scalameter tests (time and memory)
-    7. // TODO: performance requirements and tests
+    5. The system has to perform efficiently, completing satisfiability checks within acceptable
+       time limits and depending on the instance dimension conforming to the benchmarks.
 
 4. ## Implementation requirements
     1. The system must be implemented in Scala 3, using SBT as automation build tool and JDK 17.
@@ -144,7 +142,7 @@ A problem is represented by a set of constraints which, composed together, form 
 |    [2.iii](#system-requirements)     |                                                                              [TseitinTest.scala](../../src/test/scala/satify/update/converters/tseitin/TseitinTest.scala)                                                                               |
 |     [2.iv](#system-requirements)     |                         [DpllEnumerator.scala](../../src/test/scala/satify/update/solver/dpll/impl/DpllEnumeratorTest.scala) <br/> [DpllFinder.scala](../../src/test/scala/satify/update/solver/dpll/impl/DpllFinderTest.scala)                         |                                                                                                 |                                                                                                                       |
 |     [2.ix](#system-requirements)     |                                                                                                [problems package](../../src/test/scala/satify/problems)                                                                                                 |
-| [3.v](#non-functional-requirements)  |                                                                                              [DSL.feature](../../src/test/resources/features/DSL.feature)                                                                                               |
+| [3.iv](#non-functional-requirements) |                                                                                              [DSL.feature](../../src/test/resources/features/DSL.feature)                                                                                               |
 | [3.v](#non-functional-requirements)  |                                        [Tseitin Benchmarks](../../src/test/scala/satify/update/converters/tseitin/benchmark) <br/>  [DPLL Benchmarks](../../src/test/scala/satify/update/solver/dpll/benchmark)                                         |
 
 [Previous](1-methodology.md) | [Next](3-architectural-design.md)
