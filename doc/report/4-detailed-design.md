@@ -14,7 +14,7 @@ Some _trait_ has been designed to represent the components of the MVU pattern, w
 _abstract type members_ related to Model, View and Update.
 
 <p align=center>
-  <img src="../diagrams/mvu/mvu-detailed.svg" alt=" Model-View-Update detailed diagram">
+  <img src="../diagrams/mvu/mvu-detailed.svg" alt=" Model-View-Update detailed diagram" style="width: 80%">
 </p>
 
 ## Model
@@ -36,25 +36,6 @@ Expression is represented through a simple _enumeration_ which contains all the 
 Because of its recursive structure, Expression is a tree data structure, where the inner nodes are either
 **And**, **Or** or **Not**, and each leaf is a **Symbol**.
 
-### Problem
-
-<p align="center">
-<img src="img/problem/problem.svg" alt="Problem design">
-
-</p>
-
-
-The general Problem representation has been designed with a _trait_ **Problem**.
-It is composed by:
-
-- A set of constraints that must be all satisfied in the solution.
-- An expression, which is the reduction of the constraints through an And gate.
-
-Each problem extends **Problem** using a __case class__, and adds the constraints needed to represent the specific
-problem.
-
-### Solution
-
 ### CNF
 
 CNF is a specific form of representing logical formulas as a *conjunction* of clauses, where each clause is a
@@ -70,6 +51,28 @@ CNF has been modeled a specific type of __Expression__ where:
 - The **Not** gate can contain only a **Symbol** parameter;
 
 An _enumeration_ has been used for this type of entity.
+
+### Solution
+
+
+
+
+### Problem
+
+<p align="center">
+<img src="img/problem/problem.svg" alt="Problem design" style="width: 80%">
+</p>
+
+
+The general Problem representation has been designed with a _trait_ **Problem**.
+It is composed by:
+
+- A set of constraints that must be all satisfied in the solution.
+- An expression, which is the reduction of the constraints through an And gate.
+
+Each problem extends **Problem** using a __case class__, and adds the constraints needed to represent the specific
+problem.
+
 
 ---
 
@@ -97,7 +100,7 @@ the needed part of the UI.
 ### Converter
 
 <p align="center">
-<img src="img/converter/converter.svg" alt="Converter design">
+<img src="img/converter/converter.svg" alt="Converter design" style="width: 80%">
 </p>
 
 Converter is a _trait_ containing the method convert that will be implemented by each converter.
@@ -153,7 +156,7 @@ the original logical formula efficiently.
 ### Solver
 
 <p align="center">
-<img src="img/solver/solver.svg" alt="Solver design">
+<img src="img/solver/solver.svg" alt="Solver design" style="width: 80%">
 </p>
 
 Solver is a _trait_ containing the methods useful to solve SAT problem encoded in CNF form.
