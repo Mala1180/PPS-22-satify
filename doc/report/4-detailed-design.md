@@ -70,6 +70,7 @@ It is composed of:
 - **Decision**. A decision represents a constraint that has been applied to an input variable. In turn, it contains:
     - A **PartialAssignment**, which is the current state of constraints applied to the variables. The decision is implicitly defined in this field. PartialAssignment is a list of **OptionalVariable**, e.g. a variable which could be either be constrained or not.
     - A **CNF**. It's the input CNF updated with the current set of constraints defined in **PartialAssignment**.
+- **Constraint**. It consists of the name of the variable, and the boolean constraint. It is an utility which could be useful during the solve.
 
 <p align=center>
   <img src="img/solver/solver_design.svg" alt=" Model-View-Update detailed diagram" style="width: 80%">
@@ -80,6 +81,9 @@ Given these ingredients, a SAT solver implementation can build its own specific 
 
 ### Solution
 
+<p align="center">
+<img src="img/solution.svg" alt="Solution design" style="width: 70%">
+</p>
 
 
 
