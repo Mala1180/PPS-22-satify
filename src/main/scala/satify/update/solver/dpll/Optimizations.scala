@@ -26,20 +26,18 @@ private[dpll] object Optimizations:
     */
   def unitLiteralIdentification(cnf: CNF): Option[Constraint] =
 
-    val f: (CNF, Option[Constraint]) => Option[Constraint] =
-      (cnf, d) =>
-        cnf match
-          case Symbol(name: String) => Some(Constraint(name, true))
-          case Not(Symbol(name: String)) => Some(Constraint(name, false))
-          case _ => d
+    @tailrec
+    def loop(cnfList: List[CNF], result: Option[Constraint] = None): Option[Constraint] =
+      cnfList match
+        case Nil => result
+        case And(left, right) :: tail => loop(left :: right :: tail, None)
+        case head :: tail =>
+          head match
+            case Symbol(name: String) => Some(Constraint(name, true))
+            case Not(Symbol(name: String)) => Some(Constraint(name, false))
+            case _ => loop(tail, None)
 
-    f(
-      cnf,
-      cnf match
-        case And(left, right) => f(left, f(right, unitLiteralIdentification(right)))
-        case Or(_, _) => None
-        case _ => None
-    )
+    loop(cnf :: Nil)
 
   /** Identify a pure literal.
     * @param dec previous decision
@@ -51,36 +49,36 @@ private[dpll] object Optimizations:
 
     /** Get the literal type, if it is present inside the given CNF.
       * @param name of the symbol.
-      * @param cnf where to search.
+      * @param cnfList where to search.
       * @return a filled Option with the literal type if it is present, an empty one otherwise.
       */
-    def getLiteralType(name: String, cnf: CNF): Option[LitType] =
-
-      val recursiveStep: (String, CNF, CNF) => Option[LitType] = (n, left, right) =>
-        getLiteralType(n, left) match
-          case Some(Pure(cLeft)) =>
-            getLiteralType(n, right) match
-              case Some(Pure(cRight)) if cLeft == cRight => Some(Pure(cLeft))
-              case None => Some(Pure(cLeft))
-              case _ => Some(Impure)
-          case None => getLiteralType(n, right)
-          case impure @ _ => impure
-
-      cnf match
-        case Symbol(n: String) if name == n => Some(Pure(Constraint(n, true)))
-        case Not(Symbol(n: String)) if name == n => Some(Pure(Constraint(n, false)))
-        case And(left, right) => recursiveStep(name, left, right)
-        case Or(left, right) => recursiveStep(name, left, right)
-        case _ => None
+    @tailrec
+    def getLiteralType(name: String, cnfList: List[CNF], result: Option[LitType] = None): Option[LitType] =
+      cnfList match
+        case ::(head, tail) =>
+          head match
+            case Symbol(n: String) if name == n =>
+              result match
+                case Some(Pure(Constraint(_, false))) => Some(Impure)
+                case _ => getLiteralType(n, tail, Some(Pure(Constraint(n, true))))
+            case Not(Symbol(n: String)) if name == n =>
+              result match
+                case Some(Pure(Constraint(_, true))) => Some(Impure)
+                case _ => getLiteralType(n, tail, Some(Pure(Constraint(n, false))))
+            case And(left, right) => getLiteralType(name, left :: right :: tail, result)
+            case Or(left, right) => getLiteralType(name, left :: right :: tail, result)
+            case _ => getLiteralType(name, tail, result)
+        case Nil => result
 
     dec match
       case Decision(PartialAssignment(optVariables), cnf) =>
         optVariables match
-          case ::(head, next) =>
+          case ::(head, tail) =>
             head match
               case OptionalVariable(name, None) =>
-                getLiteralType(name, cnf) match
+                getLiteralType(name, cnf :: Nil) match
                   case Some(Pure(c)) => Some(c)
-                  case _ => pureLiteralIdentification(Decision(PartialAssignment(next), cnf))
-              case OptionalVariable(_, _) => pureLiteralIdentification(Decision(PartialAssignment(next), cnf))
+                  case _ => pureLiteralIdentification(Decision(PartialAssignment(tail), cnf))
+              case OptionalVariable(_, _) =>
+                pureLiteralIdentification(Decision(PartialAssignment(tail), cnf))
           case Nil => None

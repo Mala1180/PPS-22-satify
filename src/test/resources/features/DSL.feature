@@ -19,3 +19,8 @@ Feature: Inserting expression through DSL
     Given the input "and or not"
     When it is reflected to scala compiler
     Then I should obtain an IllegalArgumentException
+
+  Scenario: I cannot make code injection
+    Given the input "a and b; println(\"hello\")"
+    When it is reflected to scala compiler
+    Then I should obtain an IllegalArgumentException

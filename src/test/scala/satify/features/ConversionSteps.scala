@@ -20,5 +20,5 @@ object ConversionSteps extends ScalaDsl with EN:
   }
 
   Then("I should obtain the CNF {string}") { (expected: String) =>
-    cnf.get.printAsDSL(true) shouldBe expected
+    cnf.get.asDSL(true) shouldBe expected
   }

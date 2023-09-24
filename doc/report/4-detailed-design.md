@@ -1,9 +1,12 @@
 # Detailed Design
 
 ---
+
 ## Code organization
 
-
+<p align=center>
+  <img src="img/packages.svg" alt="packages diagram">
+</p>
 
 ## Architecture
 
@@ -11,30 +14,30 @@ As described in the previous section, the architectural pattern used is the **Mo
 Moreover, the **Cake Pattern** has been introduced to improve the modeling of the dependencies.
 
 Some _trait_ has been designed to represent the components of the MVU pattern, which encapsulate within them some
-_abstract type members_ related to Model, View and Update.
+_abstract type members_ related to `Model`, `View` and `Update`.
 
 <p align=center>
-  <img src="../diagrams/mvu/mvu-detailed.svg" alt=" Model-View-Update detailed diagram" style="width: 80%">
+  <img src="img/mvu-detailed.svg" alt=" Model-View-Update detailed diagram" style="width: 60%">
 </p>
 
 ## Model
 
-Concretely, the **Model** will be a private implementation of the _trait_ **State**, which contains the following
+Concretely, the **Model** is an implementation of the _trait_ **State**, which contains the following
 abstract types:
 
 ### Expression
 
 <p align=center>
-  <img src="img/exp/exp.svg" alt=" Model-View-Update detailed diagram" style="width: 80%">
+  <img src="img/exp/exp.svg" alt=" Model-View-Update detailed diagram" style="width: 70%">
 </p>
 
-Expression is represented through a simple _enumeration_ which contains all the possible types of expression:
+Expression is represented through a _sum type_ which contains all the possible types of expression:
 
-- **And**. It represents the logical And gate. Takes in input *left* and *right* parameters both of type Expression;
-- **Or**. It represents the logical Or gate. Like the And Expression, it takes a *left* and *right* Expressions in
-  input;
-- **Not**. It's the logical Not gate. In this case it takes in input another Expression;
-- **Symbol**. It's the basic type of Expression. It represents an input variable and takes in input its name.
+- `And`, it represents the logical And gate. It takes in input **left** and **right** parameters both of
+  type `Expression`.
+- **Or**, it represents the logical Or gate. Like the `And`, it takes a **left** and **right** Expressions in input.
+- `Not`, it's the logical Not gate. It takes in input another `Expression`.
+- `Symbol`, it represents an input variable and takes in input its name.
 
 Because of its recursive structure, Expression is a tree data structure, where the inner nodes are either
 **And**, **Or** or **Not**, and each leaf is a **Symbol**.
@@ -44,31 +47,33 @@ Togheter with the enumeration, a companion object has been created. It provides 
 ### CNF
 
 <p align=center>
-  <img src="img/cnf/cnf.svg" alt=" Model-View-Update detailed diagram" style="width: 35%">
+  <img src="img/cnf/cnf.svg" alt=" Model-View-Update detailed diagram" style="width: 30%">
 </p>
 
+`CNF` is the data structure representing logical formulas as a *conjunction* of clauses,
+where each clause is a *disjunction* of literals (variables or their negations).
 
-CNF represents a formula in Conjunctive Normal Form. Also in this case an _enumeration_ has been used.
-
-CNF is a specific form of representing logical formulas as a *conjunction* of clauses, where each clause is a
-*disjunction*
-of literals (variables or their negations). For example:
+For example:
 
 $$ (a \lor c) \land (a \lor \lnot d) $$
 
-CNF has been modeled a specific type of __Expression__ where:
+It is a _sum type_ like `Expression`, but it has the following constraints:
 
-- The **Or** gate cannot contain an **And** in either its *left* and *right* parameter;
-- The **And** gate cannot contain an **And** in its *left* parameter;
-- The **Not** gate can contain only a **Symbol** parameter;
-- In this case, **Symbol** can either represents a input variable by specifying its name or a boolean constant by using a value of type **Bool**.
+- The **Or** gate cannot contain an `And` in either its **left** and **right** parameter.
+- The `And` gate cannot contain an `And` in its **left** parameter.
+- The `Not` gate can contain only a `Symbol` parameter.
+- In this case, `Symbol` can either represent an input variable by specifying its name or a boolean constant by using
+  a **Bool** type value.
 
 ### Solver
 
-The Solver package contains all the abstract types that are useful for SAT solver implementations, especially for tree-based search algorithms.
+The Solver package contains all the abstract types that are useful for SAT solver implementations, especially for
+tree-based search algorithms.
 
 It is composed of:
-- **DecisionTree**. It's a binary tree data structure where each node contains a **Decision**. It is constructed during the search algorithm.
+
+- **DecisionTree**. It's a binary tree data structure where each node contains a **Decision**. It is constructed during
+  the search algorithm.
 - **Decision**. A decision represents a constraint that has been applied to an input variable. In turn, it contains:
     - A **PartialAssignment**, which is the current state of constraints applied to the variables. The decision is implicitly defined in this field. PartialAssignment is a list of **OptionalVariable**, e.g. a variable which could be either be constrained or not.
     - A **CNF**. It's the input CNF simplified with the current set of constraints defined in **PartialAssignment**.
@@ -79,7 +84,8 @@ It is composed of:
 </p>
 
 
-Given these ingredients, a SAT solver implementation can build its own specific **DecisionTree**, applying decisions to the variables in a certain order and assigning them a certain value that they deem most appropriate for the resolution.
+Given these ingredients, a SAT solver implementation can build its own specific **DecisionTree**, applying decisions to
+the variables in a certain order and assigning them a certain value that they deem most appropriate for the resolution.
 
 ### Solution
 
@@ -91,7 +97,7 @@ It is made up of three fields:
 
 
 <p align="center">
-<img src="img/solution.svg" alt="Solution design" style="width: 70%">
+<img src="img/solution.svg" alt="Solution design" style="width: 60%">
 </p>
 
 
@@ -101,16 +107,14 @@ It is made up of three fields:
 <img src="img/problem/problem.svg" alt="Problem design" style="width: 80%">
 </p>
 
-
-The general Problem representation has been designed with a _trait_ **Problem**.
+The general SAT problem representation has been designed with a _trait_ **Problem**.
 It is composed by:
 
 - A set of constraints that must be all satisfied in the solution.
-- An expression, which is the reduction of the constraints through an And gate.
+- An **Expression**, which is the reduction of the constraints using the And operator.
 
-Each problem extends **Problem** using a __case class__, and adds the constraints needed to represent the specific
+Each problem extends **Problem** using a _case class_, and adds the constraints needed to represent the specific
 problem.
-
 
 ---
 
@@ -133,7 +137,6 @@ type.
 Following this approach, combined with the GUI component to update, every interaction with the user will refresh exactly
 the needed part of the UI.
 
-## Core
 
 ### Converter
 
@@ -141,22 +144,20 @@ the needed part of the UI.
 <img src="img/converter/converter.svg" alt="Converter design" style="width: 80%">
 </p>
 
-Converter is a _trait_ containing the method convert that will be implemented by each converter.
-In order to obtain better performances and to avoid the re-computation of same expressions, the converter keeps
+Converter is a _trait_ containing the method `convert`` that must be implemented by each converter.
+In order to obtain better performances and avoid the re-computation of same expressions, the converter can keep
 a cache of already computed expressions following the _memoization_ pattern.
+
+In this project, the _Converter_ that has been used is **TseitinSolver**, which exploits the Tseitin transformation algorithm.
 
 #### Tseitin Algorithm
 
-The Tseitin algorithm converts a formula in propositional logic into a CNF formula.
+The Tseitin algorithm converts a propositional expression in Conjunctive Normal Form (CNF).
 
-In this case, the _Converter_ is in charge of converting the expression in CNF form, using the Tseitin transformation.
-It is implemented through a _case class_ that extends the **Converter** trait implementing the convert method.
 Following the functional approach, the implementation is hidden inside a private object.
+It contains the implementation of the three main algorithm phases.
 
-QUI DIAG PACKAGE TSEITIN
-
-The idea behind the Tseitin transformation is to introduce new auxiliary variables for subformulas in the original
-formula.
+The idea behind the Tseitin transformation is to introduce new auxiliary variables for subformulas in the original formula.
 These auxiliary variables are used to represent the truth values of the subformulas.
 
 By doing this, the original formula can be broken down into smaller parts, each represented in CNF, and then combined
@@ -184,7 +185,6 @@ So, the best way to design it is decomposing the algorithm following the steps b
    | OR       | ![](img/OrCircuit.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
    | NOT      | ![](img/NotCircuit.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |
 
-
 4. Combine the representations of the subformulas to obtain the CNF representation of the entire formula.
 
 The resulting formula is equi-satisfiable with the original formula, meaning they have the same set of satisfying
@@ -198,104 +198,123 @@ the original logical formula efficiently.
 </p>
 
 Solver is a _trait_ containing the methods useful to solve SAT problem encoded in CNF form.
-There are two main possibility to solve a SAT problem instance, one is starting from the CNF form, and the other is
+There are two main possibilities to solve a SAT problem instance, one is starting from the CNF form, and the other is
 starting directly from the expression.
-Furthermore, it is possible to solve the problem looking for all the possible
-solutions or only one at a time.
-In the last case the solver will convert the expression in CNF with the Converter specified before compute the solution.
+Furthermore, it is possible to solve the problem looking for all the possible solutions or only one at a time.
+In the last case the solver will convert the expression in CNF with the Converter specified before computing the solution.
 
-In order to obtain better performances and to avoid the re-computation of same expressions,
-also the solver makes use of _memoization_ pattern.
+In order to obtain better performances and to avoid the re-computation of same expressions, the solver also makes use of _memoization_ pattern.
 
-### DPLL (Davis-Putnam-Loveland-Logemann)
+In this project, the _Solver_ that has been used is **DpllSolver**, which exploits the DPLL algorithm.
 
-The DPLL algorithm is a search algorithm for deciding the satisfiability of a propositional formula in Conjunctive
-Normal
-Form.
+#### DPLL (Davis-Putnam-Loveland-Logemann)
+
+The DPLL algorithm is a search algorithm for deciding the satisfiability of a propositional formula in Conjunctive Normal Form.
 
 Compared to a simple exhaustive search of all the possible variable assignments, DPLL makes use of determined strategies
-to guide the search, making it more efficient.
-It was introduced in 1961 by Martin Davis, George Logemann and Donald W.Loveland and is a refinement of the earlier
-Davis–Putnam algorithm.
+to guide the search of sasfiable solutions, making it more efficient.
+It was introduced in 1961 by Martin Davis, George Logemann and Donald W. Loveland.
 
-In this case, the _Solver_ is in charge of solving the propositional expression using the DPLL algorithm.
-It is implemented through a _case class_ that extends the **Solver** trait implementing its methods.
-Following the functional approach, the implementation is hidden inside a private object.
+The solver implementations we provide follow this algorithm but with small variances. In particular:
+- **DpllFinder** is used to get one satisfiable assignment at a time. It exposed two functions: `find` and `findNext`.
+    The former takes in input a CNF an returns a **Solution** with a unique assignment, if any. The second one, on the other hand, 
+    continues to search for another satisfiable assignment, returning a filled optional there is some, empty otherwise;
+- **DpllEnumerator** enumerates all the possible satisfiable assignments to the problem. It exposes a `enumerate` function that returns a **Solution**.
 
-#### Preliminaries
+Following the functional approach, these two implementation are hidden inside a private object.
 
-##### Definition of partial model
+The main ideas behind this algorithm are the following:
+- It starts with Branch node of **DecisionTree** where the **PartialAssignment** of **Decision** is composed of all unconstrained variables.
+- Then, it chooses a variable and a boolean value for branching purposes (decision). On the left side of the Branch that variable will be constrained to the chosen value, while on the right with its negated form. A recursive call is done on the left, simplifying the CNF with the boolean constraint.
+- At each step, it continues to constraint variables until the CNF is completely simplified or it contains a conflict.
+    In the former case, a solution has been found and a Leaf inside the tree is inserted (SAT). In the latent, a false clause has been found, which leds the averall expression false (UNSAT). Also in this case a Leaf is inserted, and the computation backtracks to the previous decision, branching on the negated chosen value. 
 
-We will call elements of $Vars \rightarrow \mathcal{B}$ as a partial model, e.g., not all variables are assigned at a
-given point of the algorithm.
+It is good to say that in **DpllEnumerator** the algorithm doesn't stop when only an assignment has been found.
+In fact, it continues to search until the **DecisionTree** completely built.
 
-##### State of the literal
+On the other hand, it's a bit more complex for **DpllFinder**. While the DecisionTree in **DpllEnumerator** contains only SAT/UNSAT leafs, **DpllFinder** can contain not completed Leafs for the reason that an assignment has been found, and no further exploration is necessary. In order to find another assignment through `findNext`, a mechanism is provided to save the current state of the **DecisionTree** and resume the computation.
 
-Under partial model $m$,
+#### Branching strategies
 
-- a literal $l$ is true if $m(l) = 1$;
-- $l$ is false if $m(l) = 0$;
-- otherwise, $l$ is unassigned.
+DPLL makes use of two rules to select the most appropriate variable to branch and value: _unit propagation_ and _pure literal elimination_. If both of them are not applicable, a random decision is made.
 
-##### State of the clause
-
-Under a partial model $m$,
-
-- a clause (literals put in $\lor$) is true if there is $l \in C$ such that $l$ is true;
-- $C$ is false if for each $l \in C$, $l$ is false;
-- otherwise, $C$ is unassigned.
-
-##### State of a formula
-
-Under a partial model $m$,
-
-- CNF $F$ is true if for each $C \in F$, $C$ is true;
-- CNF $F$ is false if there is $C \in F$, such that $C$ is false.
-- otherwise $F$ is unassigned
-
-##### Definition of unit clause and unit literal
-
-$C$ is a unit clause under $m$ if a literal $l \in C$ in unassigned and the rest are false, $l$ is called unit literal.
-
-#### DPLL
-
-- maintains a partial model, initially $\emptyset$
-- assigns unassigned variables 0 or 1 randomly one after another
-- sometimes forced to choose assignments due to unit literals
-
-<img src="./img/dpll.png" height="300">
-
-###### Unit propagation
+##### Unit propagation
 
 Suppose we have the following formula in CNF:
 
 $$(\lnot b \lor c) \land (\lnot c) \land (a \lor \lnot b \lor e) \land (d \lor b)$$
 
-Since $\lnot c$ is the only literal in the clause, if it is false all the formula will be false, so set $c = false$ to
-delete the clause and all the others with $\lnot c$ inside. Delete also all the $c$ where the literal appears in
-positive form.
-On the other hand, if $c$ is in positive form, do viceversa.
+Since $(\lnot c)$ is a clause with only a literal, it is called unit literal. If it is false, all the formula will be false, so by setting $c = false$ it is possible to simplify the CNF.
+Moreover, eliminate the clauses with $\lnot c$ inside. Delete also all the $c$ where the literal appears in positive form.
 
-###### Pure literals
+On the other hand, if $c$ is in positive form ($(c)$ and not $(\lnot c)$), do vice versa.
 
-As a choice to simplify the formula, beyond the unit propagation, it's possible to choose an assignment to a variable (
-decision) to a literal which appears only in positive form or only in negative form.
+This rule creates a left branch with the variable and constraint mentioned and right UNSAT leaf.
+This practice often leads to a cascade of unit propagations, avoiding a large part of search space.
+
+##### Pure literal elimination
+
+As a choice to simplify the formula, beyond the unit propagation, it's possible to choose a constraint to a variable
+(decision) to a literal which appears only in positive form or only in negative form.
 
 For example:
 
 $$(b \lor c) \land (\lnot c \lor d) \land (a \lor b \lor e) \land (d \lor b)$$
 
-In this case, $b$ appears only in positive form, then assigning $b = true$ no other clause will be "penalized", therefore
-delete all the other clauses where $b$ is included.
+Here $b$ appears only in positive form (it is a pure literal), then assigning $b = True$ no other clause will be "penalized",
+therefore, delete all the other clauses where $b$ is included.
 
-In other words: if $b$ doesn't appear in negative form inside the formula $F$, assigning $b = true$, the satisfability
+In other words: if $b$ doesn't appear in negative form inside the formula $F$, assigning $b = True$, the satisfability
 of $F$ is preserved.
 
-##### Heuristic search
+Eliminating pure literals can significantly reduce the size of the CNF formula. Smaller formulas are often easier and quicker to process and can lead the solving faster.
 
-*Idea*: identify the most constrained variable
+#### CNF simplification
 
-**MOM**'s heuristic: choose variable based on most occurrence in clauses of minimum length.
+The simplification of the expression in Cunjuntive-Normal-Form is very important to determine if the formula is SAT
+under the current **PartialAssignment**.
+
+In fact, if the CNF expression is completely simplified s.t. it is equal to *Symbol(True)*, it can be asserted
+that it is SAT.
+
+The expression in CNF is simplified according to the specific logical operator:
+
+- **Or**
+    - When a Literal inside an **Or** is set to True s.t. $l = True$ or $\lnot l = True$ then the CNF must be
+      simplified on the uppermost **Or** of a sequence of consecutive **Or**s.
+
+      Examples:
+        - Literal $A$ in positive form. Constraint $A = True$:
+
+          <p align=center>
+            <img src='./img/umOr1.svg' height="150" align="center">
+          </p>
+
+        - Literal $B$ is negated. Constraint $B = false$ to set the literal $True$:
+
+           <p align=center>
+            <img src='./img/umOr2.svg' height="200" align="center">
+          </p>
+
+
+- When a Literal in an **Or** branch is set to $False` s.t. `V = False` or `Not(V) = False` the CNF must be
+  simplified substituting the **Or** with the other branch.
+
+  Examples:
+    - Literal `A` in positive form. Constraint `A = False`:
+      <p align=center>
+        <img src='./img/cOr1.svg' height="150" align="center">
+      </p>
+
+- `And`
+    - An expression in CNF should be simplified when an `And` contains at least a `True` Literal:
+
+      Examples:
+
+        - Constraint `B = True`:
+          <p align=center>
+            <img src='./img/And1.svg' height="150" align="center">
+          </p>
 
 ## Domain-Specific Language
 
