@@ -238,6 +238,13 @@ On the other hand, it's a bit more complex for **DpllFinder**. While the Decisio
 
 DPLL makes use of two rules to select the most appropriate variable to branch and value: _unit propagation_ and _pure literal elimination_. If both of them are not applicable, a random decision is made.
 
+They have been introduced inside an object **Optimizations** used by **DpllDecision**.
+The latent in turn exposes a `decide` function which will be called by DPLL.
+
+<p align="center">
+<img src="img/dpll-decision.svg" alt="Dpll decisions" style="width: 40%">
+</p>
+
 ##### Unit propagation
 
 Suppose we have the following formula in CNF:
