@@ -2,6 +2,7 @@ name: Satify ScalaDoc
 
 on:
   pull_request:
+    types: [ opened, synchronize ]
     branches:
       - develop
 
