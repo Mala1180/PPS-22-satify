@@ -1,8 +1,9 @@
 package satify.view
 
-import satify.app.Main.{model, update, view}
+import satify.app.Main.{Model, model, update, view}
 import satify.model.errors.Error.InvalidInput
 import satify.model.problems.{GraphColoring, NQueens, NurseScheduling, Problem}
+import satify.update.Message
 import satify.update.Message.*
 import satify.view.components.Components.*
 import satify.view.utils.ComponentUtils.createErrorDialog
@@ -18,32 +19,45 @@ import scala.swing.{Component, Swing, TextArea}
 
 object Reactions:
 
+  private def updateModel(model: Model, message: Message): Model = update(model, message)
+
   /** Reaction to the solve all button */
-  def allSolutionsReaction(): Unit = updateComponents(view(update(model, SolveAll(inputTextPane.text))))
+  def allSolutionsReaction(): Unit =
+    model = updateModel(model, SolveAll(inputTextPane.text))
+    updateComponents(view(model))
 
   /** Reaction to the solve button */
-  def solutionReaction(): Unit = updateComponents(view(update(model, Solve(inputTextPane.text))))
+  def solutionReaction(): Unit =
+    model = updateModel(model, Solve(inputTextPane.text))
+    updateComponents(view(model))
 
   /** Reaction to the convert button */
-  def cnfReaction(): Unit = updateComponents(view(update(model, Convert(inputTextPane.text))))
+  def cnfReaction(): Unit =
+    model = updateModel(model, Convert(inputTextPane.text))
+    updateComponents(view(model))
 
   /** Reaction to the import button */
   def importReaction(): Unit =
     val file: File = importFileChooser.selectedFile
-    updateComponents(view(update(model, Import(file))))
+    model = updateModel(model, Import(file))
+    updateComponents(view(model))
 
   /** Reaction to the problem selection, checking also parameter and selection */
   def problemSolutionReaction(): Unit =
     val p: Problem = readProblemSelection()
-    updateComponents(view(update(model, SolveProblem(p))))
+    model = updateModel(model, SolveProblem(p))
+    updateComponents(view(model))
 
   /** Reaction to the problem selection, checking also parameter and selection */
   def problemCnfReaction(): Unit =
     val p: Problem = readProblemSelection()
-    updateComponents(view(update(model, ConvertProblem(p))))
+    model = updateModel(model, ConvertProblem(p))
+    updateComponents(view(model))
 
   /** Reaction to the next solution button */
-  def nextSolutionReaction(): Unit = updateComponents(view(update(model, NextSolution())))
+  def nextSolutionReaction(): Unit =
+    model = updateModel(model, NextSolution())
+    updateComponents(view(model))
 
   /** Reaction to the help button to show the help dialog */
   def helpReaction(): Unit = helpDialog.open()
