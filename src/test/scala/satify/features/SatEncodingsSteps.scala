@@ -12,7 +12,7 @@ object SatEncodingsSteps extends ScalaDsl with EN:
   var sol: Solution = _
 
   And("it is used as instance of SAT problem") {
-    sol = Solver(DPLL).solveAll(expression.get)
+    sol = Solver(DPLL).solveAll(expression.get, true)
   }
 
   Then("I should obtain {int} possible assignments") { (n: Int) =>

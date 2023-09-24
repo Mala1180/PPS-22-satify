@@ -14,20 +14,17 @@ private[converters] object TseitinTransformation:
   import satify.model.cnf.Literal
   import satify.model.expression.Expression.{replace as replaceExp, *}
 
-  /** Applies the Tseitin transformation to the gt iven expression in order to convert it into CNF.
+  /** Applies the Tseitin transformation to the given expression in order to convert it into CNF.
     * @param exp the expression to transform.
     * @return the CNF expression.
     */
-  def tseitin(exp: Expression): CNF =
-    var transformations: List[CNF] = List()
-    symbolsReplace(exp).foreach(s => transformations = transform(s) ::: transformations)
-    concat(transformations)
+  def tseitin(exp: Expression): CNF = concat(substitutions(exp).flatMap(transform))
 
   /** Substitute Symbols of nested subexpressions in all others expressions
     * @param exp the expression where to substitute Symbols
     * @return the decomposed expression in subexpressions with Symbols correctly substituted.
     */
-  def symbolsReplace(exp: Expression): List[(Symbol, Expression)] = {
+  def substitutions(exp: Expression): List[(Symbol, Expression)] = {
     @tailrec
     def replace(
         list: List[(Symbol, Expression)],
@@ -37,24 +34,24 @@ private[converters] object TseitinTransformation:
     ): List[(Symbol, Expression)] =
       list match {
         case Nil => acc.reverse
-        case (lit, e) :: t if contains(e, subexp) =>
-          replace(t, subexp, l, (lit, replaceExp(e, subexp, l)) :: acc)
+        case (lit, e) :: t if e.contains(subexp) =>
+          replace(t, subexp, l, (lit, e.replaceExp(subexp, l)) :: acc)
         case (lit, e) :: t => replace(t, subexp, l, (lit, e) :: acc)
       }
 
     @tailrec
-    def symbolSelector(
+    def selector(
         list: List[(Symbol, Expression)],
         acc: List[(Symbol, Expression)]
     ): List[(Symbol, Expression)] =
       list match {
         case Nil => acc.reverse
-        case (l, e) :: tail => symbolSelector(replace(tail, e, l, Nil), (l, e) :: acc)
+        case (l, e) :: tail => selector(replace(tail, e, l, Nil), (l, e) :: acc)
       }
 
     val zipped = zipWithSymbol(exp).distinctBy(_._2)
     if zipped.size == 1 then zipped
-    else symbolSelector(zipped.sortBy((_, e) => clauses(e)), Nil)
+    else selector(zipped.sortBy((_, e) => clauses(e)), Nil)
   }
 
   /** Transform the Symbol and the corresponding expression to CNF form

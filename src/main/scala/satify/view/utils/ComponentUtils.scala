@@ -1,10 +1,10 @@
 package satify.view.utils
 
-import satify.model.{Assignment, State}
 import satify.model.problems.Problem
-import satify.view.Constants.*
-import satify.view.GUI.{enableInteractions, problemOutputDialog, problemParameterPanel, solutionOutputDialog}
-import satify.view.Reactions.{nextSolutionReaction, problemSolutionReaction}
+import satify.model.{Assignment, State}
+import satify.view.Reactions.nextSolutionReaction
+import satify.view.components.Components.{enableInteractions, problemOutputDialog, problemParameterPanel}
+import satify.view.utils.Constants.*
 import satify.view.utils.TextPaneUtils.{textPaneText, updateStyle}
 import satify.view.utils.Title.*
 
@@ -38,6 +38,7 @@ object ComponentUtils:
   def createInputTextPane(txt: String = ""): TextPane =
     val textPane = new TextPane():
       name = expTextPaneName
+      border = Swing.EmptyBorder(inputPadding, inputPadding, inputPadding, inputPadding)
     textPane.text = txt
     textPane.font = Font(fontFamily, Font.PLAIN, 18)
     updateStyle(textPane)
@@ -62,25 +63,25 @@ object ComponentUtils:
     * @return the combo box
     */
   def createProblemComboBox(): ComboBox[String] =
-    import ProblemTitle.*
     import Placeholders.*
+    import ProblemTitle.*
     new ComboBox(List("No selection", NQueens.title, GraphColoring.title, NurseScheduling.title)):
       listenTo(selection)
       maximumSize = new Dimension(200, 30)
       reactions += { case SelectionChanged(_) =>
         val parameters: Set[Component] = this.item match
-          case NQueens.title => Set(createLabelledTextArea(QueensNumbers.description, nQueens, 1, 10))
+          case NQueens.title => Set(createLabelledTextArea(QueensNumbers.placeholder, nQueens, 1, 10))
           case GraphColoring.title =>
             Set(
-              createLabelledTextArea(GraphColoringNodes.description, gcNodes, 1, 15),
-              createLabelledTextArea(GraphColoringEdges.description, gcEdges, 1, 10),
-              createLabelledTextArea(GraphColoringColors.description, gcColors, 1, 10)
+              createLabelledTextArea(GraphColoringNodes.placeholder, gcNodes, 1, 15),
+              createLabelledTextArea(GraphColoringEdges.placeholder, gcEdges, 1, 10),
+              createLabelledTextArea(GraphColoringColors.placeholder, gcColors, 1, 10)
             )
           case NurseScheduling.title =>
             Set(
-              createLabelledTextArea(NurseSchedulingNurses.description, nsNurses, 1, 10),
-              createLabelledTextArea(NurseSchedulingDays.description, nsDays, 1, 10),
-              createLabelledTextArea(NurseSchedulingShifts.description, nsShifts, 1, 10)
+              createLabelledTextArea(NurseSchedulingNurses.placeholder, nsNurses, 1, 10),
+              createLabelledTextArea(NurseSchedulingDays.placeholder, nsDays, 1, 10),
+              createLabelledTextArea(NurseSchedulingShifts.placeholder, nsShifts, 1, 10)
             )
           case _ => Set()
         problemParameterPanel.contents.clear()
@@ -123,6 +124,7 @@ object ComponentUtils:
     * @return the button
     */
   def createButton(text: String, width: Int, height: Int, color: Color = Color.black): Button = new Button(text):
+    name = this.text
     font = Font(fontFamily, Font.ITALIC, 20)
     preferredSize = new Dimension(width, height)
     foreground = color
@@ -150,7 +152,7 @@ object ComponentUtils:
     val nextSolutionButton = createButton(Next.title, 100, 40)
     nextSolutionButton.reactions += { case ButtonClicked(_) =>
       Swing.onEDT(enableInteractions())
-      Executors.newSingleThreadExecutor().execute(() => nextSolutionReaction(model))
+      Executors.newSingleThreadExecutor().execute(() => nextSolutionReaction())
     }
     createCenteredBox(nextSolutionButton)
 

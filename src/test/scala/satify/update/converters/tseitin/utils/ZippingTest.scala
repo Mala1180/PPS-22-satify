@@ -9,8 +9,7 @@ import satify.update.converters.tseitin.Utils.zipWithSymbol
 class ZippingTest extends AnyFlatSpec with Matchers:
 
   "In ((a ∧ ¬b) ∨ c) the subexp ¬b" should "be decomposed correctly" in {
-    val exp: Expression =
-      Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
+    val exp: Expression = Or(And(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
     val list = zipWithSymbol(exp)
     list should contain only (
       (Symbol("GEN2"), Not(Symbol("b"))),
@@ -35,8 +34,7 @@ class ZippingTest extends AnyFlatSpec with Matchers:
   }
 
   "In (c ∧ (a ∧ ¬b)) the subexp ¬b, (a ∧ ¬b) and (c ∧ (a ∧ ¬b))" should "be decomposed correctly" in {
-    val exp: Expression =
-      And(Symbol("c"), And(Symbol("a"), Not(Symbol("b"))))
+    val exp: Expression = And(Symbol("c"), And(Symbol("a"), Not(Symbol("b"))))
     val list = zipWithSymbol(exp)
     list should contain only (
       (
@@ -75,8 +73,7 @@ class ZippingTest extends AnyFlatSpec with Matchers:
   }
 
   "The exp: (c ∧ (a ∧ ¬b))" should "be decomposed correctly" in {
-    val exp: Expression =
-      And(Symbol("c"), And(Symbol("a"), Not(Symbol("b"))))
+    val exp: Expression = And(Symbol("c"), And(Symbol("a"), Not(Symbol("b"))))
     val result = zipWithSymbol(exp)
     val expected = List(
       (

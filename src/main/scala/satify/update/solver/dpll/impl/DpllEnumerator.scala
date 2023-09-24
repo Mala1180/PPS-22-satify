@@ -3,20 +3,18 @@ package satify.update.solver.dpll.impl
 import satify.model.Result.*
 import satify.model.Status.COMPLETED
 import satify.model.cnf.CNF
-import satify.model.dpll.DecisionTree.{Branch, Leaf}
-import satify.model.dpll.PartialAssignment.{extractParAssignmentFromCnf, extractParAssignments}
-import satify.model.dpll.{Constraint, Decision, DecisionTree, OptionalVariable}
+import satify.model.solver.DecisionTree.{Branch, Leaf}
+import satify.model.solver.{Constraint, Decision, DecisionTree, OptionalVariable}
 import satify.model.{Assignment, Solution}
 import satify.update.solver.dpll.DpllDecision.decide
 import satify.update.solver.dpll.cnf.CNFSat.{isSat, isUnsat}
 import satify.update.solver.dpll.cnf.CNFSimplification.simplifyCnf
+import satify.update.solver.dpll.utils.PartialAssignmentUtils.*
 
 import scala.annotation.tailrec
 import scala.util.Random
 
 private[solver] object DpllEnumerator:
-
-  private val rnd = Random(42)
 
   /** Solves the SAT problem enumerating all satisfiable assignments,
     * by running the DPLL algorithm.
@@ -32,10 +30,11 @@ private[solver] object DpllEnumerator:
 
   /** Enumerator DPLL algorithm.
     * It returns a new decision tree whose leafs are either SAT or UNSAT solutions.
-    * @param d decision to be made
-    * @return updated decision tree along with the result
+    * @param d decision to be made.
+    * @param rnd random number generator to make pseudo random decisions.
+    * @return updated decision tree along with the result.
     */
-  private def dpll(d: Decision): DecisionTree =
+  private def dpll(d: Decision, rnd: Random = Random(42)): DecisionTree =
 
     case class Frame(d: Decision, done: List[DecisionTree], todos: List[Decision])
 

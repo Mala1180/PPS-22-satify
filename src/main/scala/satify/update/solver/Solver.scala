@@ -5,7 +5,7 @@ import satify.model.expression.Expression
 import satify.model.{Assignment, Solution}
 import satify.update.converters.ConverterType.*
 import satify.update.converters.{Converter, ConverterType}
-import satify.update.solver.DpllSolverMemoize.dpllEnumerate
+import satify.update.solver.SolverMemoization.cachedEnumerate
 import satify.update.solver.SolverType.*
 import satify.update.solver.dpll.impl.DpllEnumerator.enumerate
 import satify.update.solver.dpll.impl.DpllFinder.{find, findNext}
@@ -19,15 +19,17 @@ trait Solver:
 
   /** Solves the SAT problem, returning a solution with all satisfiable assignments.
     * @param cnf the input in conjunctive normal form
+    * @param cache if true, the result of the computation is cached
     * @return the solution of the SAT problem
     */
-  def solveAll(cnf: CNF): Solution
+  def solveAll(cnf: CNF, cache: Boolean): Solution
 
   /** Solves the SAT problem, returning a solution with all satisfiable assignments.
     * @param exp the input expression
+    * @param cache if true, the result of the computation is cached
     * @return the solution of the SAT problem
     */
-  def solveAll(exp: Expression): Solution
+  def solveAll(exp: Expression, cache: Boolean): Solution
 
   /** Solves the SAT problem returning a solution with the first satisfiable assignment found.
     * @param cnf the input in conjunctive normal form
@@ -46,7 +48,7 @@ trait Solver:
     * @return a filled assignment if there is another satisfiable, an empty one otherwise.
     * @throws IllegalStateException if a previous run was not found
     */
-  def next(): Assignment
+  def next: Option[Assignment]
 
 /** Factory for [[Solver]] instances. */
 object Solver:
@@ -63,19 +65,20 @@ object Solver:
   /** Private implementation of [[Solver]] */
   private case class DpllSolver(converter: Converter) extends Solver:
 
-    override def solveAll(cnf: CNF): Solution = dpllEnumerate(cnf)
+    override def solveAll(cnf: CNF, cache: Boolean): Solution =
+      if cache then cachedEnumerate(cnf, enumerate) else enumerate(cnf)
 
-    override def solveAll(exp: Expression): Solution = solveAll(converter.convert(exp))
+    override def solveAll(exp: Expression, cache: Boolean): Solution = solveAll(converter.convert(exp, cache), cache)
 
     override def solve(cnf: CNF): Solution = find(cnf)
 
     override def solve(exp: Expression): Solution = solve(converter.convert(exp))
 
-    override def next(): Assignment = findNext()
+    override def next: Option[Assignment] = findNext()
 
-object DpllSolverMemoize:
+object SolverMemoization:
 
-  val dpllEnumerate: CNF => Solution = memoize(cnf => enumerate(cnf))
+  val cachedEnumerate: (CNF, CNF => Solution) => Solution = (cnf, algorithm) => memoize(algorithm)(cnf)
 
   protected def memoize(f: CNF => Solution): CNF => Solution =
     new collection.mutable.HashMap[CNF, Solution]():

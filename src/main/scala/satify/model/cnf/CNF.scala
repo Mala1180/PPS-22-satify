@@ -2,7 +2,6 @@ package satify.model.cnf
 
 /** An enum representing a Conjunction Normal Form (CNF) expression. */
 import satify.model.cnf.CNF.*
-import satify.model.cnf.{Bool, CNF}
 
 enum Bool:
   case True
@@ -12,9 +11,9 @@ type Literal = Symbol | Not
 
 enum CNF:
   case Symbol(value: String | Bool)
+  case Not(branch: Symbol)
   case And(left: Or | Literal, right: And | Or | Literal)
   case Or(left: Or | Literal, right: Or | Literal)
-  case Not(branch: Symbol)
 
 object CNF:
   extension (cnf: CNF)

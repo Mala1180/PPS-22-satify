@@ -2,7 +2,7 @@ package satify.update.solver.dpll
 
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
-import satify.model.dpll.{Constraint, Decision, OptionalVariable, PartialAssignment}
+import satify.model.solver.{Constraint, Decision, OptionalVariable, PartialAssignment}
 
 import scala.annotation.tailrec
 import scala.collection.immutable.{AbstractSeq, LinearSeq}
