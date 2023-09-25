@@ -9,8 +9,9 @@ that I could approach the development in an incremental way.
 
 I had assumed that it would take me more time to understand the algorithm, but its parts are relatively
 simple.
-One particular difficulty was to understand some edge cases that were not well explained in papers like, for example,  
+One particular difficulty was to understand some edge cases that were not well explained in papers like, for example, 
 the case of multiple equals subformulas in the same clause.
+
 
 ## Task review
 
@@ -19,5 +20,22 @@ the project development due to the fact that not all the team members were avail
 For this reason, we decided to momentarily reduce the number of code reviews to one but only when the PRs were not
 fundamental.
 We took this decision in order to avoid blocking the work of the other team members.
+
+## Future developments
+
+Many future developments are possible for this project. 
+Some of them are related to the improvement of the user interface and others to exploit the potential of the software.
+
+To increase the user experience, it would be useful the completion while typing the formula or the possibility to 
+drag and drop logical operator components to generate it.
+Another improvement could be the generation of an output logical circuit to better understand the solution.
+
+For how the solver is designed, it is also possible to extend it with other conversion and resolution algorithms.
+Another important feature could be the simulation of SAT attack on logical circuits.
+
+Instead, in order to improve performance, a multi-threading approach could be evaluated.
+
+
+
 
 [Previous](5-implementation.md) | [Back to Index](README.md)
