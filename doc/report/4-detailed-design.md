@@ -71,27 +71,35 @@ These constraints are fundamental in specifying how many variables from a given 
 
 Satify provides the possibility to take advantage of the following encodings: `atMostK`, `atLeastK`, `exactlyK`.
 
-#### At most $k$
+#### At most k
 
 At most $k$ refers to the constraint where at most $k$ variables in a set can be true.
 
 The sequential encoding has been chosen. It introduces counting variables, adding constraints to ensure compliance with the specified limit.
 
-$$ \texttt{atMostK($k$)} :=  \begin{cases}(\lnot s_{1, j}) \text{  for  } 1 < j \leq k \\ (\lnot x_i \lor s_{i,1}) \text{  for  } 1 < i < n \\ (\lnot s_{i−1, 1} \lor s_{i, 1}) \text{  for  } 1 < i < n \\  (\lnot x_i \lor \lnot s_{i−1, j−1} \lor s_{i,j}) \text{  for  } 1 < i < n \text{, } 1 < j \leq k \\ (\lnot s_{i−1, j} \lor s_{i, j}) \text{ for } 1 < i < n \text{, } 1 \leq j \leq k \\ (\lnot x_i \lor \lnot s_{i−1, k}) \text{ for } 1 < i < n \end{cases}$$
+$$ \texttt{atMostK($k$)} :=  \begin{cases}(\lnot s_{1, j}) \text{  for  } 1 < j \leq k \\
+(\lnot x_i \lor s_{i,1}) \text{  for  } 1 < i < n \\
+(\lnot s_{i−1, 1} \lor s_{i, 1}) \text{  for  } 1 < i < n \\
+(\lnot x_i \lor \lnot s_{i−1, j−1} \lor s_{i,j}) \text{  for  } 1 < i < n \text{, } 1 < j \leq k \\
+(\lnot s_{i−1, j} \lor s_{i, j}) \text{ for } 1 < i < n \text{, } 1 \leq j \leq k \\
+(\lnot x_i \lor \lnot s_{i−1, k}) \text{ for } 1 < i < n \end{cases}
+$$
 
 Also the function `atMostOne` is provided, which is equal to `atMostK(1)`.
 
-#### At leask $k$
+#### At leask k
 
 At least $k$ refers to the constraint where at least $k$ variables in a set should be true.
 
 The pairwise encoding has been chosen.
 
-$$\texttt{atLeastK($k$)} := \bigvee\limits_{\substack{M \subseteq \{1, \dots n\}\\|M| \geq k}} \bigwedge \limits_{i \in M} x_i$$
+$$\texttt{atLeastK($k$)} := \bigvee_{M \subseteq \{ 1, \dots n \} } \bigwedge \limits_{i \in M} x_i$$
+
+where $|M| \geq k$.
 
 Even in this case the `atLeastOne` function is provided, which is equal to `atLeatK(1)`.
 
-#### Exactly $k$
+#### Exactly k
 
 Exactly $k$ refers to the constraint where exactly $k$ variables in a set should be true.
 
