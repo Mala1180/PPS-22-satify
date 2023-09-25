@@ -333,17 +333,17 @@ The expression in CNF is simplified according to the specific logical operator:
       simplified on the uppermost `Or` of a sequence of consecutive `Or`s.
 
       Examples:
-        - Literal $A$ in positive form. Constraint $A = True$:
+    - Literal $A$ in positive form. Constraint $A = True$: 
+        
+<p align=center>
+  <img src='img/cnfsimpl/umOr1.svg' alt="Or set variable True" height="150px">
+</p>
 
-          <p align=center>
-            <img src='img/cnfsimpl/umOr1.svg' alt="Or set variable True" height="150px">
-          </p>
+  - Literal $B$ is negated. Constraint $B = false$ sets the literal $True$:
 
-        - Literal $B$ is negated. Constraint $B = false$ sets the literal $True$:
-
-           <p align=center>
-            <img src='img/cnfsimpl/umOr2.svg' alt="Or set variable False" height="200px">
-          </p>
+<p align=center>
+  <img src='img/cnfsimpl/umOr2.svg' alt="Or set variable False" height="200px">
+</p>
 
 
 - When a Literal in an `Or` branch is set to $False$ s.t. $l = False$ or $\lnot l = False$ the CNF must be
@@ -351,19 +351,19 @@ The expression in CNF is simplified according to the specific logical operator:
 
   Examples:
     - Literal $A$ in positive form. Constraint $A = False$:
-      <p align=center>
-        <img src='img/cnfsimpl/cOr1.svg' alt="And set variable False" height="150px">
-      </p>
+<p align=center>
+  <img src='img/cnfsimpl/cOr1.svg' alt="And set variable False" height="150px">
+</p>
 
 - `And`
     - An expression in CNF should be simplified when an $And$ contains at least a $True$ Literal:
 
       Examples:
 
-        - Constraint $B = True$:
-          <p align=center>
-            <img src='img/cnfsimpl/And1.svg' alt="And simplification" height="150px">
-          </p>
+    - Constraint $B = True$:
+<p align=center>
+  <img src='img/cnfsimpl/And1.svg' alt="And simplification" height="150px">
+</p>
 
 ## Domain-Specific Language
 
