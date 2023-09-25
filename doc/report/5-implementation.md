@@ -150,18 +150,26 @@ which was containing the unimplemented main model entities.
 
 ### Domain-Specific Language
 
-For the Domain-Specific Language (DSL) creation, I decided to exploit the Scala's _extension methods_ and _implicit
-conversions_.
+For the Domain-Specific Language (DSL) creation, I decided to exploit the Scala's _extension methods_ and _given
+conversions_, following the _Pimp my library_ pattern.
 
 Before all, I defined a preprocessing part where through the use of a regular expression I wrapped all the non-keywords
 with quotes to make them become strings.
 During this phase, I also removed all the comments and the newlines escape characters.
 
 Then, I used _reflection_ to execute the processed input string as a Scala code.
-The words previously wrapped with quotes are interpreted as strings and implicitly converted to `Symbol` objects.
+The words previously wrapped with quotes are interpreted as strings and implicitly converted to `Symbol` objects,
+while the `Tuple[String]` becomes `Seq[Symbol]`.
 The use of the _extension methods_ allowed me to call methods and compose expressions using the infix notation.
 
 Using an Internal DSL, I obtained free and correct use of parenthesis and automatic error checking.
+
+The implementation is divided in various _objects_, but to use all the functionalities it is sufficient
+to import the `DSL` object which exports all the others.
+
+Finally, to correctly create **atMost** constraints, it is necessary to specify a variable generator.
+To do this, and at the same time do not dirty the syntax, I used the _given/using_ mechanism to omit the parameter,
+including one time the given instance in the `DSL` imports.
 
 ## Alberto Paganelli
 
@@ -187,6 +195,7 @@ quite self-explanatory.
 ```scala
 def tseitin(exp: Expression): CNF = concat(substitutions(exp).flatMap(transform))
 ```
+
 Given that the algorithm is a fundamental part of the project, I decided to develop it following a TDD approach.
 When the algorithm was completed, I deemed it necessary to rewrite the substitution phase,
 in order to obtain better performances partly by giving up readability.

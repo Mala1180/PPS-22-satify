@@ -144,7 +144,7 @@ So, the best way to design it is decomposing the algorithm following the steps b
    connectives (AND, OR, NOT) following the transformations listed in the table below.
 
    | Operator | Circuit                 | Expression      | Converted                                                                     |
-            |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
+                                    |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
    | AND      | ![](img/AndCircuit.svg) | $X = A \land B$ | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$ |
    | OR       | ![](img/OrCircuit.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
    | NOT      | ![](img/NotCircuit.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |
@@ -266,14 +266,25 @@ of $F$ is preserved.
 The user must be able to insert in input a logical expression using a friendly and intuitive syntax, here is an example:
 
 ```
-!(a and b) or (c and (d -> e))
+!(a and b) or (c xor (d -> e)) or ((a, b, d) atMost three)
 ```
 
 To achieve this goal, it is used an Internal Domain Specific Language (DSL) realized mainly through the _Pimp my
 library_ pattern.
 
+In particular, the implicitly converted types are:
+
+- `Tuple[String]` to `Seq[Symbol]`
+- `String` to `Symbol`
+
+Then, two types are "pimped":
+
+- `Seq[Symbol]`, to apply extension methods for encodings.
+- `Expression`, to apply extension methods for logical operators.
+
 Since this mechanism provides a not so versatile syntax (because it strongly depends on Scala syntax) respect to using a
 proper parser, the input needs to be preprocessed in order to be adapted to the DSL syntax.
 
 ---
+
 [Previous](3-architectural-design.md) | [Next](5-implementation.md)
