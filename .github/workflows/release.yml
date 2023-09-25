@@ -38,8 +38,8 @@ jobs:
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "v0.3.0"
-          title: "Sprint 4 Release"
-          prerelease: true
+          automatic_release_tag: "v1.0.0"
+          title: "Sprint 5 Release"
+          prerelease: false
           files: |
             target/scala-3.3.0/satify.jar
