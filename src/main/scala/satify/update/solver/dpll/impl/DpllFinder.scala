@@ -32,7 +32,7 @@ private[solver] object DpllFinder:
     * by running the DPLL algorithm.
     * @param cnf expression in Conjunctive Normal Form.
     * @return a solution with a unique assignment, filled with a list of variables if it's SAT,
-    *         an empty list otherwise.
+    * an empty list otherwise.
     */
   def find(cnf: CNF): Solution =
     dpll(Decision(extractParAssignmentFromCnf(cnf), cnf)) match
@@ -43,9 +43,8 @@ private[solver] object DpllFinder:
       case (_, UNSAT) => Solution(UNSAT, COMPLETED, Nil)
 
   /** Runs the DPLL algorithm resuming a previous run, if present.
-    *
     * @return an assignment, different from the previous ones, filled with a list
-    *         of variables if there's another satisfiable, an empty list otherwise.
+    * of variables if there's another satisfiable, an empty list otherwise.
     */
   @tailrec
   def findNext(): Option[Assignment] =
@@ -75,8 +74,7 @@ private[solver] object DpllFinder:
   /** Finder DPLL algorithm.
     * It returns a new decision tree with a new SAT leaf, if any.
     * Otherwise, the updated decision tree with all UNSAT leafs.
-    *
-    * @param d   decision to be made
+    * @param d decision to be made
     * @param rnd random number generator to make pseudo random decisions.
     * @return updated decision tree along with the result
     */
@@ -93,7 +91,6 @@ private[solver] object DpllFinder:
     else (Leaf(d), if isSat(d.cnf) then SAT else UNSAT)
 
   /** Resume the computation of DPLL given an existing instance of decision tree.
-    *
     * @param dt decision tree returned on the previous run.
     * @return the updated decision tree along with the new result.
     */
@@ -113,8 +110,7 @@ private[solver] object DpllFinder:
 
   /** Extract a new assignment from the decision tree s.t. it is not contained in the previous
     * DPLL run given in input.
-    *
-    * @param dt      decision tree where to extract the assignment
+    * @param dt decision tree where to extract the assignment
     * @param prevRun previous DPLL run with the current extracted solution.
     * @return a filled assignment if it exists, or an empty one.
     */

@@ -7,7 +7,7 @@ import satify.model.{Assignment, Variable}
 
 import scala.annotation.tailrec
 
-/** Represents an [[Assignment]] where the variables could not be yet constrained by the DPLL algorithm.
+/** Represents an [[Assignment]] where the variables could not be yet constrained by the solving algorithm.
   * @param optVariables optional variables.
   */
 case class PartialAssignment(optVariables: List[OptionalVariable]):

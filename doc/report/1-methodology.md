@@ -81,6 +81,10 @@ the behavior of the software, in particular, using the Cucumber framework.
 Through the use of Cucumber, it is possible to test specific domain scenarios, which are written in Gherkin,
 and to obtain a report of the results in a more client-friendly way.
 
+### Microbenchmark
+We used ScalaMeter to measure execution time and memory consumption of the software. 
+In particular, using basic instances of common SAT problems to benchmark the performance.
+
 ## Continuous Integration
 
 The use of Continuous Integration (CI) pipeline assures that the code within the

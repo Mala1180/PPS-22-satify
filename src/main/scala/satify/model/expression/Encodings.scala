@@ -19,7 +19,7 @@ object Encodings:
 
   /** Encodes the constraint that at least k of the given variables are true.
     * It is implemented using the pairwise encoding that produces O(n&#94;2) clauses.
-    * @param k         the number of variables that must be true
+    * @param k the number of variables that must be true
     * @param variables the input variables
     * @return the [[Expression]] that encodes the constraint
     */
@@ -51,14 +51,14 @@ object Encodings:
     * It is implemented using sequential encoding that produces 2nk + 2n − 3k + 1 clauses (O(n) complexity). <br>
     * Set of mathematical clauses:<br>
     * 1) (&not;s1,j) for 1 &lt; j &le; k <br>
-    * 2) (&not;xi &or; si,1) for 1 &lt; i < n<br>
-    * 3) (&not;si−1,1 &or; si,1) for 1 &lt; i < n<br>
-    * 4) (&not;xi &or; &not;si−1,j−1 &or; si,j) for 1 &lt; i < n and for 1 &lt; j &le; k<br>
-    * 5) (&not;si−1,j &or; si,j) for 1 &lt; i < n and for 1 &le; j &le; k<br>
-    * 6) (&not;xi &or; &not;si−1,k) for 1 &lt; i < n <br>
+    * 2) (&not;xi &or; si,1) for 1 &lt; i &lt; n<br>
+    * 3) (&not;si−1,1 &or; si,1) for 1 &lt; i &lt; n<br>
+    * 4) (&not;xi &or; &not;si−1,j−1 &or; si,j) for 1 &lt; i &lt; n and for 1 &lt; j &le; k<br>
+    * 5) (&not;si−1,j &or; si,j) for 1 &lt; i &lt; n and for 1 &le; j &le; k<br>
+    * 6) (&not;xi &or; &not;si−1,k) for 1 &lt; i &lt; n <br>
     * Paper reference: [https://link.springer.com/book/10.1007/11564751](https://link.springer.com/book/10.1007/11564751)
     *
-    * @param k         the number of variables that must be true
+    * @param k the number of variables that must be true
     * @param variables the input variables
     * @param generator the generator of new symbols
     * @return the [[Expression]] that encodes the constraint

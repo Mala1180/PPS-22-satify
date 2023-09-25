@@ -132,7 +132,19 @@ The deadline for this sprint is 25/09/2023.
 
 ## Sprint Review
 
+In this last sprint, all the tasks have been completed. 
+Being the last sprint of the project, the team dedicated extra time to the documentation and to general refactoring.
+Every member of the team, beyond its tasks, 
+has refactored little parts of the software in order to check even the smallest details.
+
+The sprint terminates in time, and the first release of Satify has been carried out. 
+
 ## Sprint Retrospective
+
+During this sprint, some complex tasks have been removed from the backlog
+because it was not possible to complete them in time. 
+The release is stable, but it is still possible to encounter some memory
+problems due to the stack size.
 
 ---
 [Previous](3-product-backlog.md)
