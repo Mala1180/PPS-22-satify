@@ -336,13 +336,13 @@ The expression in CNF is simplified according to the specific logical operator:
         - Literal $A$ in positive form. Constraint $A = True$:
 
           <p align=center>
-            <img src='./img/cnf-simpl/umOr1.svg' height="150">
+            <img src='./img/cnf-simpl/umOr1.svg' alt="Or set variable True" height="150">
           </p>
 
         - Literal $B$ is negated. Constraint $B = false$ sets the literal $True$:
 
            <p align=center>
-            <img src='./img/cnf-simpl/umOr2.svg' height="200">
+            <img src='./img/cnf-simpl/umOr2.svg' alt="Or set variable False" height="200">
           </p>
 
 
@@ -352,7 +352,7 @@ The expression in CNF is simplified according to the specific logical operator:
   Examples:
     - Literal $A$ in positive form. Constraint $A = False$:
       <p align=center>
-        <img src='./img/cnf-simpl/cOr1.svg' height="150">
+        <img src='./img/cnf-simpl/cOr1.svg' alt="And set variable False" height="150">
       </p>
 
 - `And`
@@ -362,7 +362,7 @@ The expression in CNF is simplified according to the specific logical operator:
 
         - Constraint $B = True$:
           <p align=center>
-            <img src='./img/cnf-simpl/And1.svg' height="150">
+            <img src='./img/cnf-simpl/And1.svg' alt="And simplification" height="150">
           </p>
 
 ## Domain-Specific Language
