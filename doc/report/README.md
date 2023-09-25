@@ -7,7 +7,7 @@ It allows solving SAT problem instances or simply converting them in Conjunctive
 It's possible to insert a custom SAT problem instance or use one of the predefined.
 In case of manual insertion, the user can use an adhoc DSL.
 
-Internally, the solver makes use of two main algorithms: Tseitin transformation and DPLL 
+Internally, the solver makes use of two main algorithms: Tseitin transformation and DPLL
 (Davis-Putnam-Logemann-Loveland).
 The first one is used to convert the problem instance to CNF form, and the second one is used to solve the problem
 instance.
@@ -24,8 +24,8 @@ expression, in such a way that it is entirely evaluated to be true.
 
 If no such assignment exists, the propositional expression is said to be unsatisfiable (UNSAT).
 
-SAT is proven to be NP-complete, nevertheless, many heuristic SAT algorithms exist in the literature which works well
-for many practical problems.
+SAT is proven to be NP-complete, nevertheless, there exist many heuristic SAT algorithms in the literature which work
+well for many practical problems.
 SAT applications include artificial intelligence, model checking, circuit design and automatic exploit generation.
 
 ## Index:

@@ -8,6 +8,8 @@
   <img src="img/packages.svg" alt="packages diagram">
 </p>
 
+---
+
 ## Architecture
 
 As described in the previous section, the architectural pattern used is the **Model-View-Update** (MVU).
@@ -19,6 +21,8 @@ _abstract type members_ related to `Model`, `View` and `Update`.
 <p align=center>
   <img src="img/mvu-detailed.svg" alt=" Model-View-Update detailed diagram">
 </p>
+
+---
 
 ## Model
 
@@ -78,7 +82,7 @@ An _enumeration_ has been used for this type of entity.
 
 ## View
 
-**View** will be, as already said, a function that takes as input the **Model** and returns a set of components.
+**View** is, as already said, a function that takes as input the **Model** and returns a set of components.
 Until now, we have not seen any side effect, but in order to provide a user interface it's necessary having one, so the
 **GUI** object is in charge of render the new state of application showing the new updated components.
 In this way, every time the **Model** changes, the **GUI** will be correctly updated but without reloading the entire
@@ -88,7 +92,7 @@ UI.
 
 ## Update
 
-The **Update** type will be a function that takes in input the **Model** and a **Message** and returns an updated new
+The **Update** type is a function that takes in input the **Model** and a **Message** and returns an updated new
 **Model**.
 For every type of message one behaviour is defined, so the **Update** function will be a _match_ on the **Message**
 type.
@@ -114,8 +118,7 @@ The Tseitin algorithm converts a formula in propositional logic into a CNF formu
 In this case, the _Converter_ is in charge of converting the expression in CNF form, using the Tseitin transformation.
 It is implemented through a _case class_ that extends the **Converter** trait implementing the convert method.
 Following the functional approach, the implementation is hidden inside a private object.
-It contains the implementation of the three main algorithm phases.  
-
+It contains the implementation of the three main algorithm phases.
 
 The idea behind the Tseitin transformation is to introduce new auxiliary variables for subformulas in the original
 formula.
@@ -141,7 +144,7 @@ So, the best way to design it is decomposing the algorithm following the steps b
    connectives (AND, OR, NOT) following the transformations listed in the table below.
 
    | Operator | Circuit                 | Expression      | Converted                                                                     |
-         |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
+            |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
    | AND      | ![](img/AndCircuit.svg) | $X = A \land B$ | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$ |
    | OR       | ![](img/OrCircuit.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
    | NOT      | ![](img/NotCircuit.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |

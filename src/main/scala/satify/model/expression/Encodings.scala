@@ -36,6 +36,8 @@ object Encodings:
           subCombination <- combinations(vars.drop(i + 1), k - 1)
         yield vars(i) +: subCombination
     combinations(vars, k).map(_.reduceLeft(And(_, _))).reduceLeft(Or(_, _))
+    // latex representation
+    // vars.combinations(k).map(_.reduceLeft(And(_, _))).reduceLeft(Or(_, _))
 
   /** Encodes the constraint that at most one of the given variables is true.
     * @param variables the input variables

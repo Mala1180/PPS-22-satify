@@ -22,7 +22,6 @@ assuring that the total work was divided equally among the team members.
 Each Sprint Planning lasted approximately 2/3 hours of work.
 At the end of the planning, it is obtained a Product Backlog collecting every task for the current Sprint.
 
-
 At the end of the Sprint, the team members make a wrap-up of the work done, refining the Product Backlog.
 Moreover, it is produced an artifact ready to be delivered to the client, in order to show the progress of development.
 
@@ -48,9 +47,10 @@ Finally, the last requirement to consider a task done was to keep a good percent
 
 An important technical choice for the team has been Git Flow as a development workflow.
 During each Sprint, each member opens a Pull Request when a task is completed.
-In this way, he gets supervised from the other team member at any moment they thought right.
+In this way, he will get supervised from the other team members, and the code will be reviewed.
 Finally, at every Sprint Review, every open Pull Request is merged into the Develop branch.
-In order to prepare the release, a branch "Release/version" is created, and then merged into Develop and Main branches.
+In order to prepare the release, a branch "Release/<version>" is created,
+and then merged into Develop and Main branches.
 
 ## Testing
 
@@ -83,12 +83,12 @@ and to obtain a report of the results in a more client-friendly way.
 
 ## Continuous Integration
 
-The use of Continuous Integration (CI) pipeline, assures that the software is always in a working state.
-The build, tests and coverage of the software are executed automatically every time a Pull Request is opened or updated
-on a matrix of Operating Systems (Windows, Linux, macOS) to guarantee the cross-platform compatibility.
+The use of Continuous Integration (CI) pipeline assures that the code within the
+branch develop is always in a working state.
+Build, tests and coverage of the software are executed automatically every time a Pull Request is opened or updated
+on the three main operating systems (Windows, Linux, macOS) to guarantee the cross-platform compatibility.
 Another mechanism introduced later during the development process is the automatic release of the software with the
 relative changelog.
-
 
 ---
 [Back to Index](README.md) | [Next](2-requirements.md)
