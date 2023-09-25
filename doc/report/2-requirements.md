@@ -1,5 +1,7 @@
 # Requirements
 
+---
+
 ## Business requirements
 
 The goal of our project is to develop a SAT Solver that allows the user to check
@@ -144,5 +146,7 @@ A problem is represented by a set of constraints which, composed together, form 
 |     [2.iv](#system-requirements)     |                         [DpllEnumerator.scala](../../src/test/scala/satify/update/solver/dpll/impl/DpllEnumeratorTest.scala) <br/> [DpllFinder.scala](../../src/test/scala/satify/update/solver/dpll/impl/DpllFinderTest.scala)                         |                                                                                                 |                                                                                                                       |
 | [3.iv](#non-functional-requirements) |                                                                                              [DSL.feature](../../src/test/resources/features/DSL.feature)                                                                                               |
 | [3.v](#non-functional-requirements)  |                                        [Tseitin Benchmarks](../../src/test/scala/satify/update/converters/tseitin/benchmark) <br/>  [DPLL Benchmarks](../../src/test/scala/satify/update/solver/dpll/benchmark)                                         |
+
+---
 
 [Previous](1-methodology.md) | [Next](3-architectural-design.md)

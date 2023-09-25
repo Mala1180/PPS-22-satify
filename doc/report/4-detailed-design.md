@@ -8,6 +8,8 @@
   <img src="img/packages.svg" alt="packages diagram">
 </p>
 
+---
+
 ## Architecture
 
 As described in the previous section, the architectural pattern used is the **Model-View-Update** (MVU).
@@ -19,6 +21,8 @@ _abstract type members_ related to `Model`, `View` and `Update`.
 <p align=center>
   <img src="img/mvu-detailed.svg" alt=" Model-View-Update detailed diagram" style="width: 60%">
 </p>
+
+---
 
 ## Model
 
@@ -175,7 +179,7 @@ Links to the SAT problems used in this project:
 
 ## View
 
-`View` will be, as already said, a function that takes as input the `Model` and returns a set of components.
+`View` is, as already said, a function that takes as input the `Model` and returns a set of components.
 Until now, we have not seen any side effect, but in order to provide a user interface it's necessary having one, so the
 `GUI` object is in charge of render the new state of application showing the new updated components.
 In this way, every time the `Model` changes, the `GUI` will be correctly updated but without reloading the entire
@@ -185,7 +189,7 @@ UI.
 
 ## Update
 
-The `Update` type will be a function that takes in input the `Model` and a `Message` and returns an updated new
+The `Update` type is a function that takes in input the `Model` and a `Message` and returns an updated new
 `Model`.
 For every type of message one behaviour is defined, so the `Update` function will be a _match_ on the `Message`
 type.
@@ -413,14 +417,25 @@ The expression in CNF is simplified according to the specific logical operator:
 The user must be able to insert in input a logical expression using a friendly and intuitive syntax, here is an example:
 
 ```
-!(a and b) or (c and (d -> e))
+!(a and b) or (c xor (d -> e)) or ((a, b, d) atMost three)
 ```
 
 To achieve this goal, it is used an Internal Domain Specific Language (DSL) realized mainly through the _Pimp my
 library_ pattern.
 
+In particular, the implicitly converted types are:
+
+- `Tuple[String]` to `Seq[Symbol]`
+- `String` to `Symbol`
+
+Then, two types are "pimped":
+
+- `Seq[Symbol]`, to apply extension methods for encodings.
+- `Expression`, to apply extension methods for logical operators.
+
 Since this mechanism provides a not so versatile syntax (because it strongly depends on Scala syntax) respect to using a
 proper parser, the input needs to be preprocessed in order to be adapted to the DSL syntax.
 
 ---
+
 [Previous](3-architectural-design.md) | [Next](5-implementation.md)

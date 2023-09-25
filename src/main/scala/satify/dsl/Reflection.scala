@@ -9,27 +9,41 @@ import scala.util.matching.Regex
 
 object Reflection:
 
-  private val excludedWords = getDSLKeywords.mkString("|")
+  private val excludedWords = getDSLKeywords
+    .mkString("|")
+    .replace("|^|", "|\\^|")
+    .replace("|\\/|", "|\\\\/|")
+    .replace("|/\\|", "|/\\\\|")
   private val symbolsRegexPattern: Regex = s"""((?!$excludedWords\\b)\\b(?![0-9]+\\b)\\w+)""".r
   private val commentsRegexPattern: Regex = """(//.*)|(/\*[^*]*\*+(?:[^/*][^*]*\*+)*/)""".r
   private val privateVariablesPattern: Regex = s"\\b($encodingVarPrefix|$converterVarPrefix)\\w*".r
 
   def getDSLKeywords: List[String] =
-    val operators = classOf[Operators.type].getMethods.map(_.getName).toList
+    val operators = classOf[Operators.type].getMethods.map(_.getName).toList.map {
+      case "andSymbol" => "/\\"
+      case "orSymbol" => "\\/"
+      case "notSymbol" => "!"
+      case "xorSymbol" => "^"
+      case "impliesSymbol" => "->"
+      case "iffSymbol" => "<->"
+      case op => op
+    }
     val encodings = classOf[Encodings.type].getMethods.map(_.getName).toList
     val numbers = classOf[Numbers.type].getMethods.map(_.getName).toList
     val objectMethods = classOf[Object].getMethods.map(_.getName).toList
     (operators ::: encodings ::: numbers).filterNot(objectMethods.contains(_))
 
-  /** Prepares the input for the reflection, adding quotes to all words that are not keywords
+  /** Prepares the input for the reflection, adding quotes to all words that are not keywords and removing comments and new lines.
     * @param input the input to process
     * @return the processed input
     */
-  def processInput(input: String): String = input
-    .replaceAll(commentsRegexPattern.toString(), "")
-    .replaceAll(symbolsRegexPattern.toString(), "\"$1\"")
-    .replaceAll("\n", " ")
-    .trim
+  def processInput(input: String): String =
+    println(symbolsRegexPattern)
+    input
+      .replaceAll(commentsRegexPattern.toString(), "")
+      .replaceAll(symbolsRegexPattern.toString(), "\"$1\"")
+      .replaceAll("\n", " ")
+      .trim
 
   /** Reflects the input to the REPL returning an Expression.
     * If the REPL is not started yet, waits until it is started.
