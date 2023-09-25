@@ -28,7 +28,7 @@ object TextPaneUtils:
 
     /** Util function to find all starting indexes where a specific substring appears inside a String.
       * @param findIndex function which takes an Int, representing the index position where start searching for
-      *                  occurrences and returns an Int, that is equal -1 if no occurrences are found, n otherwise.
+      * occurrences and returns an Int, that is equal -1 if no occurrences are found, n otherwise.
       * @param from      starting index to search for occurrences
       * @param length    length of the searching element
       * @return list of all indexes where an occurrence has been found
@@ -44,7 +44,7 @@ object TextPaneUtils:
     }
 
     /** Sets character attribute foreach offset inside the input list
-      * @param l      list of offsets
+      * @param l list of offsets
       * @param length length of each String
       */
     def setKeywordsAttribute(l: List[Int], length: Int): Unit = Swing.onEDT {

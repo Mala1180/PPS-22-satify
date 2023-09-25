@@ -88,7 +88,7 @@ object State:
     StateImpl(None, None, Some(cnf), None, Some(problem), Some(time))
 
   /** Creates a new application state with an input problem and its solution.
-    * @param sol     the [[Solution]]
+    * @param sol the [[Solution]]
     * @param problem the [[Problem]] selected
     * @param time the time elapsed in milliseconds
     * @return a new [[State]] instance.

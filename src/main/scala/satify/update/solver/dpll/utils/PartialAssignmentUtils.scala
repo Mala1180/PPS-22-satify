@@ -14,7 +14,6 @@ object PartialAssignmentUtils:
   import satify.model.solver.OrderedList.given
 
   /** Get all SAT solutions, e.g. all Leaf nodes where the CNF has been simplified to Symbol(True).
-    *
     * @param dt DecisionTree
     * @return a set of PartialModel(s).
     */
@@ -48,7 +47,6 @@ object PartialAssignmentUtils:
     extract(dt :: Nil).distinct
 
   /** Extract a partial assignment from an expression in CNF.
-    *
     * @param cnf where to extract a Model
     * @return correspondent partial assignment from CNF given as parameter.
     */
@@ -70,7 +68,6 @@ object PartialAssignmentUtils:
     PartialAssignment(list(extractOptVars(cnf :: Nil): _*))
 
   /** Filters unconstrained variables from the partial model
-    *
     * @param partialAssignment partial model
     * @return filtered partial model
     */
@@ -80,9 +77,8 @@ object PartialAssignmentUtils:
         optVariables.filter { case OptionalVariable(_, o) => o.isEmpty }
 
   /** Update a partial assignment given a constraint as parameter
-    *
     * @param partialAssignment partial model
-    * @param varConstr         variable constraint
+    * @param varConstr variable constraint
     * @return updated partial assignment
     */
   def updatePartialAssignment(partialAssignment: PartialAssignment, varConstr: Constraint): PartialAssignment =
