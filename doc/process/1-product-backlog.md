@@ -107,7 +107,7 @@
 
 The goals of this sprint are:
 
-- Setup the project
+- Set up the project
 - Domain understanding
 - In case of extra time, start the implementation
 
@@ -123,8 +123,10 @@ The sprint goals were achieved with no problems. We had some extra time to start
 
 ## Sprint Retrospective
 
-We realised that some Sprint Task was not sufficiently expanded. To complete a Task often we had to do more than a
-single Pull Request/Feature. Moreover, not all the estimations were perfectly precise, but that didn't hurt so much.
+We realized that some Sprint Task was not sufficiently expanded. 
+To complete a task, often we had to do more than a single Pull Request/Feature. 
+Moreover, not all the estimations were perfectly precise, but that didn't hurt so much.
 
 ---
+
 [Back to Index](README.md) | [Next](2-product-backlog.md)

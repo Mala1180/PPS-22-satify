@@ -1,7 +1,7 @@
 package satify.update.solver.dpll.cnf
 
 import satify.model.cnf.Bool.{False, True}
-import satify.model.cnf.CNF.{And, Not, Or, Symbol}
+import satify.model.cnf.CNF.{And, Not, Symbol}
 import satify.model.cnf.{Bool, CNF}
 
 import scala.annotation.tailrec

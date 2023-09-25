@@ -16,3 +16,21 @@ class ProblemWrongUseTest extends AnyFlatSpec with Matchers:
       NQueens(0)
     }
   }
+
+  "GraphColoring with edges containing wrong nodes" should "throw IllegalArgumentException" in {
+    assertThrows[IllegalArgumentException] {
+      GraphColoring(("n1", "n2") :: Nil, "n3" :: "n4" :: Nil, 2)
+    }
+  }
+
+  "GraphColoring with wrong number of colors" should "throw IllegalArgumentException" in {
+    assertThrows[IllegalArgumentException] {
+      GraphColoring(("n1", "n2") :: Nil, "n1" :: "n2" :: Nil, -1)
+    }
+  }
+
+  "NurseScheduling with negative parameters" should "throw IllegalArgumentException" in {
+    assertThrows[IllegalArgumentException] {
+      NurseScheduling(-1, -2, -2)
+    }
+  }

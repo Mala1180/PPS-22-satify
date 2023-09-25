@@ -4,10 +4,10 @@ import satify.model.cnf.Bool.True
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.{And, Not, Or, Symbol}
 import satify.model.expression.SymbolGeneration.{converterVarPrefix, encodingVarPrefix}
-import scala.annotation.tailrec
-import satify.model.solver.DecisionTree.{Branch, Leaf}
-import satify.model.solver.OrderedList.list
 import satify.model.solver.*
+import satify.model.solver.DecisionTree.{Branch, Leaf}
+
+import scala.annotation.tailrec
 
 object PartialAssignmentUtils:
 
@@ -52,7 +52,7 @@ object PartialAssignmentUtils:
     */
   def extractParAssignmentFromCnf(cnf: CNF): PartialAssignment =
 
-    import satify.model.solver.OrderedList.{list, given_Ordering_OptionalVariable}
+    import satify.model.solver.OrderedList.{given_Ordering_OptionalVariable, list}
 
     @tailrec
     def extractOptVars(todo: List[CNF], done: List[OptionalVariable] = Nil): List[OptionalVariable] = todo match

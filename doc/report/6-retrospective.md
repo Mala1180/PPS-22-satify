@@ -9,7 +9,10 @@ Each Sprint Retrospective is included in the corresponding Product Backlog
 
 ### Luca Fabri
 
-puoi scrivere del multi thread che alla fine non abbiamo fatto perchè non farlo by design era complicato
+During my work, I encountered some challenges in the testing phase due to the need to cover a wide range of possible scenarios. 
+This diversity of cases required a careful and detailed approach to test design in order to ensure a comprehensive and accurate evaluation of the system.
+
+I discarded the multi-threading approach due to the fact that the solving process implementation is not embarrassingly parallel.
 
 ### Mattia Matteini
 
@@ -31,7 +34,7 @@ that I could approach the development in an incremental way.
 I had assumed that it would take me more time to understand the algorithm, but its parts are relatively
 simple.
 One particular difficulty was to understand some edge cases that were not well explained in papers like, for example,
-the case of multiple equals subformulas in the same clause.
+the case of multiple equals sub-formulas in the same clause.
 
 ## Task review
 
@@ -63,5 +66,7 @@ For how the solver is designed, it is also possible to extend it with other conv
 Another important feature could be the simulation of SAT attack on logical circuits.
 
 Instead, in order to improve performance, a multi-threading approach could be evaluated.
+
+---
 
 [Previous](5-implementation.md) | [Back to Index](README.md)

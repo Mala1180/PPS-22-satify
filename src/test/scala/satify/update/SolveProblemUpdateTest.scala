@@ -7,8 +7,6 @@ import satify.model.problems.{GraphColoring, NQueens, NurseScheduling}
 import satify.model.{Solution, State}
 import satify.update.Message.*
 import satify.update.Update.update
-import satify.update.solver.Solver
-import satify.update.solver.SolverType.DPLL
 
 class SolveProblemUpdateTest extends AnyFlatSpec with Matchers:
 

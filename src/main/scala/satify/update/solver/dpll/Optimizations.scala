@@ -5,7 +5,6 @@ import satify.model.cnf.CNF.*
 import satify.model.solver.{Constraint, Decision, OptionalVariable, PartialAssignment}
 
 import scala.annotation.tailrec
-import scala.collection.immutable.{AbstractSeq, LinearSeq}
 
 private[dpll] object Optimizations:
 

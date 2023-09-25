@@ -2,8 +2,8 @@ package satify.update.converters
 
 import satify.model.cnf.CNF
 import satify.model.expression.Expression
-import satify.update.converters.TseitinMemoization.cachedConversion
 import satify.update.converters.ConverterType.*
+import satify.update.converters.TseitinMemoization.cachedConversion
 import satify.update.converters.tseitin.TseitinTransformation.tseitin
 
 import scala.collection.mutable

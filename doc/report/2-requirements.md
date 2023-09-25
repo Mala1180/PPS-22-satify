@@ -8,7 +8,8 @@ The goal of our project is to develop a SAT Solver that allows the user to check
 the satisfiability of a logical expression.
 
 Satify is a tool that can be used by anyone who has a basic knowledge of boolean logic,
-it is not necessary to be familiar with DIMACS format like instead is required by other SAT Solvers.
+it is not necessary to be familiar with [DIMACS](https://jix.github.io/varisat/manual/0.2.0/formats/dimacs.html) format
+like instead is required by other SAT Solvers.
 In fact, Satify permits the user to insert the logical expression in a friendly and intuitive way.
 That's important for any customer because it allows using the tool without any problems, considering non-expert,
 letting it usable also for didactic purposes.
@@ -18,7 +19,7 @@ and also obtain a successful open-source project supported by anyone who wants t
 
 ## Domain model requirements
 
-The domain model of the system is composed by the following main entities:
+The domain model of the system is composed by the following main entities.
 
 ### Symbol
 
@@ -32,7 +33,6 @@ Literal is an atomic formula (in this model **Symbol**) or its negation (**Not(S
 ### Expression
 
 An Expression (or propositional formula) is an entity composed by a set of symbols and logical operators.
-
 It describes the constraints to be satisfied in the solution.
 
 ### Encodings
@@ -44,8 +44,8 @@ Generally, they encode cardinality constraints like "at least one" or "at most o
 
 CNF is a particular type of **Expression**, in fact, has some constraints that make it different from a generic
 expression.
-CNF expressions are considered correct if it contains **only** conjunctions of clause (and)
-composed by disjunctions (or) of **Literals**.
+CNF expressions are considered correct if they contain **only** conjunctions of clause (And)
+composed by disjunctions (Or) of **Literals**.
 This type of expression is necessary to solve the SAT problem with the DPLL algorithm.
 
 ### Converter
@@ -67,7 +67,7 @@ The solution is the result of the solving process, composed by:
 
 - **Result**: represents the effective satisfiability (SAT or UNSAT).
 - **Assignments**: collects the assignments of the variables that make the expression satisfiable.
-- **Status**: indicates if Assignments contain all the satisfiable assignments, or just some of them.
+- **Status**: indicates if **Assignments** contain all the satisfiable assignments, or just some of them.
 
 ### Problem
 
@@ -102,7 +102,7 @@ A problem is represented by a set of constraints which, composed together, form 
     3. The system applies the Tseitin transformation to the expression obtaining the CNF.
     4. The system applies the DPLL algorithm with CNF as input.
        It collects either all the assignments of the solution or one assignment at a time by request.
-    5. The system measures the time spent by the Tseitin Transformation algorithm to convert and the DPLL algorithm to
+    5. The system measures the time spent by the Tseitin transformation algorithm to convert and the DPLL algorithm to
        solve it (in nanoseconds).
     6. The system can also only convert the expression in CNF simply applying the Tseitin transformation.
     7. A file imported must be a text file containing the input in DIMACS format.
@@ -114,7 +114,7 @@ A problem is represented by a set of constraints which, composed together, form 
 
 3. ## Non-functional requirements
     1. The system must be executable on the three main operating systems: Windows, Linux and MacOS.
-    2. The system has to be user-friendly, providing few and intuitive buttons, help section and flexible input.
+    2. The system has to be user-friendly, providing few and intuitive buttons, help section and flexible input (e.g. /\ - and).
     3. The system has to be easily extensible with other algorithms for conversion and solving.
     4. The system has to be secure, avoiding any kind of code injection through the input.
     5. The system has to perform efficiently, completing satisfiability checks within acceptable
@@ -135,8 +135,8 @@ A problem is represented by a set of constraints which, composed together, form 
 |             Requirement              |                                                                                                                   Feature / Scenarios                                                                                                                   |
 |:------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 |      [1.i](#user-requirements)       |                                                                                              [DSL.feature](../../src/test/resources/features/DSL.feature)                                                                                               |
-|      [1.ii](#user-requirements)      |                                                                               [Conversion.feature](../../src/test/resources/features/Conversion.featureConversionfeature)                                                                               |                                                                                          |
-| [1.iii 1.iv 1.v](#user-requirements) |                                                                                           [Solver.feature](../../src/test/resources/features/Solver.feature)                                                                                            |
+|      [1.ii](#user-requirements)      |                                                                                       [Conversion.feature](../../src/test/resources/features/Conversion.feature)                                                                                        |                                                                                          |
+| [1.iii 1.iv 1.v](#user-requirements) |                                                                                          [Solving.feature](../../src/test/resources/features/Solving.feature)                                                                                           |
 |      [1.ix](#user-requirements)      |                                                                                     [SatEncodings.feature](../../src/test/resources/features/SatEncodings.feature)                                                                                      |                                                                              |
 |      [1.x](#user-requirements)       |                                                                                              [DSL.feature](../../src/test/resources/features/DSL.feature)                                                                                               |
 |      [1.xi](#user-requirements)      |                                                                                              [DSL.feature](../../src/test/resources/features/DSL.feature)                                                                                               |

@@ -11,6 +11,7 @@ case class NurseScheduling(nurses: Int, days: Int, shifts: Int) extends Problem:
     def prefix: String = encodingVarPrefix
 
   private val variables: Seq[Seq[Seq[Symbol]]] =
+    require(nurses > 0 && days > 0 && shifts > 0, "Nurses, days and shifts must be positive")
     for n <- 0 until nurses
     yield for d <- 0 until days
     yield for s <- 0 until shifts

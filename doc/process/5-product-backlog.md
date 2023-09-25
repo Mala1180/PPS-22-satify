@@ -59,7 +59,7 @@ _No remaining tasks from the previous sprint._
         <tr>
             <td>4</td>
             <td rowspan="3">Performance Testing</td>
-            <td>Introduce Scalameter</td>
+            <td>Introduce ScalaMeter</td>
             <td>Paganelli/Matteini</td>
             <td>1</td>
         </tr>
@@ -147,4 +147,5 @@ The release is stable, but it is still possible to encounter some memory
 problems due to the stack size.
 
 ---
-[Previous](3-product-backlog.md)
+
+[Previous](3-product-backlog.md) | [Back to Index](README.md)

@@ -158,4 +158,5 @@ Tests with basic CNF expressions have been performed, but more complex ones have
 of the algorithm.
 
 ---
+
 [Previous](1-product-backlog.md) | [Next](3-product-backlog.md)

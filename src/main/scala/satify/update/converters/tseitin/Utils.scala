@@ -1,7 +1,6 @@
 package satify.update.converters.tseitin
 
-import satify.model.cnf.CNF.{And as CNFAnd, Not as CNFNot, Or as CNFOr, Symbol as CNFSymbol}
-import satify.model.cnf.{CNF, Literal}
+import satify.model.cnf.CNF
 import satify.model.expression.Expression
 import satify.model.expression.Expression.*
 import satify.model.expression.SymbolGeneration.{SymbolGenerator, converterVarPrefix}
