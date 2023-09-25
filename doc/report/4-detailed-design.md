@@ -33,11 +33,11 @@ abstract types:
 
 Expression is represented through a _sum type_ which contains all the possible types of expression:
 
-- `And`, it represents the logical And gate. It takes in input **left** and **right** parameters both of
-  type `Expression`.
-- **Or**, it represents the logical Or gate. Like the `And`, it takes a **left** and **right** Expressions in input.
-- `Not`, it's the logical Not gate. It takes in input another `Expression`.
-- `Symbol`, it represents an input variable and takes in input its name.
+- **And**, it represents the logical And gate. It takes in input **left** and **right** parameters both of
+  type **Expression**.
+- **Or**, it represents the logical Or gate. Like the  **And**, it takes a **left** and **right** Expressions in input.
+- **Not**, it's the logical Not gate. It takes in input another **Expression**.
+- **Symbol**, it represents an input variable and takes in input its name.
 
 Because of its recursive structure, Expression is a tree data structure, where the inner nodes are either
 **And**, **Or** or **Not**, and each leaf is a **Symbol**.
@@ -227,7 +227,7 @@ The main ideas behind this algorithm are the following:
 - It starts with Branch node of **DecisionTree** where the **PartialAssignment** of **Decision** is composed of all unconstrained variables.
 - Then, it chooses a variable and a boolean value for branching purposes (decision). On the left side of the Branch that variable will be constrained to the chosen value, while on the right with its negated form. A recursive call is done on the left, simplifying the CNF with the boolean constraint.
 - At each step, it continues to constraint variables until the CNF is completely simplified or it contains a conflict.
-    In the former case, a solution has been found and a Leaf inside the tree is inserted (SAT). In the latent, a false clause has been found, which leds the averall expression false (UNSAT). Also in this case a Leaf is inserted, and the computation backtracks to the previous decision, branching on the negated chosen value. 
+    In the former case, a solution has been found and a Leaf inside the tree is inserted (SAT). In the latter, a false clause has been found, which leds the averall expression false (UNSAT). Also in this case a Leaf is inserted, and the computation backtracks to the previous decision, branching on the negated chosen value. 
 
 It is good to say that in **DpllEnumerator** the algorithm doesn't stop when only an assignment has been found.
 In fact, it continues to search until the **DecisionTree** completely built.
@@ -239,10 +239,10 @@ On the other hand, it's a bit more complex for **DpllFinder**. While the Decisio
 DPLL makes use of two rules to select the most appropriate variable to branch and value: _unit propagation_ and _pure literal elimination_. If both of them are not applicable, a random decision is made.
 
 They have been introduced inside an object **Optimizations** used by **DpllDecision**.
-The latent in turn exposes a `decide` function which will be called by DPLL.
+The latter in turn exposes a `decide` function which will be called by DPLL.
 
 <p align="center">
-<img src="img/dpll-decision.svg" alt="Dpll decisions" style="width: 40%">
+<img src="img/solver/dpll-decision.svg" alt="Dpll decisions" style="width: 40%">
 </p>
 
 ##### Unit propagation
@@ -256,7 +256,7 @@ Moreover, eliminate the clauses with $\lnot c$ inside. Delete also all the $c$ w
 
 On the other hand, if $c$ is in positive form ($(c)$ and not $(\lnot c)$), do vice versa.
 
-This rule creates a left branch with the variable and constraint mentioned and right UNSAT leaf.
+This rule creates a left branch with the variable and constraint mentioned and a right UNSAT leaf.
 This practice often leads to a cascade of unit propagations, avoiding a large part of search space.
 
 ##### Pure literal elimination
@@ -274,15 +274,14 @@ therefore, delete all the other clauses where $b$ is included.
 In other words: if $b$ doesn't appear in negative form inside the formula $F$, assigning $b = True$, the satisfability
 of $F$ is preserved.
 
-Eliminating pure literals can significantly reduce the size of the CNF formula. Smaller formulas are often easier and quicker to process and can lead the solving faster.
+Eliminating pure literals can significantly reduce the size of the CNF formula. Smaller formulas are often easier and quicker to process, leading for faster solutions.
 
 #### CNF simplification
 
 The simplification of the expression in Cunjuntive-Normal-Form is very important to determine if the formula is SAT
 under the current **PartialAssignment**.
 
-In fact, if the CNF expression is completely simplified s.t. it is equal to *Symbol(True)*, it can be asserted
-that it is SAT.
+In fact, if the CNF expression is completely simplified s.t. it is equal to *Symbol(True)*, it can be asserted that it is SAT.
 
 The expression in CNF is simplified according to the specific logical operator:
 
@@ -294,33 +293,33 @@ The expression in CNF is simplified according to the specific logical operator:
         - Literal $A$ in positive form. Constraint $A = True$:
 
           <p align=center>
-            <img src='./img/umOr1.svg' height="150" align="center">
+            <img src='./img/cnf-simpl/umOr1.svg' height="150" align="center">
           </p>
 
         - Literal $B$ is negated. Constraint $B = false$ to set the literal $True$:
 
            <p align=center>
-            <img src='./img/umOr2.svg' height="200" align="center">
+            <img src='./img/cnf-simpl/umOr2.svg' height="200" align="center">
           </p>
 
 
-- When a Literal in an **Or** branch is set to $False` s.t. `V = False` or `Not(V) = False` the CNF must be
+- When a Literal in an **Or** branch is set to $False$ s.t. $l = False$ or $\lnot l = False$ the CNF must be
   simplified substituting the **Or** with the other branch.
 
   Examples:
-    - Literal `A` in positive form. Constraint `A = False`:
+    - Literal $A$ in positive form. Constraint $A = False$:
       <p align=center>
-        <img src='./img/cOr1.svg' height="150" align="center">
+        <img src='./img/cnf-simpl/cOr1.svg' height="150" align="center">
       </p>
 
-- `And`
-    - An expression in CNF should be simplified when an `And` contains at least a `True` Literal:
+- **And**
+    - An expression in CNF should be simplified when an $And$ contains at least a $True$ Literal:
 
       Examples:
 
-        - Constraint `B = True`:
+        - Constraint $B = True$:
           <p align=center>
-            <img src='./img/And1.svg' height="150" align="center">
+            <img src='./img/cnf-simpl/And1.svg' height="150" align="center">
           </p>
 
 ## Domain-Specific Language
