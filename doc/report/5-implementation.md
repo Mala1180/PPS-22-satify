@@ -120,7 +120,7 @@ to the DevOps tasks, so I set up Continuous Integration, SBT, ScalaTest and Scal
 ### Architecture
 
 After that, I was involved in the design and implementation of the software architecture (MVU).
-Despite there aren't too many dependencies in MVU, I decided to use the Cake Pattern to still give robustness and
+Despite there aren't too many dependencies in MVU, I decided to use a simplified version of Cake Pattern to still give robustness and
 flexibility.
 
 In particular, I made use of the _Self-Type Annotation_ and _Mixin_ mechanisms offered by Scala in order to

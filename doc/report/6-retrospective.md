@@ -2,24 +2,36 @@
 
 ---
 
-## Alberto Paganelli
-### Tseitin Algorithm
+Each Sprint Retrospective is included in the corresponding Product Backlog
+(see [Process](../process/README.md)).
+
+## Personal comments
+
+### Luca Fabri
+
+puoi scrivere del multi thread che alla fine non abbiamo fatto perchè non farlo by design era complicato
+
+### Mattia Matteini
+
+The most difficult parts were the architecture understanding and modeling, and the DSL design.
+In fact, both were totally new to me.
+
+During the DSL design, I was undecided whether to use a custom monadic parser, or to simply use Scala mechanisms.
+I chose the second one because it had the best trade-off between complexity and result.
+Despite this, the DSL implementation took me more time than expected,
+due to the fact I had no really clear idea how Internal DSLs work.
+
+I had no other major difficulties during the development.
+
+### Alberto Paganelli
 
 Initially, not having sufficient knowledge, I spent some time understanding the algorithm and its intermediate phases so
 that I could approach the development in an incremental way.
 
 I had assumed that it would take me more time to understand the algorithm, but its parts are relatively
 simple.
-One particular difficulty was to understand some edge cases that were not well explained in papers like, for example, 
+One particular difficulty was to understand some edge cases that were not well explained in papers like, for example,
 the case of multiple equals subformulas in the same clause.
-
-### Comments
-I'm satisfied with the result of this project, I think we have done summary a good job and a lot of practice with 
-Scala and functional programming.
-Another positive aspect is that we had the opportunity 
-to experiment with new tools such as cucumber and a new AGILE methodology which I believe was fundamental.
-The strict rules on the code review and the tests have been very useful to improve the quality of the code and for having 
-always a working version of the software.
 
 ## Task review
 
@@ -29,12 +41,21 @@ For this reason, we decided to momentarily reduce the number of code reviews to 
 so impacting.
 We took this decision in order to avoid blocking the work of the other team members.
 
+## Final comments
+
+We are satisfied with the result of this project.
+We think we have done summary a good job and a lot of practice with Scala and functional programming.
+Another positive aspect is that we had the opportunity to experiment with new tools such as SBT, Cucumber
+and a new AGILE methodology.
+The strict rules on the code review and the tests have been very useful to improve the quality of the code and for
+having always a working version of the software.
+
 ## Future developments
 
-Many future developments are possible for this project. 
+Many future developments are possible for this project.
 Some of them are related to the improvement of the user interface and others to exploit the potential of the software.
 
-To increase the user experience, it would be useful the completion while typing the formula or the possibility to 
+To increase the user experience, it would be useful the completion while typing the formula or the possibility to
 drag and drop logical operator components to generate it.
 Another improvement could be the generation of an output logical circuit to better understand the solution.
 

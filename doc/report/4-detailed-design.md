@@ -11,7 +11,7 @@
 ## Architecture
 
 As described in the previous section, the architectural pattern used is the **Model-View-Update** (MVU).
-Moreover, the **Cake Pattern** has been introduced to improve the modeling of the dependencies.
+Moreover, a simplified version of **Cake Pattern** has been introduced to improve the modeling of the dependencies.
 
 Some _trait_ has been designed to represent the components of the MVU pattern, which encapsulate within them some
 _abstract type members_ related to `Model`, `View` and `Update`.
