@@ -134,7 +134,6 @@ pages = [{"l":"index.html#","e":false,"i":"","n":"satify","t":"satify","d":"","k
 {"l":"satify/model/problems/GraphColoring.html#","e":false,"i":"","n":"GraphColoring","t":"GraphColoring(edges: List[(String, String)], nodes: List[String], colors: Int) extends Problem","d":"satify.model.problems","k":"class","x":""},
 {"l":"satify/model/problems/GraphColoring.html#constraints-0","e":false,"i":"","n":"constraints","t":"constraints: Set[Expression]","d":"satify.model.problems.GraphColoring","k":"val","x":""},
 {"l":"satify/model/problems/GraphColoring.html#given_SymbolGenerator-0","e":false,"i":"","n":"given_SymbolGenerator","t":"given_SymbolGenerator: given_SymbolGenerator.type","d":"satify.model.problems.GraphColoring","k":"given","x":""},
-{"l":"satify/model/problems/GraphColoring.html#variables-0","e":false,"i":"","n":"variables","t":"variables: Seq[Seq[Symbol]]","d":"satify.model.problems.GraphColoring","k":"val","x":""},
 {"l":"satify/model/problems/GraphColoring$given_SymbolGenerator$.html#","e":false,"i":"","n":"given_SymbolGenerator","t":"given_SymbolGenerator extends SymbolGenerator","d":"satify.model.problems.GraphColoring","k":"object","x":""},
 {"l":"satify/model/problems/GraphColoring$given_SymbolGenerator$.html#prefix-0","e":false,"i":"","n":"prefix","t":"prefix: String","d":"satify.model.problems.GraphColoring.given_SymbolGenerator","k":"def","x":""},
 {"l":"satify/model/problems/NQueens.html#","e":false,"i":"","n":"NQueens","t":"NQueens(n: Int) extends Problem","d":"satify.model.problems","k":"class","x":""},
