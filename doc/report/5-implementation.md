@@ -8,12 +8,27 @@ In this section, every group member describes the personal work done for the rea
 
 Initially, my main objective was to understand how the DPLL resolution algorithm worked. Once I had achieved that, I generalized the problem by modeling the `DecisionTree` data structure that could be used by any solver based on a search tree.
 
-Subsequently, I implemented DPLL step by step, following a Test-Driven Development (TDD) approach:
+Subsequently, I decomposed DPLL in subtasks, and I implemented them step by step, following a Test-Driven Development (TDD) approach. The code that I developed tries to exploit at most the functional programming paradigm, favoring immutability whenever possible. Extensive use of pattern matching was also made.
 
-- `CNFSimplification`'s `simplify` function simplifies a CNF given a `CNF` and a `Constraint`;
-- `DpllDecision`'s `decision` function determines the branching variable;
+- I began to implement CNF simplification.
+
+  `CNFSimplification`'s `simplify` function simplifies a CNF given a `CNF` and a `Constraint`.
+  ```scala
+    def simplifyCnf(cnf: CNF, constr: Constraint): CNF =
+      simplifyClosestAnd(simplifyClosestOr(simplifyUppermostOr(updateCnf(cnf, constr), constr), constr))
+  ```
+
+  The tests initially were made by calling `simplifyClosestAnd`, `simplifyClosestOr` and `simplifyUppermostOr`  functions to verify their correctness. Once I did that I rewritten the tests to call the exposed `simplify` function, in order to verify the overall phase.
+
+- Subsequently, `DpllDecision`'s `decision` function to determine the branching variable.
+  Also in this case, I incrementally added functions, starting from a simple decision on the first available variable, and then adding unit propagation and pure literals elimination in two subsequent steps.
+  This was done to ensure that the whole system behaves properly.
+
+  In the situation where no optimizations could be used, a random decision should me made, so I added a random variable with a seed, in order to guarantee a deterministic run.
+
 - Finally, `DpllEnumerator` and `DpllFinder` objects bring all togheter with a private `dpll` method which constructs the `DecisionTree`.
 
+The final implementations of the subtasks have been continually improved and optimized, to enable the users to handle increasingly larger instances. For this reason, some functions make use of Scala's tail recursion optimization to avoid frequent occurrences of stack overflow situations. On the other hand, many recursive functions were not converted to tail recursive, as large and complex function would've been generated. In such cases, we chosed to prioritize code readability and maintainability.
 
 ## Mattia Matteini
 
