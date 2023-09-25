@@ -3,11 +3,13 @@
 ---
 
 The software to realize had to exploit the functional programming paradigm, this is the reason why
-we chose to use the **MVU** (Model-View-Update) architectural pattern: it fits well with this paradigm.
+we chose the **MVU** (Model-View-Update) architectural pattern: it fits well with this paradigm.
 
 The following figure shows the typical behavior of this pattern.
 
-<img src="img/mvu.png" alt="Diagram Model-View-Update">
+<p align="center">
+    <img src="img/mvu/mvu.svg" style="width: 80%" alt="Diagram Model-View-Update">
+</p>
 
 ## Model
 

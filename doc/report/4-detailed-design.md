@@ -19,7 +19,7 @@ Some _trait_ has been designed to represent the components of the MVU pattern, w
 _abstract type members_ related to `Model`, `View` and `Update`.
 
 <p align=center>
-  <img src="img/mvu-detailed.svg" alt=" Model-View-Update detailed diagram" style="width: 60%">
+  <img src="img/mvu/mvu-detailed.svg" alt=" Model-View-Update detailed diagram" style="width: 60%">
 </p>
 
 ---

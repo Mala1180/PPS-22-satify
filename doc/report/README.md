@@ -9,7 +9,7 @@ In case of manual insertion, the user can use an adhoc DSL.
 
 Internally, the solver makes use of two main algorithms: Tseitin transformation and DPLL
 (Davis-Putnam-Logemann-Loveland).
-The first one is used to convert the problem instance to CNF form, and the second one is used to solve the problem
+The first one is used to convert the problem instance into CNF form, and the second one is used to solve the problem
 instance.
 
 Satify will print the solution of the problem (SAT or UNSAT) and, if SAT, it will provide one or more satisfiable
