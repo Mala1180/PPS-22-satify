@@ -321,6 +321,11 @@ Eliminating pure literals can significantly reduce the size of the CNF formula. 
 
 #### CNF simplification
 
+<p align="center">
+<img src="img/cnfsimpl/cnfsimpl.svg" alt="CNF simplification" style="width: 40%">
+</p>
+
+
 The simplification of the expression in Conjunctive-Normal-Form is very important to determine if the formula is SAT
 under the current `PartialAssignment`.
 
