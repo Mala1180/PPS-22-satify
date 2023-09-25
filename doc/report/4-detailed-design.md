@@ -109,13 +109,10 @@ a cache of already computed expressions following the _memoization_ pattern.
 
 #### Tseitin Algorithm
 
-The Tseitin algorithm converts a formula in propositional logic into a CNF formula.
+The Tseitin algorithm converts a propositional expression in Conjunctive Normal Form (CNF).
 
-In this case, the _Converter_ is in charge of converting the expression in CNF form, using the Tseitin transformation.
-It is implemented through a _case class_ that extends the **Converter** trait implementing the convert method.
 Following the functional approach, the implementation is hidden inside a private object.
-It contains the implementation of the three main algorithm phases.  
-
+It contains the implementation of the three main algorithm phases.
 
 The idea behind the Tseitin transformation is to introduce new auxiliary variables for subformulas in the original
 formula.
@@ -137,8 +134,12 @@ So, the best way to design it is decomposing the algorithm following the steps b
    $$TSTN_1 \Longleftrightarrow a \land TSTN_3$$
    $$TSTN_0 \Longleftrightarrow TSTN_1 \implies TSTN_2$$
 
+
+   Phases 1 and 2 are combined in the `substitutions` method.
 3. Express the truth conditions of the subformulas in CNF using the auxiliary variables and standard logical
    connectives (AND, OR, NOT) following the transformations listed in the table below.
+   The `transform` method is responsible for this phase, generating a List of CNF clauses that keeps the
+   equi-satisfiability of each subformula.
 
    | Operator | Circuit                 | Expression      | Converted                                                                     |
          |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
@@ -146,11 +147,13 @@ So, the best way to design it is decomposing the algorithm following the steps b
    | OR       | ![](img/OrCircuit.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
    | NOT      | ![](img/NotCircuit.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |
 
-4. Combine the representations of the subformulas to obtain the CNF representation of the entire formula.
+4. Combine the representations of the subformulas throught `concat` method to obtain the CNF representation of the
+   entire formula.
 
 The resulting formula is equi-satisfiable with the original formula, meaning they have the same set of satisfying
 assignments. This transformation enables the use of various CNF-based algorithms and tools to analyze and reason about
 the original logical formula efficiently.
+At the end of the solving process, the auxiliary variables can be eliminated from the solution.
 
 ### Solver
 
