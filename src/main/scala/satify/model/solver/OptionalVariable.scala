@@ -2,7 +2,7 @@ package satify.model.solver
 
 import satify.model.{Assignment, Variable}
 
-/** Represents a variable which could be constrained or not yet constrained by the DPLL algorithm.
+/** Represents a variable which could be constrained or not yet constrained by solving algorithm.
   * @param name of the variable.
   * @param value eventual boolean value constraint.
   */

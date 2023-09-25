@@ -20,7 +20,7 @@ private[solver] object DpllEnumerator:
     * by running the DPLL algorithm.
     * @param cnf expression in Conjunctive Normal Form.
     * @return a solution filled with the list of all satisfiable assignments if it's SAT,
-    *         an empty list otherwise.
+    * an empty list otherwise.
     */
   def enumerate(cnf: CNF): Solution =
     val assignments: List[Assignment] =

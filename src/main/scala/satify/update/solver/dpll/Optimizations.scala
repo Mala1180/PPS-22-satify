@@ -22,7 +22,7 @@ private[dpll] object Optimizations:
   /** Identify a unit literal.
     * @param cnf expression in Conjunctive Normal Form.
     * @return filled Option with the constraint to be applied
-    *         to a unit literal if one has been found, empty otherwise.
+    * to a unit literal if one has been found, empty otherwise.
     */
   def unitLiteralIdentification(cnf: CNF): Option[Constraint] =
 
@@ -42,7 +42,7 @@ private[dpll] object Optimizations:
   /** Identify a pure literal.
     * @param dec previous decision
     * @return filled Option with the constraint to be applied
-    *         to a pure literal if one has been found, empty otherwise.
+    * to a pure literal if one has been found, empty otherwise.
     */
   @tailrec
   def pureLiteralIdentification(dec: Decision): Option[Constraint] =

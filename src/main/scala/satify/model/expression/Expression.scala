@@ -40,7 +40,6 @@ object Expression:
     def subexpressions: List[Expression] = zipWith(() => Int).map(_._2)
 
     /** Search if a subexpression is contained in the given expression.
-      * @param exp    the expression.
       * @param subexp the subexpression to find.
       * @return true if the subexpression is contained in the expression, false otherwise.
       */
