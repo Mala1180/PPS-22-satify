@@ -5,7 +5,7 @@ import satify.model.expression.Expression
 import satify.model.{Assignment, Solution}
 import satify.update.converters.ConverterType.*
 import satify.update.converters.{Converter, ConverterType}
-import satify.update.solver.SolverMemoization.cachedEnumerate
+import satify.update.solver.DPLLMemoization.cachedEnumerate
 import satify.update.solver.SolverType.*
 import satify.update.solver.dpll.impl.DpllEnumerator.enumerate
 import satify.update.solver.dpll.impl.DpllFinder.{find, findNext}
@@ -66,7 +66,7 @@ object Solver:
   private case class DpllSolver(converter: Converter) extends Solver:
 
     override def solveAll(cnf: CNF, cache: Boolean): Solution =
-      if cache then cachedEnumerate(cnf, enumerate) else enumerate(cnf)
+      if cache then cachedEnumerate(cnf) else enumerate(cnf)
 
     override def solveAll(exp: Expression, cache: Boolean): Solution = solveAll(converter.convert(exp, cache), cache)
 
@@ -76,9 +76,9 @@ object Solver:
 
     override def next: Option[Assignment] = findNext()
 
-object SolverMemoization:
+object DPLLMemoization:
 
-  val cachedEnumerate: (CNF, CNF => Solution) => Solution = (cnf, algorithm) => memoize(algorithm)(cnf)
+  val cachedEnumerate: CNF => Solution = memoize(enumerate)
 
   protected def memoize(f: CNF => Solution): CNF => Solution =
     new collection.mutable.HashMap[CNF, Solution]():

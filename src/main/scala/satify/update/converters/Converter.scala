@@ -2,7 +2,7 @@ package satify.update.converters
 
 import satify.model.cnf.CNF
 import satify.model.expression.Expression
-import satify.update.converters.ConverterMemoization.cachedConversion
+import satify.update.converters.TseitinMemoization.cachedConversion
 import satify.update.converters.ConverterType.*
 import satify.update.converters.tseitin.TseitinTransformation.tseitin
 
@@ -30,11 +30,11 @@ object Converter:
   /** Private implementation of [[Converter]] */
   private case class TseitinConverter() extends Converter:
     override def convert(exp: Expression, cache: Boolean = true): CNF =
-      if cache then cachedConversion(exp, tseitin) else tseitin(exp)
+      if cache then cachedConversion(exp) else tseitin(exp)
 
-object ConverterMemoization:
+object TseitinMemoization:
 
-  val cachedConversion: (Expression, Expression => CNF) => CNF = (exp, algorithm) => memoize(algorithm)(exp)
+  val cachedConversion: Expression => CNF = memoize(tseitin)
 
   /** Memoize a function f: Expression => CNF to avoid recomputing the same CNF for the same expression.
     * @param f the function to memoize.
