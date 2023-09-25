@@ -6,6 +6,43 @@ In this section, every group member describes the personal work done for the rea
 
 ## Luca Fabri
 
+Initially, my main objective was to understand how the DPLL resolution algorithm works.
+Once I had achieved that, I generalized the problem by modeling the `DecisionTree` data structure that could be used by
+any solver based on a search tree.
+
+Subsequently, I decomposed DPLL in subtasks, and I implemented them step by step, following a Test-Driven Development
+(TDD) approach. The code that I developed tries to exploit at most the functional programming paradigm, favoring
+immutability whenever possible. Extensive use of pattern matching was also made.
+
+- I began to implement CNF simplification.
+
+  `CNFSimplification`'s `simplify` function simplifies a CNF given a `CNF` and a `Constraint`.
+  ```scala
+    def simplifyCnf(cnf: CNF, constr: Constraint): CNF =
+      simplifyClosestAnd(simplifyClosestOr(simplifyUppermostOr(updateCnf(cnf, constr), constr), constr))
+  ```
+
+  The tests initially were made by calling `simplifyClosestAnd`, `simplifyClosestOr` and `simplifyUppermostOr`
+  functions to verify their correctness. Once I did that, I have rewritten the tests to call the exposed `simplify`
+  function, in order to verify the overall phase.
+
+- Subsequently, `DpllDecision`'s `decision` function to determine the branching variable.
+  Also in this case, I incrementally added functions, starting from a simple decision on the first available variable,
+  and then adding unit propagation and pure literals elimination in two subsequent steps.
+  This was done to ensure that the whole system behaves properly.
+
+  In the situation where no optimizations could be used, a random decision should be made, so I added a random variable
+  with a seed, in order to guarantee a deterministic run.
+
+- Finally, `DpllEnumerator` and `DpllFinder` objects bring all together with a private `dpll` method which constructs
+  the `DecisionTree`.
+
+The final implementations of the subtasks have been continually improved and optimized, to enable the users to handle
+increasingly larger instances. For this reason, some functions make use of Scala's tail recursion optimization to avoid
+frequent occurrences of stack overflow situations. On the other hand, many recursive functions were not converted to
+tail recursive, as large and complex function would've been generated. In such cases, we chose to prioritize code
+readability and maintainability.
+
 ## Mattia Matteini
 
 ### Setup
@@ -16,7 +53,8 @@ to the DevOps tasks, so I set up Continuous Integration, SBT, ScalaTest and Scal
 ### Architecture
 
 After that, I was involved in the design and implementation of the software architecture (MVU).
-Despite there aren't too many dependencies in MVU, I decided to use a simplified version of Cake Pattern to still give robustness and
+Despite there aren't too many dependencies in MVU, I decided to use a simplified version of Cake Pattern to still give
+robustness and
 flexibility.
 
 In particular, I made use of the _Self-Type Annotation_ and _Mixin_ mechanisms offered by Scala in order to
@@ -83,13 +121,13 @@ In particular, to zip the subexpressions with new Symbols, I made use of a gener
 After the definition of these methods, where I have made great use of Pattern Matching, it was possible to start
 implementing the algorithm's phases.
 
-My idea was to exploit the functional programming, so I defined the `Tseitin` object as a singleton object that contains
-the algorithm's phases and exposing only the `Tseitin` method as the entry point of the algorithm.
+My idea was to exploit the functional programming, so I defined the `Tseitin` object as a singleton that contains
+the algorithm's phases and exposing only the `tseitin` method as the entry point of the algorithm.
 In order to increase the readability of the code, I named methods as the algorithm's phases obtaining a code that is
 quite self-explanatory.
 
 ```scala
-def tseitin(exp: Expression): CNF = concat(substitutions(exp).flatMap(transform))
+def tseitin(exp: Expression): CNF = concat(substitutions(exp) flatMap transform)
 ```
 
 Given that the algorithm is a fundamental part of the project, I decided to develop it following a TDD approach.

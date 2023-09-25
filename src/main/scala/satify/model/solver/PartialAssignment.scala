@@ -5,8 +5,6 @@ import satify.model.cnf.CNF.*
 import satify.model.solver.*
 import satify.model.{Assignment, Variable}
 
-import scala.annotation.tailrec
-
 /** Represents an [[Assignment]] where the variables could not be yet constrained by the solving algorithm.
   * @param optVariables optional variables.
   */

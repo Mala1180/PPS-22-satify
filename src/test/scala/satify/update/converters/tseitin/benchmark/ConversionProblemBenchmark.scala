@@ -12,7 +12,6 @@ object ConversionProblemBenchmark extends Bench.OfflineReport:
     val sizes: Gen[Int] = Gen.range("size")(1, 10, 1)
     measure method "N-Queens Conversion" in {
       using(sizes) in { size =>
-        println(reports.resultDir)
         Converter(Tseitin).convert(NQueens(size).exp, false)
       }
     }

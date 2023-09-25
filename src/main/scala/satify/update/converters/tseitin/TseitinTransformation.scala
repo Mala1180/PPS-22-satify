@@ -18,7 +18,7 @@ private[converters] object TseitinTransformation:
     * @param exp the expression to transform.
     * @return the CNF expression.
     */
-  def tseitin(exp: Expression): CNF = concat(substitutions(exp).flatMap(transform))
+  def tseitin(exp: Expression): CNF = concat(substitutions(exp) flatMap transform)
 
   /** Substitute Symbols of nested subexpressions in all others expressions
     * @param exp the expression where to substitute Symbols

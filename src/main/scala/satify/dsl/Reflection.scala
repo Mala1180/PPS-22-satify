@@ -37,13 +37,11 @@ object Reflection:
     * @param input the input to process
     * @return the processed input
     */
-  def processInput(input: String): String =
-    println(symbolsRegexPattern)
-    input
-      .replaceAll(commentsRegexPattern.toString(), "")
-      .replaceAll(symbolsRegexPattern.toString(), "\"$1\"")
-      .replaceAll("\n", " ")
-      .trim
+  def processInput(input: String): String = input
+    .replaceAll(commentsRegexPattern.toString(), "")
+    .replaceAll(symbolsRegexPattern.toString(), "\"$1\"")
+    .replaceAll("\n", " ")
+    .trim
 
   /** Reflects the input to the REPL returning an Expression.
     * If the REPL is not started yet, waits until it is started.

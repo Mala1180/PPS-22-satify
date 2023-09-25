@@ -19,7 +19,7 @@ Some _trait_ has been designed to represent the components of the MVU pattern, w
 _abstract type members_ related to `Model`, `View` and `Update`.
 
 <p align=center>
-  <img src="img/mvu/mvu-detailed.svg" alt=" Model-View-Update detailed diagram" style="width: 60%">
+  <img src="img/mvu/mvu-detailed.svg" alt=" Model-View-Update detailed diagram">
 </p>
 
 ---
@@ -38,7 +38,7 @@ abstract types:
 Expression is represented through a _sum type_ which contains all the possible types of expression:
 
 - `And`, it represents the logical And gate. It takes in input *left* and *right* parameters both of type `Expression`.
-- `Or`, it represents the logical Or gate. Like the  `And`, it takes a *left* and *right* Expressions in input.
+- `Or`, it represents the logical Or gate. Like the `And`, it takes a *left* and *right* `Expressions` in input.
 - `Not`, it's the logical Not gate. It takes in input another `Expression`.
 - `Symbol`, it represents an input variable and takes in input its name.
 
@@ -71,7 +71,7 @@ It is a _sum type_ like `Expression`, but it has the following constraints:
 
 ### Encodings
 
-In SAT problem solving, cardinality constraints are commonly used to govern the truth values of boolean variables.
+In SAT problem-solving, cardinality constraints are commonly used to govern the truth values of boolean variables.
 These constraints are fundamental in specifying how many variables from a given set can be true, and they are often
 referred to as SAT **Encodings**.
 
@@ -84,7 +84,8 @@ At most $k$ refers to the constraint where at most $k$ variables in a set can be
 The sequential encoding has been chosen. It introduces counting variables, adding constraints to ensure compliance with
 the specified limit.
 
-$$ \texttt{atMostK($k$)} := \begin{cases}(\lnot s_{1, j}) \text{ for } 1 < j \leq k \\
+$$
+\texttt{atMostK($k$)} := \begin{cases}(\lnot s_{1, j}) \text{ for } 1 < j \leq k \\
 (\lnot x_i \lor s_{i,1}) \text{ for } 1 < i < n \\
 (\lnot s_{i−1, 1} \lor s_{i, 1}) \text{ for } 1 < i < n \\
 (\lnot x_i \lor \lnot s_{i−1, j−1} \lor s_{i,j}) \text{ for } 1 < i < n \text{, } 1 < j \leq k \\
@@ -92,9 +93,9 @@ $$ \texttt{atMostK($k$)} := \begin{cases}(\lnot s_{1, j}) \text{ for } 1 < j \le
 (\lnot x_i \lor \lnot s_{i−1, k}) \text{ for } 1 < i < n \end{cases}
 $$
 
-Also the function `atMostOne` is provided, which is equal to `atMostK(1)`.
+Also `atMostOne` is provided, which is equal to `atMostK(1)`.
 
-#### At leask k
+#### At least k
 
 At least $k$ refers to the constraint where at least $k$ variables in a set should be true.
 
@@ -125,16 +126,15 @@ It is composed of:
   the search algorithm.
 - `Decision`. A decision represents a constraint that has been applied to an input variable. In turn, it contains:
     - A `PartialAssignment`, which is the current state of constraints applied to the variables. The decision is
-      implicitly defined in this field. PartialAssignment is a list of `OptionalVariable`, e.g. a variable which could
-      be either be constrained or not.
+      implicitly defined in this field. PartialAssignment is a list of `OptionalVariable`, e.g., a variable which could
+      be either constrained or not.
     - A `CNF`. It's the input CNF simplified with the current set of constraints defined in `PartialAssignment`.
-- `Constraint`. It consists of the name of the variable, and the boolean constraint. It is an utility which could be
-  useful during the solve.
+- `Constraint`. It consists of the name of the variable, and the boolean constraint. It is a utility that could be
+  useful during the solving.
 
 <p align=center>
   <img src="img/solver/solver_design.svg" alt=" Model-View-Update detailed diagram" style="width: 80%">
 </p>
-
 
 Given these ingredients, a SAT solver implementation can build its own specific `DecisionTree`, applying decisions to
 the variables in a certain order and assigning them a certain value that they deem most appropriate for the resolution.
@@ -180,9 +180,9 @@ Links to the SAT problems used in this project:
 ## View
 
 `View` is, as already said, a function that takes as input the `Model` and returns a set of components.
-Until now, we have not seen any side effect, but in order to provide a user interface it's necessary having one, so the
-`GUI` object is in charge of render the new state of application showing the new updated components.
-In this way, every time the `Model` changes, the `GUI` will be correctly updated but without reloading the entire
+Until now, we have not seen any side effect, but in order to provide a user interface it's necessary having one,
+so the `Reactions` object is in charge of render the new state of application showing the new updated components.
+In this way, every time the `Model` changes, the GUI will be correctly updated but without reloading the entire
 UI.
 
 ---
@@ -202,19 +202,23 @@ the needed part of the UI.
 <img src="img/converter/converter.svg" alt="Converter design" style="width: 80%">
 </p>
 
-Converter is a _trait_ containing the method `convert` that must be implemented by each converter.
+`Converter` is a functional interface containing the method `convert`.
+
+This _trait_ has a private implementation `TseitinConverter` which implements the `convert` method using
+the Tseitin transformation algorithm.
+
 In order to obtain better performances and avoid the re-computation of same expressions, the converter can keep
 a cache of already computed expressions following the _memoization_ pattern.
 
-In this project, the _Converter_ that has been used is `TseitinSolver`, which exploits the Tseitin transformation
-algorithm.
+#### Tseitin transformation
 
-#### Tseitin Algorithm
+The [Tseitin transformation algorithm](https://en.wikipedia.org/wiki/Tseytin_transformation) converts a propositional
+expression in Conjunctive Normal Form (CNF).
 
-The [Tseitin algorithm](https://en.wikipedia.org/wiki/Tseytin_transformation) converts a propositional expression in
-Conjunctive Normal Form (CNF).
+Since `Converter` has to be the only exposed object to the client, the Tseitin transformation implementation
+must be hidden.
+To do that, the entire implementation resides in a private _object_, visible only inside the _converter_ package.
 
-Following the functional approach, the implementation is hidden inside a private object.
 It contains the implementation of the three main algorithm phases.
 
 The idea behind the Tseitin transformation is to introduce new auxiliary variables for sub-formulas in the original
@@ -246,7 +250,7 @@ So, the best way to design it is decomposing the algorithm following the steps b
    equi-satisfiability of each sub-formula.
 
    | Operator | Circuit                          | Expression      | Converted                                                                     |
-      |----------|----------------------------------|-----------------|-------------------------------------------------------------------------------|
+                     |----------|----------------------------------|-----------------|-------------------------------------------------------------------------------|
    | AND      | ![](img/cnfsimpl/AndCircuit.svg) | $X = A \land B$ | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$ |
    | OR       | ![](img/cnfsimpl/OrCircuit.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
    | NOT      | ![](img/cnfsimpl/NotCircuit.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |
@@ -266,10 +270,14 @@ At the end of the solving process, the auxiliary variables can be eliminated fro
 </p>
 
 Solver is a _trait_ containing the methods useful to solve SAT problem encoded in CNF form.
+
+Similar to `Converter`, it has a private implementation `DpllSolver` which implements the methods using
+the DPLL algorithm.
+
 There are two main possibilities to solve a SAT problem instance, one is starting from the CNF form, and the other is
 starting directly from the expression.
 Furthermore, it is possible to solve the problem looking for all the possible solutions or only one at a time.
-In the last case the solver will convert the expression in CNF with the Converter specified before computing the
+In the last case, the solver will convert the expression in CNF with the specified Converter before computing the
 solution.
 
 In order to obtain better performances and to avoid the re-computation of same expressions, the solver also makes use of
@@ -286,16 +294,16 @@ Compared to a simple exhaustive search of all the possible variable assignments,
 to guide the search of satisfiable solutions, making it more efficient.
 It was introduced in 1961 by Martin Davis, George Logemann and Donald W. Loveland.
 
-The solver implementations we provide follow this algorithm but with small variances. In particular:
+The solver implementation provides two ways to perform the resolution. In particular:
 
 - `DpllFinder` is used to get one satisfiable assignment at a time. It exposed two functions: `find` and `findNext`.
-  The former takes in input a CNF an returns a `Solution` with a unique assignment, if any. The second one, on the other
-  hand,
-  continues to search for another satisfiable assignment, returning a filled optional there is some, empty otherwise;
+  The former takes in input a CNF and returns a `Solution` with a unique assignment, if any. The second one, on the
+  other hand, continues to search for another satisfiable assignment, returning a filled optional there is some, empty
+  otherwise;
 - `DpllEnumerator` enumerates all the possible satisfiable assignments to the problem. It exposes a `enumerate` function
   that returns a `Solution`.
 
-Following the functional approach, these two implementation are hidden inside a private object.
+Also in this case, the implementation is private within the _solver_ package, so it can be used only by the `Solver`.
 
 The main ideas behind this algorithm are the following:
 
@@ -304,9 +312,10 @@ The main ideas behind this algorithm are the following:
 - Then, it chooses a variable and a boolean value for branching purposes (decision). On the left side of the Branch that
   variable will be constrained to the chosen value, while on the right with its negated form. A recursive call is done
   on the left, simplifying the CNF with the boolean constraint.
-- At each step, it continues to constraint variables until the CNF is completely simplified or it contains a conflict.
+- At each step, it continues to constraint variables until the CNF is completely simplified, or it contains a conflict.
   In the former case, a solution has been found and a Leaf inside the tree is inserted (SAT). In the latter, a false
-  clause has been found, which leds the averall expression false (UNSAT). Also in this case a Leaf is inserted, and the
+  clause has been found, which leads to the overall expression false (UNSAT). Also in this case, a Leaf is inserted, and
+  the
   computation backtracks to the previous decision, branching on the negated chosen value.
 
 It is good to say that in `DpllEnumerator` the algorithm doesn't stop when only an assignment has been found.
@@ -354,11 +363,10 @@ For example:
 
 $$(b \lor c) \land (\lnot c \lor d) \land (a \lor b \lor e) \land (d \lor b)$$
 
-Here $b$ appears only in positive form (it is a pure literal), then assigning $b = True$ no other clause will be "
-penalized",
-therefore, delete all the other clauses where $b$ is included.
+Here $b$ appears only in positive form (it is a pure literal), then assigning $b = True$ no other clause will be
+"penalized", therefore, delete all the other clauses where $b$ is included.
 
-In other words: if $b$ doesn't appear in negative form inside the formula $F$, assigning $b = True$, the satisfability
+In other words: if $b$ doesn't appear in negative form inside the formula $F$, assigning $b = True$, the satisfiability
 of $F$ is preserved.
 
 Eliminating pure literals can significantly reduce the size of the CNF formula. Smaller formulas are often easier and
@@ -366,10 +374,14 @@ quicker to process, leading for faster solutions.
 
 #### CNF simplification
 
+<p align="center">
+    <img src="img/cnfsimpl/cnfsimpl.svg" alt="CNF simplification" style="width: 50%">
+</p>
+
 The simplification of the expression in Conjunctive-Normal-Form is very important to determine if the formula is SAT
 under the current `PartialAssignment`.
 
-In fact, if the CNF expression is completely simplified s.t. it is equal to *Symbol(True)*, it can be asserted that it
+In fact, if the CNF expression is completely simplified, s.t. It is equal to *Symbol(True)*, it can be asserted that it
 is SAT.
 
 The expression in CNF is simplified according to the specific logical operator:
@@ -402,7 +414,7 @@ The expression in CNF is simplified according to the specific logical operator:
 </p>
 
 - `And`
-    - An expression in CNF should be simplified when an $And$ contains at least a $True$ Literal:
+    - An expression in CNF should be simplified when an $And$ contain at least a $True$ Literal:
 
       Examples:
 
@@ -411,6 +423,8 @@ The expression in CNF is simplified according to the specific logical operator:
 <p align=center>
   <img src='img/cnfsimpl/And1.svg' alt="And simplification" height="150px">
 </p>
+
+---
 
 ## Domain-Specific Language
 
