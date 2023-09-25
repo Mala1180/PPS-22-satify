@@ -2,43 +2,29 @@ package satify.model.cnf
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
-import satify.model.cnf.CNF.*
-import satify.model.cnf.CNF
 
 class CNFOutputTest extends AnyFlatSpec with Matchers:
 
+  import satify.model.cnf.CNF.*
+
   "The cnf symbol a" should "be printed as a in formal way" in {
-    val cnfExp: CNF = Symbol("a")
-    val fRes: String = cnfExp.printAsFormal(true)
-    val nfRes: String = cnfExp.printAsFormal()
-    val expected = "a"
-    List(fRes, nfRes) shouldBe List(expected, expected)
+    Symbol("a").asFormal(true) shouldBe "a"
+    Symbol("a").asFormal() shouldBe "a"
   }
 
   "The cnf exp ((a ∨ ¬b) ∧ c)" should "be printed in the formal way and according to the output flat mode" in {
-    val cnfExp: CNF =
-      And(Or(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
-    val fRes: String = cnfExp.printAsFormal(true)
-    val fExp: String = "a ∨ ¬(b) ∧ c"
-    val nfRes: String = cnfExp.printAsFormal()
-    val nfExp = "a ∨ ¬(b) ∧\nc"
-    List(fRes, nfRes) shouldBe List(fExp, nfExp)
+    val cnfExp: CNF = And(Or(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
+    cnfExp.asFormal(true) shouldBe "a ∨ ¬(b) ∧ c"
+    cnfExp.asFormal() shouldBe "a ∨ ¬(b) ∧\nc"
   }
 
   "The only symbol a" should "be printed as a in DSL" in {
-    val exp: CNF = Symbol("a")
-    val fRes: String = exp.printAsDSL(true)
-    val nfRes: String = exp.printAsDSL()
-    val expected = "a"
-    List(fRes, nfRes) shouldBe List(expected, expected)
+    Symbol("a").asDSL(true) shouldBe "a"
+    Symbol("a").asDSL() shouldBe "a"
   }
 
   "The exp ((a ∨ ¬b) ∧ c)" should "be printed in the DSL format according to the output flat mode" in {
-    val exp: CNF =
-      And(Or(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
-    val fRes: String = exp.printAsDSL(true)
-    val fExp = "a or not(b) and c"
-    val nfRes: String = exp.printAsDSL()
-    val nfExp = "a or not(b) and\nc"
-    List(fRes, nfRes) shouldBe List(fExp, nfExp)
+    val exp: CNF = And(Or(Symbol("a"), Not(Symbol("b"))), Symbol("c"))
+    exp.asDSL(true) shouldBe "a or not(b) and c"
+    exp.asDSL() shouldBe "a or not(b) and\nc"
   }

@@ -2,74 +2,82 @@ package satify.update.solver.dpll
 
 import satify.model.cnf.CNF
 import satify.model.cnf.CNF.*
-import satify.model.dpll.{Constraint, Decision, Variable}
+import satify.model.solver.{Constraint, Decision, OptionalVariable, PartialAssignment}
 
 import scala.annotation.tailrec
-import scala.collection.immutable.{AbstractSeq, LinearSeq}
 
-object Optimizations:
+private[dpll] object Optimizations:
 
-  import PureLitSearch.*
+  import LitType.*
 
-  /** Enum to search pure literals inside a CNF expression. */
-  private enum PureLitSearch:
-    case Concordant(c: Constraint)
-    case Discordant
-    case Missing
+  /** Enum which expresses the literal type.
+    * A literal is Pure if it appears only in positive form inside an expression,
+    * impure otherwise.
+    */
+  private enum LitType:
+    case Pure(c: Constraint)
+    case Impure
 
-  /** Identify unit literals.
+  /** Identify a unit literal.
     * @param cnf expression in Conjunctive Normal Form.
-    * @return eventual Constraint to be applied to a unit literal.
+    * @return filled Option with the constraint to be applied
+    * to a unit literal if one has been found, empty otherwise.
     */
   def unitLiteralIdentification(cnf: CNF): Option[Constraint] =
 
-    val f: (CNF, Option[Constraint]) => Option[Constraint] =
-      (cnf, d) =>
-        cnf match
-          case Symbol(name: String) => Some(Constraint(name, true))
-          case Not(Symbol(name: String)) => Some(Constraint(name, false))
-          case _ => d
+    @tailrec
+    def loop(cnfList: List[CNF], result: Option[Constraint] = None): Option[Constraint] =
+      cnfList match
+        case Nil => result
+        case And(left, right) :: tail => loop(left :: right :: tail, None)
+        case head :: tail =>
+          head match
+            case Symbol(name: String) => Some(Constraint(name, true))
+            case Not(Symbol(name: String)) => Some(Constraint(name, false))
+            case _ => loop(tail, None)
 
-    f(
-      cnf,
-      cnf match
-        case And(left, right) => f(left, f(right, unitLiteralIdentification(right)))
-        case Or(_, _) => None
-        case _ => None
-    )
+    loop(cnf :: Nil)
 
-  /** Identify pure literals
+  /** Identify a pure literal.
     * @param dec previous decision
-    * @return eventual Constraint to be applied to a pure literal.
+    * @return filled Option with the constraint to be applied
+    * to a pure literal if one has been found, empty otherwise.
     */
   @tailrec
   def pureLiteralIdentification(dec: Decision): Option[Constraint] =
 
-    def find(name: String, cnf: CNF): PureLitSearch =
-
-      val f: (String, CNF, CNF) => PureLitSearch = (n, left, right) =>
-        find(n, left) match
-          case Concordant(cLeft) =>
-            find(n, right) match
-              case Concordant(cRight) if cLeft == cRight => Concordant(cLeft)
-              case Missing => Concordant(cLeft)
-              case _ => Discordant
-          case Missing => find(n, right)
-          case Discordant => Discordant
-
-      cnf match
-        case Symbol(n: String) if name == n => Concordant(Constraint(n, true))
-        case Not(Symbol(n: String)) if name == n => Concordant(Constraint(n, false))
-        case And(left, right) => f(name, left, right)
-        case Or(left, right) => f(name, left, right)
-        case _ => Missing
+    /** Get the literal type, if it is present inside the given CNF.
+      * @param name of the symbol.
+      * @param cnfList where to search.
+      * @return a filled Option with the literal type if it is present, an empty one otherwise.
+      */
+    @tailrec
+    def getLiteralType(name: String, cnfList: List[CNF], result: Option[LitType] = None): Option[LitType] =
+      cnfList match
+        case ::(head, tail) =>
+          head match
+            case Symbol(n: String) if name == n =>
+              result match
+                case Some(Pure(Constraint(_, false))) => Some(Impure)
+                case _ => getLiteralType(n, tail, Some(Pure(Constraint(n, true))))
+            case Not(Symbol(n: String)) if name == n =>
+              result match
+                case Some(Pure(Constraint(_, true))) => Some(Impure)
+                case _ => getLiteralType(n, tail, Some(Pure(Constraint(n, false))))
+            case And(left, right) => getLiteralType(name, left :: right :: tail, result)
+            case Or(left, right) => getLiteralType(name, left :: right :: tail, result)
+            case _ => getLiteralType(name, tail, result)
+        case Nil => result
 
     dec match
-      case Decision(pm, cnf) =>
-        pm match
-          case Seq() => None
-          case Variable(name, None) +: tail =>
-            find(name, cnf) match
-              case Concordant(c) => Some(c)
-              case _ => pureLiteralIdentification(Decision(tail, cnf))
-          case Variable(_, _) +: tail => pureLiteralIdentification(Decision(tail, cnf))
+      case Decision(PartialAssignment(optVariables), cnf) =>
+        optVariables match
+          case ::(head, tail) =>
+            head match
+              case OptionalVariable(name, None) =>
+                getLiteralType(name, cnf :: Nil) match
+                  case Some(Pure(c)) => Some(c)
+                  case _ => pureLiteralIdentification(Decision(PartialAssignment(tail), cnf))
+              case OptionalVariable(_, _) =>
+                pureLiteralIdentification(Decision(PartialAssignment(tail), cnf))
+          case Nil => None

@@ -79,7 +79,7 @@ _New tasks in this sprint:_
         <tr>
             <td>2</td>
             <td rowspan="2">DPLL Completion</td>
-            <td>DPLL enrichment using avanced FP</td>
+            <td>DPLL enrichment using advanced FP</td>
             <td>Fabri</td>
             <td>5</td>
         </tr>
@@ -111,9 +111,9 @@ _New tasks in this sprint:_
         </tr>
         <tr>
             <td>1</td>
-            <td>Requirements</td>
+            <td>Requirements update</td>
             <td>All</td>
-            <td>5</td>
+            <td>3</td>
         </tr>
         <tr>
             <td>2</td>
@@ -123,7 +123,7 @@ _New tasks in this sprint:_
         </tr>
         <tr>
             <td>1</td>
-            <td>Task revisioning</td>
+            <td>Task revision</td>
             <td>All</td>
             <td>1</td>
         </tr>
@@ -179,6 +179,8 @@ The sprint terminates with all tasks completed except for the problem instances.
 A prototype is released, which permits inserting a more complex input using the DSL.
 It is possible to solve the SAT problem using the DPLL, and also importing a problem in DIMACS format.
 
+Some tasks on code and package organization are demanded to the next sprint because of the lack of time.
+
 ## Sprint Retrospective
 
 We discovered a problem in the Tseitin Transformation that was corrected in this sprint.
@@ -187,7 +189,6 @@ We thought that the use of monads could be useful to handle all the tree data
 structures, but the change would complicate the design, therefore, in the next Sprint we will
 evaluate the pros and cons of an eventual implementation.
 
-Finally, some tasks on code and package organization are demanded to the next sprint because of the lack of time.
-
 ---
+
 [Previous](2-product-backlog.md) | [Next](4-product-backlog.md)

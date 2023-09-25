@@ -28,6 +28,9 @@ trait State:
   type Problem = problems.Problem
   val problem: Option[Problem] = None
 
+  /** Time elapsed representation */
+  val time: Option[Long] = None
+
   /** Error representation */
   type Error = errors.Error
   val error: Option[Error] = None
@@ -44,21 +47,22 @@ object State:
     * @param error the [[Error]]
     * @return a new [[State]] instance.
     */
-  def apply(error: Error): State = StateImpl(None, None, None, None, None, Some(error))
+  def apply(error: Error): State = StateImpl(None, None, None, None, None, None, Some(error))
 
   /** Creates a new application state containing only the input and the occurred error.
     * @param input the input string
     * @param error the [[Error]]
     * @return a new [[State]] instance.
     */
-  def apply(input: String, error: Error): State = StateImpl(Some(input), None, None, None, None, Some(error))
+  def apply(input: String, error: Error): State = StateImpl(Some(input), None, None, None, None, None, Some(error))
 
   /** Creates a new application state with input expression and its CNF.
     * @param exp the input [[Expression]]
     * @param cnf the [[CNF]]
     * @return a new [[State]] instance.
     */
-  def apply(input: String, exp: Expression, cnf: CNF): State = StateImpl(Some(input), Some(exp), Some(cnf))
+  def apply(input: String, exp: Expression, cnf: CNF, time: Long): State =
+    StateImpl(Some(input), Some(exp), Some(cnf), None, None, Some(time), None)
 
   /** Creates a new application state with only CNF.
     * @param cnf the [[CNF]]
@@ -71,24 +75,26 @@ object State:
     * @param sol the [[Solution]]
     * @return a new [[State]] instance.
     */
-  def apply(input: String, exp: Expression, sol: Solution): State = StateImpl(Some(input), Some(exp), None, Some(sol))
+  def apply(input: String, exp: Expression, sol: Solution, time: Long): State =
+    StateImpl(Some(input), Some(exp), None, Some(sol), None, Some(time), None)
 
-  /** Creates a new application state with an input problem, its CNF, and its solution.
+  /** Creates a new application state with an input problem and its CNF.
     * @param cnf the [[CNF]]
-    * @param sol the [[Solution]]
     * @param problem the [[Problem]] selected
+    * @param time the time elapsed in milliseconds
     * @return a new [[State]] instance.
     */
-  def apply(cnf: CNF, sol: Solution, problem: Problem): State =
-    StateImpl(None, None, Some(cnf), Some(sol), Some(problem))
+  def apply(cnf: CNF, problem: Problem, time: Long): State =
+    StateImpl(None, None, Some(cnf), None, Some(problem), Some(time))
 
   /** Creates a new application state with an input problem and its solution.
-    * @param sol     the [[Solution]]
+    * @param sol the [[Solution]]
     * @param problem the [[Problem]] selected
+    * @param time the time elapsed in milliseconds
     * @return a new [[State]] instance.
     */
-  def apply(sol: Solution, problem: Problem): State =
-    StateImpl(None, None, None, Some(sol), Some(problem))
+  def apply(sol: Solution, problem: Problem, time: Long): State =
+    StateImpl(None, None, None, Some(sol), Some(problem), Some(time))
 
   private case class StateImpl(
       override val input: Option[String] = None,
@@ -96,5 +102,6 @@ object State:
       override val cnf: Option[CNF] = None,
       override val solution: Option[Solution] = None,
       override val problem: Option[Problem] = None,
+      override val time: Option[Long] = None,
       override val error: Option[Error] = None
   ) extends State

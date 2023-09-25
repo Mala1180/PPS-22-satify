@@ -19,6 +19,7 @@ The first Sprint is dedicated to the project setup, organization, and understand
 
 During each Sprint Planning, each member of the team proposed himself to accomplish some task,
 assuring that the total work was divided equally among the team members.
+Each Sprint Planning lasted approximately 2/3 hours.
 At the end of the planning, it is obtained a Product Backlog collecting every task for the current Sprint.
 
 At the end of the Sprint, the team members make a wrap-up of the work done, refining the Product Backlog.
@@ -31,7 +32,7 @@ Moreover, it is produced an artifact ready to be delivered to the client, in ord
 For each task implementation, a Pull Request was created in order to get a code review from the other team members.
 This allowed us to have a more controlled merge of the code, reducing the possibility of introducing bugs.
 Only after the Pull Request was reviewed and approved by all other team members, the author could merge it into the
-Develop branch
+Develop branch.
 
 ### Build and Tests
 
@@ -46,9 +47,10 @@ Finally, the last requirement to consider a task done was to keep a good percent
 
 An important technical choice for the team has been Git Flow as a development workflow.
 During each Sprint, each member opens a Pull Request when a task is completed.
-In this way, he gets supervised from the other team member at any moment they thought right.
-Finally, at every Sprint Review, every open Pull Request is merged into the Develop branch.
-In order to prepare the release, a branch "Release/version" is created, and then merged into Develop and Main branches.
+In this way, he will get supervised from the other team members, and the code will be reviewed.
+Finally, at every Sprint Review, every Pull Request that is still open is merged into the Develop branch.
+In order to prepare the release, a branch "release/[version]" is created,
+and then merged into Develop and Main branches.
 
 ## Testing
 
@@ -58,7 +60,7 @@ It is used Test-Driven-Development (TDD) technique for the core functionalities 
 writing tests before implementation.
 Not every part of the software has been developed following the TDD technique, in particular, the GUI part has been
 developed in a more traditional way.
-Moreover, to make a better communication with the client, it is used Behavior-Driven-Development (BDD) technique.
+Moreover, to make a better communication with the client, it has been used Behavior-Driven-Development (BDD) technique.
 
 In particular, the libraries used for testing are:
 
@@ -79,14 +81,20 @@ the behavior of the software, in particular, using the Cucumber framework.
 Through the use of Cucumber, it is possible to test specific domain scenarios, which are written in Gherkin,
 and to obtain a report of the results in a more client-friendly way.
 
+### Microbenchmark
+Moreover, we used ScalaMeter library to measure execution time and memory consumption of the software. 
+In particular, using basic instances of common SAT problems to benchmark the performance.
+
 ## Continuous Integration
 
-The use of Continuous Integration (CI) pipeline, assures that the software is always in a working state.
-The build, tests and coverage of the software are executed automatically every time a Pull Request is opened or updated
-on a matrix of Operating Systems (Windows, Linux, macOS) to guarantee the cross-platform compatibility.
+The use of Continuous Integration (CI) pipeline assures that the code within the
+branch develop is always in a working state.
+Build, tests and coverage of the software are executed automatically every time a Pull Request is opened or updated
+on the three main operating systems (Windows, Linux, macOS) to guarantee the cross-platform compatibility.
 Another mechanism introduced later during the development process is the automatic release of the software with the
 relative changelog.
-
+In the pipeline, it is also included the automatic generation of ScalaDoc documentation.
 
 ---
+
 [Back to Index](README.md) | [Next](2-requirements.md)

@@ -1,42 +1,54 @@
 package satify.update.solver
 
-import satify.model.Result.*
 import satify.model.cnf.CNF
-import satify.model.dpll.{DecisionTree, PartialModel}
 import satify.model.expression.Expression
 import satify.model.{Assignment, Solution}
 import satify.update.converters.ConverterType.*
 import satify.update.converters.{Converter, ConverterType}
+import satify.update.solver.DPLLMemoization.cachedEnumerate
 import satify.update.solver.SolverType.*
-import satify.update.solver.dpll.utils.DpllUtils.extractSolutions
-import satify.update.solver.dpll.DpllOneSol.dpll
+import satify.update.solver.dpll.impl.DpllEnumerator.enumerate
+import satify.update.solver.dpll.impl.DpllFinder.{find, findNext}
+
+import scala.collection.mutable
 
 /** Entity providing the methods to solve the SAT problem.
   * @see [[satify.update.solver.DPLL]]
   */
 trait Solver:
 
-  /** Solves the SAT problem.
+  /** Solves the SAT problem, returning a solution with all satisfiable assignments.
     * @param cnf the input in conjunctive normal form
-    * @return the solution to the SAT problem
+    * @param cache if true, the result of the computation is cached
+    * @return the solution of the SAT problem
+    */
+  def solveAll(cnf: CNF, cache: Boolean): Solution
+
+  /** Solves the SAT problem, returning a solution with all satisfiable assignments.
+    * @param exp the input expression
+    * @param cache if true, the result of the computation is cached
+    * @return the solution of the SAT problem
+    */
+  def solveAll(exp: Expression, cache: Boolean): Solution
+
+  /** Solves the SAT problem returning a solution with the first satisfiable assignment found.
+    * @param cnf the input in conjunctive normal form
+    * @return the solution of the SAT problem
     */
   def solve(cnf: CNF): Solution
 
-  /** Solves the SAT problem.
+  /** Solves the SAT problem returning a solution with the first satisfiable assignment found.
+    * The input expression is converted in CNF and then is given in input to the resolution algorithm.
     * @param exp the input expression
-    * @return the solution to the SAT problem
+    * @return the solution of the SAT problem
     */
   def solve(exp: Expression): Solution
 
   /** Finds the next assignment of the previous solution, if any.
-    * @return the solution to the SAT problem
-    * @throws IllegalStateException if the previous solution was not found
+    * @return a filled assignment if there is another satisfiable, an empty one otherwise.
+    * @throws IllegalStateException if a previous run was not found
     */
-  def next(): Assignment
-
-  protected def memoize(f: CNF => Solution): CNF => Solution =
-    new collection.mutable.HashMap[CNF, Solution]():
-      override def apply(key: CNF): Solution = getOrElseUpdate(key, f(key))
+  def next: Option[Assignment]
 
 /** Factory for [[Solver]] instances. */
 object Solver:
@@ -48,12 +60,26 @@ object Solver:
     */
   def apply(algorithmType: SolverType, conversionType: ConverterType = Tseitin): Solver =
     algorithmType match
-      case DPLL => DpllAlgorithm(Converter(conversionType))
+      case DPLL => DpllSolver(Converter(conversionType))
 
   /** Private implementation of [[Solver]] */
-  private case class DpllAlgorithm(converter: Converter) extends Solver:
-    override def solve(cnf: CNF): Solution = memoize(cnf => dpll(cnf))(cnf)
+  private case class DpllSolver(converter: Converter) extends Solver:
+
+    override def solveAll(cnf: CNF, cache: Boolean): Solution =
+      if cache then cachedEnumerate(cnf) else enumerate(cnf)
+
+    override def solveAll(exp: Expression, cache: Boolean): Solution = solveAll(converter.convert(exp, cache), cache)
+
+    override def solve(cnf: CNF): Solution = find(cnf)
 
     override def solve(exp: Expression): Solution = solve(converter.convert(exp))
 
-    override def next(): Assignment = dpll()
+    override def next: Option[Assignment] = findNext()
+
+object DPLLMemoization:
+
+  val cachedEnumerate: CNF => Solution = memoize(enumerate)
+
+  protected def memoize(f: CNF => Solution): CNF => Solution =
+    new collection.mutable.HashMap[CNF, Solution]():
+      override def apply(key: CNF): Solution = getOrElseUpdate(key, f(key))

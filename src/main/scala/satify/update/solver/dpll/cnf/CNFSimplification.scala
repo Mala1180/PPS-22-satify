@@ -2,15 +2,17 @@ package satify.update.solver.dpll.cnf
 
 import satify.model.cnf.Bool.{False, True}
 import satify.model.cnf.CNF.*
-import satify.model.cnf.CNF
-import satify.model.dpll.Constraint
+import satify.model.cnf.{CNF, Literal}
+import satify.model.solver.Constraint
 
-object CNFSimplification:
+import scala.annotation.tailrec
+
+private[dpll] object CNFSimplification:
 
   /** Simplify the CNF applying the constraint given as parameter.
-    * @param cnf expression in CNF
-    * @param constr constraint
-    * @return simplified CNF
+    * @param cnf expression in CNF.
+    * @param constr constraint.
+    * @return simplified CNF.
     */
   def simplifyCnf(cnf: CNF, constr: Constraint): CNF =
     simplifyClosestAnd(simplifyClosestOr(simplifyUppermostOr(updateCnf(cnf, constr), constr), constr))
@@ -41,8 +43,7 @@ object CNFSimplification:
       ).asInstanceOf[T]
 
     (f(cnf, cnf) match
-      case And(left, right) =>
-        And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr))
+      case And(left, right) => And(simplifyUppermostOr(left, constr), simplifyUppermostOr(right, constr))
       case Or(left, right) =>
         /*
         1. Check if left branch is a True constant or the constrained Variable:
