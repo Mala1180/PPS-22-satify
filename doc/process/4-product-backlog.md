@@ -29,7 +29,7 @@ _Remaining tasks from the previous sprint:_
     <tr>
         <td>2</td>
         <td rowspan="2">DPLL Completion</td>
-        <td>DPLL enrichment using avanced FP</td>
+        <td>DPLL enrichment using advanced FP</td>
         <td>Fabri</td>
         <td>2</td>
     </tr>
@@ -210,4 +210,4 @@ The introduced optimizations improve the performance of the program, but it is s
 problems without resizing the default stack size.
 
 ---
-[Previous](3-product-backlog.md)
+[Previous](3-product-backlog.md) | [Next](5-product-backlog.md)

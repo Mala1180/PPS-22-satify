@@ -79,7 +79,7 @@ _New tasks in this sprint:_
         <tr>
             <td>2</td>
             <td rowspan="2">DPLL Completion</td>
-            <td>DPLL enrichment using avanced FP</td>
+            <td>DPLL enrichment using advanced FP</td>
             <td>Fabri</td>
             <td>5</td>
         </tr>
@@ -123,7 +123,7 @@ _New tasks in this sprint:_
         </tr>
         <tr>
             <td>1</td>
-            <td>Task revisioning</td>
+            <td>Task revision</td>
             <td>All</td>
             <td>1</td>
         </tr>
@@ -189,6 +189,6 @@ We thought that the use of monads could be useful to handle all the tree data
 structures, but the change would complicate the design, therefore, in the next Sprint we will
 evaluate the pros and cons of an eventual implementation.
 
-
 ---
+
 [Previous](2-product-backlog.md) | [Next](4-product-backlog.md)
