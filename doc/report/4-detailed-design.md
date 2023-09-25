@@ -297,7 +297,7 @@ $$(\lnot b \lor c) \land (\lnot c) \land (a \lor \lnot b \lor e) \land (d \lor b
 Since $(\lnot c)$ is a clause with only a literal, it is called unit literal. If it is false, all the formula will be false, so by setting $c = false$ it is possible to simplify the CNF.
 Moreover, eliminate the clauses with $\lnot c$ inside. Delete also all the $c$ where the literal appears in positive form.
 
-On the other hand, if $c$ is in positive form ($(c)$ and not $(\lnot c)$), do vice versa.
+On the other hand, if $c$ is in positive form ($(c)$ and not $( \lnot c )$), do vice versa.
 
 This rule creates a left branch with the variable and constraint mentioned and a right UNSAT leaf.
 This practice often leads to a cascade of unit propagations, avoiding a large part of search space.
@@ -336,13 +336,13 @@ The expression in CNF is simplified according to the specific logical operator:
         - Literal $A$ in positive form. Constraint $A = True$:
 
           <p align=center>
-            <img src='./img/cnf-simpl/umOr1.svg' height="150" align="center">
+            <img src='./img/cnf-simpl/umOr1.svg' height="150">
           </p>
 
         - Literal $B$ is negated. Constraint $B = false$ sets the literal $True$:
 
            <p align=center>
-            <img src='./img/cnf-simpl/umOr2.svg' height="200" align="center">
+            <img src='./img/cnf-simpl/umOr2.svg' height="200">
           </p>
 
 
@@ -352,7 +352,7 @@ The expression in CNF is simplified according to the specific logical operator:
   Examples:
     - Literal $A$ in positive form. Constraint $A = False$:
       <p align=center>
-        <img src='./img/cnf-simpl/cOr1.svg' height="150" align="center">
+        <img src='./img/cnf-simpl/cOr1.svg' height="150">
       </p>
 
 - `And`
@@ -362,7 +362,7 @@ The expression in CNF is simplified according to the specific logical operator:
 
         - Constraint $B = True$:
           <p align=center>
-            <img src='./img/cnf-simpl/And1.svg' height="150" align="center">
+            <img src='./img/cnf-simpl/And1.svg' height="150">
           </p>
 
 ## Domain-Specific Language
