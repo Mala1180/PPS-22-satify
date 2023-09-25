@@ -1,179 +1,176 @@
 # CHANGELOG
 
-## [v0.2.0](https://github.com/Mala1180/PPS-22-satify/releases/tag/v0.2.0) - 2023-08-28 16:51:56
-
-Prototype released at the end of the third Sprint.
-It permits solving simple SAT problem instances and provides a richer DSL for the input. 
+## [v0.3.0](https://github.com/Mala1180/PPS-22-satify/releases/tag/v0.3.0) - 2023-09-11 19:31:39
 
 ## What's Changed
-* Align develop with main after release by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/35
-* Feature/dpll-unit-propagation by @w-disaster in https://github.com/Mala1180/PPS-22-satify/pull/38
-* Feature/backlog-sprint-3 by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/36
-* Feature/sbt-assembly by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/37
-* Feature/auto-release by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/41
-* Feature/dsl-math-operators by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/42
-* Feature/complete-model by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/44
-* Feature/cnf-output by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/43
-* Feature/gui-refactor by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/45
-* Feature/dpll-pure-literals-elimination by @w-disaster in https://github.com/Mala1180/PPS-22-satify/pull/39
-* Feature/cnf-dimacs-parse by @w-disaster in https://github.com/Mala1180/PPS-22-satify/pull/46
-* Feature/import-dimacs by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/48
-* Feature/sat-encodings by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/49
-* Feature/dpll-output by @w-disaster in https://github.com/Mala1180/PPS-22-satify/pull/50
-* Feature/dsl-implications by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/51
-* Feature/tseitin-transformations-fix by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/53
-* Feature/fix-dsl-reflection by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/55
-* Feature/documentation-improvement by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/54
-* chore: replace scoverage tool with jacoco by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/47
-* Feature/problems-nqueens by @w-disaster in https://github.com/Mala1180/PPS-22-satify/pull/52
-* fix: import reflection by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/56
-* Release/0.2.0 by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/57
+* Align Develop with Main by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/58
+* Feature/backlog-sprint-4 by @w-disaster in https://github.com/Mala1180/PPS-22-satify/pull/59
+* Feature/cucumber-plugin by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/60
+* Feature/gui-tab-improvement by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/67
+* Feature/automatic-changelog by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/66
+* Feature/tstn-tests-improvement by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/68
+* Feature/reflection-bdd-test by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/71
+* Feature/fix-input by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/69
+* Feature/input-error-handling by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/70
+* Feature/documentation-update by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/72
+* Feature/documentation-tseitin-impl by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/74
+* Feature/gui-minor-fix by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/75
+* Feature/requirements-refinement by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/73
+* Feature/solver-refactor by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/76
+* Feature/tseitin-optimization by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/78
+* Feature/update-tests by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/77
+* Feature/tseitin-transform-refactor by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/79
+* Feature/update-organization by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/81
+* Feature/converter-memoize by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/80
+* Feature/solver-cache  by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/83
+* Feature/dpll-tailrec by @w-disaster in https://github.com/Mala1180/PPS-22-satify/pull/84
+* Feature/tseitin-bdd-test by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/85
+* Feature/tailrec-parser-cnf-refactor by @w-disaster in https://github.com/Mala1180/PPS-22-satify/pull/86
+* Feature/problem-representation by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/87
+* Feature/dimacs-dump by @paga16-hash in https://github.com/Mala1180/PPS-22-satify/pull/88
+* Feature/encoding-completion by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/90
+* Feature/next-sol-mechanism by @w-disaster in https://github.com/Mala1180/PPS-22-satify/pull/91
+* Release/0.3.0 by @Mala1180 in https://github.com/Mala1180/PPS-22-satify/pull/92
 
 
-**Full Changelog**: https://github.com/Mala1180/PPS-22-satify/compare/v0.1.0...v0.2.0
+**Full Changelog**: https://github.com/Mala1180/PPS-22-satify/compare/v0.2.0...v0.3.0
 
 ### Feature 🚀
 
 - general:
-  - introduce reflection tests, test build with fork ([695fd56](https://github.com/Mala1180/PPS-22-satify/commit/695fd5617ca1daa02ac8e10785e7b5c91439430a)) ([#55](https://github.com/Mala1180/PPS-22-satify/pull/55))
-  - add Reflection object in dsl, get operators from dsl dynamically ([a0a9cb2](https://github.com/Mala1180/PPS-22-satify/commit/a0a9cb2226e3013bebd1599a8fd5ce0b23ec9c06)) ([#51](https://github.com/Mala1180/PPS-22-satify/pull/51))
-  - add implies and iff operators ([eae2f9c](https://github.com/Mala1180/PPS-22-satify/commit/eae2f9caf53bf31552e45ee2da0e634f8e53d4b5)) ([#51](https://github.com/Mala1180/PPS-22-satify/pull/51))
-  - add wrong use test for sat encoding, refactor some methods ([3fe2c47](https://github.com/Mala1180/PPS-22-satify/commit/3fe2c47732355393e12e67dee03c6f667a30a156)) ([#49](https://github.com/Mala1180/PPS-22-satify/pull/49))
-  - add atMost one, atLeast one and atLEast k ([f8d2b94](https://github.com/Mala1180/PPS-22-satify/commit/f8d2b946bfabbce02917b6ce95609003233b7bc8)) ([#49](https://github.com/Mala1180/PPS-22-satify/pull/49))
-  - add print method for Expression ([c032a1d](https://github.com/Mala1180/PPS-22-satify/commit/c032a1d623a521f35cc34f8e524e17b965314177)) ([#49](https://github.com/Mala1180/PPS-22-satify/pull/49))
-  - add atLeastOne and atMostOne encodings ([fe7956d](https://github.com/Mala1180/PPS-22-satify/commit/fe7956d471040d2af9dc8d5dc140d0b2bc38c4f3)) ([#49](https://github.com/Mala1180/PPS-22-satify/pull/49))
-  - define factories of State ([e791d42](https://github.com/Mala1180/PPS-22-satify/commit/e791d4236c0ca56f07ddbbb8fd1f4510e868e3de)) ([#44](https://github.com/Mala1180/PPS-22-satify/pull/44))
-  - add fields to State, change xor symbol ([86ca9ea](https://github.com/Mala1180/PPS-22-satify/commit/86ca9ea55a1a6d9b91b05ad380125fe809c37087)) ([#44](https://github.com/Mala1180/PPS-22-satify/pull/44))
-  - add xor operator ([9937306](https://github.com/Mala1180/PPS-22-satify/commit/99373062f49e0644355f3e36d4d6ffb57648af36)) ([#42](https://github.com/Mala1180/PPS-22-satify/pull/42))
-  - add basic math operators ([02e302a](https://github.com/Mala1180/PPS-22-satify/commit/02e302a242fc475bdb8be2622ad5b14ce30cb0b7)) ([#42](https://github.com/Mala1180/PPS-22-satify/pull/42))
-  - comment ([368407f](https://github.com/Mala1180/PPS-22-satify/commit/368407f9380605ffcdb580920c37012b85bf2c50)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
-  - add sbt-assembly, fixed image in jar, modify README ([d8d7339](https://github.com/Mala1180/PPS-22-satify/commit/d8d7339d9052d7c5d5cc008f0fb90c8e48618a47)) ([#37](https://github.com/Mala1180/PPS-22-satify/pull/37))
+  - sequential encoding for at most k constraint ([2e218db](https://github.com/Mala1180/PPS-22-satify/commit/2e218db3ce20d496d83e149828d01d36aeebf254)) ([#90](https://github.com/Mala1180/PPS-22-satify/pull/90))
+  - finish GraphColoring, missing atMostK for NurseScheduling ([1beb019](https://github.com/Mala1180/PPS-22-satify/commit/1beb019e439cc58824c0a572a606388d20cc10df)) ([#87](https://github.com/Mala1180/PPS-22-satify/pull/87))
+  - add reflection bdd test and fixed name variables ([4de7d7f](https://github.com/Mala1180/PPS-22-satify/commit/4de7d7fff5db3d4d0c64697e22f05b974ae96c8f)) ([#71](https://github.com/Mala1180/PPS-22-satify/pull/71))
+  - remove cucumber plug, run manually cucumber ([2a6b068](https://github.com/Mala1180/PPS-22-satify/commit/2a6b068a46b754a55d629fc16bae2318547dd571)) ([#60](https://github.com/Mala1180/PPS-22-satify/pull/60))
 
 ### Bug Fixes 🐛
 
 - general:
-  - fix import reflection ([e851185](https://github.com/Mala1180/PPS-22-satify/commit/e8511856cc69ac39a00eeb2e24f393c0718c8558)) ([#56](https://github.com/Mala1180/PPS-22-satify/pull/56))
-  - solve conflicts ([d51957e](https://github.com/Mala1180/PPS-22-satify/commit/d51957eb7112c8ca5396e1840b18fa85916c86a5)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - dsl improvement with RegExp input processing ([b8e67d1](https://github.com/Mala1180/PPS-22-satify/commit/b8e67d1904cf91e8fec866326f5a09918648690f)) ([#55](https://github.com/Mala1180/PPS-22-satify/pull/55))
-  - tseitin tests and trasformations, removed println ([42b7174](https://github.com/Mala1180/PPS-22-satify/commit/42b7174be78a21da86e85644a7a098d94dec7ff3)) ([#53](https://github.com/Mala1180/PPS-22-satify/pull/53))
-  - transformation ([973d799](https://github.com/Mala1180/PPS-22-satify/commit/973d79982380169a3ff5ae0bb3e11b7e981328ac)) ([#53](https://github.com/Mala1180/PPS-22-satify/pull/53))
-  - merge conflicts ([bba99ee](https://github.com/Mala1180/PPS-22-satify/commit/bba99ee805753f87e9f3e4235e85988bce85ee39)) ([#50](https://github.com/Mala1180/PPS-22-satify/pull/50))
-  - remove smtlib ([302fd99](https://github.com/Mala1180/PPS-22-satify/commit/302fd99e9fdfa86f5a38b07b433a81beecf117f1)) ([#46](https://github.com/Mala1180/PPS-22-satify/pull/46))
-  - merge conflicts ([88ee6c1](https://github.com/Mala1180/PPS-22-satify/commit/88ee6c1b932a59cb95d5bc19054927b5b2181db2)) ([#46](https://github.com/Mala1180/PPS-22-satify/pull/46))
-  - given import ([8371593](https://github.com/Mala1180/PPS-22-satify/commit/83715936b83d4ac165f932d17b75df4bd8b0966d)) ([#39](https://github.com/Mala1180/PPS-22-satify/pull/39))
-  - print method ([cd74491](https://github.com/Mala1180/PPS-22-satify/commit/cd744911197c11212f9d0e122acdfbdf82c29a49)) ([#43](https://github.com/Mala1180/PPS-22-satify/pull/43))
-  - fix for architecture test ([dc64cbb](https://github.com/Mala1180/PPS-22-satify/commit/dc64cbb47a9c7cb913e986688910a90596994fd0)) ([#43](https://github.com/Mala1180/PPS-22-satify/pull/43))
-  - removed useless file ([311c9d6](https://github.com/Mala1180/PPS-22-satify/commit/311c9d6942487c54380a63c3695055a0d2623ca4)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
-  - trim input in pre processing ([3643503](https://github.com/Mala1180/PPS-22-satify/commit/3643503fdb22eff06e553b6e5c85e8aee9a5a497)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
-  - fmt ([e82a418](https://github.com/Mala1180/PPS-22-satify/commit/e82a41843f8215c740e61dfae75239808125a005)) ([#39](https://github.com/Mala1180/PPS-22-satify/pull/39))
-  - cnf in pure lit elimination test ([e034a1e](https://github.com/Mala1180/PPS-22-satify/commit/e034a1ece14a72ac620637ff11a1baa8a1704149)) ([#39](https://github.com/Mala1180/PPS-22-satify/pull/39))
-  - PartialModelUtilsTest, format code ([c3d7c30](https://github.com/Mala1180/PPS-22-satify/commit/c3d7c30df61b30dfab9bdaac2a3c82391af94bd9)) ([#38](https://github.com/Mala1180/PPS-22-satify/pull/38))
+  - NextSolutionUpdateTest ([c581987](https://github.com/Mala1180/PPS-22-satify/commit/c581987dbb4c2d93d1d4a5ba0da06e6ba5117979)) ([#91](https://github.com/Mala1180/PPS-22-satify/pull/91))
+  - fix some test ([a0c0ca0](https://github.com/Mala1180/PPS-22-satify/commit/a0c0ca034936b6c7fd9000c08e30e761b01de259)) ([#90](https://github.com/Mala1180/PPS-22-satify/pull/90))
+  - DpllOneSolTest ([e884c08](https://github.com/Mala1180/PPS-22-satify/commit/e884c084a185f6b9da3e4d5d5683be0771c6bb51)) ([#91](https://github.com/Mala1180/PPS-22-satify/pull/91))
+  - fix loop print nqueens ([7b1971c](https://github.com/Mala1180/PPS-22-satify/commit/7b1971cd266638ddaca2d31b463a7a9caebc28e3)) ([#87](https://github.com/Mala1180/PPS-22-satify/pull/87))
+  - solve conflict ([eee83f6](https://github.com/Mala1180/PPS-22-satify/commit/eee83f6ad2fe189a3512a7d7246af63d3ad887d9)) ([#87](https://github.com/Mala1180/PPS-22-satify/pull/87))
+  - merge conflicts ([44321e1](https://github.com/Mala1180/PPS-22-satify/commit/44321e14b6fb3b7d0592db39e8b9037ed1a8cd4e)) ([#91](https://github.com/Mala1180/PPS-22-satify/pull/91))
+  - merge conflicts ([19ade19](https://github.com/Mala1180/PPS-22-satify/commit/19ade19fae373c292be913227a2f2607b2038324)) ([#86](https://github.com/Mala1180/PPS-22-satify/pull/86))
+  - extract solutions var filter ([cfc69d3](https://github.com/Mala1180/PPS-22-satify/commit/cfc69d35de0890c2b209baec0092cb234046c1ae)) ([#91](https://github.com/Mala1180/PPS-22-satify/pull/91))
+  - delete Variable import in tests, format code ([83553c4](https://github.com/Mala1180/PPS-22-satify/commit/83553c43eca18f631b48e0957391a1bd1305d7f8)) ([#86](https://github.com/Mala1180/PPS-22-satify/pull/86))
+  - fix ciclic import ([a910d73](https://github.com/Mala1180/PPS-22-satify/commit/a910d73da4bb4a638b7a0003f16d8e1b4a47ac5d)) ([#85](https://github.com/Mala1180/PPS-22-satify/pull/85))
+  - converter trait scaladoc ([cda7ad5](https://github.com/Mala1180/PPS-22-satify/commit/cda7ad59c616ffc527a2713b4061de8dc658d2cc)) ([#80](https://github.com/Mala1180/PPS-22-satify/pull/80))
+  - remove state impl with show parameter ([fd1a023](https://github.com/Mala1180/PPS-22-satify/commit/fd1a023a2975bcaa0f882158e54825f445054580)) ([#81](https://github.com/Mala1180/PPS-22-satify/pull/81))
+  - pure literal elimination function ([307b5cc](https://github.com/Mala1180/PPS-22-satify/commit/307b5cc27ab2dea3592a59ca46dc507cbacefa47)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - solve conflicts ([09c3f6b](https://github.com/Mala1180/PPS-22-satify/commit/09c3f6be050f8c7a9efd70487bb29ed0d58f9e07)) ([#76](https://github.com/Mala1180/PPS-22-satify/pull/76))
+  - solve conflicts ([b52e164](https://github.com/Mala1180/PPS-22-satify/commit/b52e164c4f4a911116b0c33428fb28ab8ef51a2e)) ([#76](https://github.com/Mala1180/PPS-22-satify/pull/76))
+  - wrong package model.update to update ([8c567b1](https://github.com/Mala1180/PPS-22-satify/commit/8c567b18dd78102f4f00fad741dd010b833952e4)) ([#77](https://github.com/Mala1180/PPS-22-satify/pull/77))
+  - optional input management in View.scala ([a539043](https://github.com/Mala1180/PPS-22-satify/commit/a539043654d518898f1f9551fa60da97d880a5da)) ([#75](https://github.com/Mala1180/PPS-22-satify/pull/75))
+  - solve comnflict ([4eb646f](https://github.com/Mala1180/PPS-22-satify/commit/4eb646f08a114407c19db254243c13d2e92a2f07)) ([#66](https://github.com/Mala1180/PPS-22-satify/pull/66))
+  - fix access token ([c8dea0e](https://github.com/Mala1180/PPS-22-satify/commit/c8dea0e19e673c87426ef8e6973487c5de8b8aea)) ([#66](https://github.com/Mala1180/PPS-22-satify/pull/66))
+  - type in TestArchitecture ([2d2b901](https://github.com/Mala1180/PPS-22-satify/commit/2d2b90104acae4f2c4d161107048dae813d3e48c)) ([#60](https://github.com/Mala1180/PPS-22-satify/pull/60))
 
 ### Documentation 📚
 
 - general:
-  - finished backlog ([9d6ee59](https://github.com/Mala1180/PPS-22-satify/commit/9d6ee59b362db31a2dfe2db5177f59ab898151e9)) ([#57](https://github.com/Mala1180/PPS-22-satify/pull/57))
-  - add some doc ([c306729](https://github.com/Mala1180/PPS-22-satify/commit/c30672903942b307f44920c39dbdfdfc9608e5cc)) ([#51](https://github.com/Mala1180/PPS-22-satify/pull/51))
-  - add changelog ([7a5bd34](https://github.com/Mala1180/PPS-22-satify/commit/7a5bd3436241968d7b1ea7257b9a4a180b1f6961)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
+  - updated implementation part ([c858f5a](https://github.com/Mala1180/PPS-22-satify/commit/c858f5a6a7cae904f3da1db31390d8384518dd8e)) ([#76](https://github.com/Mala1180/PPS-22-satify/pull/76))
+  - pair programming - improve requirements, change color to buttons, change CNFConverter to Converter ([af81658](https://github.com/Mala1180/PPS-22-satify/commit/af8165881794649411c92d98e41894cbfd4c3933)) ([#73](https://github.com/Mala1180/PPS-22-satify/pull/73))
+  - updated introduction and methodology ([eee7832](https://github.com/Mala1180/PPS-22-satify/commit/eee78324d5f074ace3d0581a03935a67bb2ad342)) ([#72](https://github.com/Mala1180/PPS-22-satify/pull/72))
 
 ### Refactor 🛠️
 
 - general:
-  - modify atMostOne ([22386e5](https://github.com/Mala1180/PPS-22-satify/commit/22386e56cc270a36ca535366c088044446791ab0)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - move encodings to expression package ([7b5a5d4](https://github.com/Mala1180/PPS-22-satify/commit/7b5a5d41b45bc659f0e70845cab01d4968309dc6)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - move dsl package outside model ([9b192c8](https://github.com/Mala1180/PPS-22-satify/commit/9b192c88e0ac805b0c932e9e90692460beaf891d)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - add given conversion for tuple, modify extesion methods atMost and atLeast ([fa7684e](https://github.com/Mala1180/PPS-22-satify/commit/fa7684ea818cb1c940cb29b23a1822e1390957d8)) ([#55](https://github.com/Mala1180/PPS-22-satify/pull/55))
-  - undo Example-> Problem ([73b884d](https://github.com/Mala1180/PPS-22-satify/commit/73b884d8eb5512481265832f19a0cc85b67dcb11)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - move NQueens files ([ba35e6f](https://github.com/Mala1180/PPS-22-satify/commit/ba35e6fe999780a66b422ce0f3b0b3c5a8c41774)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - file refactor ([e5f0a02](https://github.com/Mala1180/PPS-22-satify/commit/e5f0a023ef82dd11c6dea705bff0bf68d06240ae)) ([#49](https://github.com/Mala1180/PPS-22-satify/pull/49))
-  - move OrderedSeq's given, delete wrong import, rename pure literals elimination methods ([08e5a24](https://github.com/Mala1180/PPS-22-satify/commit/08e5a24fe3895377ae6816aff11a8e37d11abaad)) ([#39](https://github.com/Mala1180/PPS-22-satify/pull/39))
-  - refactor gui, view architecture and remove useless print ([3ffe6b7](https://github.com/Mala1180/PPS-22-satify/commit/3ffe6b79baded4b5755d71aa4064e194a7928190)) ([#45](https://github.com/Mala1180/PPS-22-satify/pull/45))
-  - move extractSolutionsFromDT method ([905b878](https://github.com/Mala1180/PPS-22-satify/commit/905b87819daacb6d13b75e6c18f9f14c2e07594a)) ([#38](https://github.com/Mala1180/PPS-22-satify/pull/38))
-  - rename Constant -> Bool ([ce4ebc2](https://github.com/Mala1180/PPS-22-satify/commit/ce4ebc2362f3780d1f1a72b5781e8a6f18c1acfb)) ([#38](https://github.com/Mala1180/PPS-22-satify/pull/38))
+  - rename optimization-based decisions, optimization methods ([f1de0b8](https://github.com/Mala1180/PPS-22-satify/commit/f1de0b8487713488c4d1e3f804ee35087e1f1bf4)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - refator message SolveProblem and trait Problem ([8b7d817](https://github.com/Mala1180/PPS-22-satify/commit/8b7d817a2b379cdbc45fa40eeed9183b6c1a3f05)) ([#87](https://github.com/Mala1180/PPS-22-satify/pull/87))
+  - dpll package structure ([a8471d1](https://github.com/Mala1180/PPS-22-satify/commit/a8471d1ea7d3c866ea455cb9c4387d77ef195492)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - rename LitSearch enum ([ed2af7c](https://github.com/Mala1180/PPS-22-satify/commit/ed2af7c41ab19ea8f2d2182c0c6290d0e461fa4a)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - transformation method and tests ([a16360a](https://github.com/Mala1180/PPS-22-satify/commit/a16360aea900343cbb862d3c6e00f92f0da06000)) ([#79](https://github.com/Mala1180/PPS-22-satify/pull/79))
+  - small name refactoring ([03a9cbc](https://github.com/Mala1180/PPS-22-satify/commit/03a9cbc861e69ff3d6cd66cf56bc91dc6c76136d)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - comment prev DPLL version ([3ba1f0f](https://github.com/Mala1180/PPS-22-satify/commit/3ba1f0fc177bbd5fa6566cc039d5e361d25f8b20)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - refactor test packages ([49037de](https://github.com/Mala1180/PPS-22-satify/commit/49037de51473411c54c9401fa645585b93fe2bd7)) ([#76](https://github.com/Mala1180/PPS-22-satify/pull/76))
+  - modify Solver entity and introduce Converter entity, making tseitin and dpll implemenetation private ([e13c5c2](https://github.com/Mala1180/PPS-22-satify/commit/e13c5c28317eb0eba7f224394e6f6b8921d0e9d3)) ([#76](https://github.com/Mala1180/PPS-22-satify/pull/76))
+  - modify regex pattern and atMost tests ([2b22f92](https://github.com/Mala1180/PPS-22-satify/commit/2b22f92a4895f2c4ed04801b2eacffba6820edea)) ([#71](https://github.com/Mala1180/PPS-22-satify/pull/71))
+  - add a string input to Model, modify print of expression in gui ([dd93695](https://github.com/Mala1180/PPS-22-satify/commit/dd936957be5060b6f983b0d41853fe78e6c867a1)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - view import update ([c0e940b](https://github.com/Mala1180/PPS-22-satify/commit/c0e940bae5079db1543fc403f2b8cdfff81d22b5)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - loading label ([70d7d77](https://github.com/Mala1180/PPS-22-satify/commit/70d7d7730836eeff8a94a26ef06993eb175158c2)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - view update ([c35dac2](https://github.com/Mala1180/PPS-22-satify/commit/c35dac2edfcc04125d67cab024c24c483a6a1074)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - reactions and view update, to check: print for import ([03b19a3](https://github.com/Mala1180/PPS-22-satify/commit/03b19a3ec13ac8b984a661f9f005a4510109c3e1)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
 
 ### Style Improvements 💉
 
 - general:
-  - format ([ad951f7](https://github.com/Mala1180/PPS-22-satify/commit/ad951f7b25c749266a74516decccadcacab7b214)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - remove white space ([3f7234d](https://github.com/Mala1180/PPS-22-satify/commit/3f7234d7aef1a432105fc18f3943d002e9725257)) ([#47](https://github.com/Mala1180/PPS-22-satify/pull/47))
-  - remove useless white spaces ([baf8c5b](https://github.com/Mala1180/PPS-22-satify/commit/baf8c5bf95b6b5511fa5a9e9980d91b7a29a53c5)) ([#53](https://github.com/Mala1180/PPS-22-satify/pull/53))
-  - remove useless white spaces ([31d1684](https://github.com/Mala1180/PPS-22-satify/commit/31d168479c434aebf05e20f45cbe2002226e522b)) ([#53](https://github.com/Mala1180/PPS-22-satify/pull/53))
-  - format ([a8c49f2](https://github.com/Mala1180/PPS-22-satify/commit/a8c49f2bcf1eed74a3fc5c4b30b5e4422a8d37c9)) ([#51](https://github.com/Mala1180/PPS-22-satify/pull/51))
-  - format ([11ef43d](https://github.com/Mala1180/PPS-22-satify/commit/11ef43dca4aee9c58d7106d93171ec7afba38e26)) ([#49](https://github.com/Mala1180/PPS-22-satify/pull/49))
-  - format ([12e6fe8](https://github.com/Mala1180/PPS-22-satify/commit/12e6fe8d601be91eacd7e4fd8c8895935ddd38cd)) ([#42](https://github.com/Mala1180/PPS-22-satify/pull/42))
+  - format ([d3b5610](https://github.com/Mala1180/PPS-22-satify/commit/d3b56100c556b8a9c0a86fc65f601bcf535f0b79)) ([#90](https://github.com/Mala1180/PPS-22-satify/pull/90))
+  - format ([737a9ad](https://github.com/Mala1180/PPS-22-satify/commit/737a9ade3fb3496d180dec53323311a4183f8463)) ([#81](https://github.com/Mala1180/PPS-22-satify/pull/81))
+  - format ([1b337f0](https://github.com/Mala1180/PPS-22-satify/commit/1b337f0e9677a45a52e37b03daf9b47751aca237)) ([#77](https://github.com/Mala1180/PPS-22-satify/pull/77))
+  - format ([6d07482](https://github.com/Mala1180/PPS-22-satify/commit/6d07482516af7660213412bbd07cf31c5b18dc2e)) ([#68](https://github.com/Mala1180/PPS-22-satify/pull/68))
 
 ### Work in progress ⚙️
 
 - general:
-  - test import option for exclude instrumented-classes ([0abb83a](https://github.com/Mala1180/PPS-22-satify/commit/0abb83a1007f990787bae3ece8808937e774da4b)) ([#47](https://github.com/Mala1180/PPS-22-satify/pull/47))
-  - test import option on ClassFileImporter ([4dda102](https://github.com/Mala1180/PPS-22-satify/commit/4dda1021139cfc99c8eafb968736eecd811aee71)) ([#47](https://github.com/Mala1180/PPS-22-satify/pull/47))
-  - add first Feature and scenarion for Tseitin Transformation ([38294dc](https://github.com/Mala1180/PPS-22-satify/commit/38294dc6a1f5a533ae4b6f2c797651f43f2d3706)) ([#53](https://github.com/Mala1180/PPS-22-satify/pull/53))
-  - add method for Exp -> CNF conversion if allowable ([4d3a3d2](https://github.com/Mala1180/PPS-22-satify/commit/4d3a3d2869fcdf1e6ac28d9eb69c62344b079979)) ([#53](https://github.com/Mala1180/PPS-22-satify/pull/53))
-  - work on import from DIMACS format ([727db5b](https://github.com/Mala1180/PPS-22-satify/commit/727db5b21d81ee776833b9ca9df489982dbd620b)) ([#48](https://github.com/Mala1180/PPS-22-satify/pull/48))
-  - first improve to doc ([6a77ecb](https://github.com/Mala1180/PPS-22-satify/commit/6a77ecb05991ed3fb206316d6380058331d8bdae)) ([#54](https://github.com/Mala1180/PPS-22-satify/pull/54))
+  - dump function ([814359f](https://github.com/Mala1180/PPS-22-satify/commit/814359fab4f9bc91388f2345f8a377d946c1f1e6)) ([#88](https://github.com/Mala1180/PPS-22-satify/pull/88))
+  - add next in Solver, problem creating new instance of Solver ([f0d8e63](https://github.com/Mala1180/PPS-22-satify/commit/f0d8e634a9afc5a6cc57b631e2e7d9fdd095a572)) ([#91](https://github.com/Mala1180/PPS-22-satify/pull/91))
+  - generation of input area for parameters ([e558c9b](https://github.com/Mala1180/PPS-22-satify/commit/e558c9b0102ba8cb5d567e2715975254742dc13b)) ([#87](https://github.com/Mala1180/PPS-22-satify/pull/87))
+  - linking problems with gui ([a12c015](https://github.com/Mala1180/PPS-22-satify/commit/a12c0157aa50cb845487779469c685850d8fcfab)) ([#87](https://github.com/Mala1180/PPS-22-satify/pull/87))
+  - introduce NurseSceduling, modify parameters of GraphColoring ([bd1419a](https://github.com/Mala1180/PPS-22-satify/commit/bd1419af7b6686e3bbf123340a90edf2ece99b96)) ([#87](https://github.com/Mala1180/PPS-22-satify/pull/87))
+  - start GraphColoring ([ae8cf58](https://github.com/Mala1180/PPS-22-satify/commit/ae8cf583f19e3a2ffc805061c520c1bfb7cca64e)) ([#87](https://github.com/Mala1180/PPS-22-satify/pull/87))
+  - making Problem entity ([8407b6e](https://github.com/Mala1180/PPS-22-satify/commit/8407b6e359cb23dc272804d76f912a63da6f0551)) ([#87](https://github.com/Mala1180/PPS-22-satify/pull/87))
+  - test formal print ([7c05a26](https://github.com/Mala1180/PPS-22-satify/commit/7c05a26b9f1b98b82e5bbe617589031b9e058a49)) ([#68](https://github.com/Mala1180/PPS-22-satify/pull/68))
+  - show next solution ([b7cbf7f](https://github.com/Mala1180/PPS-22-satify/commit/b7cbf7f9aff895ffaff0ef13a64c1cc4a1abb5d1)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - next button ([875111c](https://github.com/Mala1180/PPS-22-satify/commit/875111cb5f828ceea80db747ad2e419bc145f075)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - resize window frame and remove space between logo and input area ([cd0329c](https://github.com/Mala1180/PPS-22-satify/commit/cd0329c6b8cf0f5826ec92f2dd66083edf19216b)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - correct expression input text area and refactored components updating ([db95ffa](https://github.com/Mala1180/PPS-22-satify/commit/db95ffa070b493c56170f1d7cc712954c118911b)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - add next button properly aligned ([31a7057](https://github.com/Mala1180/PPS-22-satify/commit/31a7057bffd469e9683c1715c4c0e04e025816df)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - add operators to help dialog and align error dialog ([a140c66](https://github.com/Mala1180/PPS-22-satify/commit/a140c66f485bbacd9541a328a5cc55f6acc01838)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - gui improvement, fix on problem selection from gui ([c7aea6a](https://github.com/Mala1180/PPS-22-satify/commit/c7aea6a8408aa3f84700659af5d7b2057e29f39f)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - add error popup, add loading, show results ([5233178](https://github.com/Mala1180/PPS-22-satify/commit/52331784a16cad418c64079fe71436ced9f7ed7c)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - found possible solution for cucumber ([dfe41b0](https://github.com/Mala1180/PPS-22-satify/commit/dfe41b0afd75472264575f43471e58c3ea5a0932)) ([#60](https://github.com/Mala1180/PPS-22-satify/pull/60))
+  - link problem combobox to implementation ([0f7292f](https://github.com/Mala1180/PPS-22-satify/commit/0f7292f025c000ca04c8223ca6cb07af139f5b80)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - reintroduce reflection test, add cucumber plugin, fixing test ([ae981bf](https://github.com/Mala1180/PPS-22-satify/commit/ae981bf0591a29387311b9fa9a32c3fe303e01a2)) ([#60](https://github.com/Mala1180/PPS-22-satify/pull/60))
+  - add TabPane to show problems ([6cfe1f7](https://github.com/Mala1180/PPS-22-satify/commit/6cfe1f70401c8aebd6e9d372bd878b1fc85f37f7)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - introduce help dialog ([8dddfcb](https://github.com/Mala1180/PPS-22-satify/commit/8dddfcb21bf41c915af2704fefd7fc39677afd6e)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
 
 ### Continuous Integration 🤖️
 
 - general:
-  - replace test branch with main ([75a6177](https://github.com/Mala1180/PPS-22-satify/commit/75a6177e247bcf5787b8f8eb6bf4592488f69feb)) ([#57](https://github.com/Mala1180/PPS-22-satify/pull/57))
-  - restored ci file ([f6fbbe8](https://github.com/Mala1180/PPS-22-satify/commit/f6fbbe8b57e9b2606ca3dcb9d2abd46ce32210b4)) ([#47](https://github.com/Mala1180/PPS-22-satify/pull/47))
-  - test remove target folder ([c73c244](https://github.com/Mala1180/PPS-22-satify/commit/c73c2447bbdf4dad28adab58d9dfef8fe66c3f90)) ([#47](https://github.com/Mala1180/PPS-22-satify/pull/47))
-  - test remove target folder ([2414edf](https://github.com/Mala1180/PPS-22-satify/commit/2414edf7276d1defa2d1fa52028633e9484551b6)) ([#47](https://github.com/Mala1180/PPS-22-satify/pull/47))
-  - test remove target folder ([27ee416](https://github.com/Mala1180/PPS-22-satify/commit/27ee4160ec8beddce502b895011e37b1aae636ca)) ([#47](https://github.com/Mala1180/PPS-22-satify/pull/47))
-  - test remove target folder ([f464d24](https://github.com/Mala1180/PPS-22-satify/commit/f464d240d60a02b57d2cd6675d77e953a6589752)) ([#47](https://github.com/Mala1180/PPS-22-satify/pull/47))
-  - test rm target ([5e1d332](https://github.com/Mala1180/PPS-22-satify/commit/5e1d33276fc08c16fa3a39c2f53a095b2e317378)) ([#47](https://github.com/Mala1180/PPS-22-satify/pull/47))
-  - test remove Target folder to prevent crash of workflow ([b23447a](https://github.com/Mala1180/PPS-22-satify/commit/b23447aff410e6f1b98000363070cc20ac98efea)) ([#47](https://github.com/Mala1180/PPS-22-satify/pull/47))
-  - testing remove cache:sbt ([7231387](https://github.com/Mala1180/PPS-22-satify/commit/7231387a26a808161d0a664f8bd2a3d7301ec699)) ([#47](https://github.com/Mala1180/PPS-22-satify/pull/47))
-  - update ci release ([beec700](https://github.com/Mala1180/PPS-22-satify/commit/beec700dad311225606f25aede1a49df21c1185f)) ([#40](https://github.com/Mala1180/PPS-22-satify/pull/40))
-  - fix branch list ([0e837ff](https://github.com/Mala1180/PPS-22-satify/commit/0e837ff9a5493633d9bc89bfced427c61774e667)) ([#40](https://github.com/Mala1180/PPS-22-satify/pull/40))
-  - add comment in ci ([329f39d](https://github.com/Mala1180/PPS-22-satify/commit/329f39dd7dc74090a7f7784e77a69d14ace4b5c5)) ([#40](https://github.com/Mala1180/PPS-22-satify/pull/40))
-  - modify ci for branch test ([42860e4](https://github.com/Mala1180/PPS-22-satify/commit/42860e48cb14a6be5b5095d35982c4982f00089a)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
-  - add fallback version ([03245bb](https://github.com/Mala1180/PPS-22-satify/commit/03245bb4f15b4c0e0141df6067824bed78c1fda1)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
-  - skip on empty ([198ae23](https://github.com/Mala1180/PPS-22-satify/commit/198ae23e7b5f998a253a79ad3d8a505b7a08cb66)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
-  - checkout code for changelog ([bdf0e99](https://github.com/Mala1180/PPS-22-satify/commit/bdf0e994233ec8003499e4a5f1ee305b06268888)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
-  - add workflows for releases ([462c60c](https://github.com/Mala1180/PPS-22-satify/commit/462c60c02033ada83aca6df3d8af74058b0ca077)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
+  - modify tag and release version ([9b5d01a](https://github.com/Mala1180/PPS-22-satify/commit/9b5d01a0f01ef7471f4f1c4815c9b5afa24756e2)) ([#92](https://github.com/Mala1180/PPS-22-satify/pull/92))
+  - modify tag ([2c644ea](https://github.com/Mala1180/PPS-22-satify/commit/2c644ea24c2b291d26a866e3eb2955e3ce89e0e6)) ([#66](https://github.com/Mala1180/PPS-22-satify/pull/66))
+  - finished changelog ([8f1c404](https://github.com/Mala1180/PPS-22-satify/commit/8f1c40489338f013b8a04fa0c52e3f12198fea80)) ([#66](https://github.com/Mala1180/PPS-22-satify/pull/66))
+  - modify access token ([6791347](https://github.com/Mala1180/PPS-22-satify/commit/6791347eb5902a5addb625c5560f9e66d1d6f9d3)) ([#66](https://github.com/Mala1180/PPS-22-satify/pull/66))
+  - add generate changelog ([81f8ca4](https://github.com/Mala1180/PPS-22-satify/commit/81f8ca4eb4032d7e6659487b2f2b8c26b4a61477)) ([#66](https://github.com/Mala1180/PPS-22-satify/pull/66))
+  - modify releae title ([e5ad9eb](https://github.com/Mala1180/PPS-22-satify/commit/e5ad9eb0e8b93dfab4b134b351945acd565046f6)) ([#61](https://github.com/Mala1180/PPS-22-satify/pull/61))
+  - add cucumber run in ci ([a99ee40](https://github.com/Mala1180/PPS-22-satify/commit/a99ee40bddbac9cf32fa5d0875b6c0e6e334f084)) ([#60](https://github.com/Mala1180/PPS-22-satify/pull/60))
 
 ### Chores 🖋️
 
 - general:
-  - remove comment ([5cee6da](https://github.com/Mala1180/PPS-22-satify/commit/5cee6daf1ad219edca76f7f93d6213909fa3fc99)) ([#56](https://github.com/Mala1180/PPS-22-satify/pull/56))
-  - remove reflection tests for sbt problem ([abc9e95](https://github.com/Mala1180/PPS-22-satify/commit/abc9e95cf092f0264640c2f764953405cb80d87e)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - integrate example into Problem ([9a16f8d](https://github.com/Mala1180/PPS-22-satify/commit/9a16f8d03837fb917c012bde4436d5f327f0fdd3)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - dimacs file follows standard, edit NQueens print, add NQueens 10x10 ([a12e810](https://github.com/Mala1180/PPS-22-satify/commit/a12e810880baf5b5604d01e69fc4ff274ddf8247)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - add tseitin variable filter on extract solutions ([d6e16d0](https://github.com/Mala1180/PPS-22-satify/commit/d6e16d02339e70328ae70f4e549fbcebfc479e35)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - add NQueens 3x3 ([94c7216](https://github.com/Mala1180/PPS-22-satify/commit/94c7216cd3e02a800f9ed09c91e13d2d39a972e6)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - DIMACS variables in lexicographically sortable, NQueens terminal print ([5d2def4](https://github.com/Mala1180/PPS-22-satify/commit/5d2def416307fc18b0b3d70fe1357c63e782b7a2)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - add NQueens example ([04fee2b](https://github.com/Mala1180/PPS-22-satify/commit/04fee2bd10199d47034b6b5f989db566bd98f689)) ([#52](https://github.com/Mala1180/PPS-22-satify/pull/52))
-  - change name to operators tests ([1ea9977](https://github.com/Mala1180/PPS-22-satify/commit/1ea99772652dd8878863a91a354ac87242c16619)) ([#51](https://github.com/Mala1180/PPS-22-satify/pull/51))
-  - add isCNF and conversion exp -> CNF methods ([cbab8e4](https://github.com/Mala1180/PPS-22-satify/commit/cbab8e45bd123719dc8c17dc8f4ae627f335b289)) ([#53](https://github.com/Mala1180/PPS-22-satify/pull/53))
-  - change print methods name and remove some spaces in OutputTest ([6d7fa10](https://github.com/Mala1180/PPS-22-satify/commit/6d7fa103916550f3a4a838864a9f7451b9bb7425)) ([#48](https://github.com/Mala1180/PPS-22-satify/pull/48))
-  - remove print from Expression ([af8a8b2](https://github.com/Mala1180/PPS-22-satify/commit/af8a8b29713c0dcf4a19e707cdc37ab073af4cef)) ([#49](https://github.com/Mala1180/PPS-22-satify/pull/49))
-  - add dpll GUI output ([db54a2c](https://github.com/Mala1180/PPS-22-satify/commit/db54a2cb1418a20dfbf44d2c1d730e6de6b13106)) ([#50](https://github.com/Mala1180/PPS-22-satify/pull/50))
-  - integrate dpll into the View ([db50620](https://github.com/Mala1180/PPS-22-satify/commit/db50620d9bbe9d938b676a8a20d110f4a24de891)) ([#50](https://github.com/Mala1180/PPS-22-satify/pull/50))
-  - spaced ([c05f508](https://github.com/Mala1180/PPS-22-satify/commit/c05f508445c9f84da0047f1a2a840020b50d5dad)) ([#49](https://github.com/Mala1180/PPS-22-satify/pull/49))
-  - introduce lazy val ([03fa314](https://github.com/Mala1180/PPS-22-satify/commit/03fa3140eb308d46d010720141a68cb428a4e879)) ([#50](https://github.com/Mala1180/PPS-22-satify/pull/50))
-  - delete comment and minor change to doc ([859dcbe](https://github.com/Mala1180/PPS-22-satify/commit/859dcbee64457caea1dfcea7a2e3e5a5e85872e4)) ([#49](https://github.com/Mala1180/PPS-22-satify/pull/49))
-  - add type annotation to symbolGenerator in atMostOne ([bc8bee5](https://github.com/Mala1180/PPS-22-satify/commit/bc8bee5541296b3522a4ac31476f5b5657dbf23f)) ([#49](https://github.com/Mala1180/PPS-22-satify/pull/49))
-  - DIMACS parse function ([c5cf6fd](https://github.com/Mala1180/PPS-22-satify/commit/c5cf6fdc19d9e530ac3c9358fe156704d56e0ff2)) ([#46](https://github.com/Mala1180/PPS-22-satify/pull/46))
-  - replace scoverage tool with jacoco ([ec8a3cd](https://github.com/Mala1180/PPS-22-satify/commit/ec8a3cd40914664afcbcbe384a8c29dffb4db347)) ([#47](https://github.com/Mala1180/PPS-22-satify/pull/47))
-  - added xor in operator list ([7eb3f0c](https://github.com/Mala1180/PPS-22-satify/commit/7eb3f0c903c3978e87685e83da056cd74fb53f2a)) ([#42](https://github.com/Mala1180/PPS-22-satify/pull/42))
-  - removed changelog test ([bf28f21](https://github.com/Mala1180/PPS-22-satify/commit/bf28f2117872ac87e7c791c1bec132641a8af503)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
-  - modify jar name ([fbddc0d](https://github.com/Mala1180/PPS-22-satify/commit/fbddc0d87161d8255b36dc68ced393e2d2c3b161)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
-  - modify names ([f161028](https://github.com/Mala1180/PPS-22-satify/commit/f16102884124c405aa840252732ed564b66087fb)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
-  - deleted changelog ([094c2bf](https://github.com/Mala1180/PPS-22-satify/commit/094c2bf304408f6c9e1b39eb833774ae4bba0ffa)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
-  - PartialModel as lexicographically-ordered Seq ([3e7f5b7](https://github.com/Mala1180/PPS-22-satify/commit/3e7f5b7620c62a8fecc99cac6ddec47aa43e7e1b)) ([#39](https://github.com/Mala1180/PPS-22-satify/pull/39))
-  - chore (green): pure literal elimination ([cd3d059](https://github.com/Mala1180/PPS-22-satify/commit/cd3d0590881ca42749b84088498278f7120efa9d)) ([#39](https://github.com/Mala1180/PPS-22-satify/pull/39))
-  - split dpll into multiple methods ([b830f98](https://github.com/Mala1180/PPS-22-satify/commit/b830f98debc52c632cbaf3e0f81b483ec3419a7e)) ([#38](https://github.com/Mala1180/PPS-22-satify/pull/38))
-  - chore (green): unit propagation ([b3fbd27](https://github.com/Mala1180/PPS-22-satify/commit/b3fbd271c624689a5800ccf67267bc03d2642551)) ([#38](https://github.com/Mala1180/PPS-22-satify/pull/38))
-  - random branching ([252058a](https://github.com/Mala1180/PPS-22-satify/commit/252058a441ed22549dac3596bf3b78d0d4734f34)) ([#38](https://github.com/Mala1180/PPS-22-satify/pull/38))
+  - integrate next solution into Solver ([3740802](https://github.com/Mala1180/PPS-22-satify/commit/37408021ba5bc6f99f00045ba28353bc6b647bb6)) ([#91](https://github.com/Mala1180/PPS-22-satify/pull/91))
+  - modify some name, exp is now a method ([c1acad6](https://github.com/Mala1180/PPS-22-satify/commit/c1acad65f43e5bbef79b385e54f5a282fa058b09)) ([#87](https://github.com/Mala1180/PPS-22-satify/pull/87))
+  - constraints are now defined in trait Problem ([fd09f42](https://github.com/Mala1180/PPS-22-satify/commit/fd09f421573bb97521a80c9c7616738fbcc998d4)) ([#87](https://github.com/Mala1180/PPS-22-satify/pull/87))
+  - extractSolutions w/explodeSolutions ([0ce3270](https://github.com/Mala1180/PPS-22-satify/commit/0ce32705c359b3894c62b01b1fc9bde922c1caec)) ([#91](https://github.com/Mala1180/PPS-22-satify/pull/91))
+  - add extractSolution to get one solution at a time, need to manage explodeSolutions ([8eaff96](https://github.com/Mala1180/PPS-22-satify/commit/8eaff9655d00628fffc91dd714e8886272a4e6f1)) ([#91](https://github.com/Mala1180/PPS-22-satify/pull/91))
+  - integrate complete decision with optimizations in next sol dpll ([84a082c](https://github.com/Mala1180/PPS-22-satify/commit/84a082c35f1f77c27e806036228d3405fbd3c4e1)) ([#91](https://github.com/Mala1180/PPS-22-satify/pull/91))
+  - add dpll which takes cnf as input ([0940bec](https://github.com/Mala1180/PPS-22-satify/commit/0940bec6476130d6e0354742c69df0a964981f96)) ([#91](https://github.com/Mala1180/PPS-22-satify/pull/91))
+  - dpll next sol PoC ([10358ce](https://github.com/Mala1180/PPS-22-satify/commit/10358ced2824f6abf38d2daad41dc412c5493d9b)) ([#91](https://github.com/Mala1180/PPS-22-satify/pull/91))
+  - delete Variable in CNF Symbol ([6a760c2](https://github.com/Mala1180/PPS-22-satify/commit/6a760c295be4cde1b9b2a1dff9f227b7576f5ef5)) ([#86](https://github.com/Mala1180/PPS-22-satify/pull/86))
+  - tailrec function in parser ([eb7d2a1](https://github.com/Mala1180/PPS-22-satify/commit/eb7d2a1da8be14473fd06defbbf76cc813a8386d)) ([#86](https://github.com/Mala1180/PPS-22-satify/pull/86))
+  - delete DPLLTest ([93c3c70](https://github.com/Mala1180/PPS-22-satify/commit/93c3c707dac9a6937d82bb58c3e025b071a47ed9)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - comment NQueens 10x10 test ([ec2f90b](https://github.com/Mala1180/PPS-22-satify/commit/ec2f90b389f45e5c97c60f326cd186939cb022ef)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - delete prev DPLL version ([1f2c5ee](https://github.com/Mala1180/PPS-22-satify/commit/1f2c5ee5ed526b67e9a1fb224311bbf354216864)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - dpll decision function to private, format code ([ddcfdd4](https://github.com/Mala1180/PPS-22-satify/commit/ddcfdd4522fc0a70d52fd46caf8d23449554f25c)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - add pure literal elimination in new dpll version ([aea9a2b](https://github.com/Mala1180/PPS-22-satify/commit/aea9a2b00c62c542d03751c83f1ca0718226485a)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - tailrec dpll with simple decision ([8af90b9](https://github.com/Mala1180/PPS-22-satify/commit/8af90b975c8613fa1e4b42bbfad2b8ec8f724bbb)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - enable multithreading in not tailrec dpll ([64c9d66](https://github.com/Mala1180/PPS-22-satify/commit/64c9d66f7fb5b7450816930b26773af25556384a)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - tailrec isUnsat ([25ca938](https://github.com/Mala1180/PPS-22-satify/commit/25ca9380e811b48f9bdb3615d8f74e0340f0d2c4)) ([#84](https://github.com/Mala1180/PPS-22-satify/pull/84))
+  - modify help section ([4f947ad](https://github.com/Mala1180/PPS-22-satify/commit/4f947ad4d904616c2e00cdb4274530fe3a973860)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - remove useless factory methods ([2732565](https://github.com/Mala1180/PPS-22-satify/commit/273256535c9c47073800c71f9b59f2fb34066459)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - empty changelog ([901bc1e](https://github.com/Mala1180/PPS-22-satify/commit/901bc1edd780b6c2bbca5a2347bc19c0e842c9e5)) ([#66](https://github.com/Mala1180/PPS-22-satify/pull/66))
+  - trigger release on edit ([2fb9ab7](https://github.com/Mala1180/PPS-22-satify/commit/2fb9ab7975772eb3ca14d8cd889afbb48dfd096f)) ([#66](https://github.com/Mala1180/PPS-22-satify/pull/66))
+  - modify tag ([bfeb549](https://github.com/Mala1180/PPS-22-satify/commit/bfeb54983939396ca6faabe0792643a44a030e68)) ([#66](https://github.com/Mala1180/PPS-22-satify/pull/66))
+  - remove useless print ([9fa178b](https://github.com/Mala1180/PPS-22-satify/commit/9fa178b741986081d7bfd6a3fe5671dca12451c5)) ([#67](https://github.com/Mala1180/PPS-22-satify/pull/67))
+  - empty envVars for cucumber run ([937fdaa](https://github.com/Mala1180/PPS-22-satify/commit/937fdaab9528d309e2386c11ad6781479ea5003f)) ([#60](https://github.com/Mala1180/PPS-22-satify/pull/60))
+  - remove import ([97d3d54](https://github.com/Mala1180/PPS-22-satify/commit/97d3d54d73b0a1ac32daf509c37eb153e72517d9)) ([#60](https://github.com/Mala1180/PPS-22-satify/pull/60))
 
-- release:
-  - v0.1.1-test [skip ci] ([e8b576e](https://github.com/Mala1180/PPS-22-satify/commit/e8b576e9105f9e0be4b2839f06a3ba4d7554b4d9)) ([#41](https://github.com/Mala1180/PPS-22-satify/pull/41))
+## [v0.2.0](https://github.com/Mala1180/PPS-22-satify/releases/tag/v0.2.0) - 2023-08-28 16:51:56
 
-### Other Changes
-
-- general:
-  - prepare release, modify ci, backlog refinement ([8e357a8](https://github.com/Mala1180/PPS-22-satify/commit/8e357a8d91e51925b20af4cbdc140b504337f68f)) ([#57](https://github.com/Mala1180/PPS-22-satify/pull/57))
+Prototype released at the end of the third Sprint.
+It permits solving simple SAT problem instances and provides a richer DSL for the input. 
 
 ## [v0.1.0](https://github.com/Mala1180/PPS-22-satify/releases/tag/v0.1.0) - 2023-08-14 17:25:39
 
