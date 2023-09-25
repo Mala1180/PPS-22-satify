@@ -43,7 +43,4 @@ Another important feature could be the simulation of SAT attack on logical circu
 
 Instead, in order to improve performance, a multi-threading approach could be evaluated.
 
-
-
-
 [Previous](5-implementation.md) | [Back to Index](README.md)
