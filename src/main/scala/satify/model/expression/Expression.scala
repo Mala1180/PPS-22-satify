@@ -16,7 +16,7 @@ object Expression:
   extension (exp: Expression)
 
     /** Zip the subexpressions found in the given expression with a generic type A.
-      * @param the supplier of the generic type A.
+      * @param f the supplier of the generic type A.
       * @return a list of the subexpressions found in the given expression zipped with the generic type.
       */
     def zipWith[A](f: () => A): List[(A, Expression)] =
