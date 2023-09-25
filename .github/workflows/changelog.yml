@@ -1,0 +1,32 @@
+name: Satify Changelog
+
+on:
+  pull_request:
+    types: [ opened ]
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'sbt'
+
+      - name: Update Changelog
+        uses: BobAnkh/auto-generate-changelog@v1.2.5
+        with:
+          BRANCH: ${{ github.head_ref }}
+          ACCESS_TOKEN: "${{ secrets.TOKEN }}"
+          TYPE: 'feat:Feature 🚀,fix:Bug Fixes 🐛,docs:Documentation 📚,refactor:Refactor 🛠️,perf :Performance Improvements 📈,
+                style:Style Improvements 💉,test:Tests 🧪,wip:Work in progress ⚙️,ci:Continuous Integration 🤖️,chore:Chores 🖋️,other:Other Changes'
