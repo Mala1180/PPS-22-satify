@@ -26,7 +26,7 @@ always a working version of the software.
 We start requiring two code reviews for each Pull Request, but we noticed that this approach was not possible during all
 the project development due to the fact that not all the team members were available to do the code review.
 For this reason, we decided to momentarily reduce the number of code reviews to one but only when the PRs were not
-fundamental.
+so impacting.
 We took this decision in order to avoid blocking the work of the other team members.
 
 ## Future developments
