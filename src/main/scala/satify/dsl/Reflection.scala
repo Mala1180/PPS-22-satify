@@ -9,7 +9,8 @@ import scala.util.matching.Regex
 
 object Reflection:
 
-  private val excludedWords = getDSLKeywords.mkString("|")
+  private val excludedWords = getDSLKeywords
+    .mkString("|")
     .replace("|^|", "|\\^|")
     .replace("|\\/|", "|\\\\/|")
     .replace("|/\\|", "|/\\\\|")
@@ -39,10 +40,10 @@ object Reflection:
   def processInput(input: String): String =
     println(symbolsRegexPattern)
     input
-    .replaceAll(commentsRegexPattern.toString(), "")
-    .replaceAll(symbolsRegexPattern.toString(), "\"$1\"")
-    .replaceAll("\n", " ")
-    .trim
+      .replaceAll(commentsRegexPattern.toString(), "")
+      .replaceAll(symbolsRegexPattern.toString(), "\"$1\"")
+      .replaceAll("\n", " ")
+      .trim
 
   /** Reflects the input to the REPL returning an Expression.
     * If the REPL is not started yet, waits until it is started.
