@@ -55,6 +55,12 @@ It is composed by:
 Each problem extends **Problem** using a _case class_, and adds the constraints needed to represent the specific
 problem.
 
+Links to the SAT problems used in this project:
+
+* N-Queens: https://en.wikipedia.org/wiki/Eight_queens_puzzle
+* Graph Coloring: https://en.wikipedia.org/wiki/Graph_coloring
+* Nurse Scheduling: https://en.wikipedia.org/wiki/Nurse_scheduling_problem
+
 ### Solution
 
 ### CNF
@@ -109,7 +115,8 @@ a cache of already computed expressions following the _memoization_ pattern.
 
 #### Tseitin Algorithm
 
-The Tseitin algorithm converts a propositional expression in Conjunctive Normal Form (CNF).
+The [Tseitin algorithm](https://en.wikipedia.org/wiki/Tseytin_transformation) converts a propositional expression in
+Conjunctive Normal Form (CNF).
 
 Following the functional approach, the implementation is hidden inside a private object.
 It contains the implementation of the three main algorithm phases.
@@ -134,15 +141,15 @@ So, the best way to design it is decomposing the algorithm following the steps b
    $$TSTN_1 \Longleftrightarrow a \land TSTN_3$$
    $$TSTN_0 \Longleftrightarrow TSTN_1 \implies TSTN_2$$
 
+Phases 1 and 2 are combined in the `substitutions` method.
 
-   Phases 1 and 2 are combined in the `substitutions` method.
 3. Express the truth conditions of the subformulas in CNF using the auxiliary variables and standard logical
    connectives (AND, OR, NOT) following the transformations listed in the table below.
    The `transform` method is responsible for this phase, generating a List of CNF clauses that keeps the
    equi-satisfiability of each subformula.
 
    | Operator | Circuit                 | Expression      | Converted                                                                     |
-         |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
+            |----------|-------------------------|-----------------|-------------------------------------------------------------------------------|
    | AND      | ![](img/AndCircuit.svg) | $X = A \land B$ | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$ |
    | OR       | ![](img/OrCircuit.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
    | NOT      | ![](img/NotCircuit.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |

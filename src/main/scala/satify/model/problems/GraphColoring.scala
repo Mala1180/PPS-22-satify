@@ -10,7 +10,7 @@ case class GraphColoring(edges: List[(String, String)], nodes: List[String], col
   given SymbolGenerator with
     def prefix: String = encodingVarPrefix
 
-  val variables: Seq[Seq[Symbol]] =
+  private val variables: Seq[Seq[Symbol]] =
     edges.foreach(e => require(nodes.contains(e._1) && nodes.contains(e._2)))
     for i <- nodes.indices yield for j <- 0 until colors yield Symbol(s"${nodes(i)}_c$j")
 
