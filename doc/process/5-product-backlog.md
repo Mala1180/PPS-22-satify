@@ -141,5 +141,10 @@ The sprint terminates in time, and the first release of Satify has been carried 
 
 ## Sprint Retrospective
 
+During this sprint, some complex tasks have been removed from the backlog
+because it was not possible to complete them in time. 
+The release is stable, but it is still possible to encounter some memory
+problems due to the stack size.
+
 ---
 [Previous](3-product-backlog.md)
