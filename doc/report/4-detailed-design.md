@@ -187,7 +187,7 @@ the needed part of the UI.
 <img src="img/converter/converter.svg" alt="Converter design" style="width: 80%">
 </p>
 
-Converter is a _trait_ containing the method `convert`` that must be implemented by each converter.
+Converter is a _trait_ containing the method `convert` that must be implemented by each converter.
 In order to obtain better performances and avoid the re-computation of same expressions, the converter can keep
 a cache of already computed expressions following the _memoization_ pattern.
 
@@ -200,16 +200,16 @@ The Tseitin algorithm converts a propositional expression in Conjunctive Normal 
 Following the functional approach, the implementation is hidden inside a private object.
 It contains the implementation of the three main algorithm phases.
 
-The idea behind the Tseitin transformation is to introduce new aux_iliary variables for subformulas in the original formula.
-These aux_iliary variables are used to represent the truth values of the subformulas.
+The idea behind the Tseitin transformation is to introduce new auxiliary variables for subformulas in the original formula.
+These auxiliary variables are used to represent the truth values of the subformulas.
 
 By doing this, the original formula can be broken down into smaller parts, each represented in CNF, and then combined
-using the introduced aux_iliary variables to maintain the overall semantics of the original formula.
+using the introduced auxiliary variables to maintain the overall semantics of the original formula.
 
 So, the best way to design it is decomposing the algorithm following the steps below:
 
 1. Assign a unique identifier to each subformula in the original formula.
-2. Replace each subformula with an aux_iliary variable representing its truth value.
+2. Replace each subformula with an auxiliary variable representing its truth value.
    e.g.
 
    $$(a \land (b \lor c)) \implies (\lnot c \land d)$$
@@ -219,7 +219,7 @@ So, the best way to design it is decomposing the algorithm following the steps b
    $$TSTN_1 \Longleftrightarrow a \land TSTN_3$$
    $$TSTN_0 \Longleftrightarrow TSTN_1 \implies TSTN_2$$
 
-3. Express the truth conditions of the subformulas in CNF using the aux_iliary variables and standard logical
+3. Express the truth conditions of the subformulas in CNF using the auxiliary variables and standard logical
    connectives (AND, OR, NOT) following the transformations listed in the table below.
 
    | Operator | Circuit                 | Expression      | Converted                                                                     |
@@ -252,10 +252,10 @@ In this project, the _Solver_ that has been used is `DpllSolver`, which exploits
 
 #### DPLL (Davis-Putnam-Loveland-Logemann)
 
-The DPLL algorithm is a search algorithm for deciding the satisfiability of a propositional formula in Conjunctive Normal Form.
+The [DPLL](https://en.wikipedia.org/wiki/DPLL_algorithm) algorithm is a search algorithm for deciding the satisfiability of a propositional formula in Conjunctive Normal Form.
 
 Compared to a simple exhaustive search of all the possible variable assignments, DPLL makes use of determined strategies
-to guide the search of sasfiable solutions, making it more efficient.
+to guide the search of satisfiable solutions, making it more efficient.
 It was introduced in 1961 by Martin Davis, George Logemann and Donald W. Loveland.
 
 The solver implementations we provide follow this algorithm but with small variances. In particular:
@@ -321,7 +321,7 @@ Eliminating pure literals can significantly reduce the size of the CNF formula. 
 
 #### CNF simplification
 
-The simplification of the expression in Cunjuntive-Normal-Form is very important to determine if the formula is SAT
+The simplification of the expression in Conjunctive-Normal-Form is very important to determine if the formula is SAT
 under the current `PartialAssignment`.
 
 In fact, if the CNF expression is completely simplified s.t. it is equal to *Symbol(True)*, it can be asserted that it is SAT.
