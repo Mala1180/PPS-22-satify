@@ -2,7 +2,8 @@
 
 ---
 
-## Tseitin Algorithm - Alberto Paganelli
+## Alberto Paganelli
+### Tseitin Algorithm
 
 Initially, not having sufficient knowledge, I spent some time understanding the algorithm and its intermediate phases so
 that I could approach the development in an incremental way.
@@ -12,6 +13,13 @@ simple.
 One particular difficulty was to understand some edge cases that were not well explained in papers like, for example, 
 the case of multiple equals subformulas in the same clause.
 
+### Comments
+I'm satisfied with the result of this project, I think we have done summary a good job and a lot of practice with 
+Scala and functional programming.
+Another positive aspect is that we had the opportunity 
+to experiment with new tools such as cucumber and a new AGILE methodology which I believe was fundamental.
+The strict rules on the code review and the tests have been very useful to improve the quality of the code and for having 
+always a working version of the software.
 
 ## Task review
 
