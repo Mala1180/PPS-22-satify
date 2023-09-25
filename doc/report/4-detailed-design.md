@@ -97,7 +97,7 @@ $$\texttt{atLeastK($k$)} := \bigvee_{M \subseteq \{ 1, \dots n \} } \bigwedge \l
 
 where $|M| \geq k$.
 
-Even in this case the `atLeastOne` function is provided, which is equal to `atLeatK(1)`.
+Even in this case the `atLeastOne` function is provided, which is equal to `atLeastK(1)`.
 
 #### Exactly k
 
