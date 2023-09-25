@@ -83,7 +83,7 @@ and to obtain a report of the results in a more client-friendly way.
 
 ### Microbenchmark
 We used ScalaMeter to measure the time and memory consumption of the software. 
-In particular, we used some basic instances of common SAT problems to benchmark the performance.
+In particular, using basic instances of common SAT problems to benchmark the performance.
 
 ## Continuous Integration
 
