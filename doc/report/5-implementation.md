@@ -108,7 +108,7 @@ including one time the given instance in the `DSL` imports.
 ## Alberto Paganelli
 
 Initially, I was involved in the analysis of the Tseitin transformation algorithm and its phases.
-In order to obtain a better understanding of the algorithm,
+To obtain a better understanding of the algorithm,
 I started to analyze the algorithm's phases, keeping an eye on how to decompose them.
 Obviously, the Expression data structure was necessary to represent formulas and work with them, so, with the team, we
 defined the `Expression` data structure.
@@ -123,7 +123,7 @@ implementing the algorithm's phases.
 
 My idea was to exploit the functional programming, so I defined the `Tseitin` object as a singleton that contains
 the algorithm's phases and exposing only the `tseitin` method as the entry point of the algorithm.
-In order to increase the readability of the code, I named methods as the algorithm's phases obtaining a code that is
+To increase the readability of the code, I named methods as the algorithm's phases obtaining a code that is
 quite self-explanatory.
 
 ```scala

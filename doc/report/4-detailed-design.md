@@ -32,7 +32,7 @@ abstract types:
 ### Expression
 
 <p align=center>
-  <img src="img/exp/exp.svg" alt=" Model-View-Update detailed diagram" style="width: 70%">
+  <img src="img/expression/expression.svg" alt=" Model-View-Update detailed diagram" style="width: 70%">
 </p>
 
 Expression is represented through a _sum type_ which contains all the possible types of expression:
@@ -133,7 +133,7 @@ It is composed of:
   useful during the solving.
 
 <p align=center>
-  <img src="img/solver/solver_design.svg" alt=" Model-View-Update detailed diagram" style="width: 80%">
+  <img src="img/solver/decision-tree.svg" alt=" Model-View-Update detailed diagram" style="width: 80%">
 </p>
 
 Given these ingredients, a SAT solver implementation can build its own specific `DecisionTree`, applying decisions to
@@ -250,7 +250,7 @@ So, the best way to design it is decomposing the algorithm following the steps b
    equi-satisfiability of each sub-formula.
 
    | Operator | Circuit                          | Expression      | Converted                                                                     |
-                     |----------|----------------------------------|-----------------|-------------------------------------------------------------------------------|
+   |----------|----------------------------------|-----------------|-------------------------------------------------------------------------------|
    | AND      | ![](img/cnfsimpl/AndCircuit.svg) | $X = A \land B$ | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$ |
    | OR       | ![](img/cnfsimpl/OrCircuit.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
    | NOT      | ![](img/cnfsimpl/NotCircuit.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |
@@ -375,7 +375,7 @@ quicker to process, leading for faster solutions.
 #### CNF simplification
 
 <p align="center">
-    <img src="img/cnfsimpl/cnfsimpl.svg" alt="CNF simplification" style="width: 50%">
+    <img src="img/cnfsimpl/cnf-simplification.svg" alt="CNF simplification" style="width: 50%">
 </p>
 
 The simplification of the expression in Conjunctive-Normal-Form is very important to determine if the formula is SAT
