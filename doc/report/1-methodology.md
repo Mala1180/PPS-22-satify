@@ -56,7 +56,7 @@ and then merged into Develop and Main branches.
 
 The testing phase is carried out in parallel with the implementation phase, in order to guarantee the quality of
 the code and to avoid regressions.
-It is used Test-Driven-Development (TDD) technique for the core functionalities of the software,
+Test-Driven-Development (TDD) technique was used for the core functionalities of the software,
 writing tests before implementation.
 Not every part of the software has been developed following the TDD technique, in particular, the GUI part has been
 developed in a more traditional way.
@@ -68,11 +68,11 @@ In particular, the libraries used for testing are:
 - ArchUnit
 - Cucumber
 
-First, to test software architecture, it is used the ArchUnit library to verify that the software architecture
+First, to test software architecture was used ArchUnit library, ensuring that the software architecture
 was respected during the implementation phase and that the code was not violating architecture dependency rules.
 
-Then, to test the core functionalities of the software, it is used ScalaTest.
-To make tests more readable for an external user, it is used FlatSpec style in order to obtain tests BDD-like.
+Then, to test the core functionalities of the software, ScalaTest was used.
+To make tests more readable for an external user, FlatSpec style was used to obtain tests BDD-like.
 In this case, the tests are more simple to read but also to realize, because the test code is more similar to the
 natural language.
 
