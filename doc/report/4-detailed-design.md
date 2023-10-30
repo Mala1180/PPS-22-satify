@@ -249,11 +249,11 @@ So, the best way to design it is decomposing the algorithm following the steps b
    The `transform` method is responsible for this phase, generating a List of CNF clauses that keeps the
    equi-satisfiability of each sub-formula.
 
-   | Operator | Circuit                          | Expression      | Converted                                                                     |
-   |----------|----------------------------------|-----------------|-------------------------------------------------------------------------------|
-   | AND      | ![](img/cnfsimpl/AndCircuit.svg) | $X = A \land B$ | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$ |
-   | OR       | ![](img/cnfsimpl/OrCircuit.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
-   | NOT      | ![](img/cnfsimpl/NotCircuit.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |
+   | Operator | Circuit                               | Expression      | Converted                                                                     |
+   |----------|---------------------------------------|-----------------|-------------------------------------------------------------------------------|
+   | AND      | ![](img/cnfsimpl/AndCircuitLight.svg) | $X = A \land B$ | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$ |
+   | OR       | ![](img/cnfsimpl/OrCircuitLight.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
+   | NOT      | ![](img/cnfsimpl/NotCircuitLight.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |
 
 4. Combine the representations of the sub-formulas through `concat` method to obtain the CNF representation of the
    entire formula.
