@@ -249,11 +249,11 @@ So, the best way to design it is decomposing the algorithm following the steps b
    The `transform` method is responsible for this phase, generating a List of CNF clauses that keeps the
    equi-satisfiability of each sub-formula.
 
-   | Operator | Circuit                               | Expression      | Converted                                                                     |
-   |----------|---------------------------------------|-----------------|-------------------------------------------------------------------------------|
-   | AND      | ![](img/cnfsimpl/AndCircuitLight.svg) | $X = A \land B$ | $(\lnot A \lor \lnot B \lor X) \land (A \lor \lnot X) \land (B \lor \lnot X)$ |
-   | OR       | ![](img/cnfsimpl/OrCircuitLight.svg)  | $X = A \lor B$  | $(A \lor B \lor \lnot X) \land (\lnot A \lor X) \land (\lnot B \lor X)$       |
-   | NOT      | ![](img/cnfsimpl/NotCircuitLight.svg) | $X = \lnot A$   | $(\lnot A \lor \lnot X) \land (A \lor X)$                                     |
+| Operator | Circuit                               | Expression | Converted                           |
+|----------|---------------------------------------|------------|-------------------------------------|
+| AND      | ![](./img/cnfsimpl/AndCircuitNew.svg) | X = A ∧ B  | (¬A ∨ ¬B ∨ X) ∧ (A ∨ ¬X) ∧ (B ∨ ¬X) |
+| OR       | ![](./img/cnfsimpl/OrCircuitNew.svg)  | X = A ∨ B  | (A ∨ B ∨ ¬X) ∧ (¬A ∨ X) ∧ (¬B ∨ X)  |
+| NOT      | ![](./img/cnfsimpl/NotCircuitNew.svg) | X = ¬A     | (¬A ∨ ¬X) ∧ (A ∨ X)                 |
 
 4. Combine the representations of the sub-formulas through `concat` method to obtain the CNF representation of the
    entire formula.
@@ -280,7 +280,7 @@ Furthermore, it is possible to solve the problem looking for all the possible so
 In the last case, the solver will convert the expression in CNF with the specified Converter before computing the
 solution.
 
-In order to obtain better performances and to avoid the re-computation of same expressions, the solver also makes use of
+To obtain better performances and to avoid the re-computation of same expressions, the solver also makes use of
 _memoization_ pattern.
 
 In this project, the _Solver_ that has been used is `DpllSolver`, which exploits the DPLL algorithm.
@@ -397,7 +397,7 @@ The expression in CNF is simplified according to the specific logical operator:
   <img src='img/cnfsimpl/umOr1.svg' alt="Or set variable True" height="150px">
 </p>
 
-- Literal $B$ is negated. Constraint $B = false$ sets the literal $True$:
+- Literal $B$ is negated. Constraint $B = False$ sets the literal $True$:
 
 <p align=center>
   <img src='img/cnfsimpl/umOr2.svg' alt="Or set variable False" height="200px">
